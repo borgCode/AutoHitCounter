@@ -114,4 +114,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="EldenRingHit" xml:space="preserve">
+    <value>48 89 5c 24 08          mov    QWORD PTR [rsp+0x8],rbx
+50                      push   rax
+52                      push   rdx
+53                      push   rbx
+48 8b 15 00 00 00 00    mov    rdx,QWORD PTR [rip+0x0]        # f &lt;_main+0xf&gt;
+48 8b 82 08 e5 01 00    mov    rax,QWORD PTR [rdx+0x1e508]
+48 8b 80 90 01 00 00    mov    rax,QWORD PTR [rax+0x190]
+48 3b 88 98 00 00 00    cmp    rcx,QWORD PTR [rax+0x98]
+74 3a                   je     60 &lt;validate_hit&gt;
+48 8b 80 e8 00 00 00    mov    rax,QWORD PTR [rax+0xe8]
+48 8b 40 10             mov    rax,QWORD PTR [rax+0x10]
+83 78 50 00             cmp    DWORD PTR [rax+0x50],0x0
+74 2f                   je     66 &lt;skip_count&gt;
+51                      push   rcx
+48 89 d1                mov    rcx,rdx
+48 8d 50 18             lea    rdx,[rax+0x18]
+48 83 ec 18             sub    rsp,0x18
+e8 00 00 00 00          call   48 &lt;_main+0x48&gt;
+48 83 c4 18             add    rsp,0x18
+59                      pop    rcx
+48 8b 00                mov    rax,QWORD PTR [rax]
+48 8b 80 90 01 00 00    mov    rax,QWORD PTR [rax+0x190]
+48 3b 88 98 00 00 00    cmp    rcx,QWORD PTR [rax+0x98]
+75 06                   jne    66 &lt;skip_count&gt;
+000000000060 &lt;validate_hit&gt;:
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 66 &lt;skip_count&gt;
+000000000066 &lt;skip_count&gt;:
+5b                      pop    rbx
+5a                      pop    rdx
+58                      pop    rax
+e9 00 00 00 00          jmp    6e &lt;skip_count+0x8&gt;</value>
+  </data>
 </root>

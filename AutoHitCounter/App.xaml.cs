@@ -16,15 +16,15 @@ namespace AutoHitCounter
             base.OnStartup(e);
 
             IMemoryService memoryService = new MemoryService();
-            
-            ITickService tickService = new TickService(memoryService);
             IStateService stateService = new StateService();
+
+            ITickService tickService = new TickService(memoryService, stateService);
 
             HookManager hookManager = new HookManager(memoryService);
             
             GameModuleFactory gameModuleFactory = new GameModuleFactory(memoryService, stateService, hookManager);
             
-            var mainViewModel = new MainViewModel(memoryService);
+            var mainViewModel = new MainViewModel(memoryService, gameModuleFactory);
             var mainWindow = new MainWindow
             {
                 DataContext = mainViewModel

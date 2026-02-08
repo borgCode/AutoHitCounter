@@ -7,19 +7,19 @@ namespace AutoHitCounter.Memory
 {
     public class HookManager(IMemoryService memoryService)
     {
-        private readonly Dictionary<long, HookData> _hookRegistry = new();
+        private readonly Dictionary<nint, HookData> _hookRegistry = new();
 
         private class HookData
         {
-            public long OriginAddr { get; set; }
-            public long CaveAddr { get; set; }
+            public nint OriginAddr { get; set; }
+            public nint CaveAddr { get; set; }
             public byte[] OriginalBytes { get; set; }
         }
 
-        public void InstallHook(long codeLoc, long origin, byte[] originalBytes)
+        public void InstallHook(nint codeLoc, nint origin, byte[] originalBytes)
         {
             byte[] hookBytes = GetHookBytes(originalBytes.Length, codeLoc, origin);
-            memoryService.WriteBytes((IntPtr)origin, hookBytes);
+            memoryService.WriteBytes(origin, hookBytes);
             _hookRegistry[codeLoc] = new HookData
             {
                 CaveAddr = codeLoc,
@@ -28,7 +28,7 @@ namespace AutoHitCounter.Memory
             };
         }
 
-        private byte[] GetHookBytes(int originalBytesLength, long target, long origin)
+        private byte[] GetHookBytes(int originalBytesLength, nint target, nint origin)
         {
             byte[] hookBytes = new byte[originalBytesLength];
             hookBytes[0] = 0xE9;
@@ -45,12 +45,11 @@ namespace AutoHitCounter.Memory
             return hookBytes;
         }
 
-        public void UninstallHook(long key)
+        public void UninstallHook(nint key)
         {
             if (!_hookRegistry.TryGetValue(key, out HookData hookToUninstall)) return;
-            
-            IntPtr originAddrPtr = (IntPtr)hookToUninstall.OriginAddr;
-            memoryService.WriteBytes(originAddrPtr, hookToUninstall.OriginalBytes);
+
+            memoryService.WriteBytes(hookToUninstall.OriginAddr, hookToUninstall.OriginalBytes);
             _hookRegistry.Remove(key);
         }
 

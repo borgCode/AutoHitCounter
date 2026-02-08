@@ -24,6 +24,11 @@ namespace AutoHitCounter.Services
         private const int ProcessQueryInformation = 0x0400;
         private const int AttachCheckInterval = 2000; 
         
+        private const uint CodeCaveSize = 0x5000;
+        private const int CodeCaveSearchStart = 0x40000000;
+        private const int CodeCaveSearchEnd = 0x30000;
+        private const int CodeCaveSearchStep = 0x10000;
+        
         private Timer _autoAttachTimer;
 
         public byte[] ReadBytes(nint addr, int size)
@@ -56,7 +61,19 @@ namespace AutoHitCounter.Services
 
         public void AllocCodeCave()
         {
-            throw new System.NotImplementedException();
+            nint searchRangeStart = BaseAddress - CodeCaveSearchStart;
+            nint searchRangeEnd = BaseAddress - CodeCaveSearchEnd;
+
+            for (nint addr = searchRangeEnd; addr > searchRangeStart; addr -= CodeCaveSearchStep)
+            {
+                var allocatedMemory = Kernel32.VirtualAllocEx(ProcessHandle, addr, CodeCaveSize);
+
+                if (allocatedMemory != IntPtr.Zero)
+                {
+                    CodeCaveOffsets.Base = allocatedMemory;
+                    break;
+                }
+            }
         }
 
         public void StartAutoAttach(string processName)

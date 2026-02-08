@@ -1,9 +1,11 @@
 ﻿// 
 
+using System;
+
 namespace AutoHitCounter.Interfaces;
 
 public interface ITickService
 {
-    void Start();
-    void Stop();
+    void RegisterGameTick(Action tick);
+    void UnregisterGameTick();
 }

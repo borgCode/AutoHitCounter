@@ -75,6 +75,7 @@
         <Compile Include="Interfaces\IGameModule.cs" />
         <Compile Include="Interfaces\IStateService.cs" />
         <Compile Include="Interfaces\ITickService.cs" />
+        <Compile Include="Memory\CodeCaveOffsets.cs" />
         <Compile Include="Memory\HookManager.cs" />
         <Compile Include="Memory\Kernel32.cs" />
         <Compile Include="Models\Game.cs" />
@@ -82,6 +83,8 @@
         <Compile Include="Services\MemoryService.cs" />
         <Compile Include="Services\StateService.cs" />
         <Compile Include="Services\TickService.cs" />
+        <Compile Include="Utilities\AsmHelper.cs" />
+        <Compile Include="Utilities\AsmLoader.cs" />
         <Compile Include="Utilities\MsgBox.cs" />
         <Compile Include="Utilities\User32.cs" />
         <Compile Include="ViewModels\BaseViewModel.cs" />
