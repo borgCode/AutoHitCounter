@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHitCounter", "AutoHitCounter\AutoHitCounter.csproj", "{FFD7FD6E-2E14-41EE-A54C-543A338BFBBF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FFD7FD6E-2E14-41EE-A54C-543A338BFBBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFD7FD6E-2E14-41EE-A54C-543A338BFBBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFD7FD6E-2E14-41EE-A54C-543A338BFBBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFD7FD6E-2E14-41EE-A54C-543A338BFBBF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
