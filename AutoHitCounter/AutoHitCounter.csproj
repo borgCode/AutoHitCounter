@@ -68,11 +68,14 @@
             <SubType>Designer</SubType>
         </ApplicationDefinition>
         <Compile Include="Enums\State.cs" />
-        <Compile Include="Games\EldenRing\EldenRingAsm.cs" />
+        <Compile Include="Games\EldenRing\EldenRingEventService.cs" />
+        <Compile Include="Games\EldenRing\EldenRingHitService.cs" />
         <Compile Include="Games\EldenRing\EldenRingModule.cs" />
         <Compile Include="Games\EldenRing\EldenRingOffsets.cs" />
         <Compile Include="Games\EldenRing\EldenRingVersion.cs" />
+        <Compile Include="Interfaces\IEventService.cs" />
         <Compile Include="Interfaces\IGameModule.cs" />
+        <Compile Include="Interfaces\IHitService.cs" />
         <Compile Include="Interfaces\IStateService.cs" />
         <Compile Include="Interfaces\ITickService.cs" />
         <Compile Include="Memory\CodeCaveOffsets.cs" />
@@ -85,6 +88,7 @@
         <Compile Include="Services\TickService.cs" />
         <Compile Include="Utilities\AsmHelper.cs" />
         <Compile Include="Utilities\AsmLoader.cs" />
+        <Compile Include="Utilities\EventLoader.cs" />
         <Compile Include="Utilities\MsgBox.cs" />
         <Compile Include="Utilities\User32.cs" />
         <Compile Include="ViewModels\BaseViewModel.cs" />

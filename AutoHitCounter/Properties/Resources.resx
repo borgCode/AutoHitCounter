@@ -123,28 +123,343 @@
 48 8b 82 08 e5 01 00    mov    rax,QWORD PTR [rdx+0x1e508]
 48 8b 80 90 01 00 00    mov    rax,QWORD PTR [rax+0x190]
 48 3b 88 98 00 00 00    cmp    rcx,QWORD PTR [rax+0x98]
-74 3a                   je     60 &lt;validate_hit&gt;
+74 3f                   je     65 &lt;validate_hit&gt;
 48 8b 80 e8 00 00 00    mov    rax,QWORD PTR [rax+0xe8]
 48 8b 40 10             mov    rax,QWORD PTR [rax+0x10]
 83 78 50 00             cmp    DWORD PTR [rax+0x50],0x0
-74 2f                   je     66 &lt;skip_count&gt;
+74 72                   je     a9 &lt;skip_count&gt;
 51                      push   rcx
+41 50                   push   r8
+41 51                   push   r9
 48 89 d1                mov    rcx,rdx
 48 8d 50 18             lea    rdx,[rax+0x18]
 48 83 ec 18             sub    rsp,0x18
-e8 00 00 00 00          call   48 &lt;_main+0x48&gt;
+e8 00 00 00 00          call   4c &lt;_main+0x4c&gt;
 48 83 c4 18             add    rsp,0x18
+41 59                   pop    r9
+41 58                   pop    r8
 59                      pop    rcx
-48 8b 00                mov    rax,QWORD PTR [rax]
 48 8b 80 90 01 00 00    mov    rax,QWORD PTR [rax+0x190]
 48 3b 88 98 00 00 00    cmp    rcx,QWORD PTR [rax+0x98]
-75 06                   jne    66 &lt;skip_count&gt;
-000000000060 &lt;validate_hit&gt;:
-ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 66 &lt;skip_count&gt;
-000000000066 &lt;skip_count&gt;:
+75 44                   jne    a9 &lt;skip_count&gt;
+000000000065 &lt;validate_hit&gt;:
+45 0f 57 ff             xorps  xmm15,xmm15
+45 0f 2f 38             comiss xmm15,DWORD PTR [r8]
+72 34                   jb     a3 &lt;real_hit&gt;
+45 0f 2f 78 04          comiss xmm15,DWORD PTR [r8+0x4]
+72 2d                   jb     a3 &lt;real_hit&gt;
+45 0f 2f 78 08          comiss xmm15,DWORD PTR [r8+0x8]
+72 26                   jb     a3 &lt;real_hit&gt;
+45 0f 2f 78 0c          comiss xmm15,DWORD PTR [r8+0xc]
+72 1f                   jb     a3 &lt;real_hit&gt;
+45 0f 2f 78 10          comiss xmm15,DWORD PTR [r8+0x10]
+72 18                   jb     a3 &lt;real_hit&gt;
+41 80 b8 d9 00 00 00    cmp    BYTE PTR [r8+0xd9],0x0
+00
+75 0e                   jne    a3 &lt;real_hit&gt;
+41 83 78 70 00          cmp    DWORD PTR [r8+0x70],0x0
+7d 07                   jge    a3 &lt;real_hit&gt;
+41 80 78 24 00          cmp    BYTE PTR [r8+0x24],0x0
+7e 06                   jle    a9 &lt;skip_count&gt;
+0000000000a3 &lt;real_hit&gt;:
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # a9 &lt;skip_count&gt;
+0000000000a9 &lt;skip_count&gt;:
 5b                      pop    rbx
 5a                      pop    rdx
 58                      pop    rax
-e9 00 00 00 00          jmp    6e &lt;skip_count+0x8&gt;</value>
+e9 00 00 00 00          jmp    b1 &lt;skip_count+0x8&gt;</value>
+  </data>
+  <data name="EldenRingFallDamage" xml:space="preserve">
+    <value>c6 44 24 30 01          mov    BYTE PTR [rsp+0x30],0x1
+50                      push   rax
+51                      push   rcx
+48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # e &lt;_main+0xe&gt;
+48 8b 81 08 e5 01 00    mov    rax,QWORD PTR [rcx+0x1e508]
+48 8b 80 90 01 00 00    mov    rax,QWORD PTR [rax+0x190]
+4c 3b 38                cmp    r15,QWORD PTR [rax]
+74 38                   je     59 &lt;validate_fall&gt;
+48 8b 80 e8 00 00 00    mov    rax,QWORD PTR [rax+0xe8]
+48 8b 40 10             mov    rax,QWORD PTR [rax+0x10]
+83 78 50 00             cmp    DWORD PTR [rax+0x50],0x0
+74 3b                   je     6d &lt;skip_count&gt;
+52                      push   rdx
+41 50                   push   r8
+41 51                   push   r9
+48 8d 50 18             lea    rdx,[rax+0x18]
+48 83 ec 18             sub    rsp,0x18
+e8 00 00 00 00          call   44 &lt;_main+0x44&gt;
+48 83 c4 18             add    rsp,0x18
+41 59                   pop    r9
+41 58                   pop    r8
+5a                      pop    rdx
+48 8b 80 90 01 00 00    mov    rax,QWORD PTR [rax+0x190]
+4c 3b 38                cmp    r15,QWORD PTR [rax]
+75 14                   jne    6d &lt;skip_count&gt;
+000000000059 &lt;validate_fall&gt;:
+40 84 ff                test   dil,dil
+75 09                   jne    67 &lt;real_hit&gt;
+67 41 8d 04 16          lea    eax,[r14d+edx*1]
+85 c0                   test   eax,eax
+7f 06                   jg     6d &lt;skip_count&gt;
+000000000067 &lt;real_hit&gt;:
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 6d &lt;skip_count&gt;
+00000000006d &lt;skip_count&gt;:
+59                      pop    rcx
+58                      pop    rax
+e9 00 00 00 00          jmp    74 &lt;skip_count+0x7&gt;</value>
+  </data>
+  <data name="EldenRingKillBox" xml:space="preserve">
+    <value>c6 44 24 28 01          mov    BYTE PTR [rsp+0x28],0x1
+50                      push   rax
+51                      push   rcx
+48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # e &lt;_main+0xe&gt;
+48 8b 88 08 e5 01 00    mov    rcx,QWORD PTR [rax+0x1e508]
+48 8b 81 90 01 00 00    mov    rax,QWORD PTR [rcx+0x190]
+48 3b 58 70             cmp    rbx,QWORD PTR [rax+0x70]
+75 25                   jne    47 &lt;skip&gt;
+52                      push   rdx
+ba c2 10 00 00          mov    edx,0x10c2
+48 8b 89 78 01 00 00    mov    rcx,QWORD PTR [rcx+0x178]
+48 83 ec 18             sub    rsp,0x18
+e8 00 00 00 00          call   38 &lt;_main+0x38&gt;
+48 83 c4 18             add    rsp,0x18
+5a                      pop    rdx
+84 c0                   test   al,al
+75 06                   jne    47 &lt;skip&gt;
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 47 &lt;skip&gt;
+000000000047 &lt;skip&gt;:
+59                      pop    rcx
+58                      pop    rax
+e9 00 00 00 00          jmp    4e &lt;skip+0x7&gt;</value>
+  </data>
+  <data name="EldenRingEvents" xml:space="preserve">
+    <value>BossName,DeathFlag
+Abductor Virgins,16000860
+"Adan, Thief of Fire",1038410800
+"Alecto, Black Knife Ringleader",1033420800
+Ancestor Spirit,12080800
+Ancient Dragon Lansseax,1041520800
+Ancient Hero of Zamor (Sainted Hero's Grave),30080800
+Ancient Hero of Zamor (Giant-Conquering Hero's Grave),30170800
+Ancient Hero of Zamor (Weeping Evergaol),1042330800
+"Astel, Naturalborn of the Void",12040800
+"Astel, Stars of Darkness",32110800
+Battlemage Hugues,1049390850
+Beastman of Farum Azula,31030800
+Beastman of Farum Azula (Duo),31100800
+Bell Bearing Hunter (Warmaster's Shack),1042380850
+Bell Bearing Hunter (Church of Vows),1037460800
+Bell Bearing Hunter (Hermit Merchant's Shack),1043530800
+Bell Bearing Hunter (Isolated Merchant's Shack),1048410800
+Black Blade Kindred (Greyoll's Dragonbarrow),1051430800
+Black Blade Kindred (Forbidden Lands),1049520800
+Black Knife Assaassin (Black Knife Catacombs),30050850
+Black Knife Assassin (Deathtouched Catacombs),30110800
+Black Knife Assassin (Sage's Cave),31190800
+Black Knife Assassin (Sainted Hero's Grave),1040520800
+Bloodhound Knight,31050800
+Bloodhound Knight Darriwil,1044350800
+"Bols, Carian Knight",1033450800
+Borealis the Freezing Fog,1254560800
+Cemetery Shade (Tombsward Catacombs),30000800
+Cemetery Shade (Black Knife Catacombs),30050800
+Cemetery Shade (Caelid Catacombs),30150800
+Cleanrot Knight,31040800
+Cleanrot Knight Duo,31200800
+Commander Niall,1051570800
+Commander O'Neil,1049380800
+Crucible Knight,1042370800
+Crucible Knight &amp; Crucible Knight Ordovis,30100800
+Crucible Knight &amp; Misbegotten Warrior,1051360800
+Crucible Knight Siluria,12030390
+Crystalian,32020800
+Crystalian Spear &amp; Crystalian Ringblade,32050800
+Crystalian Spear &amp; Crystalian Staff,31060800
+Death Rite Bird (Academy Gate Town),1036450800
+Death Rite Bird (Caelid),1049370850
+Death Rite Bird (Mountaintops of the Giants),1050570800
+Death Rite Bird (Consecrated Snowfield),1048570800
+Deathbird (Stormhill),1042380800
+Deathbird (Weeping Peninsula),1044320800
+Deathbird (Liurnia of the Lakes),1037420800
+Deathbird (Capital Outskirts),1044530800
+Decaying Ekzykes,1048370800
+Demi-Human Chiefs,31150800
+Demi-Human Queen Gilika,1038510800
+Demi-Human Queen Maggie,1037530800
+Demi-Human Queen Margot,31090800
+Draconic Tree Sentinel,1045520800
+Dragonkin Soldier (Lake of Rot),12010850
+Dragonkin Soldier (Siofra River),12020830
+Dragonkin Soldier of Nokstella,12010800
+Dragonlord Placidusax,13000830
+Radagon of the Golden Order &amp; Elden Beast,19000800
+Elemer of the Briar,1039540800
+Erdtree Avatar (Weeping Peninsula),1043330800
+Erdtree Avatar (Southwest Liurnia),1033430800
+Erdtree Avatar (Northeast Liurnia),1038480800
+Erdtree Avatar (Mountaintops of the Giants),1052560800
+Erdtree Burial Watchdog (Impaler's Catacombs),30010800
+Erdtree Burial Watchdog (Stormfoot Catacombs),30020800
+Erdtree Burial Watchdog (Cliffbottom Catacombs),30060800
+Erdtree Burial Watchdog (Wyndham Catacombs),30070800
+Erdtree Burial Watchdog Duo,30140800
+"Esgar, Priest of Blood",35000850
+Fallingstar Beast (Sellia Crystal Tunnel),32080800
+Fallingstar Beast (Altus Plateau),1041500800
+Fell Twins,34140850
+Fia's Champions,12030800
+Fire Giant,1252520800
+Flying Dragon Agheel,1043360800
+Flying Dragon Greyll,1052410800
+Frenzied Duelist,31210800
+Full-Grown Fallingstar Beast,1036540800
+Glintstone Dragon Adula,1034420800
+Glintstone Dragon Smarag,1034450800
+Godefroy the Grafted,1039500800
+"Godfrey, the First Elden Lord (Golden Shade)",11000850
+Godrick the Grafted,10000800
+Godskin Apostle (Divine Tower of Caelid),34130800
+"Godskin Apostle (Dominula, Windmill Village)",1042550800
+Godskin Duo,13000850
+Godskin Noble,16000850
+Grafted Scion,10010800
+Grave Warden Duelist (Murkwater Catacomb),30040800
+Grave Warden Duelist (Auriza's Side Tomb),30130800
+Great Wyrm Theodorix,1050560800
+Guardian Golem,31170800
+"Hoarah Loux, Warrior",11050800
+Kindred of Rot Duo,31070800
+Leonine Misbegotten,1043300800
+Lichdragon Fortissax,12030850
+"Loretta, Knight of the Haligtree",15000850
+Mad Pumpkin Head,1044360800
+Mad Pumpkin Head Duo,1048400800
+Magma Wyrm (Gael Tunnel),32070800
+Magma Wyrm (Mt. Gelmir),1035530800
+Magma Wyrm Makar,39200800
+"Malenia, Blade of Miquella",15000800
+"Maliketh, the Black Blade",13000800
+"Margit, the Fell Omen",10000850
+Mimic Tear,12020850
+Miranda the Blighted Bloom,31020800
+Misbegotten Crusader,31120800
+"Mohg, Lord of Blood",12050800
+"Mohg, the Omen",35000800
+"Morgott, the Omen King",11000800
+Necromancer Garris,31190850
+Night's Cavalry (Weeping Peninsula),1044320850
+Night's Cavalry (Limgrave),1043370800
+Night's Cavalry (Liurnia of the Lakes),1039430800
+Night's Cavalry (Bellum Highway),1036480800
+Night's Cavalry (Altus Plateau),1039510800
+Night's Cavalry (Caelid),1049370800
+Night's Cavalry (Greyoll's Dragonbarrow),1052410850
+Night's Cavalry (Forbidden Lands),1048510800
+Night's Cavalry (Consecrated Snowfield),1248550800
+Nox Swordstress &amp; Nox Priest,1049390800
+Omenkiller,1035420800
+Omenkiller &amp; Miranda the Blighted Bloom,31180800
+Onyx Lord (Sealed Tunnel),34120800
+Onyx Lord (Royal Grave Evergaol),1036500800
+Patches,31000800
+Perfumer Tricia &amp; Misbegotten Warrior,30120800
+Putrid Avatar (Caelid),1047400800
+Putrid Avatar (Greyoll's Dragonbarrow),1051400800
+Putrid Avatar (Consecrated Snowfield),1050570850
+Putrid Crystalian Trio,31110800
+Putrid Grave Warden Duelist,30190800
+Putrid Tree Spirit,30160800
+Red Wolf of Radagon,14000850
+Red Wolf of the Champion,30090800
+Regal Ancestor Spirit,12090800
+"Rennala, Queen of the Full Moon",14000800
+Roundtable Knight Vyke,1053560800
+Royal Knight Loretta,1035500800
+Royal Revenant,1034480800
+Runebear,31010800
+"Rykard, Lord of Blasphemy",16000800
+Sanguine Noble,1040530800
+Scaly Misbegotten,32000800
+"Sir Gideon Ofnir, the All-Knowing",11050850
+Soldier of Godrick,18000850
+Spirit-Caller Snail (Road's End Catacombs),30030800
+Spirit-Caller Snail (Spiritcaller Cave),31220800
+Starscourge Radahn,1252380800
+Stonedigger Troll (Limgrave Tunnel),32010800
+Stonedigger Troll (Old Altus Tunnel),32040800
+Stray Mimic Tear,30200800
+Tibia Mariner (Summonwater Village),1045390800
+Tibia Mariner (Liurnia of the Lakes),1039440800
+Tibia Mariner (Wyndham Ruins),1038520800
+Tree Sentinel,1042360800
+Tree Sentinel Duo,1041510800
+Ulcerated Tree Spirit (Fringefolk Hero's Grave),18000800
+Ulcerated Tree Spirit (Giants' Mountaintop Catacombs),30180800
+Ulcerated Tree Spirit (Mt. Gelmir),1037540810
+Valiant Gargoyles,12020800
+Wormface,1041530800
+Blackgaol Knight,2046410800
+Chief Bloodfiend,43000800
+Demi-Human Swordmaster Onze,41000800
+Divine Beast Dancing Lion,20000800
+Ghostflame Dragon,2045440800
+Lamenter,41020800
+Rellana Twin Moon Knight,2048440800
+Red Bear,2046450800
+Black Knight Edredd,2049430850
+Black Knight Garrew,2047450800
+Commander Gaius,2049480800
+Count Ymir Mother of Fingers,2051450800
+Curseblade Labirith,41010800
+Death Knight (Twin Axes),40000800
+Dryleaf Dane,2049440800
+Ghostflame Dragon,2049430800
+Golden Hippopotamus,21000850
+Messmer The Impaler,21010800
+Metyr Mother of Fingers,25000800
+Rakshasa,2051440800
+Ralva the Great Red Bear,2049450800
+Tree Sentinel (Shield),2050480860
+Tree Sentinel (Torch),2050470800
+Death Knight (Longhaft Axe),40010800
+Divine Beast Dancing Lion,2046460800
+Romina Saint of the Bud,2044450800
+Rugalea the Great Red Bear,2044470800
+Dancer of Ranah,2046380800
+Ghostflame Dragon,2048380850
+Putrescent Knight,22000800
+Death Rite Bird,2047390800
+Demi-Human Queen Marigga,2046400800
+Ancient Dragon-Man,43010800
+Ancient Dragon Senessax,2054390850
+Bayle the Dread,2054390800
+Jagged Peak Drake,2049410800
+Jagged Peak Drake (Duo Encounter),2052400800
+Jori Elder Inquisitor,2052430800
+Midra Lord of Frenzied Flame,28000800
+Fallingstar Beast,2052480800
+Scadutree Avatar,2050480800
+Promised Consort Radahn,20010800</value>
+  </data>
+  <data name="EldenRingEventLog" xml:space="preserve">
+    <value>48 89 5c 24 08          mov    QWORD PTR [rsp+0x8],rbx
+50                      push   rax
+53                      push   rbx
+57                      push   rdi
+8b 3d 00 00 00 00       mov    edi,DWORD PTR [rip+0x0]        # e &lt;_main+0xe&gt;
+89 f8                   mov    eax,edi
+6b c0 05                imul   eax,eax,0x5
+48 8d 1d 00 00 00 00    lea    rbx,[rip+0x0]        # 1a &lt;_main+0x1a&gt;
+48 01 c3                add    rbx,rax
+89 13                   mov    DWORD PTR [rbx],edx
+44 88 43 04             mov    BYTE PTR [rbx+0x4],r8b
+ff c7                   inc    edi
+81 e7 ff 01 00 00       and    edi,0x1ff
+89 3d 00 00 00 00       mov    DWORD PTR [rip+0x0],edi        # 31 &lt;_main+0x31&gt;
+5f                      pop    rdi
+5b                      pop    rbx
+58                      pop    rax
+e9 00 00 00 00          jmp    39 &lt;_main+0x39&gt;</value>
   </data>
 </root>

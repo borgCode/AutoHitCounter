@@ -11,14 +11,17 @@ namespace AutoHitCounter.ViewModels
     {
         private readonly IMemoryService _memoryService;
         private readonly GameModuleFactory _gameModuleFactory;
+        private readonly ITickService _tickService;
         private IGameModule? _currentModule;
         
         
         
-        public MainViewModel(IMemoryService memoryService, GameModuleFactory gameModuleFactory)
+        public MainViewModel(IMemoryService memoryService, GameModuleFactory gameModuleFactory,
+            ITickService tickService)
         {
             _memoryService = memoryService;
             _gameModuleFactory = gameModuleFactory;
+            _tickService = tickService;
             Games.Add(new Game { GameName = "Elden Ring", ProcessName = "eldenring" });
         }
 
@@ -57,13 +60,13 @@ namespace AutoHitCounter.ViewModels
         
         private void SwapModule()
         {
-            // _currentModule?.StopGameTick();
+            _tickService.UnregisterGameTick();
 
             if (_selectedGame == null) return;
 
             _memoryService.StartAutoAttach(_selectedGame.ProcessName);
             _currentModule = _gameModuleFactory.CreateModule(_selectedGame);
-            _currentModule.OnHit += count => HitCount = count;
+            _currentModule.OnHit += count => HitCount += count;
             // _currentModule.OnBossKilled += () => AdvanceSplit();
             // _currentModule.StartGameTick();
         }

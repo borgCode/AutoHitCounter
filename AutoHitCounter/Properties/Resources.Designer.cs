@@ -62,18 +62,96 @@ namespace AutoHitCounter.Properties {
         /// <summary>
         ///   Looks up a localized string similar to 48 89 5c 24 08          mov    QWORD PTR [rsp+0x8],rbx
         ///50                      push   rax
+        ///53                      push   rbx
+        ///57                      push   rdi
+        ///8b 3d 00 00 00 00       mov    edi,DWORD PTR [rip+0x0]        # e &lt;_main+0xe&gt;
+        ///89 f8                   mov    eax,edi
+        ///6b c0 05                imul   eax,eax,0x5
+        ///48 8d 1d 00 00 00 00    lea    rbx,[rip+0x0]        # 1a &lt;_main+0x1a&gt;
+        ///48 01 c3                add    rbx,rax
+        ///89 13                   mov    DWORD PTR [rbx],edx
+        ///44 88 43 04            [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string EldenRingEventLog {
+            get {
+                return ResourceManager.GetString("EldenRingEventLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BossName,DeathFlag
+        ///Abductor Virgins,16000860
+        ///&quot;Adan, Thief of Fire&quot;,1038410800
+        ///&quot;Alecto, Black Knife Ringleader&quot;,1033420800
+        ///Ancestor Spirit,12080800
+        ///Ancient Dragon Lansseax,1041520800
+        ///Ancient Hero of Zamor (Sainted Hero&apos;s Grave),30080800
+        ///Ancient Hero of Zamor (Giant-Conquering Hero&apos;s Grave),30170800
+        ///Ancient Hero of Zamor (Weeping Evergaol),1042330800
+        ///&quot;Astel, Naturalborn of the Void&quot;,12040800
+        ///&quot;Astel, Stars of Darkness&quot;,32110800
+        ///Battlemage Hugues,1049390850
+        ///Beastman of Farum Azula,31030800
+        ///Beastman [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string EldenRingEvents {
+            get {
+                return ResourceManager.GetString("EldenRingEvents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to c6 44 24 30 01          mov    BYTE PTR [rsp+0x30],0x1
+        ///50                      push   rax
+        ///51                      push   rcx
+        ///48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # e &lt;_main+0xe&gt;
+        ///48 8b 81 08 e5 01 00    mov    rax,QWORD PTR [rcx+0x1e508]
+        ///48 8b 80 90 01 00 00    mov    rax,QWORD PTR [rax+0x190]
+        ///4c 3b 38                cmp    r15,QWORD PTR [rax]
+        ///74 38                   je     59 &lt;validate_fall&gt;
+        ///48 8b 80 e8 00 00 00    mov    rax,QWORD PTR [rax+0xe8]
+        ///48 8b 40 10             mov [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string EldenRingFallDamage {
+            get {
+                return ResourceManager.GetString("EldenRingFallDamage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 48 89 5c 24 08          mov    QWORD PTR [rsp+0x8],rbx
+        ///50                      push   rax
         ///52                      push   rdx
         ///53                      push   rbx
         ///48 8b 15 00 00 00 00    mov    rdx,QWORD PTR [rip+0x0]        # f &lt;_main+0xf&gt;
         ///48 8b 82 08 e5 01 00    mov    rax,QWORD PTR [rdx+0x1e508]
         ///48 8b 80 90 01 00 00    mov    rax,QWORD PTR [rax+0x190]
         ///48 3b 88 98 00 00 00    cmp    rcx,QWORD PTR [rax+0x98]
-        ///74 3a                   je     60 &lt;validate_hit&gt;
+        ///74 3f                   je     65 &lt;validate_hit&gt;
         ///48 8b 80 e8 00 00 00    mov    rax,QWORD PTR [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string EldenRingHit {
             get {
                 return ResourceManager.GetString("EldenRingHit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to c6 44 24 28 01          mov    BYTE PTR [rsp+0x28],0x1
+        ///50                      push   rax
+        ///51                      push   rcx
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # e &lt;_main+0xe&gt;
+        ///48 8b 88 08 e5 01 00    mov    rcx,QWORD PTR [rax+0x1e508]
+        ///48 8b 81 90 01 00 00    mov    rax,QWORD PTR [rcx+0x190]
+        ///48 3b 58 70             cmp    rbx,QWORD PTR [rax+0x70]
+        ///75 25                   jne    47 &lt;skip&gt;
+        ///52                      push   rdx
+        ///ba c2 10 00 00          mov    edx,0x10c2
+        ///48 8b 89  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string EldenRingKillBox {
+            get {
+                return ResourceManager.GetString("EldenRingKillBox", resourceCulture);
             }
         }
     }

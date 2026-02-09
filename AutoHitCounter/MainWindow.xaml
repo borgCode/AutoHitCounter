@@ -7,8 +7,17 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <ComboBox ItemsSource="{Binding Games}"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition Height="100"></RowDefinition>
+            
+        </Grid.RowDefinitions>
+        <ComboBox Grid.Row="0" ItemsSource="{Binding Games}"
                   SelectedItem="{Binding SelectedGame}"
                   DisplayMemberPath="GameName" />
+        
+        <TextBlock Grid.Row="1" Text="{Binding HitCount}">
+            
+        </TextBlock>
     </Grid>
 </Window>

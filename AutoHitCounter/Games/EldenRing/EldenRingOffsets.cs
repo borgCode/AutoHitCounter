@@ -72,12 +72,15 @@ public static class EldenRingOffsets
     public static class Hooks
     {
         public static nint Hit;
+        public static nint FallDamage;
+        public static nint KillBox;
         public static nint SetEvent;
     }
 
     public static class Functions
     {
         public static nint ChrInsByHandle;
+        public static nint HasSpEffectId;
     }
 
     private static void InitializeBaseAddresses(nint moduleBase)
@@ -121,7 +124,49 @@ public static class EldenRingOffsets
             Version2_6_0 or Version2_6_1 => 0x4498E0,
             _ => 0
         };
+        
+        Hooks.FallDamage = moduleBase + Version switch
+        {
+            Version1_2_0 => 0x444DB6,
+            Version1_2_1 or Version1_2_2 => 0x444E26,
+            Version1_2_3 => 0x444F46,
+            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x445BA6,
+            Version1_4_0 => 0x4483C6,
+            Version1_4_1 => 0x4482D6,
+            Version1_5_0 => 0x448656,
+            Version1_6_0 => 0x4496B6,
+            Version1_7_0 => 0x449806,
+            Version1_8_0 or Version1_8_1 => 0x44B196,
+            Version1_9_0 or Version1_9_1 => 0x44B2D6,
+            Version2_0_0 or Version2_0_1 => 0x44B476,
+            Version2_2_0 or Version2_2_3 => 0x44E266,
+            Version2_3_0 => 0x44E376,
+            Version2_4_0 or Version2_5_0 => 0x44E3B6,
+            Version2_6_0 or Version2_6_1 => 0x44E386,
+            _ => 0
+        };
+        
+        Hooks.KillBox = moduleBase + Version switch
+        {
+            Version1_2_0 => 0x3F46FB,
+            Version1_2_1 or Version1_2_2 => 0x3F476B,
+            Version1_2_3 => 0x3F488B,
+            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x3F535B,
+            Version1_4_0 or Version1_4_1 => 0x3F783B,
+            Version1_5_0 => 0x3F7C0B,
+            Version1_6_0 => 0x3F89EB,
+            Version1_7_0 => 0x3F8A6B,
+            Version1_8_0 or Version1_8_1 => 0x44AA6D,
+            Version1_9_0 or Version1_9_1 => 0x44ABAD,
+            Version2_0_0 or Version2_0_1 => 0x44AD4D,
+            Version2_2_0 or Version2_2_3 => 0x44DB3D,
+            Version2_3_0 => 0x44DC4D,
+            Version2_4_0 or Version2_5_0 => 0x44DC8D,
+            Version2_6_0 or Version2_6_1 => 0x44DC5D,
+            _ => 0
+        };
 
+        
         Hooks.SetEvent = moduleBase + Version switch
         {
             Version1_2_0 => 0x5D9E40,
@@ -166,5 +211,28 @@ public static class EldenRingOffsets
             Version2_6_0 or Version2_6_1 => 0x507D50,
             _ => 0
         };
+        
+        Functions.HasSpEffectId = moduleBase + Version switch
+        {
+            Version1_2_0 => 0x4E99C0,
+            Version1_2_1 or Version1_2_2 => 0x4E9A30,
+            Version1_2_3 => 0x4E9B50,
+            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x4EAA20,
+            Version1_4_0 => 0x4ED780,
+            Version1_4_1 => 0x4ED690,
+            Version1_5_0 => 0x4EDA20,
+            Version1_6_0 => 0x4EEB90,
+            Version1_7_0 => 0x4EEB40,
+            Version1_8_0 or Version1_8_1 => 0x4F5E10,
+            Version1_9_0 => 0x4F6070,
+            Version1_9_1 => 0x4F60A0,
+            Version2_0_0 or Version2_0_1 => 0x4F62E0,
+            Version2_2_0 or Version2_2_3 => 0x4F9880,
+            Version2_3_0 => 0x4F9A00,
+            Version2_4_0 or Version2_5_0 => 0x4F9A40,
+            Version2_6_0 or Version2_6_1 => 0x4F9A10,
+            _ => 0
+        };
+
     }
 }

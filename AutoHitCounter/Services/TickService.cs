@@ -13,6 +13,10 @@ public class TickService : ITickService
     private readonly IMemoryService _memoryService;
     private readonly IStateService _stateService;
     private readonly DispatcherTimer _mainTimer;
+    
+    private Action? _gameTick;
+    private DateTime? _attachedTime;
+    private bool _hasAllocatedMemory;
 
     public TickService(IMemoryService memoryService, IStateService stateService) 
     {
@@ -26,20 +30,10 @@ public class TickService : ITickService
         _mainTimer.Start();
     }
     
-    public void RegisterGameTick(Action tick)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void UnregisterGameTick()
-    {
-        throw new NotImplementedException();
-    }
+    public void RegisterGameTick(Action tick) => _gameTick = tick;
+    public void UnregisterGameTick() => _gameTick = null;
     
     
-    private DateTime? _attachedTime;
-    private bool _hasAllocatedMemory;
-
     private void MainTick(object sender, EventArgs e)
     {
         if (_memoryService.IsAttached)
@@ -62,6 +56,8 @@ public class TickService : ITickService
                 _stateService.Publish(State.Attached);
                 _hasAllocatedMemory = true;
             }
+            
+            _gameTick?.Invoke();
         }
     }
 
