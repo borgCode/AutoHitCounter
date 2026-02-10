@@ -1,9 +1,10 @@
 ﻿// 
 
+using System;
 using AutoHitCounter.Utilities;
-using static AutoHitCounter.Games.EldenRing.EldenRingVersion;
+using static AutoHitCounter.Games.ER.EldenRingVersion;
 
-namespace AutoHitCounter.Games.EldenRing;
+namespace AutoHitCounter.Games.ER;
 
 public static class EldenRingOffsets
 {
@@ -233,6 +234,38 @@ public static class EldenRingOffsets
             Version2_6_0 or Version2_6_1 => 0x4F9A10,
             _ => 0
         };
+        
+        
+        
+        _baseAddr = moduleBase;
+        
+        #if DEBUG
+        
+            Console.WriteLine("--- Base Pointers ---");
+            PrintOffset("WorldChrMan.Base", WorldChrMan.Base);
+            
+            Console.WriteLine("\n--- Hooks ---");
+            PrintOffset("Hit", Hooks.Hit);
+            PrintOffset("FallDamage", Hooks.FallDamage);
+            PrintOffset("KillBox", Hooks.KillBox);
+            PrintOffset("SetEvent", Hooks.SetEvent);
+           
+            
+            Console.WriteLine("\n--- Functions ---");
+            PrintOffset("ChrInsByHandle", Functions.ChrInsByHandle);
+            PrintOffset("HasSpEffectId", Functions.HasSpEffectId);
+            
+
+            Console.WriteLine("\n====================================\n");
+#endif
 
     }
+    
+#if DEBUG
+    private static nint _baseAddr;
+    private static void PrintOffset(string name, nint value)
+    {
+        Console.WriteLine(value - _baseAddr <= 0 ? $"  {name,-40} *** NOT SET ***" : $"  {name,-40} 0x{(long)value:X}");
+    }
+#endif
 }

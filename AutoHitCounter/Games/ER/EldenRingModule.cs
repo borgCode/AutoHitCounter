@@ -6,7 +6,7 @@ using AutoHitCounter.Enums;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
 
-namespace AutoHitCounter.Games.EldenRing;
+namespace AutoHitCounter.Games.ER;
 
 public class EldenRingModule : IGameModule
 {
@@ -47,7 +47,7 @@ public class EldenRingModule : IGameModule
 
     public event Action<int> OnHit;
 
-    public event Action OnBossKilled;
+    public event Action OnEventSet;
 
     private void InitializeOffsets()
     {
@@ -67,7 +67,10 @@ public class EldenRingModule : IGameModule
             _lastHit = DateTime.Now;
         }
 
-        _eldenRingEventService.ShouldSplit();
+        if (_eldenRingEventService.ShouldSplit())
+        {
+            OnEventSet?.Invoke();
+        }
     }
     
 }

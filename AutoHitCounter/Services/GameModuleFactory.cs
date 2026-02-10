@@ -2,7 +2,12 @@
 
 using System;
 using System.Collections.Generic;
-using AutoHitCounter.Games.EldenRing;
+using AutoHitCounter.Games.DS2;
+using AutoHitCounter.Games.DS2S;
+using AutoHitCounter.Games.DS3;
+using AutoHitCounter.Games.DSR;
+using AutoHitCounter.Games.ER;
+using AutoHitCounter.Games.SK;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
 using AutoHitCounter.Models;
@@ -16,20 +21,19 @@ public class GameModuleFactory(
     HookManager hookManager,
     ITickService tickService)
 {
-    public List<Game> AvailableGames => new()
-    {
-        new Game { GameName = "Elden Ring", ProcessName = "eldenring" },
-        // new Game { GameName = "Dark Souls III", ProcessName = "DarkSoulsIII" },
-    };
-
+    
     private readonly Dictionary<uint, string> _eldenRingEvents = EventLoader.GetEvents("EldenRingEvents");
     
     public IGameModule CreateModule(Game game)
     {
-        return game.ProcessName switch
+        return game.GameName switch
         {
-            "eldenring" => new EldenRingModule(memoryService, stateService, hookManager, tickService, _eldenRingEvents),
-            // "darksoulsiii" => new DarkSouls3Module(_memory, _tick),
+            "Dark Souls Remastered" => new DSRModule(memoryService, stateService, hookManager, tickService),
+            "Dark Souls 2 Vanilla" => new DS2VanillaModule(memoryService, stateService, hookManager, tickService),
+            "Dark Souls 2 Scholar" => new DS2ScholarModule(memoryService, stateService, hookManager, tickService),
+            "Dark Souls 3" => new DS3Module(memoryService, stateService, hookManager, tickService),
+            "Sekiro" => new SKModule(memoryService, stateService, hookManager, tickService),
+            "Elden Ring" => new EldenRingModule(memoryService, stateService, hookManager, tickService, _eldenRingEvents),
             _ => throw new NotSupportedException($"No module for {game.ProcessName}")
         };
     }

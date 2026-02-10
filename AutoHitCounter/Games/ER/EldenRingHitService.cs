@@ -3,9 +3,9 @@
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
 using AutoHitCounter.Utilities;
-using static AutoHitCounter.Games.EldenRing.EldenRingOffsets;
+using static AutoHitCounter.Games.ER.EldenRingOffsets;
 
-namespace AutoHitCounter.Games.EldenRing;
+namespace AutoHitCounter.Games.ER;
 
 public class EldenRingHitService(IMemoryService memoryService, HookManager hookManager) : IHitService
 {

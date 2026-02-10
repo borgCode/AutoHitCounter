@@ -7,5 +7,5 @@ namespace AutoHitCounter.Interfaces;
 public interface IGameModule
 {
     event Action<int> OnHit;
-    event Action OnBossKilled;
+    event Action OnEventSet;
 }

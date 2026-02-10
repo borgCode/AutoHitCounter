@@ -17,6 +17,7 @@ namespace AutoHitCounter
 
             IMemoryService memoryService = new MemoryService();
             IStateService stateService = new StateService();
+            IProfileService profileService = new ProfileService();
 
             ITickService tickService = new TickService(memoryService, stateService);
 
@@ -24,7 +25,7 @@ namespace AutoHitCounter
             
             GameModuleFactory gameModuleFactory = new GameModuleFactory(memoryService, stateService, hookManager, tickService);
             
-            var mainViewModel = new MainViewModel(memoryService, gameModuleFactory, tickService);
+            var mainViewModel = new MainViewModel(memoryService, gameModuleFactory, tickService, profileService);
             var mainWindow = new MainWindow
             {
                 DataContext = mainViewModel

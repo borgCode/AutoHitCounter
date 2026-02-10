@@ -24,7 +24,7 @@ public class TickService : ITickService
         _stateService = stateService;
         _mainTimer = new DispatcherTimer
         {
-            Interval = TimeSpan.FromMilliseconds(25)
+            Interval = TimeSpan.FromMilliseconds(100)
         };
         _mainTimer.Tick += MainTick;
         _mainTimer.Start();

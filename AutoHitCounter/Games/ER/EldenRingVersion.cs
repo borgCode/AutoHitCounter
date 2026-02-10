@@ -1,6 +1,6 @@
 ﻿// 
 
-namespace AutoHitCounter.Games.EldenRing;
+namespace AutoHitCounter.Games.ER;
 
 public enum EldenRingVersion
 {
