@@ -1,12 +1,12 @@
 ﻿// 
 
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using AutoHitCounter.Core;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Models;
+using AutoHitCounter.Utilities;
 
 namespace AutoHitCounter.ViewModels;
 
@@ -148,9 +148,19 @@ public class ProfileEditorViewModel : BaseViewModel
 
     private void NewProfile()
     {
+
+        var result = MsgBox.ShowInput("Profile Name", "", "New Profile");
+
+        
+        if (string.IsNullOrWhiteSpace(result))
+        {
+            MsgBox.Show("Profile name required", "New Profile");
+            return;
+        }
+        
         var profile = new Profile
         {
-            Name = "New Profile",
+            Name = result,
             GameName = _gameName,
             Splits = []
         };

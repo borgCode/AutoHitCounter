@@ -14,15 +14,15 @@ public class SplitViewModel : BaseViewModel
 
     private int _numOfHits;
 
-  public int NumOfHits
-  {
-      get => _numOfHits;
-      set
-      {
-          if (SetProperty(ref _numOfHits, value))
-              OnPropertyChanged(nameof(Diff));
-      }
-  }
+    public int NumOfHits
+    {
+        get => _numOfHits;
+        set
+        {
+            if (SetProperty(ref _numOfHits, value))
+                OnPropertyChanged(nameof(Diff));
+        }
+    }
 
     private int _personalBest;
 
@@ -31,7 +31,14 @@ public class SplitViewModel : BaseViewModel
         get => _personalBest;
         set => SetProperty(ref _personalBest, value);
     }
-    
+
+    private bool _isCurrent;
+
+    public bool IsCurrent
+    {
+        get => _isCurrent;
+        set => SetProperty(ref _isCurrent, value);
+    }
+
     public int Diff => NumOfHits - PersonalBest;
-    
 }

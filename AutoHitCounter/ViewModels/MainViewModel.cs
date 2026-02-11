@@ -40,7 +40,7 @@ namespace AutoHitCounter.ViewModels
             Games.Add(new Game { GameName = "Sekiro", ProcessName = "sekiro" });
             Games.Add(new Game { GameName = "Elden Ring", ProcessName = "eldenring" });
 
-            SelectedGame = Games.FirstOrDefault();
+            SelectedGame = Games.FirstOrDefault(game => game.GameName == SettingsManager.Default.LastSelectedGame);
             
             UpdateSplits();
         }
@@ -84,6 +84,14 @@ namespace AutoHitCounter.ViewModels
             get => _selectedSplit;
             set => SetProperty(ref _selectedSplit, value);
         }
+        
+        private SplitViewModel _currentSplit;
+
+        public SplitViewModel CurrentSplit
+        {
+            get => _currentSplit;
+            set => SetProperty(ref _currentSplit, value);
+        }
 
         private Profile _activeProfile;
 
@@ -95,7 +103,7 @@ namespace AutoHitCounter.ViewModels
                 if (SetProperty(ref _activeProfile, value))
                 {
                     UpdateSplits();
-                    SelectedSplit = Splits.FirstOrDefault();
+                    CurrentSplit = Splits.FirstOrDefault();
                 }
             }
         }
@@ -112,9 +120,22 @@ namespace AutoHitCounter.ViewModels
 
             _memoryService.StartAutoAttach(_selectedGame.ProcessName);
             _currentModule = _gameModuleFactory.CreateModule(_selectedGame);
-            _currentModule.OnHit += count => SelectedSplit.NumOfHits += count;
-            // _currentModule.OnBossKilled += () => AdvanceSplit();
+            _currentModule.OnHit += count => CurrentSplit.NumOfHits += count;
+            _currentModule.OnEventSet += AdvanceSplit;
             // _currentModule.StartGameTick();
+            
+            SettingsManager.Default.LastSelectedGame = _selectedGame.GameName;
+            SettingsManager.Default.Save();
+        }
+
+        private void AdvanceSplit()
+        {
+            var currentIndex = Splits.IndexOf(CurrentSplit);
+            if (currentIndex < 0 || currentIndex >= Splits.Count - 1) return;
+            
+            Splits[currentIndex].IsCurrent = false;
+            Splits[currentIndex + 1].IsCurrent = true;
+            CurrentSplit = Splits[currentIndex + 1];
         }
 
         private void OpenProfileEditor()
@@ -151,6 +172,9 @@ namespace AutoHitCounter.ViewModels
                     PersonalBest = activeProfileSplit.PersonalBest
                 });
             }
+            
+            Splits[0].IsCurrent = true;
+            
         }
     }
 }

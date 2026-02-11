@@ -86,6 +86,9 @@
 
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="BorderThickness" Value="3,0,0,0" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
                     <Style.Triggers>
                         <Trigger Property="ListBox.AlternationIndex" Value="0">
                             <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
@@ -93,10 +96,11 @@
                         <Trigger Property="ListBox.AlternationIndex" Value="1">
                             <Setter Property="Background" Value="#222222" />
                         </Trigger>
+                        <DataTrigger Binding="{Binding IsCurrent}" Value="True">
+                            <Setter Property="BorderBrush" Value="#00CC66" />
+                        </DataTrigger>
                     </Style.Triggers>
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                 </Style>
-
             </ListBox.ItemContainerStyle>
 
             <ListBox.ItemTemplate>

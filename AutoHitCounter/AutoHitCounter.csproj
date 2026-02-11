@@ -154,6 +154,7 @@
         <Compile Include="Utilities\AsmLoader.cs" />
         <Compile Include="Utilities\EventLoader.cs" />
         <Compile Include="Utilities\MsgBox.cs" />
+        <Compile Include="Utilities\SettingsManager.cs" />
         <Compile Include="Utilities\User32.cs" />
         <Compile Include="ViewModels\BaseViewModel.cs" />
         <Compile Include="ViewModels\MainViewModel.cs" />
