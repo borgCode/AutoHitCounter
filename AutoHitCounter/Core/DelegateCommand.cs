@@ -36,7 +36,7 @@ public class DelegateCommand : ICommand
     }
 }
 
-internal class DelegateCommand<T> : ICommand
+public class DelegateCommand<T> : ICommand
 {
     private readonly Action<T?> _execute;
     private readonly Predicate<T?>? _canExecute;

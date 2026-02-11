@@ -6,4 +6,5 @@ public class SplitEntry
 {
     public uint EventId { get; set; }
     public string Name { get; set; }
+    public int PersonalBest { get; set; }
 }

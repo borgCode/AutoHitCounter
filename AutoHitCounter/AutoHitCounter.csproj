@@ -76,12 +76,30 @@
         <Reference Include="WindowsBase"/>
         <Reference Include="PresentationCore"/>
         <Reference Include="PresentationFramework"/>
+        <Reference Include="Xceed.Wpf.AvalonDock, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+          <HintPath>..\packages\Extended.Wpf.Toolkit.5.0.0\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+        </Reference>
+        <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+          <HintPath>..\packages\Extended.Wpf.Toolkit.5.0.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+        </Reference>
+        <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+          <HintPath>..\packages\Extended.Wpf.Toolkit.5.0.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+        </Reference>
+        <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+          <HintPath>..\packages\Extended.Wpf.Toolkit.5.0.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+        </Reference>
+        <Reference Include="Xceed.Wpf.Toolkit, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+          <HintPath>..\packages\Extended.Wpf.Toolkit.5.0.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+        </Reference>
     </ItemGroup>
     <ItemGroup>
         <ApplicationDefinition Include="App.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
+        <Compile Include="Controls\TitleBar.xaml.cs">
+          <DependentUpon>TitleBar.xaml</DependentUpon>
+        </Compile>
         <Compile Include="Core\DelegateCommand.cs" />
         <Compile Include="Enums\State.cs" />
         <Compile Include="Games\DS2S\DS2ScholarEventService.cs" />
@@ -140,11 +158,13 @@
         <Compile Include="ViewModels\BaseViewModel.cs" />
         <Compile Include="ViewModels\MainViewModel.cs" />
         <Compile Include="ViewModels\ProfileEditorViewModel.cs" />
+        <Compile Include="ViewModels\SplitViewModel.cs" />
         <Compile Include="Views\Windows\CustomMessageBox.xaml.cs" />
         <Compile Include="Views\Windows\InputBox.xaml.cs" />
         <Compile Include="Views\Windows\ProfileEditorWindow.xaml.cs">
           <DependentUpon>ProfileEditorWindow.xaml</DependentUpon>
         </Compile>
+        <Page Include="Controls\TitleBar.xaml" />
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>

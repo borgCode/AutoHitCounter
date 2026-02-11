@@ -1,9 +1,10 @@
 ﻿// 
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using AutoHitCounter.Core;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Models;
 
@@ -19,7 +20,7 @@ public class ProfileEditorViewModel : BaseViewModel
         Dictionary<uint, string> allEvents,
         IProfileService profileService,
         string gameName,
-        Profile? activeProfile)
+        Profile activeProfile)
     {
         _allEvents = allEvents;
         _profileService = profileService;
@@ -29,32 +30,56 @@ public class ProfileEditorViewModel : BaseViewModel
 
         foreach (var kvp in allEvents)
             AllEvents.Add(new SplitEntry { EventId = kvp.Key, Name = kvp.Value });
-
+        
+        AddCommand = new DelegateCommand<SplitEntry>(Add, e => Splits.All(s => s.EventId != e.EventId));
+        RemoveCommand = new DelegateCommand<SplitEntry>(Remove);
+        MoveUpCommand = new DelegateCommand<SplitEntry>(MoveUp, e => Splits.IndexOf(e) > 0);
+        MoveDownCommand = new DelegateCommand<SplitEntry>(MoveDown, e => Splits.IndexOf(e) < Splits.Count - 1);
+        NewProfileCommand = new DelegateCommand(NewProfile);
+        SaveCommand = new DelegateCommand(Save, () => SelectedProfile != null);
+        DeleteCommand = new DelegateCommand(Delete, () => SelectedProfile != null);
+        
+        
         if (activeProfile != null)
         {
             SelectedProfile = Profiles.FirstOrDefault(p => p.Name == activeProfile.Name);
         }
     }
-    
-    
+
+    #region Commands
+
+    public DelegateCommand<SplitEntry> AddCommand { get; }
+    public DelegateCommand<SplitEntry> RemoveCommand { get; }
+    public DelegateCommand<SplitEntry> MoveUpCommand { get; }
+    public DelegateCommand<SplitEntry> MoveDownCommand { get; }
+    public DelegateCommand NewProfileCommand { get; }
+    public DelegateCommand SaveCommand { get; }
+    public DelegateCommand DeleteCommand { get; }
+
+    #endregion
+
     #region Properties
 
     public ObservableCollection<SplitEntry> AllEvents { get; } = new();
     public ObservableCollection<SplitEntry> Splits { get; } = new();
     public ObservableCollection<Profile> Profiles { get; }
 
-    private Profile? _selectedProfile;
-    public Profile? SelectedProfile
+    private Profile _selectedProfile;
+
+    public Profile SelectedProfile
     {
         get => _selectedProfile;
         set
         {
             if (SetProperty(ref _selectedProfile, value))
                 LoadProfile(value);
+            SaveCommand.RaiseCanExecuteChanged();
+            DeleteCommand.RaiseCanExecuteChanged();
         }
     }
 
     private string _searchText = string.Empty;
+
     public string SearchText
     {
         get => _searchText;
@@ -71,7 +96,7 @@ public class ProfileEditorViewModel : BaseViewModel
 
     #region Private Methods
 
-    private void LoadProfile(Profile? profile)
+    private void LoadProfile(Profile profile)
     {
         Splits.Clear();
         if (profile == null) return;
@@ -111,14 +136,14 @@ public class ProfileEditorViewModel : BaseViewModel
         FilteredEvents.Clear();
         var selectedIds = new HashSet<uint>(Splits.Select(s => s.EventId));
 
-        // foreach (var entry in AllEvents)
-        // {
-        //     if (!string.IsNullOrEmpty(_searchText) &&
-        //         !entry.Name.Contains(_searchText, StringComparison.OrdinalIgnoreCase))
-        //         continue;
-        //
-        //     FilteredEvents.Add(entry);
-        // }
+        foreach (var entry in AllEvents)
+        {
+            if (!string.IsNullOrEmpty(_searchText) &&
+                !entry.Name.Contains(_searchText))
+                continue;
+
+            FilteredEvents.Add(entry);
+        }
     }
 
     private void NewProfile()
