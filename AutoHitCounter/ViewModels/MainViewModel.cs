@@ -1,9 +1,11 @@
 ﻿// 
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using AutoHitCounter.Core;
+using AutoHitCounter.Enums;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Models;
 using AutoHitCounter.Services;
@@ -22,13 +24,16 @@ namespace AutoHitCounter.ViewModels
         private IGameModule _currentModule;
 
         public MainViewModel(IMemoryService memoryService, GameModuleFactory gameModuleFactory,
-            ITickService tickService, IProfileService profileService)
+            ITickService tickService, IProfileService profileService, IStateService stateService)
         {
             _memoryService = memoryService;
             _gameModuleFactory = gameModuleFactory;
             _tickService = tickService;
             _profileService = profileService;
             _eldenRingEvents = EventLoader.GetEvents("EldenRingEvents");
+            
+            stateService.Subscribe(State.Attached, OnAttached);
+            stateService.Subscribe(State.NotAttached, OnNotAttached);
 
             OpenProfileEditorCommand = new DelegateCommand(OpenProfileEditor);
 
@@ -45,13 +50,31 @@ namespace AutoHitCounter.ViewModels
             UpdateSplits();
         }
 
+        
         #region Commands
 
         public DelegateCommand OpenProfileEditorCommand { get; }
-
+        public DelegateCommand ManualSplitCommand { get; }
+        
         #endregion
 
         #region Properties
+
+        private string _appVer;
+
+        public string AppVer
+        {
+            get => _appVer;
+            set => SetProperty(ref _appVer, value);
+        }
+        
+        private string _attachedText;
+
+        public string AttachedText
+        {
+            get => _attachedText;
+            set => SetProperty(ref _attachedText, value);
+        }
 
         public ObservableCollection<Game> Games { get; } = new();
 
@@ -109,25 +132,59 @@ namespace AutoHitCounter.ViewModels
         }
 
         public ObservableCollection<Profile> Profiles { get; } = new();
+        
+        private TimeSpan _inGameTime;
+        public TimeSpan InGameTime
+        {
+            get => _inGameTime;
+            set => SetProperty(ref _inGameTime, value);
+        }
 
         #endregion
 
+        #region Private Methods
+
+        private void OnAttached()
+        {
+            AttachedText = $"Attached to {SelectedGame.ProcessName}.exe";
+        }
+        
+        private void OnNotAttached()
+        {
+            AttachedText = "Not attached";
+        }
+        
         private void SwapModule()
         {
-            _tickService.UnregisterGameTick();
+
+            (_currentModule as IDisposable)?.Dispose();
 
             if (_selectedGame == null) return;
 
             _memoryService.StartAutoAttach(_selectedGame.ProcessName);
             _currentModule = _gameModuleFactory.CreateModule(_selectedGame);
             _currentModule.OnHit += count => CurrentSplit.NumOfHits += count;
-            _currentModule.OnEventSet += AdvanceSplit;
+            _currentModule.OnEventSet += AutoAdvanceSplit;
+            _currentModule.OnIgtChanged += igt => InGameTime = TimeSpan.FromMilliseconds(igt);
+
             // _currentModule.StartGameTick();
             
             SettingsManager.Default.LastSelectedGame = _selectedGame.GameName;
             SettingsManager.Default.Save();
         }
-
+        
+        private void AutoAdvanceSplit()
+        {
+            if (CurrentSplit == null || !CurrentSplit.IsAuto) return;
+            AdvanceSplit();
+        }
+        
+        private void ManualAdvanceSplit()
+        {
+            if (CurrentSplit == null || CurrentSplit.IsAuto) return;
+            AdvanceSplit();
+        }
+        
         private void AdvanceSplit()
         {
             var currentIndex = Splits.IndexOf(CurrentSplit);
@@ -163,18 +220,24 @@ namespace AutoHitCounter.ViewModels
         {
             Splits.Clear();
             if (ActiveProfile == null) return;
-            foreach (var activeProfileSplit in ActiveProfile.Splits)
+            if (ActiveProfile.Splits.Count == 0) return;
+
+            foreach (var split in ActiveProfile.Splits)
             {
                 Splits.Add(new SplitViewModel
                 {
-                    Name = activeProfileSplit.Name,
+                    Name = split.Label,
+                    IsAuto = split.IsAuto,
                     NumOfHits = 0,
-                    PersonalBest = activeProfileSplit.PersonalBest
+                    PersonalBest = split.PersonalBest
                 });
             }
-            
+
             Splits[0].IsCurrent = true;
-            
         }
+
+        #endregion
+
+        
     }
 }

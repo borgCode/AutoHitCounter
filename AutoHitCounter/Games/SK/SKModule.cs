@@ -15,4 +15,5 @@ public class SKModule : IGameModule
 
     public event Action<int> OnHit;
     public event Action OnEventSet;
+    public event Action<long> OnIgtChanged;
 }

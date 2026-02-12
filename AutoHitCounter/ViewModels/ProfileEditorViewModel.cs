@@ -35,6 +35,8 @@ public class ProfileEditorViewModel : BaseViewModel
         RemoveCommand = new DelegateCommand<SplitEntry>(Remove);
         MoveUpCommand = new DelegateCommand<SplitEntry>(MoveUp, e => Splits.IndexOf(e) > 0);
         MoveDownCommand = new DelegateCommand<SplitEntry>(MoveDown, e => Splits.IndexOf(e) < Splits.Count - 1);
+        AddManualSplitCommand = new DelegateCommand(AddManualSplit);
+        RenameSplitCommand = new DelegateCommand<SplitEntry>(RenameSplit);
         NewProfileCommand = new DelegateCommand(NewProfile);
         SaveCommand = new DelegateCommand(Save, () => SelectedProfile != null);
         DeleteCommand = new DelegateCommand(Delete, () => SelectedProfile != null);
@@ -52,6 +54,8 @@ public class ProfileEditorViewModel : BaseViewModel
     public DelegateCommand<SplitEntry> RemoveCommand { get; }
     public DelegateCommand<SplitEntry> MoveUpCommand { get; }
     public DelegateCommand<SplitEntry> MoveDownCommand { get; }
+    public DelegateCommand AddManualSplitCommand { get; }
+    public DelegateCommand<SplitEntry> RenameSplitCommand { get; }
     public DelegateCommand NewProfileCommand { get; }
     public DelegateCommand SaveCommand { get; }
     public DelegateCommand DeleteCommand { get; }
@@ -112,6 +116,36 @@ public class ProfileEditorViewModel : BaseViewModel
         Splits.Add(new SplitEntry { EventId = entry.EventId, Name = entry.Name });
         FilterEvents();
     }
+    
+    private void AddManualSplit()
+    {
+        var name = MsgBox.ShowInput("Split Name", "", "New Manual Split");
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            MsgBox.Show("Split name required", "New Manual Split");
+            return;
+        }
+
+        Splits.Add(new SplitEntry { EventId = null, Name = name });
+    }
+
+    private void RenameSplit(SplitEntry entry)
+    {
+        if (entry == null) return;
+
+        var newName = MsgBox.ShowInput("Rename Split", entry.Label, "Rename");
+        if (string.IsNullOrWhiteSpace(newName)) return;
+
+        if (entry.IsAuto)
+        {
+            entry.DisplayName = newName;
+        }
+        else
+        {
+            entry.Name = newName;
+        }
+    }
 
     private void Remove(SplitEntry entry)
     {
@@ -134,7 +168,8 @@ public class ProfileEditorViewModel : BaseViewModel
     private void FilterEvents()
     {
         FilteredEvents.Clear();
-        var selectedIds = new HashSet<uint>(Splits.Select(s => s.EventId));
+        var selectedIds = new HashSet<uint>(
+            Splits.Where(s => s.EventId.HasValue).Select(s => s.EventId.Value));
 
         foreach (var entry in AllEvents)
         {

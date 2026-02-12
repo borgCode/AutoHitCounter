@@ -8,4 +8,5 @@ public interface IGameModule
 {
     event Action<int> OnHit;
     event Action OnEventSet;
+    event Action<long> OnIgtChanged;
 }

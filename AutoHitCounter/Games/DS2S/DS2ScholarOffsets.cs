@@ -14,12 +14,12 @@ public static class DS2ScholarOffsets
     public static DS2ScholarVersion Version => _version
                                                ?? Version1_0_3;
 
-    public static void Initialize(string fileVersion, nint moduleBase)
+    public static void Initialize(long fileVersion, nint moduleBase)
     {
         _version = fileVersion switch
         {
-            var v when v.StartsWith("1.2.0.") => Version1_0_2,
-            var v when v.StartsWith("1.2.1.") => Version1_0_3,
+            31605096 => Version1_0_2,
+            28200992 => Version1_0_3,
             _ => null
         };
 
@@ -41,6 +41,14 @@ public static class DS2ScholarOffsets
 
         public const int PlayerCtrl = 0xD0;
     }
+
+
+    public static class Hooks
+    {
+        public static nint Hit;
+        public static nint FallDamage;
+        public static nint SetEvent;
+    }
     
     
     
@@ -55,16 +63,44 @@ public static class DS2ScholarOffsets
         };
         
         
+        Hooks.Hit = moduleBase + Version switch
+        {
+            Version1_0_2 => 0x1327AB,
+            Version1_0_3 => 0x134E1B,
+            _ => 0
+        };
+        
+        Hooks.FallDamage = moduleBase + Version switch
+        {
+            Version1_0_2 => 0x16727A,
+            Version1_0_3 => 0x16A39A,
+            _ => 0
+        };
+
+
+        Hooks.SetEvent = moduleBase + Version switch
+        {
+            Version1_0_2 => 0x46DEC0,
+            Version1_0_3 => 0x4750B0,
+            _ => 0
+        };
+
+        
+        
         
         _baseAddr = moduleBase;
         
 #if DEBUG
         
         Console.WriteLine("--- Base Pointers ---");
-
-            
+        PrintOffset("GameManagerImp.Base", GameManagerImp.Base);
+        
         Console.WriteLine("\n--- Hooks ---");
-
+        PrintOffset("Hit", Hooks.Hit);
+        PrintOffset("FallDamage", Hooks.FallDamage);
+        
+        
+        PrintOffset("SetEvent", Hooks.SetEvent);
            
             
         Console.WriteLine("\n--- Functions ---");

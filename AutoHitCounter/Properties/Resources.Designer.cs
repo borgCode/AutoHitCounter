@@ -154,5 +154,42 @@ namespace AutoHitCounter.Properties {
                 return ResourceManager.GetString("EldenRingKillBox", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 51                      push   rcx
+        ///48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
+        ///48 39 99 d0 00 00 00    cmp    QWORD PTR [rcx+0xd0],rbx
+        ///75 0a                   jne    1b &lt;normal&gt;
+        ///85 c0                   test   eax,eax
+        ///75 06                   jne    1b &lt;normal&gt;
+        ///ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 1b &lt;normal&gt;
+        ///00000000001b &lt;normal&gt;:
+        ///59                      pop    rcx
+        ///89 83 68 01 00 00       mov    DWORD PTR [rbx+0x168],eax
+        ///e9 00 00 00 00        [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ScholarFallDamage {
+            get {
+                return ResourceManager.GetString("ScholarFallDamage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 51                      push   rcx
+        ///48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
+        ///48 8b 89 d0 00 00 00    mov    rcx,QWORD PTR [rcx+0xd0]
+        ///48 3b 4f 08             cmp    rcx,QWORD PTR [rdi+0x8]
+        ///75 13                   jne    28 &lt;normal&gt;
+        ///41 83 7e 04 00          cmp    DWORD PTR [r14+0x4],0x0
+        ///74 0c                   je     28 &lt;normal&gt;
+        ///48 3b 4d f8             cmp    rcx,QWORD PTR [rbp-0x8]
+        ///74 06                   je     28 &lt;normal&gt;
+        ///ff 05 00 00 00 00       inc    DWORD PTR [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ScholarHit {
+            get {
+                return ResourceManager.GetString("ScholarHit", resourceCulture);
+            }
+        }
     }
 }

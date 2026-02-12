@@ -40,5 +40,13 @@ public class SplitViewModel : BaseViewModel
         set => SetProperty(ref _isCurrent, value);
     }
 
+    private bool _isAuto;
+
+    public bool IsAuto
+    {
+        get => _isAuto;
+        set => SetProperty(ref _isAuto, value);
+    }
+
     public int Diff => NumOfHits - PersonalBest;
 }

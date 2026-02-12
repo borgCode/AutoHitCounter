@@ -5,19 +5,27 @@ using System.Collections.Generic;
 using AutoHitCounter.Enums;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
+using static AutoHitCounter.Games.ER.EldenRingOffsets;
 
 namespace AutoHitCounter.Games.ER;
 
-public class EldenRingModule : IGameModule
+public class EldenRingModule : IGameModule, IDisposable
 {
     private readonly IMemoryService _memoryService;
     private readonly HookManager _hookManager;
     private readonly ITickService _tickService;
     private readonly Dictionary<uint, string> _eldenRingEvents;
-    private EldenRingHitService _eldenRingHitService;
-    private EldenRingEventService _eldenRingEventService;
+    private EldenRingHitService _hitService;
+    private EldenRingEventService _eventService;
     
     private DateTime? _lastHit;
+    
+    public event Action<int> OnHit;
+
+    public event Action OnEventSet;
+    public event Action<long> OnIgtChanged;
+
+    private nint _igtPtr;
 
     public EldenRingModule(IMemoryService memoryService, IStateService stateService, HookManager hookManager,
         ITickService tickService, Dictionary<uint, string> eldenRingEvents)
@@ -31,23 +39,18 @@ public class EldenRingModule : IGameModule
         _lastHit = DateTime.Now;
     }
 
-
     
     private void Initialize()
     {
         InitializeOffsets();
         
-        _eldenRingHitService = new EldenRingHitService(_memoryService, _hookManager);
-        _eldenRingEventService = new EldenRingEventService(_memoryService, _hookManager, _eldenRingEvents);
-        _eldenRingEventService.InstallHook();
-        _eldenRingEventService.InstallHook();
-        _eldenRingHitService.InstallHooks();
+        _hitService = new EldenRingHitService(_memoryService, _hookManager);
+        _eventService = new EldenRingEventService(_memoryService, _hookManager, _eldenRingEvents);
+        _eventService.InstallHook();
+        _hitService.InstallHooks();
+        _igtPtr = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
         _tickService.RegisterGameTick(Tick);
     }
-
-    public event Action<int> OnHit;
-
-    public event Action OnEventSet;
 
     private void InitializeOffsets()
     {
@@ -60,17 +63,26 @@ public class EldenRingModule : IGameModule
     
     private void Tick()
     {
-        if (_eldenRingHitService.HasHit())
+        if (_hitService.HasHit())
         {
             if (_lastHit != null && (DateTime.Now - _lastHit.Value).TotalSeconds < 3) return;
             OnHit?.Invoke(1);
             _lastHit = DateTime.Now;
         }
 
-        if (_eldenRingEventService.ShouldSplit())
+        if (_eventService.ShouldSplit())
         {
             OnEventSet?.Invoke();
         }
+        
+        OnIgtChanged?.Invoke(_memoryService.Read<uint>(_igtPtr));
     }
-    
+
+    public void Dispose()
+    {
+        _tickService.UnregisterGameTick();
+        OnHit = null;
+        OnEventSet = null;
+        OnIgtChanged = null;
+    }
 }

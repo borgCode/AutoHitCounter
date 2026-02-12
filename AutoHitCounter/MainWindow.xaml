@@ -20,25 +20,60 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="54" />
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
-
+            <RowDefinition Height="25" />
         </Grid.RowDefinitions>
         <controls:TitleBar Grid.Row="0" Title="Auto Hit Counter" />
 
-        <Button Grid.Row="1" Content="Open Profile Editor"
-                Command="{Binding OpenProfileEditorCommand}" />
-        <ComboBox Grid.Row="2" ItemsSource="{Binding Games}"
-                  SelectedItem="{Binding SelectedGame}"
-                  DisplayMemberPath="GameName" />
-        <ComboBox Grid.Row="3"
-                  ItemsSource="{Binding Profiles}"
-                  SelectedItem="{Binding ActiveProfile}"
-                  DisplayMemberPath="Name" />
+        <Grid Grid.Row="1" Margin="5">
+            <TextBlock Text="{Binding AppVer}"></TextBlock>
+            <TextBlock Text="{Binding AttachedText}"
+                       HorizontalAlignment="Right">
+            </TextBlock>
+        </Grid>
 
-        <Border Grid.Row="4" BorderBrush="#333333" BorderThickness="0,0,0,1">
+        <Grid Grid.Row="2" Margin="8,4,8,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Margin="0,0,4,0">
+                <TextBlock Text="GAME"
+                           FontFamily="{StaticResource AppFont}"
+                           FontSize="10"
+                           Foreground="#666666"
+                           Margin="2,0,0,2" />
+                <ComboBox ItemsSource="{Binding Games}"
+                          SelectedItem="{Binding SelectedGame}"
+                          DisplayMemberPath="GameName" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Margin="4,0,4,0">
+                <TextBlock Text="PROFILE"
+                           FontFamily="{StaticResource AppFont}"
+                           FontSize="10"
+                           Foreground="#666666"
+                           Margin="2,0,0,2" />
+                <ComboBox ItemsSource="{Binding Profiles}"
+                          SelectedItem="{Binding ActiveProfile}"
+                          DisplayMemberPath="Name" />
+            </StackPanel>
+
+            <Button Grid.Column="2"
+                    Content="✎"
+                    Command="{Binding OpenProfileEditorCommand}"
+                    VerticalAlignment="Center"
+                    Width="30"
+                    Height="22"
+                    FontSize="14"
+                    ToolTip="Edit Profile" />
+        </Grid>
+
+        <Border Grid.Row="3" BorderBrush="#333333" BorderThickness="0,0,0,1">
             <Grid Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="4*" />
@@ -76,7 +111,7 @@
                 </TextBlock>
             </Grid>
         </Border>
-        <ListBox Grid.Row="5"
+        <ListBox Grid.Row="4"
                  ItemsSource="{Binding Splits}"
                  SelectedItem="{Binding SelectedSplit}"
                  AlternationCount="2"
@@ -141,6 +176,15 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
+        <Grid Grid.Row="5">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button Content="+ Hit" Margin="5,0,0,5"></Button>
+                <Button Content="Next Split ->" Margin="5,0,0,5"></Button>
+                <Button Content="Reset" Margin="5,0,0,5"></Button>
+            </StackPanel>
+            
+            <TextBlock HorizontalAlignment="Right" Text="{Binding InGameTime, StringFormat=hh\\:mm\\:ss}"></TextBlock>
+        </Grid>
 
     </Grid>
 </Window>

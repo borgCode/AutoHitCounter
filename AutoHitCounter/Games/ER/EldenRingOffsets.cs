@@ -70,6 +70,13 @@ public static class EldenRingOffsets
         };
     }
 
+    public static class GameDataMan
+    {
+        public static nint Base;
+
+        public const int Igt = 0xA0;
+    }
+
     public static class Hooks
     {
         public static nint Hit;
@@ -102,6 +109,26 @@ public static class EldenRingOffsets
             Version2_2_0 or Version2_4_0 or Version2_5_0
                 or Version2_6_0 or Version2_6_1 => 0x3D65F88,
             Version2_2_3 or Version2_3_0 => 0x3D65FA8,
+            _ => 0
+        };
+        
+        GameDataMan.Base = moduleBase + Version switch
+        {
+            Version1_2_0 => 0x3C481B8,
+            Version1_2_1 => 0x3C481D8,
+            Version1_2_2 => 0x3C481F8,
+            Version1_2_3 => 0x3C4B218,
+            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x3C5CD78,
+            Version1_4_0 or Version1_4_1 => 0x3C00028,
+            Version1_5_0 => 0x3C17EE8,
+            Version1_6_0 => 0x3C29108,
+            Version1_7_0 => 0x3C43AC8,
+            Version1_8_0 or Version1_8_1 => 0x3CD1948,
+            Version1_9_0 or Version1_9_1 or Version2_0_0 or Version2_0_1 => 0x3CD4D88,
+            Version2_2_0 => 0x3D5DF38,
+            Version2_2_3 or Version2_3_0 => 0x3D5DF58,
+            Version2_4_0 or Version2_5_0 or Version2_6_0
+                or Version2_6_1 => 0x3D5DF38,
             _ => 0
         };
 
@@ -243,6 +270,7 @@ public static class EldenRingOffsets
         
             Console.WriteLine("--- Base Pointers ---");
             PrintOffset("WorldChrMan.Base", WorldChrMan.Base);
+            PrintOffset("GameDataMan.Base", GameDataMan.Base);
             
             Console.WriteLine("\n--- Hooks ---");
             PrintOffset("Hit", Hooks.Hit);

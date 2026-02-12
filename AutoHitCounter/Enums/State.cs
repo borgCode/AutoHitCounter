@@ -5,7 +5,7 @@ namespace AutoHitCounter.Enums;
 public enum State
 {
     Attached,
-    Detached,
+    NotAttached,
     Loaded,
     NotLoaded,
 }

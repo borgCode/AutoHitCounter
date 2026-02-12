@@ -25,7 +25,7 @@ namespace AutoHitCounter
             
             GameModuleFactory gameModuleFactory = new GameModuleFactory(memoryService, stateService, hookManager, tickService);
             
-            var mainViewModel = new MainViewModel(memoryService, gameModuleFactory, tickService, profileService);
+            var mainViewModel = new MainViewModel(memoryService, gameModuleFactory, tickService, profileService, stateService);
             var mainWindow = new MainWindow
             {
                 DataContext = mainViewModel
