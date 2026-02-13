@@ -18,17 +18,17 @@ namespace AutoHitCounter.ViewModels
     {
         private readonly IMemoryService _memoryService;
         private readonly GameModuleFactory _gameModuleFactory;
-        private readonly ITickService _tickService;
         private readonly IProfileService _profileService;
         private readonly Dictionary<uint, string> _eldenRingEvents;
         private IGameModule _currentModule;
+        
+        private readonly List<SplitViewModel> _allSplits = new();
 
         public MainViewModel(IMemoryService memoryService, GameModuleFactory gameModuleFactory,
-            ITickService tickService, IProfileService profileService, IStateService stateService)
+            IProfileService profileService, IStateService stateService)
         {
             _memoryService = memoryService;
             _gameModuleFactory = gameModuleFactory;
-            _tickService = tickService;
             _profileService = profileService;
             _eldenRingEvents = EventLoader.GetEvents("EldenRingEvents");
             
@@ -126,6 +126,7 @@ namespace AutoHitCounter.ViewModels
                 if (SetProperty(ref _activeProfile, value))
                 {
                     UpdateSplits();
+                    CurrentSplit = _allSplits.FirstOrDefault(s => s.Type == SplitType.Child);
                     CurrentSplit = Splits.FirstOrDefault();
                 }
             }

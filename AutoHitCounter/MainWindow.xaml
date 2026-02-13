@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:AutoHitCounter.Controls"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:converters="clr-namespace:AutoHitCounter.Converters"
         mc:Ignorable="d"
         Style="{StaticResource DefaultWindowStyle}"
         WindowStyle="None"
@@ -14,6 +15,9 @@
         <FontFamily x:Key="AppFont">Segoe UI</FontFamily>
         <system:Double x:Key="FontSizeHeader">15</system:Double>
         <system:Double x:Key="FontSizeBody">13</system:Double>
+        <converters:ParentChildMarginConverter x:Key="ParentChildMarginConverter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+        <converters:ExpanderArrowConverter x:Key="ExpanderArrowConverter" />
     </Window.Resources>
 
     <Grid>
@@ -142,6 +146,11 @@
                                     <DataTrigger Binding="{Binding IsCurrent}" Value="True">
                                         <Setter Property="BorderBrush" Value="#00CC66" />
                                     </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsParent}" Value="True">
+                                        <Setter Property="Background" Value="#1A1A1A" />
+                                        <Setter Property="BorderBrush" Value="Transparent" />
+                                        <Setter Property="FontWeight" Value="SemiBold" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </ListBox.ItemContainerStyle>
@@ -156,12 +165,22 @@
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Grid.Column="0"
-                                               Text="{Binding Name}"
-                                               FontFamily="{StaticResource AppFont}"
-                                               FontSize="{StaticResource FontSizeBody}"
-                                               VerticalAlignment="Center"
-                                               Margin="10, 0, 0,0" />
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal"
+                                                VerticalAlignment="Center">
+                                        <TextBlock
+                                            Text="{Binding IsExpanded, 
+                               Converter={StaticResource ExpanderArrowConverter}}"
+                                            Visibility="{Binding IsParent, 
+                               Converter={StaticResource BoolToVisConverter}}"
+                                            FontSize="10"
+                                            Width="14"
+                                            Margin="4,0,0,0" />
+                                        <TextBlock Text="{Binding Name}"
+                                                   FontFamily="{StaticResource AppFont}"
+                                                   FontSize="{StaticResource FontSizeBody}"
+                                                   Margin="{Binding IsParent, 
+                               Converter={StaticResource ParentChildMarginConverter}}" />
+                                    </StackPanel>
 
                                     <TextBlock Grid.Column="1"
                                                Text="{Binding NumOfHits}"
@@ -175,7 +194,8 @@
                                                FontSize="{StaticResource FontSizeBody}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center" />
 
-                                    <TextBlock Grid.Column="3" Text="{Binding PersonalBest}"
+                                    <TextBlock Grid.Column="3"
+                                               Text="{Binding PersonalBest}"
                                                FontFamily="{StaticResource AppFont}"
                                                FontSize="{StaticResource FontSizeBody}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center" />

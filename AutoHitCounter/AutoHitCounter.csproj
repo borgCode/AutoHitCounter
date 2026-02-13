@@ -97,11 +97,15 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
+        <Compile Include="Behaviors\SplitListDragDropBehavior.cs" />
         <Compile Include="Controls\TitleBar.xaml.cs">
           <DependentUpon>TitleBar.xaml</DependentUpon>
         </Compile>
+        <Compile Include="Converters\ExpanderArrowConverter.cs" />
+        <Compile Include="Converters\ParentChildMarginConverter.cs" />
         <Compile Include="Core\DelegateCommand.cs" />
         <Compile Include="Enums\AsmScript.cs" />
+        <Compile Include="Enums\SplitType.cs" />
         <Compile Include="Enums\State.cs" />
         <Compile Include="Games\DS2S\DS2ScholarEventService.cs" />
         <Compile Include="Games\DS2S\DS2ScholarHitService.cs" />

@@ -1,5 +1,7 @@
 ﻿// 
 
+using AutoHitCounter.Enums;
+
 namespace AutoHitCounter.ViewModels;
 
 public class SplitViewModel : BaseViewModel
@@ -47,6 +49,31 @@ public class SplitViewModel : BaseViewModel
         get => _isAuto;
         set => SetProperty(ref _isAuto, value);
     }
+    
+    private SplitType _type = SplitType.Child;
 
+    public SplitType Type
+    {
+        get => _type;
+        set => SetProperty(ref _type, value);
+    }
+
+    private string _groupId;
+
+    public string GroupId
+    {
+        get => _groupId;
+        set => SetProperty(ref _groupId, value);
+    }
+
+    private bool _isExpanded;
+
+    public bool IsExpanded
+    {
+        get => _isExpanded;
+        set => SetProperty(ref _isExpanded, value);
+    }
+
+    public bool IsParent => Type == SplitType.Parent;
     public int Diff => NumOfHits - PersonalBest;
 }

@@ -4,70 +4,79 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:AutoHitCounter.Views.Windows"
+        xmlns:behaviors="clr-namespace:AutoHitCounter.Behaviors"
+        xmlns:converters="clr-namespace:AutoHitCounter.Converters"
+        xmlns:enums="clr-namespace:AutoHitCounter.Enums"
         xmlns:controls="clr-namespace:AutoHitCounter.Controls"
         mc:Ignorable="d"
         Style="{StaticResource DefaultWindowStyle}"
         WindowStyle="None"
         AllowsTransparency="True"
         Title="Profile Editor" Height="450" Width="800">
-    <Grid >
+    <Window.Resources>
+        <converters:ExpanderArrowConverter x:Key="ExpanderArrowConverter" />
+        <converters:ParentChildMarginConverter x:Key="ParentChildMarginConverter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+    </Window.Resources>
+
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <controls:TitleBar Grid.Row="0" Title="Profile Editor" />
-        
+
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,12">
-            <TextBlock Text="PROFILE" 
+            <TextBlock Text="PROFILE"
                        VerticalAlignment="Center" Margin="0,0,8,0"
                        FontWeight="SemiBold" />
 
-            <ComboBox 
-                      Width="200"
-                      ItemsSource="{Binding Profiles}"
-                      SelectedItem="{Binding SelectedProfile}"
-                      DisplayMemberPath="Name"
-                      Margin="0,0,8,0"/>
+            <ComboBox
+                Width="200"
+                ItemsSource="{Binding Profiles}"
+                SelectedItem="{Binding SelectedProfile}"
+                DisplayMemberPath="Name"
+                Margin="0,0,8,0" />
 
-            <Button Content="New"  Margin="0,0,4,0"
-                    Command="{Binding NewProfileCommand}"/>
+            <Button Content="New" Margin="0,0,4,0"
+                    Command="{Binding NewProfileCommand}" />
             <Button Content="Delete" Margin="0,0,4,0"
-                    Command="{Binding DeleteCommand}"/>
-            <Button Content="Save" 
-                    Command="{Binding SaveCommand}"/>
+                    Command="{Binding DeleteCommand}" />
+            <Button Content="Save"
+                    Command="{Binding SaveCommand}" />
         </StackPanel>
-        
+
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            
-            <Border Grid.Column="0"  Margin="0,0,6,0">
+
+            <Border Grid.Column="0" Margin="0,0,6,0">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    
+
                     <Grid Grid.Row="0" Margin="10,8">
                         <TextBlock Text="ALL EVENTS" FontSize="11" FontWeight="SemiBold"
                                    Foreground="#aaa" />
                         <TextBlock HorizontalAlignment="Right" FontSize="11"
                                    Foreground="#555" FontFamily="JetBrains Mono"
-                                   Text="{Binding FilteredEvents.Count, StringFormat='{}{0} events'}"/>
+                                   Text="{Binding FilteredEvents.Count, StringFormat='{}{0} events'}" />
                     </Grid>
 
                     <Border Grid.Row="1" BorderBrush="#222244" BorderThickness="0,0,0,1"
                             Padding="8,0,8,8">
-                        <TextBox 
-                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox
+                            Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
                     </Border>
-                    
+
                     <ListBox Grid.Row="2"
                              ItemsSource="{Binding FilteredEvents}"
                              Background="Transparent"
@@ -75,19 +84,19 @@
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
-                                <Setter Property="Padding" Value="0"/>
-                                <Setter Property="Margin" Value="0"/>
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="Margin" Value="0" />
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="ListBoxItem">
                                             <Border x:Name="Bd" Padding="10,6" BorderBrush="#1e1e38"
                                                     BorderThickness="0,0,0,1" Background="Transparent">
-                                                <ContentPresenter/>
+                                                <ContentPresenter />
                                             </Border>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter TargetName="Bd" Property="Background" Value="#222248"/>
+                                                    <Setter TargetName="Bd" Property="Background" Value="#222248" />
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
@@ -100,57 +109,74 @@
                                 <Grid>
                                     <TextBlock Text="{Binding Name}" Foreground="#bbb" FontSize="13"
                                                VerticalAlignment="Center"
-                                               TextTrimming="CharacterEllipsis"/>
+                                               TextTrimming="CharacterEllipsis" />
                                     <Button HorizontalAlignment="Right" VerticalAlignment="Center"
-                                         
+
                                             Content="+"
                                             FontSize="14" FontWeight="Bold"
                                             Foreground="#4a9eff"
                                             Command="{Binding DataContext.AddCommand,
                                                 RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                            CommandParameter="{Binding}"/>
+                                            CommandParameter="{Binding}" />
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </Grid>
             </Border>
-            
-            <Border Grid.Column="1"  Margin="6,0,0,0">
+
+            <Border Grid.Column="1" Margin="6,0,0,0">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    
+
                     <Grid Grid.Row="0" Margin="10,8">
                         <TextBlock Text="SPLITS" FontSize="11" FontWeight="SemiBold"
                                    Foreground="#aaa" />
                         <TextBlock HorizontalAlignment="Right" FontSize="11"
                                    Foreground="#555" FontFamily="JetBrains Mono"
-                                   Text="{Binding Splits.Count, StringFormat='{}{0} selected'}"/>
+                                   Text="{Binding Splits.Count, StringFormat='{}{0} selected'}" />
                     </Grid>
-                    
-                    <ListBox Grid.Row="1"
+
+                    <!-- Action buttons -->
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,0,10,6">
+                        <Button Content="+ Group" Margin="0,0,4,0"
+                                Command="{Binding AddGroupCommand}" />
+                        <Button Content="+ Manual Split" Margin="0,0,4,0"
+                                Command="{Binding AddManualSplitCommand}" />
+                        <Button Content="Rename" Margin="0,0,4,0"
+                                Command="{Binding RenameSplitCommand}"
+                                CommandParameter="{Binding SelectedSplit}" />
+                    </StackPanel>
+
+                    <ListBox Grid.Row="2"
                              ItemsSource="{Binding Splits}"
+                             SelectedItem="{Binding SelectedSplit}"
+                             behaviors:SplitListDragDropBehavior.IsEnabled="True"
                              Background="Transparent"
                              BorderThickness="0"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
-                                <Setter Property="Padding" Value="0"/>
-                                <Setter Property="Margin" Value="0"/>
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="Margin" Value="0" />
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="ListBoxItem">
                                             <Border x:Name="Bd" Padding="8,6" BorderBrush="#1e1e38"
                                                     BorderThickness="0,0,0,1" Background="Transparent">
-                                                <ContentPresenter/>
+                                                <ContentPresenter />
                                             </Border>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter TargetName="Bd" Property="Background" Value="#222248"/>
+                                                    <Setter TargetName="Bd" Property="Background" Value="#222248" />
+                                                </Trigger>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="Bd" Property="Background" Value="#2a2a50" />
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
@@ -162,33 +188,65 @@
                             <DataTemplate>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Grid.Column="0"
-                                               Text="{Binding Name}"
-                                               Foreground="#ccc" FontSize="13"
-                                               VerticalAlignment="Center"
-                                               TextTrimming="CharacterEllipsis"
-                                               Margin="0,0,8,0"/>
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal"
+                                                VerticalAlignment="Center"
+                                                Margin="{Binding Type,
+                                        Converter={StaticResource ParentChildMarginConverter}}">
+                                        <TextBlock Text="{Binding Name}"
+                                                   FontSize="13"
+                                                   TextTrimming="CharacterEllipsis">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="#ccc" />
+                                                    <Setter Property="FontWeight" Value="Normal" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Type}"
+                                                                     Value="{x:Static enums:SplitType.Parent}">
+                                                            <Setter Property="Foreground" Value="#fff" />
+                                                            <Setter Property="FontWeight" Value="SemiBold" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                        <!-- Manual split indicator -->
+                                        <TextBlock Text="⌨" FontSize="10" Foreground="#666"
+                                                   Margin="6,0,0,0" VerticalAlignment="Center"
+                                                   ToolTip="Manual split">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsAuto}" Value="False">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}"
+                                                                     Value="{x:Static enums:SplitType.Parent}">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
 
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                        <Button Content="↑"
-                                                Margin="0,0,2,0"
+                                        <Button Content="↑" Margin="0,0,2,0"
                                                 Command="{Binding DataContext.MoveUpCommand,
-                                                    RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                                CommandParameter="{Binding}"/>
-                                        <Button  Content="↓"
-                                                Margin="0,0,2,0"
+                                        RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                CommandParameter="{Binding}" />
+                                        <Button Content="↓" Margin="0,0,2,0"
                                                 Command="{Binding DataContext.MoveDownCommand,
-                                                    RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                                CommandParameter="{Binding}"/>
-                                        <Button  Content="×"
-                                                Foreground="#c05050"
+                                        RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                CommandParameter="{Binding}" />
+                                        <Button Content="×" Foreground="#c05050"
                                                 Command="{Binding DataContext.RemoveCommand,
-                                                    RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                                CommandParameter="{Binding}"/>
+                                        RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                CommandParameter="{Binding}" />
                                     </StackPanel>
                                 </Grid>
                             </DataTemplate>
@@ -197,7 +255,7 @@
                 </Grid>
             </Border>
         </Grid>
-        
+
         <!-- <StackPanel Grid.Row="2" Orientation="Horizontal" -->
         <!--             HorizontalAlignment="Right" Margin="0,12,0,0"> -->
         <!--     <Button Content="Close" Style="{StaticResource EditorButton}" -->

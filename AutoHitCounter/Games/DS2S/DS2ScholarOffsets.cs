@@ -86,13 +86,11 @@ public static class DS2ScholarOffsets
 
         Hooks.SetEvent = moduleBase + Version switch
         {
-            Version1_0_2 => 0x46DEC0,
-            Version1_0_3 => 0x4750B0,
+            Version1_0_2 => 0x46DED0,
+            Version1_0_3 => 0x4750C0,
             _ => 0
         };
 
-        
-        
         
         _baseAddr = moduleBase;
         
