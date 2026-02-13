@@ -1,6 +1,7 @@
 ﻿// 
 
 using System.Collections.Generic;
+using AutoHitCounter.Enums;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
 using AutoHitCounter.Services;
@@ -17,7 +18,7 @@ public class EldenRingEventService(
     public override void InstallHook()
     {
         var code = CodeCaveOffsets.Base + CodeCaveOffsets.EventLogCode;
-        var bytes = AsmLoader.GetAsmBytes("EldenRingEventLog");
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingEventLog);
         var writeIndex = CodeCaveOffsets.Base + CodeCaveOffsets.EventLogWriteIdx;
         var buffer = CodeCaveOffsets.Base + CodeCaveOffsets.EventLogBuffer;
         var hookLoc = EldenRingOffsets.Hooks.SetEvent;

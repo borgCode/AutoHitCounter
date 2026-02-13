@@ -59,6 +59,12 @@ public class TickService : ITickService
             
             _gameTick?.Invoke();
         }
+        else
+        {
+            _attachedTime = null;
+            _hasAllocatedMemory = false;
+            _stateService.Publish(State.NotAttached);
+        }
     }
 
     

@@ -467,17 +467,23 @@ e9 00 00 00 00          jmp    39 &lt;_main+0x39&gt;</value>
 48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
 48 8b 89 d0 00 00 00    mov    rcx,QWORD PTR [rcx+0xd0]
 48 3b 4f 08             cmp    rcx,QWORD PTR [rdi+0x8]
-75 13                   jne    28 &lt;normal&gt;
-41 83 7e 04 00          cmp    DWORD PTR [r14+0x4],0x0
-74 0c                   je     28 &lt;normal&gt;
+75 28                   jne    3d &lt;normal&gt;
 48 3b 4d f8             cmp    rcx,QWORD PTR [rbp-0x8]
-74 06                   je     28 &lt;normal&gt;
-ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 28 &lt;normal&gt;
-000000000028 &lt;normal&gt;:
+74 22                   je     3d &lt;normal&gt;
+83 bd 88 00 00 00 00    cmp    DWORD PTR [rbp+0x88],0x0
+74 13                   je     37 &lt;count_hit&gt;
+81 7c 24 48 07 c6 eb    cmp    DWORD PTR [rsp+0x48],0xbebc607
+0b
+74 09                   je     37 &lt;count_hit&gt;
+83 bd a4 00 00 00 00    cmp    DWORD PTR [rbp+0xa4],0x0
+74 06                   je     3d &lt;normal&gt;
+000000000037 &lt;count_hit&gt;:
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 3d &lt;normal&gt;
+00000000003d &lt;normal&gt;:
 59                      pop    rcx
 41 88 46 15             mov    BYTE PTR [r14+0x15],al
 0f b6 45 20             movzx  eax,BYTE PTR [rbp+0x20]
-e9 00 00 00 00          jmp    36 &lt;normal+0xe&gt;</value>
+e9 00 00 00 00          jmp    4b &lt;normal+0xe&gt;</value>
   </data>
   <data name="ScholarFallDamage" xml:space="preserve">
     <value>51                      push   rcx
@@ -485,11 +491,69 @@ e9 00 00 00 00          jmp    36 &lt;normal+0xe&gt;</value>
 48 39 99 d0 00 00 00    cmp    QWORD PTR [rcx+0xd0],rbx
 75 0a                   jne    1b &lt;normal&gt;
 85 c0                   test   eax,eax
-75 06                   jne    1b &lt;normal&gt;
+79 06                   jns    1b &lt;normal&gt;
 ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 1b &lt;normal&gt;
 00000000001b &lt;normal&gt;:
 59                      pop    rcx
 89 83 68 01 00 00       mov    DWORD PTR [rbx+0x168],eax
 e9 00 00 00 00          jmp    27 &lt;normal+0xc&gt;</value>
+  </data>
+  <data name="ScholarKillBox" xml:space="preserve">
+    <value>4c 8b 01                mov    r8,QWORD PTR [rcx]
+51                      push   rcx
+48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # b &lt;_main+0xb&gt;
+4c 3b 81 d0 00 00 00    cmp    r8,QWORD PTR [rcx+0xd0]
+75 0a                   jne    1e &lt;exit&gt;
+85 d2                   test   edx,edx
+75 06                   jne    1e &lt;exit&gt;
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 1e &lt;exit&gt;
+00000000001e &lt;exit&gt;:
+59                      pop    rcx
+89 54 24 10             mov    DWORD PTR [rsp+0x10],edx
+e9 00 00 00 00          jmp    28 &lt;exit+0xa&gt;</value>
+  </data>
+  <data name="ScholarEvents" xml:space="preserve">
+    <value>BossName,DeathFlag
+The Last Giant,100971
+The Pursuer,100968
+Dragonrider,100959
+Old Dragonslayer,100960
+Flexile Sentry,100961
+Ruin Sentinels,100962
+The Lost Sinner,100963
+Belfry Gargoyles,101001
+Executioner's Chariot,100953
+Skeleton Lords,100954
+Covetous Demon,100955
+"Mytha, the Baneful Queen",100956
+Red Smelter Demon,100964
+Old Iron King,100952
+Scorpioness Najka,100957
+Royal Rat Authority,100967
+Prowling Magus &amp; Congregation,101000
+The Duke's Dear Freja,100951
+Royal Rat Vanguard,100965
+The Rotten,100966
+Dragonriders,100980
+Looking Glass Knight,100958
+Demon of Song,100950
+"Velstadt, the Royal Aegis",100975
+Vendrick,100978
+Guardian Dragon,100970
+Ancient Dragon,100977
+Giant Lord,100972
+Throne Defender &amp; Throne Watcher,100974
+Nashandra,100973
+"Aldia, Scholar of the First Sin",101080
+Darklurker,100979
+Gank Squad,101053
+"Elana, the Squalid Queen",101050
+"Sinh, the Slumbering Dragon",101051
+Fume Knight,101061
+Blue Smelter Demon,101063
+Sir Alonne,101062
+"Aava, the King's Pet",101071
+Lud &amp; Zallen,101072
+Burnt Ivory King,101070</value>
   </data>
 </root>

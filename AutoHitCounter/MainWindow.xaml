@@ -20,10 +20,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
-            <RowDefinition Height="54" />
-            <RowDefinition Height="30" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="25" />
         </Grid.RowDefinitions>
         <controls:TitleBar Grid.Row="0" Title="Auto Hit Counter" />
 
@@ -34,157 +31,173 @@
             </TextBlock>
         </Grid>
 
-        <Grid Grid.Row="2" Margin="8,4,8,4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+        <TabControl Grid.Row="2">
 
-            <StackPanel Grid.Column="0" Margin="0,0,4,0">
-                <TextBlock Text="GAME"
-                           FontFamily="{StaticResource AppFont}"
-                           FontSize="10"
-                           Foreground="#666666"
-                           Margin="2,0,0,2" />
-                <ComboBox ItemsSource="{Binding Games}"
-                          SelectedItem="{Binding SelectedGame}"
-                          DisplayMemberPath="GameName" />
-            </StackPanel>
+            <TabItem Header="Splits">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="54" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="25" />
+                    </Grid.RowDefinitions>
 
-            <StackPanel Grid.Column="1" Margin="4,0,4,0">
-                <TextBlock Text="PROFILE"
-                           FontFamily="{StaticResource AppFont}"
-                           FontSize="10"
-                           Foreground="#666666"
-                           Margin="2,0,0,2" />
-                <ComboBox ItemsSource="{Binding Profiles}"
-                          SelectedItem="{Binding ActiveProfile}"
-                          DisplayMemberPath="Name" />
-            </StackPanel>
-
-            <Button Grid.Column="2"
-                    Content="✎"
-                    Command="{Binding OpenProfileEditorCommand}"
-                    VerticalAlignment="Center"
-                    Width="30"
-                    Height="22"
-                    FontSize="14"
-                    ToolTip="Edit Profile" />
-        </Grid>
-
-        <Border Grid.Row="3" BorderBrush="#333333" BorderThickness="0,0,0,1">
-            <Grid Margin="5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="4*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <TextBlock FontFamily="{StaticResource AppFont}"
-                           FontSize="{StaticResource FontSizeHeader}"
-                           Text="Split"
-                           VerticalAlignment="Center"
-                           Margin="10, 0, 0,0" />
-
-                <TextBlock Grid.Column="1"
-                           Text="Hits"
-                           FontFamily="{StaticResource AppFont}"
-                           FontSize="{StaticResource FontSizeHeader}"
-                           HorizontalAlignment="Center" VerticalAlignment="Center">
-                </TextBlock>
-
-                <TextBlock Grid.Column="2"
-                           Text="Diff"
-                           FontFamily="{StaticResource AppFont}"
-                           FontSize="{StaticResource FontSizeHeader}"
-                           HorizontalAlignment="Center" VerticalAlignment="Center">
-                </TextBlock>
-
-                <TextBlock Grid.Column="3"
-                           Text="PB"
-                           FontFamily="{StaticResource AppFont}"
-                           FontSize="{StaticResource FontSizeHeader}"
-                           HorizontalAlignment="Center" VerticalAlignment="Center">
-
-                </TextBlock>
-            </Grid>
-        </Border>
-        <ListBox Grid.Row="4"
-                 ItemsSource="{Binding Splits}"
-                 SelectedItem="{Binding SelectedSplit}"
-                 AlternationCount="2"
-                 Background="Transparent"
-                 BorderThickness="0"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="BorderThickness" Value="3,0,0,0" />
-                    <Setter Property="BorderBrush" Value="Transparent" />
-                    <Style.Triggers>
-                        <Trigger Property="ListBox.AlternationIndex" Value="0">
-                            <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
-                        </Trigger>
-                        <Trigger Property="ListBox.AlternationIndex" Value="1">
-                            <Setter Property="Background" Value="#222222" />
-                        </Trigger>
-                        <DataTrigger Binding="{Binding IsCurrent}" Value="True">
-                            <Setter Property="BorderBrush" Value="#00CC66" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ListBox.ItemContainerStyle>
-
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
+                    <Grid Grid.Row="0" Margin="8,4,8,4">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="4*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0"
-                                   Text="{Binding Name}"
-                                   FontFamily="{StaticResource AppFont}"
-                                   FontSize="{StaticResource FontSizeBody}"
-                                   VerticalAlignment="Center"
-                                   Margin="10, 0, 0,0" />
+                        <StackPanel Grid.Column="0" Margin="0,0,4,0">
+                            <TextBlock Text="GAME"
+                                       FontFamily="{StaticResource AppFont}"
+                                       FontSize="10"
+                                       Foreground="#666666"
+                                       Margin="2,0,0,2" />
+                            <ComboBox ItemsSource="{Binding Games}"
+                                      SelectedItem="{Binding SelectedGame}"
+                                      DisplayMemberPath="GameName" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Column="1"
-                                   Text="{Binding NumOfHits}"
-                                   FontFamily="{StaticResource AppFont}"
-                                   FontSize="{StaticResource FontSizeBody}"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <StackPanel Grid.Column="1" Margin="4,0,4,0">
+                            <TextBlock Text="PROFILE"
+                                       FontFamily="{StaticResource AppFont}"
+                                       FontSize="10"
+                                       Foreground="#666666"
+                                       Margin="2,0,0,2" />
+                            <ComboBox ItemsSource="{Binding Profiles}"
+                                      SelectedItem="{Binding ActiveProfile}"
+                                      DisplayMemberPath="Name" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Column="2"
-                                   Text="{Binding Diff}"
-                                   FontFamily="{StaticResource AppFont}"
-                                   FontSize="{StaticResource FontSizeBody}"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
-
-                        <TextBlock Grid.Column="3" Text="{Binding PersonalBest}"
-                                   FontFamily="{StaticResource AppFont}"
-                                   FontSize="{StaticResource FontSizeBody}"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Button Grid.Column="2"
+                                Content="✎"
+                                Command="{Binding OpenProfileEditorCommand}"
+                                VerticalAlignment="Center"
+                                Width="30"
+                                Height="22"
+                                FontSize="14"
+                                ToolTip="Edit Profile" />
                     </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
 
-        <Grid Grid.Row="5">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <Button Content="+ Hit" Margin="5,0,0,5"></Button>
-                <Button Content="Next Split ->" Margin="5,0,0,5"></Button>
-                <Button Content="Reset" Margin="5,0,0,5"></Button>
-            </StackPanel>
-            
-            <TextBlock HorizontalAlignment="Right" Text="{Binding InGameTime, StringFormat=hh\\:mm\\:ss}"></TextBlock>
-        </Grid>
+                    <Border Grid.Row="1" BorderBrush="#333333" BorderThickness="0,0,0,1">
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
 
+                            <TextBlock FontFamily="{StaticResource AppFont}"
+                                       FontSize="{StaticResource FontSizeHeader}"
+                                       Text="Split"
+                                       VerticalAlignment="Center"
+                                       Margin="10, 0, 0,0" />
+
+                            <TextBlock Grid.Column="1"
+                                       Text="Hits"
+                                       FontFamily="{StaticResource AppFont}"
+                                       FontSize="{StaticResource FontSizeHeader}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </TextBlock>
+
+                            <TextBlock Grid.Column="2"
+                                       Text="Diff"
+                                       FontFamily="{StaticResource AppFont}"
+                                       FontSize="{StaticResource FontSizeHeader}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </TextBlock>
+
+                            <TextBlock Grid.Column="3"
+                                       Text="PB"
+                                       FontFamily="{StaticResource AppFont}"
+                                       FontSize="{StaticResource FontSizeHeader}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                            </TextBlock>
+                        </Grid>
+                    </Border>
+                    <ListBox Grid.Row="2"
+                             ItemsSource="{Binding Splits}"
+                             SelectedItem="{Binding SelectedSplit}"
+                             AlternationCount="2"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="BorderThickness" Value="3,0,0,0" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                                <Style.Triggers>
+                                    <Trigger Property="ListBox.AlternationIndex" Value="0">
+                                        <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
+                                    </Trigger>
+                                    <Trigger Property="ListBox.AlternationIndex" Value="1">
+                                        <Setter Property="Background" Value="#222222" />
+                                    </Trigger>
+                                    <DataTrigger Binding="{Binding IsCurrent}" Value="True">
+                                        <Setter Property="BorderBrush" Value="#00CC66" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="4*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0"
+                                               Text="{Binding Name}"
+                                               FontFamily="{StaticResource AppFont}"
+                                               FontSize="{StaticResource FontSizeBody}"
+                                               VerticalAlignment="Center"
+                                               Margin="10, 0, 0,0" />
+
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding NumOfHits}"
+                                               FontFamily="{StaticResource AppFont}"
+                                               FontSize="{StaticResource FontSizeBody}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+                                    <TextBlock Grid.Column="2"
+                                               Text="{Binding Diff}"
+                                               FontFamily="{StaticResource AppFont}"
+                                               FontSize="{StaticResource FontSizeBody}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+                                    <TextBlock Grid.Column="3" Text="{Binding PersonalBest}"
+                                               FontFamily="{StaticResource AppFont}"
+                                               FontSize="{StaticResource FontSizeBody}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <Grid Grid.Row="3">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <Button Content="+ Hit" Margin="5,0,0,5"></Button>
+                            <Button Content="Next Split ->" Margin="5,0,0,5"></Button>
+                            <Button Content="Reset" Margin="5,0,0,5"></Button>
+                        </StackPanel>
+
+                        <TextBlock HorizontalAlignment="Right" Text="{Binding InGameTime, StringFormat=hh\\:mm\\:ss}"></TextBlock>
+                    </Grid>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Hotkeys"></TabItem>
+            <TabItem Header="Settings"></TabItem>
+        </TabControl>
     </Grid>
 </Window>

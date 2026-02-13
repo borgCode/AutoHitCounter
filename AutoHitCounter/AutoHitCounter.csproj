@@ -101,6 +101,7 @@
           <DependentUpon>TitleBar.xaml</DependentUpon>
         </Compile>
         <Compile Include="Core\DelegateCommand.cs" />
+        <Compile Include="Enums\AsmScript.cs" />
         <Compile Include="Enums\State.cs" />
         <Compile Include="Games\DS2S\DS2ScholarEventService.cs" />
         <Compile Include="Games\DS2S\DS2ScholarHitService.cs" />

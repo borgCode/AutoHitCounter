@@ -12,6 +12,7 @@ namespace AutoHitCounter.Games.ER;
 public class EldenRingModule : IGameModule, IDisposable
 {
     private readonly IMemoryService _memoryService;
+    private readonly IStateService _stateService;
     private readonly HookManager _hookManager;
     private readonly ITickService _tickService;
     private readonly Dictionary<uint, string> _eldenRingEvents;
@@ -31,6 +32,7 @@ public class EldenRingModule : IGameModule, IDisposable
         ITickService tickService, Dictionary<uint, string> eldenRingEvents)
     {
         _memoryService = memoryService;
+        _stateService = stateService;
         _hookManager = hookManager;
         _tickService = tickService;
         _eldenRingEvents = eldenRingEvents;
@@ -80,6 +82,7 @@ public class EldenRingModule : IGameModule, IDisposable
 
     public void Dispose()
     {
+        _stateService.Unsubscribe(State.Attached, Initialize);
         _tickService.UnregisterGameTick();
         OnHit = null;
         OnEventSet = null;

@@ -10,7 +10,7 @@ public class DS3Module : IGameModule
 {
     public DS3Module(IMemoryService memoryService, IStateService stateService, HookManager hookManager, ITickService tickService)
     {
-    
+        Console.WriteLine("DS3Module Ctor");
     }
 
     public event Action<int> OnHit;

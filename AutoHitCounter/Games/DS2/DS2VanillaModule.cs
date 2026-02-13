@@ -10,7 +10,7 @@ public class DS2VanillaModule : IGameModule
 {
     public DS2VanillaModule(IMemoryService memoryService, IStateService stateService, HookManager hookManager, ITickService tickService)
     {
-    
+        Console.WriteLine("DS2VanillaModule Ctor");
     }
 
     public event Action<int> OnHit;

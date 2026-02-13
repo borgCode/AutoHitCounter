@@ -8,9 +8,10 @@ using AutoHitCounter.Memory;
 
 namespace AutoHitCounter.Games.DS2S;
 
-public class DS2ScholarModule : IGameModule
+public class DS2ScholarModule : IGameModule, IDisposable
 {
     private readonly IMemoryService _memoryService;
+    private readonly IStateService _stateService;
     private readonly HookManager _hookManager;
     private readonly ITickService _tickService;
     private DS2ScholarHitService _hitService;
@@ -25,6 +26,7 @@ public class DS2ScholarModule : IGameModule
     public DS2ScholarModule(IMemoryService memoryService, IStateService stateService, HookManager hookManager, ITickService tickService)
     {
         _memoryService = memoryService;
+        _stateService = stateService;
         _hookManager = hookManager;
         _tickService = tickService;
         
@@ -68,5 +70,14 @@ public class DS2ScholarModule : IGameModule
         // {
         //     OnEventSet?.Invoke();
         // }
+    }
+
+    public void Dispose()
+    {
+        _stateService.Unsubscribe(State.Attached, Initialize);
+        _tickService.UnregisterGameTick();
+        OnHit = null;
+        OnEventSet = null;
+        OnIgtChanged = null;
     }
 }

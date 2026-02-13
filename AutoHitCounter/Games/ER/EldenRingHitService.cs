@@ -1,5 +1,6 @@
 ﻿// 
 
+using AutoHitCounter.Enums;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
 using AutoHitCounter.Utilities;
@@ -28,7 +29,7 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
     
     private void InstallHitHook()
     {
-        var bytes = AsmLoader.GetAsmBytes("EldenRingHit");
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingHit);
         var hit = CodeCaveOffsets.Base + CodeCaveOffsets.Hit;
         var code = CodeCaveOffsets.Base + CodeCaveOffsets.HitCode;
         AsmHelper.WriteRelativeOffsets(bytes, [
@@ -44,7 +45,7 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
 
     private void InstallFallDamageHook()
     {
-        var bytes = AsmLoader.GetAsmBytes("EldenRingFallDamage");
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingFallDamage);
         var hit = CodeCaveOffsets.Base + CodeCaveOffsets.Hit;
         var code = CodeCaveOffsets.Base + CodeCaveOffsets.FallDamage;
         AsmHelper.WriteRelativeOffsets(bytes, [
@@ -60,7 +61,7 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
 
     private void InstallKillBoxHook()
     {
-        var bytes = AsmLoader.GetAsmBytes("EldenRingKillBox");
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingKillBox);
         var hit = CodeCaveOffsets.Base + CodeCaveOffsets.Hit;
         var code = CodeCaveOffsets.Base + CodeCaveOffsets.KillBox;
         AsmHelper.WriteRelativeOffsets(bytes, [

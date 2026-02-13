@@ -161,13 +161,11 @@ namespace AutoHitCounter.ViewModels
 
             if (_selectedGame == null) return;
 
-            _memoryService.StartAutoAttach(_selectedGame.ProcessName);
             _currentModule = _gameModuleFactory.CreateModule(_selectedGame);
+            _memoryService.StartAutoAttach(_selectedGame.ProcessName);
             _currentModule.OnHit += count => CurrentSplit.NumOfHits += count;
             _currentModule.OnEventSet += AutoAdvanceSplit;
             _currentModule.OnIgtChanged += igt => InGameTime = TimeSpan.FromMilliseconds(igt);
-
-            // _currentModule.StartGameTick();
             
             SettingsManager.Default.LastSelectedGame = _selectedGame.GameName;
             SettingsManager.Default.Save();

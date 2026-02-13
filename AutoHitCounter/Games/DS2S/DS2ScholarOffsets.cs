@@ -38,8 +38,6 @@ public static class DS2ScholarOffsets
     public static class GameManagerImp
     {
         public static nint Base;
-
-        public const int PlayerCtrl = 0xD0;
     }
 
 
@@ -47,6 +45,7 @@ public static class DS2ScholarOffsets
     {
         public static nint Hit;
         public static nint FallDamage;
+        public static nint KillBox;
         public static nint SetEvent;
     }
     
@@ -76,6 +75,13 @@ public static class DS2ScholarOffsets
             Version1_0_3 => 0x16A39A,
             _ => 0
         };
+        
+        Hooks.KillBox = moduleBase + Version switch
+        {
+            Version1_0_2 => 0x167440,
+            Version1_0_3 => 0x16A560,
+            _ => 0
+        };
 
 
         Hooks.SetEvent = moduleBase + Version switch
@@ -98,6 +104,7 @@ public static class DS2ScholarOffsets
         Console.WriteLine("\n--- Hooks ---");
         PrintOffset("Hit", Hooks.Hit);
         PrintOffset("FallDamage", Hooks.FallDamage);
+        PrintOffset("KillBox", Hooks.KillBox);
         
         
         PrintOffset("SetEvent", Hooks.SetEvent);
