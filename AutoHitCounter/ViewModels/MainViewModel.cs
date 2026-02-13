@@ -162,7 +162,9 @@ namespace AutoHitCounter.ViewModels
 
             if (_selectedGame == null) return;
 
-            _currentModule = _gameModuleFactory.CreateModule(_selectedGame);
+            var events = GetAllEventsForGame(_selectedGame.GameName);
+            
+            _currentModule = _gameModuleFactory.CreateModule(_selectedGame, GetActiveEvents());
             _memoryService.StartAutoAttach(_selectedGame.ProcessName);
             _currentModule.OnHit += count => CurrentSplit.NumOfHits += count;
             _currentModule.OnEventSet += AutoAdvanceSplit;
@@ -199,7 +201,7 @@ namespace AutoHitCounter.ViewModels
             if (_selectedGame == null) return;
 
             var vm = new ProfileEditorViewModel(
-                _eldenRingEvents,
+                GetAllEventsForGame(_selectedGame.GameName),
                 _profileService,
                 _selectedGame.GameName,
                 _activeProfile);
@@ -234,7 +236,26 @@ namespace AutoHitCounter.ViewModels
 
             Splits[0].IsCurrent = true;
         }
+        
+        private Dictionary<uint, string> GetActiveEvents()
+        {
+            if (ActiveProfile == null) return new();
 
+            return ActiveProfile.Splits
+                .Where(s => s.EventId.HasValue)
+                .ToDictionary(s => s.EventId.Value, s => s.Label);
+        }
+
+        private Dictionary<uint, string> GetAllEventsForGame(string gameName)
+        {
+            return gameName switch
+            {
+                "Dark Souls 2 Scholar" => EventLoader.GetEvents("DS2ScholarEvents"),
+                "Elden Ring" => EventLoader.GetEvents("EldenRingEvents"),
+                _ => new()
+            };
+        }
+        
         #endregion
 
         

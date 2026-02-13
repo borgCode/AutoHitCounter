@@ -156,6 +156,25 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 50                      push   rax
+        ///53                      push   rbx
+        ///57                      push   rdi
+        ///8b 3d 00 00 00 00       mov    edi,DWORD PTR [rip+0x0]        # 9 &lt;_main+0x9&gt;
+        ///89 f8                   mov    eax,edi
+        ///6b c0 05                imul   eax,eax,0x5
+        ///48 8d 1d 00 00 00 00    lea    rbx,[rip+0x0]        # 15 &lt;_main+0x15&gt;
+        ///48 01 c3                add    rbx,rax
+        ///89 13                   mov    DWORD PTR [rbx],edx
+        ///44 88 43 04             mov    BYTE PTR [rbx+0x4],r8b
+        ///ff c7                   [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ScholarEventLog {
+            get {
+                return ResourceManager.GetString("ScholarEventLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BossName,DeathFlag
         ///The Last Giant,100971
         ///The Pursuer,100968

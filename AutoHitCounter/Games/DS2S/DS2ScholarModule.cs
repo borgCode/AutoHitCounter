@@ -1,6 +1,7 @@
 ﻿// 
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using AutoHitCounter.Enums;
 using AutoHitCounter.Interfaces;
@@ -16,6 +17,7 @@ public class DS2ScholarModule : IGameModule, IDisposable
     private readonly ITickService _tickService;
     private DS2ScholarHitService _hitService;
     private DS2ScholarEventService _eventService;
+    private readonly Dictionary<uint, string> _events;
     
     private DateTime? _lastHit;
     
@@ -23,13 +25,15 @@ public class DS2ScholarModule : IGameModule, IDisposable
     public event Action OnEventSet;
     public event Action<long> OnIgtChanged;
 
-    public DS2ScholarModule(IMemoryService memoryService, IStateService stateService, HookManager hookManager, ITickService tickService)
+    public DS2ScholarModule(IMemoryService memoryService, IStateService stateService, HookManager hookManager,
+        ITickService tickService, Dictionary<uint, string> events)
     {
         _memoryService = memoryService;
         _stateService = stateService;
         _hookManager = hookManager;
         _tickService = tickService;
-        
+        _events = events;
+
         stateService.Subscribe(State.Attached, Initialize);
         _lastHit = DateTime.Now;
     }
@@ -40,6 +44,8 @@ public class DS2ScholarModule : IGameModule, IDisposable
         
         _hitService = new DS2ScholarHitService(_memoryService, _hookManager);
         _hitService.InstallHooks();
+        _eventService = new DS2ScholarEventService(_memoryService, _hookManager, _events);
+        _eventService.InstallHook();
         
         _tickService.RegisterGameTick(Tick);
     }
@@ -53,23 +59,19 @@ public class DS2ScholarModule : IGameModule, IDisposable
         var moduleBase = _memoryService.BaseAddress;
         DS2ScholarOffsets.Initialize(fileSize, moduleBase);
     }
-
-    private int _testHitCount = 0;
+    
     private void Tick()
     {
-        if (_hitService.HasHit())
+        if (_hitService.HasHit() && _lastHit != null && (DateTime.Now - _lastHit.Value).TotalSeconds < 3)
         {
-            if (_lastHit != null && (DateTime.Now - _lastHit.Value).TotalSeconds < 3) return;
-            // OnHit?.Invoke(1);
-            _testHitCount++;
-            Console.WriteLine($"Test hit: {_testHitCount}");
+            OnHit?.Invoke(1);
             _lastHit = DateTime.Now;
         }
 
-        // if (_eventService.ShouldSplit())
-        // {
-        //     OnEventSet?.Invoke();
-        // }
+        if (_eventService.ShouldSplit())
+        {
+            OnEventSet?.Invoke();
+        }
     }
 
     public void Dispose()
