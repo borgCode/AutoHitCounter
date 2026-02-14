@@ -37,6 +37,9 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="H.Hooks, Version=2.0.0.0, Culture=neutral, PublicKeyToken=603f13207e65c17b, processorArchitecture=MSIL">
+          <HintPath>..\packages\H.Hooks.2.1.0-dev.26\lib\net462\H.Hooks.dll</HintPath>
+        </Reference>
         <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=10.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
           <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.10.0.2\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
         </Reference>
@@ -97,14 +100,17 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
+        <Compile Include="Behaviors\EditableTextBoxBehavior.cs" />
         <Compile Include="Behaviors\SplitListDragDropBehavior.cs" />
         <Compile Include="Controls\TitleBar.xaml.cs">
           <DependentUpon>TitleBar.xaml</DependentUpon>
         </Compile>
         <Compile Include="Converters\ExpanderArrowConverter.cs" />
+        <Compile Include="Converters\InverseBoolConverter.cs" />
         <Compile Include="Converters\ParentChildMarginConverter.cs" />
         <Compile Include="Core\DelegateCommand.cs" />
         <Compile Include="Enums\AsmScript.cs" />
+        <Compile Include="Enums\HotkeyActions.cs" />
         <Compile Include="Enums\SplitType.cs" />
         <Compile Include="Enums\State.cs" />
         <Compile Include="Games\DS2S\DS2ScholarEventService.cs" />
@@ -141,6 +147,7 @@
         <Compile Include="Interfaces\IGameModule.cs" />
         <Compile Include="Interfaces\IHitService.cs" />
         <Compile Include="Interfaces\IProfileService.cs" />
+        <Compile Include="Interfaces\ISettingsService.cs" />
         <Compile Include="Interfaces\IStateService.cs" />
         <Compile Include="Interfaces\ITickService.cs" />
         <Compile Include="Memory\CodeCaveOffsets.cs" />
@@ -153,17 +160,22 @@
         <Compile Include="Services\GameModuleFactory.cs" />
         <Compile Include="Services\MemoryService.cs" />
         <Compile Include="Services\ProfileService.cs" />
+        <Compile Include="Services\SettingsService.cs" />
         <Compile Include="Services\StateService.cs" />
         <Compile Include="Services\TickService.cs" />
         <Compile Include="Utilities\AsmHelper.cs" />
         <Compile Include="Utilities\AsmLoader.cs" />
         <Compile Include="Utilities\EventLoader.cs" />
+        <Compile Include="Utilities\HotkeyManager.cs" />
         <Compile Include="Utilities\MsgBox.cs" />
         <Compile Include="Utilities\SettingsManager.cs" />
         <Compile Include="Utilities\User32.cs" />
         <Compile Include="ViewModels\BaseViewModel.cs" />
+        <Compile Include="ViewModels\HotkeyBindingViewModel.cs" />
+        <Compile Include="ViewModels\HotkeyTabViewModel.cs" />
         <Compile Include="ViewModels\MainViewModel.cs" />
         <Compile Include="ViewModels\ProfileEditorViewModel.cs" />
+        <Compile Include="ViewModels\SettingsViewModel.cs" />
         <Compile Include="ViewModels\SplitViewModel.cs" />
         <Compile Include="Views\Windows\CustomMessageBox.xaml.cs" />
         <Compile Include="Views\Windows\InputBox.xaml.cs" />

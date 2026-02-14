@@ -73,6 +73,22 @@ public class SplitViewModel : BaseViewModel
         get => _isExpanded;
         set => SetProperty(ref _isExpanded, value);
     }
+    
+    private string _notes;
+
+    public string Notes
+    {
+        get => _notes;
+        set => SetProperty(ref _notes, value);
+    }
+
+    private bool _isEditingNotes;
+
+    public bool IsEditingNotes
+    {
+        get => _isEditingNotes;
+        set => SetProperty(ref _isEditingNotes, value);
+    }
 
     public bool IsParent => Type == SplitType.Parent;
     public int Diff => NumOfHits - PersonalBest;

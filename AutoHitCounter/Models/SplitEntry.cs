@@ -12,7 +12,8 @@ public class SplitEntry
     public int PersonalBest { get; set; }
     public SplitType Type { get; set; } = SplitType.Child;
     public string GroupId { get; set; }
-
+    public string Notes { get; set; }
+    
     public string Label => DisplayName ?? Name;
     public bool IsAuto => EventId.HasValue;
 }

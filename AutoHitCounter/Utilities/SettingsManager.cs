@@ -23,6 +23,8 @@ public class SettingsManager
     public string LastSelectedGame { get; set; }
     public double MainWindowLeft { get; set; }
     public double MainWindowTop { get; set; }
+    public string HotkeyActionIds { get; set; } = "";
+    public bool EnableHotkeys { get; set; }
     
     
     public void Save()

@@ -19,7 +19,6 @@ namespace AutoHitCounter.ViewModels
         private readonly IMemoryService _memoryService;
         private readonly GameModuleFactory _gameModuleFactory;
         private readonly IProfileService _profileService;
-        private readonly Dictionary<uint, string> _eldenRingEvents;
         private IGameModule _currentModule;
         
         private readonly List<SplitViewModel> _allSplits = new();
@@ -30,12 +29,15 @@ namespace AutoHitCounter.ViewModels
             _memoryService = memoryService;
             _gameModuleFactory = gameModuleFactory;
             _profileService = profileService;
-            _eldenRingEvents = EventLoader.GetEvents("EldenRingEvents");
             
             stateService.Subscribe(State.Attached, OnAttached);
             stateService.Subscribe(State.NotAttached, OnNotAttached);
 
             OpenProfileEditorCommand = new DelegateCommand(OpenProfileEditor);
+            ToggleEditNotesCommand = new DelegateCommand<SplitViewModel>(split =>
+            {
+                if (split != null) split.IsEditingNotes = !split.IsEditingNotes;
+            });
 
 
             Games.Add(new Game { GameName = "Dark Souls Remastered", ProcessName = "darksoulsremastered" });
@@ -55,6 +57,7 @@ namespace AutoHitCounter.ViewModels
 
         public DelegateCommand OpenProfileEditorCommand { get; }
         public DelegateCommand ManualSplitCommand { get; }
+        public DelegateCommand<SplitViewModel> ToggleEditNotesCommand { get; }
         
         #endregion
 
@@ -140,6 +143,13 @@ namespace AutoHitCounter.ViewModels
             get => _inGameTime;
             set => SetProperty(ref _inGameTime, value);
         }
+        
+        private bool _showNotes;
+        public bool ShowNotes
+        {
+            get => _showNotes;
+            set => SetProperty(ref _showNotes, value);
+        }
 
         #endregion
 
@@ -214,7 +224,6 @@ namespace AutoHitCounter.ViewModels
                 Profiles.Add(p);
 
             ActiveProfile = vm.SelectedProfile;
-            // TODO: rebuild filtered dict and pass to module
         }
 
         private void UpdateSplits()
