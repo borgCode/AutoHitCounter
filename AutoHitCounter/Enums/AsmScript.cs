@@ -8,6 +8,9 @@ public enum AsmScript
     ScholarFallDamage,
     ScholarKillBox,
     ScholarEventLog,
+    ScholarIgtNewGame,
+    ScholarIgtStop,
+    ScholarIgtLoadGame,
     
     
     

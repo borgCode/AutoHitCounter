@@ -17,6 +17,7 @@ public class DS2ScholarModule : IGameModule, IDisposable
     private readonly ITickService _tickService;
     private DS2ScholarHitService _hitService;
     private DS2ScholarEventService _eventService;
+    private DS2ScholarIgtService _igtService;
     private readonly Dictionary<uint, string> _events;
     
     private DateTime? _lastHit;
@@ -46,6 +47,8 @@ public class DS2ScholarModule : IGameModule, IDisposable
         _hitService.InstallHooks();
         _eventService = new DS2ScholarEventService(_memoryService, _hookManager, _events);
         _eventService.InstallHook();
+        _igtService = new DS2ScholarIgtService(_memoryService, _hookManager);
+        _igtService.InstallHooks();
         
         _tickService.RegisterGameTick(Tick);
     }
@@ -72,6 +75,9 @@ public class DS2ScholarModule : IGameModule, IDisposable
         {
             OnEventSet?.Invoke();
         }
+
+        _igtService.Update();
+        OnIgtChanged?.Invoke(_igtService.ElapsedMilliseconds);
     }
 
     public void Dispose()

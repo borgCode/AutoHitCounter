@@ -115,9 +115,11 @@
         <Compile Include="Enums\State.cs" />
         <Compile Include="Games\DS2S\DS2ScholarEventService.cs" />
         <Compile Include="Games\DS2S\DS2ScholarHitService.cs" />
+        <Compile Include="Games\DS2S\DS2ScholarIgtService.cs" />
         <Compile Include="Games\DS2S\DS2ScholarModule.cs" />
         <Compile Include="Games\DS2S\DS2ScholarOffsets.cs" />
         <Compile Include="Games\DS2S\DS2ScholarVersion.cs" />
+        <Compile Include="Games\DS2S\DS2TimerStatus.cs" />
         <Compile Include="Games\DS2\DS2VanillaEventService.cs" />
         <Compile Include="Games\DS2\DS2VanillaHitService.cs" />
         <Compile Include="Games\DS2\DS2VanillaModule.cs" />

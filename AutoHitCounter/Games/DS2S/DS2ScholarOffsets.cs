@@ -38,6 +38,21 @@ public static class DS2ScholarOffsets
     public static class GameManagerImp
     {
         public static nint Base;
+
+        public const int GameDataManager = 0xA8;
+        public const int SaveDataManager = 0xD8;
+
+        public static class SaveDataManagerOffsets
+        {
+            public const int SaveSlotStart = 0x0;
+            public const int CurrentSaveSlotIdx = 0x1368;
+        }
+
+        public static class SaveSlotOffsets
+        {
+            public const int PlayTime = 0x1CC;
+        }
+
     }
 
 
@@ -47,6 +62,14 @@ public static class DS2ScholarOffsets
         public static nint FallDamage;
         public static nint KillBox;
         public static nint SetEvent;
+        public static nint IgtNewGame;
+        public static nint IgtStop;
+        public static nint IgtLoadGame;
+    }
+
+    public static class Functions
+    {
+        public static nint RequestSave;
     }
     
     
@@ -90,6 +113,36 @@ public static class DS2ScholarOffsets
             Version1_0_3 => 0x4750C0,
             _ => 0
         };
+        
+        Hooks.IgtNewGame = moduleBase + Version switch
+        {
+            Version1_0_2 => 0xFC35F,
+            Version1_0_3 => 0xFC41F,
+            _ => 0
+        };
+        
+        Hooks.IgtStop = moduleBase + Version switch
+        {
+            Version1_0_2 => 0x1BC25F,
+            Version1_0_3 => 0x1BF9CF,
+            _ => 0
+        };
+        
+        Hooks.IgtLoadGame = moduleBase + Version switch
+        {
+            Version1_0_2 => 0xFCDBD,
+            Version1_0_3 => 0xFCE7D,
+            _ => 0
+        };
+        
+        Functions.RequestSave = moduleBase + Version switch
+        {
+            Version1_0_2 => 0x2E1080,
+            Version1_0_3 => 0x2E7410,
+            _ => 0
+        };
+
+
 
         
         _baseAddr = moduleBase;
@@ -103,12 +156,14 @@ public static class DS2ScholarOffsets
         PrintOffset("Hit", Hooks.Hit);
         PrintOffset("FallDamage", Hooks.FallDamage);
         PrintOffset("KillBox", Hooks.KillBox);
-        
-        
         PrintOffset("SetEvent", Hooks.SetEvent);
+        PrintOffset("IgtStart", Hooks.IgtNewGame);
+        PrintOffset("IgtStop", Hooks.IgtStop);
+        PrintOffset("IgtLoadGame", Hooks.IgtLoadGame);
            
             
         Console.WriteLine("\n--- Functions ---");
+        PrintOffset("RequestSave", Functions.RequestSave);
   
             
 

@@ -241,6 +241,42 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 48 89 87 60 13 00 00    mov    QWORD PTR [rdi+0x1360],rax
+        ///c7 05 00 00 00 00 03    mov    DWORD PTR [rip+0x0],0x3        # 11 &lt;_main+0x11&gt;
+        ///00 00 00
+        ///e9 00 00 00 00          jmp    16 &lt;_main+0x16&gt;.
+        /// </summary>
+        internal static string ScholarIgtLoadGame {
+            get {
+                return ResourceManager.GetString("ScholarIgtLoadGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 48 89 83 60 13 00 00    mov    QWORD PTR [rbx+0x1360],rax
+        ///c7 05 00 00 00 00 01    mov    DWORD PTR [rip+0x0],0x1        # 11 &lt;_main+0x11&gt;
+        ///00 00 00
+        ///e9 00 00 00 00          jmp    16 &lt;_main+0x16&gt;.
+        /// </summary>
+        internal static string ScholarIgtNewGame {
+            get {
+                return ResourceManager.GetString("ScholarIgtNewGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e8 00 00 00 00          call   5 &lt;_main+0x5&gt;
+        ///c7 05 00 00 00 00 02    mov    DWORD PTR [rip+0x0],0x2        # f &lt;_main+0xf&gt;
+        ///00 00 00
+        ///e9 00 00 00 00          jmp    14 &lt;_main+0x14&gt;.
+        /// </summary>
+        internal static string ScholarIgtStop {
+            get {
+                return ResourceManager.GetString("ScholarIgtStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 4c 8b 01                mov    r8,QWORD PTR [rcx]
         ///51                      push   rcx
         ///48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # b &lt;_main+0xb&gt;

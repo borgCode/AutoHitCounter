@@ -41,7 +41,6 @@ public abstract class EventServiceBase(
                 if (dataBytes[offset + 4] == 0) continue;
 
                 var eventId = BitConverter.ToUInt32(dataBytes, offset);
-                Console.WriteLine(eventId);
                 if (events.ContainsKey(eventId))
                 {
                     _readIndex = writeIndex;

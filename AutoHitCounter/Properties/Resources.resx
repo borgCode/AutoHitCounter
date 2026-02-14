@@ -576,4 +576,22 @@ ff c7                   inc    edi
 b8 59 17 b7 d1          mov    eax,0xd1b71759
 e9 00 00 00 00          jmp    39 &lt;_main+0x39&gt;</value>
   </data>
+  <data name="ScholarIgtNewGame" xml:space="preserve">
+    <value>48 89 83 60 13 00 00    mov    QWORD PTR [rbx+0x1360],rax
+c7 05 00 00 00 00 01    mov    DWORD PTR [rip+0x0],0x1        # 11 &lt;_main+0x11&gt;
+00 00 00
+e9 00 00 00 00          jmp    16 &lt;_main+0x16&gt;</value>
+  </data>
+  <data name="ScholarIgtStop" xml:space="preserve">
+    <value>e8 00 00 00 00          call   5 &lt;_main+0x5&gt;
+c7 05 00 00 00 00 02    mov    DWORD PTR [rip+0x0],0x2        # f &lt;_main+0xf&gt;
+00 00 00
+e9 00 00 00 00          jmp    14 &lt;_main+0x14&gt;</value>
+  </data>
+  <data name="ScholarIgtLoadGame" xml:space="preserve">
+    <value>48 89 87 60 13 00 00    mov    QWORD PTR [rdi+0x1360],rax
+c7 05 00 00 00 00 03    mov    DWORD PTR [rip+0x0],0x3        # 11 &lt;_main+0x11&gt;
+00 00 00
+e9 00 00 00 00          jmp    16 &lt;_main+0x16&gt;</value>
+  </data>
 </root>
