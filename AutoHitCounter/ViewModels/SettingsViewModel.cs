@@ -2,7 +2,7 @@
 
 namespace AutoHitCounter.ViewModels;
 
-public class SettingsViewModel
+public class SettingsViewModel()
 {
     
 }

@@ -34,16 +34,5 @@ namespace AutoHitCounter
         
          
         }
-
-        private void GearButton_Click(object sender, RoutedEventArgs e)
-        {
-            var button = sender as Button;
-            if (button?.ContextMenu != null)
-            {
-                button.ContextMenu.PlacementTarget = button;
-                button.ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
-                button.ContextMenu.IsOpen = true;
-            }
-        }
     }
 }

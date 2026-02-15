@@ -173,44 +173,31 @@ public class ProfileEditorViewModel : BaseViewModel
             Type = SplitType.Child
         };
 
-        if (SelectedSplit?.Type == SplitType.Parent)
-        {
-            var parentIndex = Splits.IndexOf(SelectedSplit);
-            var insertIndex = FindLastChildIndex(parentIndex) + 1;
-            newEntry.GroupId = SelectedSplit.GroupId;
-            Splits.Insert(insertIndex, newEntry);
-        }
-        else if (SelectedSplit != null && !string.IsNullOrEmpty(SelectedSplit.GroupId))
-        {
-            var selectedIndex = Splits.IndexOf(SelectedSplit);
-            newEntry.GroupId = SelectedSplit.GroupId;
-            Splits.Insert(selectedIndex + 1, newEntry);
-        }
-        else
-        {
-            Splits.Add(newEntry);
-        }
-
+        InsertSplit(newEntry);
         FilterEvents();
     }
 
     private void AddManualSplit()
     {
         var name = MsgBox.ShowInput("Split Name", "", "New Manual Split");
-
         if (string.IsNullOrWhiteSpace(name))
         {
             MsgBox.Show("Split name required", "New Manual Split");
             return;
         }
 
-        var newEntry = new SplitEntry
+        InsertSplit(new SplitEntry
         {
             EventId = null,
             Name = name,
             Type = SplitType.Child
-        };
-
+        });
+        
+        FilterEvents();
+    }
+    
+    private void InsertSplit(SplitEntry newEntry)
+    {
         if (SelectedSplit?.Type == SplitType.Parent)
         {
             var parentIndex = Splits.IndexOf(SelectedSplit);
@@ -378,7 +365,6 @@ public class ProfileEditorViewModel : BaseViewModel
     
     private int FindLastChildIndex(int parentIndex)
     {
-        var groupId = Splits[parentIndex].GroupId;
         var lastIndex = parentIndex;
 
         for (int i = parentIndex + 1; i < Splits.Count; i++)
@@ -386,8 +372,7 @@ public class ProfileEditorViewModel : BaseViewModel
             if (Splits[i].Type == SplitType.Parent)
                 break;
 
-            if (Splits[i].GroupId == groupId)
-                lastIndex = i;
+            lastIndex = i;
         }
 
         return lastIndex;
@@ -397,13 +382,11 @@ public class ProfileEditorViewModel : BaseViewModel
     private void FilterEvents()
     {
         FilteredEvents.Clear();
-        var selectedIds = new HashSet<uint>(
-            Splits.Where(s => s.EventId.HasValue).Select(s => s.EventId.Value));
-
+        
         foreach (var entry in AllEvents)
         {
             if (!string.IsNullOrEmpty(_searchText) &&
-                !entry.Name.Contains(_searchText))
+                !entry.Name.ToLower().Contains(_searchText.ToLower()))
                 continue;
 
             FilteredEvents.Add(entry);

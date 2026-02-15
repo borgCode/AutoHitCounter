@@ -16,6 +16,7 @@ public class HotkeyManager
     private readonly LowLevelKeyboardHook _keyboardHook = new();
     private readonly Dictionary<string, Keys> _hotkeyMappings = new();
     private readonly Dictionary<string, Action> _actions = new();
+    private bool _globalHotkeysEnabled;
 
     public HotkeyManager(IMemoryService memoryService)
     {
@@ -25,6 +26,7 @@ public class HotkeyManager
         _keyboardHook.Down += KeyboardHook_Down;
         LoadHotkeys();
         if (SettingsManager.Default.EnableHotkeys) _keyboardHook.Start();
+        _globalHotkeysEnabled = SettingsManager.Default.GlobalHotkeys;
     }
 
     public void Start()
@@ -44,7 +46,7 @@ public class HotkeyManager
 
     private void KeyboardHook_Down(object sender, KeyboardEventArgs e)
     {
-        if (!IsGameFocused()) return;
+        if (!_globalHotkeysEnabled && !IsGameFocused()) return;
         foreach (var mapping in _hotkeyMappings)
         {
             string actionId = mapping.Key;
@@ -150,4 +152,5 @@ public class HotkeyManager
     }
 
     public void SetKeyboardHandling(bool isEnabled) => _keyboardHook.Handling = isEnabled;
+    public void SetGlobalHotkeys(bool isEnabled) => _globalHotkeysEnabled = isEnabled;
 }

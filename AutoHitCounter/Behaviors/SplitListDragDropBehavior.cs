@@ -4,8 +4,8 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using AutoHitCounter.Models;
+using AutoHitCounter.Utilities;
 using AutoHitCounter.ViewModels;
 
 namespace AutoHitCounter.Behaviors;
@@ -62,13 +62,11 @@ public static class SplitListDragDropBehavior
             return;
 
         if (_isDragging) return;
-
-        var listBox = sender as ListBox;
-        var listBoxItem = FindAncestor<ListBoxItem>((DependencyObject)e.OriginalSource);
+        
+        var listBoxItem = VisualTreeHelpers.FindAncestor<ListBoxItem>((DependencyObject)e.OriginalSource);
         if (listBoxItem == null) return;
 
-        var entry = listBoxItem.DataContext as SplitEntry;
-        if (entry == null) return;
+        if (listBoxItem.DataContext is not SplitEntry entry) return;
 
         _isDragging = true;
         var data = new DataObject("SplitEntry", entry);
@@ -80,22 +78,19 @@ public static class SplitListDragDropBehavior
     {
         if (!e.Data.GetDataPresent("SplitEntry")) return;
 
-        var droppedEntry = e.Data.GetData("SplitEntry") as SplitEntry;
         var listBox = sender as ListBox;
-        if (droppedEntry == null || listBox == null) return;
+        if (e.Data.GetData("SplitEntry") is not SplitEntry droppedEntry || listBox == null) return;
 
-        var vm = listBox.DataContext as ProfileEditorViewModel;
-        if (vm == null) return;
+        if (listBox.DataContext is not ProfileEditorViewModel vm) return;
 
-        // Determine drop index
-        var targetItem = FindAncestor<ListBoxItem>((DependencyObject)e.OriginalSource);
+        var targetItem = VisualTreeHelpers.FindAncestor<ListBoxItem>((DependencyObject)e.OriginalSource);
         int dropIndex;
 
         if (targetItem != null)
         {
             var targetEntry = targetItem.DataContext as SplitEntry;
             dropIndex = vm.Splits.IndexOf(targetEntry);
-            
+
             var pos = e.GetPosition(targetItem);
             if (pos.Y > targetItem.ActualHeight / 2)
                 dropIndex++;
@@ -106,17 +101,5 @@ public static class SplitListDragDropBehavior
         }
 
         vm.MoveSplit(droppedEntry, dropIndex);
-    }
-
-    private static T FindAncestor<T>(DependencyObject current) where T : DependencyObject
-    {
-        while (current != null)
-        {
-            if (current is T target)
-                return target;
-            current = VisualTreeHelper.GetParent(current);
-        }
-
-        return null;
     }
 }

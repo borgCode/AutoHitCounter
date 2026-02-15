@@ -55,7 +55,11 @@ public class SplitViewModel : BaseViewModel
     public SplitType Type
     {
         get => _type;
-        set => SetProperty(ref _type, value);
+        set
+        {
+            if (SetProperty(ref _type, value))
+                OnPropertyChanged(nameof(IsParent));
+        }
     }
 
     private string _groupId;

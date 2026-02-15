@@ -25,6 +25,8 @@ public class SettingsManager
     public double MainWindowTop { get; set; }
     public string HotkeyActionIds { get; set; } = "";
     public bool EnableHotkeys { get; set; }
+    public bool GlobalHotkeys { get; set; }
+    public bool BlockHotkeysFromGame { get; set; }
     
     
     public void Save()

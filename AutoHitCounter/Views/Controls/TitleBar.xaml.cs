@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace AutoHitCounter.Controls;
+namespace AutoHitCounter.Views.Controls;
 
 public partial class TitleBar : UserControl
 {

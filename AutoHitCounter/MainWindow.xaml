@@ -3,11 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:controls="clr-namespace:AutoHitCounter.Controls"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:converters="clr-namespace:AutoHitCounter.Converters"
         xmlns:behaviors="clr-namespace:AutoHitCounter.Behaviors"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:controls="clr-namespace:AutoHitCounter.Views.Controls"
         mc:Ignorable="d"
         Style="{StaticResource DefaultWindowStyle}"
         WindowStyle="None"
@@ -38,7 +38,7 @@
             </TextBlock>
         </Grid>
 
-        <TabControl Grid.Row="2">
+        <TabControl Grid.Row="2" x:Name="MainTabControl">
 
             <TabItem Header="Splits">
                 <Grid>
@@ -161,7 +161,6 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <!-- Main split row -->
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="4*" />
@@ -175,32 +174,76 @@
                                                    FontFamily="{StaticResource AppFont}"
                                                    FontSize="{StaticResource FontSizeBody}"
                                                    VerticalAlignment="Center"
-                                                   Margin="10,0,0,0" />
+                                                   Margin="{Binding Type,
+                                                       Converter={StaticResource ParentChildMarginConverter}}" />
 
                                         <TextBlock Grid.Column="1"
                                                    Text="{Binding NumOfHits}"
                                                    FontFamily="{StaticResource AppFont}"
                                                    FontSize="{StaticResource FontSizeBody}"
-                                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsParent}" Value="True">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
 
                                         <TextBlock Grid.Column="2"
                                                    Text="{Binding Diff}"
                                                    FontFamily="{StaticResource AppFont}"
                                                    FontSize="{StaticResource FontSizeBody}"
-                                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsParent}" Value="True">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
 
                                         <TextBlock Grid.Column="3"
                                                    Text="{Binding PersonalBest}"
                                                    FontFamily="{StaticResource AppFont}"
                                                    FontSize="{StaticResource FontSizeBody}"
-                                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsParent}" Value="True">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </Grid>
 
-                                    <!-- Notes area -->
-                                    <Grid Margin="10,2,10,4"
-                                          Visibility="{Binding DataContext.ShowNotes,
-                      RelativeSource={RelativeSource AncestorType=Window},
-                      Converter={StaticResource BoolToVisConverter}}">
+                                    <Grid Margin="10,2,10,4">
+                                        <Grid.Style>
+                                            <Style TargetType="Grid">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition
+                                                                Binding="{Binding DataContext.ShowNotes,
+                                                                RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                Value="True" />
+                                                            <Condition Binding="{Binding IsParent}" Value="False" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="Auto" />
@@ -275,8 +318,13 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="Hotkeys"></TabItem>
-            <TabItem Header="Settings"></TabItem>
+            <TabItem Header="Hotkeys">
+                <controls:HotkeysTab DataContext="{Binding Hotkeys}" />
+            </TabItem>
+
+            <TabItem Header="Settings">
+                <controls:SettingsTab DataContext="{Binding Settings}" />
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

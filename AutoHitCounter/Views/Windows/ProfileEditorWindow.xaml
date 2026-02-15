@@ -7,7 +7,7 @@
         xmlns:behaviors="clr-namespace:AutoHitCounter.Behaviors"
         xmlns:converters="clr-namespace:AutoHitCounter.Converters"
         xmlns:enums="clr-namespace:AutoHitCounter.Enums"
-        xmlns:controls="clr-namespace:AutoHitCounter.Controls"
+        xmlns:controls="clr-namespace:AutoHitCounter.Views.Controls"
         mc:Ignorable="d"
         Style="{StaticResource DefaultWindowStyle}"
         WindowStyle="None"

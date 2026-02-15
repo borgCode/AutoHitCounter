@@ -102,9 +102,6 @@
         </ApplicationDefinition>
         <Compile Include="Behaviors\EditableTextBoxBehavior.cs" />
         <Compile Include="Behaviors\SplitListDragDropBehavior.cs" />
-        <Compile Include="Controls\TitleBar.xaml.cs">
-          <DependentUpon>TitleBar.xaml</DependentUpon>
-        </Compile>
         <Compile Include="Converters\ExpanderArrowConverter.cs" />
         <Compile Include="Converters\InverseBoolConverter.cs" />
         <Compile Include="Converters\ParentChildMarginConverter.cs" />
@@ -172,6 +169,7 @@
         <Compile Include="Utilities\MsgBox.cs" />
         <Compile Include="Utilities\SettingsManager.cs" />
         <Compile Include="Utilities\User32.cs" />
+        <Compile Include="Utilities\VisualTreeHelpers.cs" />
         <Compile Include="ViewModels\BaseViewModel.cs" />
         <Compile Include="ViewModels\HotkeyBindingViewModel.cs" />
         <Compile Include="ViewModels\HotkeyTabViewModel.cs" />
@@ -179,12 +177,20 @@
         <Compile Include="ViewModels\ProfileEditorViewModel.cs" />
         <Compile Include="ViewModels\SettingsViewModel.cs" />
         <Compile Include="ViewModels\SplitViewModel.cs" />
+        <Compile Include="Views\Controls\HotkeysTab.xaml.cs">
+          <DependentUpon>HotkeysTab.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="Views\Controls\SettingsTab.xaml.cs">
+          <DependentUpon>SettingsTab.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="Views\Controls\TitleBar.xaml.cs">
+          <DependentUpon>TitleBar.xaml</DependentUpon>
+        </Compile>
         <Compile Include="Views\Windows\CustomMessageBox.xaml.cs" />
         <Compile Include="Views\Windows\InputBox.xaml.cs" />
         <Compile Include="Views\Windows\ProfileEditorWindow.xaml.cs">
           <DependentUpon>ProfileEditorWindow.xaml</DependentUpon>
         </Compile>
-        <Page Include="Controls\TitleBar.xaml" />
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
@@ -198,6 +204,9 @@
             <DependentUpon>MainWindow.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Page Include="Views\Controls\HotkeysTab.xaml" />
+        <Page Include="Views\Controls\SettingsTab.xaml" />
+        <Page Include="Views\Controls\TitleBar.xaml" />
         <Page Include="Views\Windows\CustomMessageBox.xaml" />
         <Page Include="Views\Windows\InputBox.xaml" />
         <Page Include="Views\Windows\ProfileEditorWindow.xaml" />

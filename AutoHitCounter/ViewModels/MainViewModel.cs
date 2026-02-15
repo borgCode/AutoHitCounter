@@ -17,27 +17,38 @@ namespace AutoHitCounter.ViewModels
     public class MainViewModel : BaseViewModel
     {
         private readonly IMemoryService _memoryService;
+        private readonly HotkeyManager _hotkeyManager;
         private readonly GameModuleFactory _gameModuleFactory;
         private readonly IProfileService _profileService;
         private IGameModule _currentModule;
-        
-        private readonly List<SplitViewModel> _allSplits = new();
 
-        public MainViewModel(IMemoryService memoryService, GameModuleFactory gameModuleFactory,
-            IProfileService profileService, IStateService stateService)
+        public SettingsViewModel Settings { get; }
+        public HotkeyTabViewModel Hotkeys { get; }
+
+        public MainViewModel(IMemoryService memoryService, HotkeyManager hotkeyManager,
+            GameModuleFactory gameModuleFactory,
+            IProfileService profileService, IStateService stateService, SettingsViewModel settings,
+            HotkeyTabViewModel hotkeyTabViewModel)
         {
+            Settings = settings;
+            Hotkeys = hotkeyTabViewModel;
             _memoryService = memoryService;
+            _hotkeyManager = hotkeyManager;
             _gameModuleFactory = gameModuleFactory;
             _profileService = profileService;
-            
+
             stateService.Subscribe(State.Attached, OnAttached);
             stateService.Subscribe(State.NotAttached, OnNotAttached);
+
+            RegisterHotkeys();
 
             OpenProfileEditorCommand = new DelegateCommand(OpenProfileEditor);
             ToggleEditNotesCommand = new DelegateCommand<SplitViewModel>(split =>
             {
                 if (split != null) split.IsEditingNotes = !split.IsEditingNotes;
             });
+            
+            ManualSplitCommand = new DelegateCommand(ManualAdvanceSplit);
 
 
             Games.Add(new Game { GameName = "Dark Souls Remastered", ProcessName = "darksoulsremastered" });
@@ -48,17 +59,26 @@ namespace AutoHitCounter.ViewModels
             Games.Add(new Game { GameName = "Elden Ring", ProcessName = "eldenring" });
 
             SelectedGame = Games.FirstOrDefault(game => game.GameName == SettingsManager.Default.LastSelectedGame);
-            
+
             UpdateSplits();
         }
 
-        
         #region Commands
 
         public DelegateCommand OpenProfileEditorCommand { get; }
-        public DelegateCommand ManualSplitCommand { get; }
         public DelegateCommand<SplitViewModel> ToggleEditNotesCommand { get; }
-        
+
+        public DelegateCommand ManualSplitCommand { get; }
+        public DelegateCommand PrevSplitCommand { get; }
+        public DelegateCommand ResetSplitsCommand { get; }
+
+        public DelegateCommand IncrementHitCommand { get; }
+        public DelegateCommand DecrementHitCommand { get; }
+        public DelegateCommand ResetHitsCommand { get; }
+
+        public DelegateCommand ResetTimerCommand { get; }
+        public DelegateCommand SetPbCommand { get; }
+
         #endregion
 
         #region Properties
@@ -70,7 +90,7 @@ namespace AutoHitCounter.ViewModels
             get => _appVer;
             set => SetProperty(ref _appVer, value);
         }
-        
+
         private string _attachedText;
 
         public string AttachedText
@@ -90,7 +110,6 @@ namespace AutoHitCounter.ViewModels
             {
                 if (SetProperty(ref _selectedGame, value))
                 {
-                    
                     SwapModule();
                     Profiles.Clear();
                     foreach (var p in _profileService.GetProfiles(_selectedGame?.GameName))
@@ -110,7 +129,7 @@ namespace AutoHitCounter.ViewModels
             get => _selectedSplit;
             set => SetProperty(ref _selectedSplit, value);
         }
-        
+
         private SplitViewModel _currentSplit;
 
         public SplitViewModel CurrentSplit
@@ -129,22 +148,24 @@ namespace AutoHitCounter.ViewModels
                 if (SetProperty(ref _activeProfile, value))
                 {
                     UpdateSplits();
-                    CurrentSplit = _allSplits.FirstOrDefault(s => s.Type == SplitType.Child);
-                    CurrentSplit = Splits.FirstOrDefault();
+                    CurrentSplit = Splits.FirstOrDefault(s => s.Type == SplitType.Child);
+                    if (CurrentSplit != null) CurrentSplit.IsCurrent = true;
                 }
             }
         }
 
         public ObservableCollection<Profile> Profiles { get; } = new();
-        
+
         private TimeSpan _inGameTime;
+
         public TimeSpan InGameTime
         {
             get => _inGameTime;
             set => SetProperty(ref _inGameTime, value);
         }
-        
+
         private bool _showNotes;
+
         public bool ShowNotes
         {
             get => _showNotes;
@@ -155,55 +176,60 @@ namespace AutoHitCounter.ViewModels
 
         #region Private Methods
 
+        private void RegisterHotkeys()
+        {
+            _hotkeyManager.RegisterAction(HotkeyActions.NextSplit, ManualAdvanceSplit);
+        }
+
         private void OnAttached()
         {
             AttachedText = $"Attached to {SelectedGame.ProcessName}.exe";
         }
-        
+
         private void OnNotAttached()
         {
             AttachedText = "Not attached";
         }
-        
+
         private void SwapModule()
         {
-
             (_currentModule as IDisposable)?.Dispose();
 
             if (_selectedGame == null) return;
 
-            var events = GetAllEventsForGame(_selectedGame.GameName);
-            
             _currentModule = _gameModuleFactory.CreateModule(_selectedGame, GetActiveEvents());
             _memoryService.StartAutoAttach(_selectedGame.ProcessName);
             _currentModule.OnHit += count => CurrentSplit.NumOfHits += count;
             _currentModule.OnEventSet += AutoAdvanceSplit;
             _currentModule.OnIgtChanged += igt => InGameTime = TimeSpan.FromMilliseconds(igt);
-            
+
             SettingsManager.Default.LastSelectedGame = _selectedGame.GameName;
             SettingsManager.Default.Save();
         }
-        
+
         private void AutoAdvanceSplit()
         {
-            if (CurrentSplit == null || !CurrentSplit.IsAuto) return;
+            if (CurrentSplit == null) return;
             AdvanceSplit();
         }
-        
+
         private void ManualAdvanceSplit()
         {
             if (CurrentSplit == null || CurrentSplit.IsAuto) return;
             AdvanceSplit();
         }
-        
+
         private void AdvanceSplit()
         {
             var currentIndex = Splits.IndexOf(CurrentSplit);
-            if (currentIndex < 0 || currentIndex >= Splits.Count - 1) return;
-            
-            Splits[currentIndex].IsCurrent = false;
-            Splits[currentIndex + 1].IsCurrent = true;
-            CurrentSplit = Splits[currentIndex + 1];
+            if (currentIndex < 0) return;
+
+            var next = Splits.Skip(currentIndex + 1).FirstOrDefault(s => s.Type == SplitType.Child);
+            if (next == null) return;
+
+            CurrentSplit.IsCurrent = false;
+            next.IsCurrent = true;
+            CurrentSplit = next;
         }
 
         private void OpenProfileEditor()
@@ -238,14 +264,13 @@ namespace AutoHitCounter.ViewModels
                 {
                     Name = split.Label,
                     IsAuto = split.IsAuto,
+                    Type = split.Type,
                     NumOfHits = 0,
                     PersonalBest = split.PersonalBest
                 });
             }
-
-            Splits[0].IsCurrent = true;
         }
-        
+
         private Dictionary<uint, string> GetActiveEvents()
         {
             if (ActiveProfile == null) return new();
@@ -264,9 +289,7 @@ namespace AutoHitCounter.ViewModels
                 _ => new()
             };
         }
-        
-        #endregion
 
-        
+        #endregion
     }
 }
