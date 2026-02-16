@@ -226,7 +226,7 @@
                                         </TextBlock>
                                     </Grid>
 
-                                    <Grid Margin="10,2,10,4">
+                                    <Grid Margin="10,6,10,4">
                                         <Grid.Style>
                                             <Style TargetType="Grid">
                                                 <Setter Property="Visibility" Value="Collapsed" />
@@ -235,7 +235,7 @@
                                                         <MultiDataTrigger.Conditions>
                                                             <Condition
                                                                 Binding="{Binding DataContext.ShowNotes,
-                                                                RelativeSource={RelativeSource AncestorType=Window}}"
+                            RelativeSource={RelativeSource AncestorType=Window}}"
                                                                 Value="True" />
                                                             <Condition Binding="{Binding IsParent}" Value="False" />
                                                         </MultiDataTrigger.Conditions>
@@ -244,62 +244,48 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </Grid.Style>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
 
-                                        <TextBox Grid.Column="0"
-                                                 Text="{Binding Notes, UpdateSourceTrigger=LostFocus}"
+                                        <TextBox Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}"
                                                  TextWrapping="Wrap"
                                                  AcceptsReturn="True"
-                                                 MaxHeight="50"
                                                  FontSize="11"
                                                  Foreground="#777"
-                                                 IsReadOnly="{Binding IsEditingNotes,
-                                                Converter={StaticResource InverseBoolConverter}}"
-                                                 behaviors:EditableTextBoxBehavior.EditTrigger="{Binding IsEditingNotes, Mode=TwoWay}">
+                                                 
+                                                 Padding="2">
                                             <TextBox.Style>
                                                 <Style TargetType="TextBox">
                                                     <Setter Property="Background" Value="Transparent" />
                                                     <Setter Property="BorderThickness" Value="0" />
-                                                    <Setter Property="Padding" Value="0" />
-                                                    <Setter Property="Cursor" Value="Arrow" />
+                                                    <Setter Property="Cursor" Value="IBeam" />
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsEditingNotes}" Value="True">
+                                                        <Trigger Property="IsFocused" Value="True">
                                                             <Setter Property="Background" Value="#1a1a30" />
                                                             <Setter Property="BorderThickness" Value="1" />
                                                             <Setter Property="BorderBrush" Value="#333366" />
-                                                            <Setter Property="Cursor" Value="IBeam" />
-                                                            <Setter Property="Padding" Value="4,2" />
-                                                        </DataTrigger>
+                                                        </Trigger>
+                                                        <MultiTrigger>
+                                                            <MultiTrigger.Conditions>
+                                                                <Condition Property="Text" Value="" />
+                                                                <Condition Property="IsFocused" Value="False" />
+                                                            </MultiTrigger.Conditions>
+                                                            <Setter Property="Background">
+                                                                <Setter.Value>
+                                                                    <VisualBrush AlignmentX="Left" AlignmentY="Top" Stretch="None">
+                                                                        <VisualBrush.Visual>
+                                                                            <TextBlock Text="Add notes..." 
+                                                                                Foreground="#444" 
+                                                                                FontSize="11"
+                                                                                FontStyle="Italic"
+                                                                                Margin="4,2,0,0" />
+                                                                        </VisualBrush.Visual>
+                                                                    </VisualBrush>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </MultiTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </TextBox.Style>
                                         </TextBox>
-
-                                        <Button Grid.Column="1"
-                                                Width="20" Height="20"
-                                                VerticalAlignment="Top"
-                                                Background="Transparent"
-                                                BorderThickness="0"
-                                                Cursor="Hand"
-                                                Command="{Binding ToggleEditNotesCommand,
-                                                RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                                CommandParameter="{Binding}">
-                                            <Button.Style>
-                                                <Style TargetType="Button">
-                                                    <Setter Property="Content" Value="✎" />
-                                                    <Setter Property="Foreground" Value="#555" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsEditingNotes}" Value="True">
-                                                            <Setter Property="Content" Value="✓" />
-                                                            <Setter Property="Foreground" Value="#4a9eff" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Button.Style>
-                                        </Button>
                                     </Grid>
                                 </StackPanel>
                             </DataTemplate>
@@ -311,6 +297,8 @@
                             <Button Content="+ Hit" Margin="5,0,0,5"></Button>
                             <Button Content="Next Split ->" Margin="5,0,0,5"></Button>
                             <Button Content="Reset" Margin="5,0,0,5"></Button>
+                            <Button Content="Save Notes" Margin="5,0,0,5"
+                                    Command="{Binding SaveNotesCommand}"></Button>
                         </StackPanel>
 
                         <TextBlock HorizontalAlignment="Right" Text="{Binding InGameTime, StringFormat=hh\\:mm\\:ss}"></TextBlock>

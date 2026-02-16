@@ -59,7 +59,10 @@ public class SettingsViewModel : BaseViewModel
 
     private void OnAppStart()
     {
-     
+        IsAlwaysOnTopEnabled = SettingsManager.Default.AlwaysOnTop;
+        
+        _isShowNotesEnabled = SettingsManager.Default.ShowNotesSection;
+        OnPropertyChanged(nameof(IsShowNotesEnabled));
     }
 
     #endregion

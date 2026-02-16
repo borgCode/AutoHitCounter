@@ -46,12 +46,9 @@ namespace AutoHitCounter.ViewModels
             RegisterHotkeys();
 
             OpenProfileEditorCommand = new DelegateCommand(OpenProfileEditor);
-            ToggleEditNotesCommand = new DelegateCommand<SplitViewModel>(split =>
-            {
-                if (split != null) split.IsEditingNotes = !split.IsEditingNotes;
-            });
             
             ManualSplitCommand = new DelegateCommand(ManualAdvanceSplit);
+            SaveNotesCommand = new DelegateCommand(SaveNotes);
 
 
             Games.Add(new Game { GameName = "Dark Souls Remastered", ProcessName = "darksoulsremastered" });
@@ -69,7 +66,6 @@ namespace AutoHitCounter.ViewModels
         #region Commands
 
         public DelegateCommand OpenProfileEditorCommand { get; }
-        public DelegateCommand<SplitViewModel> ToggleEditNotesCommand { get; }
 
         public DelegateCommand ManualSplitCommand { get; }
         public DelegateCommand PrevSplitCommand { get; }
@@ -81,6 +77,8 @@ namespace AutoHitCounter.ViewModels
 
         public DelegateCommand ResetTimerCommand { get; }
         public DelegateCommand SetPbCommand { get; }
+        
+        public DelegateCommand SaveNotesCommand { get; }
 
         #endregion
 
@@ -274,7 +272,8 @@ namespace AutoHitCounter.ViewModels
                     IsAuto = split.IsAuto,
                     Type = split.Type,
                     NumOfHits = 0,
-                    PersonalBest = split.PersonalBest
+                    PersonalBest = split.PersonalBest,
+                    Notes = split.Notes
                 });
             }
         }
@@ -296,6 +295,18 @@ namespace AutoHitCounter.ViewModels
                 "Elden Ring" => EventLoader.GetEvents("EldenRingEvents"),
                 _ => new()
             };
+        }
+        
+        private void SaveNotes()
+        {
+            if (ActiveProfile == null) return;
+
+            for (int i = 0; i < Splits.Count && i < ActiveProfile.Splits.Count; i++)
+            {
+                ActiveProfile.Splits[i].Notes = Splits[i].Notes;
+            }
+
+            _profileService.SaveProfile(ActiveProfile);
         }
 
         #endregion
