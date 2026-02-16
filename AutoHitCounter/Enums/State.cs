@@ -9,4 +9,5 @@ public enum State
     NotAttached,
     Loaded,
     NotLoaded,
+    SettingsChanged,
 }

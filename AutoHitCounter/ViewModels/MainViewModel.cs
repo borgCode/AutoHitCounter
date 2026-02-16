@@ -39,6 +39,9 @@ namespace AutoHitCounter.ViewModels
 
             stateService.Subscribe(State.Attached, OnAttached);
             stateService.Subscribe(State.NotAttached, OnNotAttached);
+            stateService.Subscribe(State.SettingsChanged, LoadSettings);
+
+            LoadSettings();
 
             RegisterHotkeys();
 
@@ -60,9 +63,9 @@ namespace AutoHitCounter.ViewModels
 
             SelectedGame = Games.FirstOrDefault(game => game.GameName == SettingsManager.Default.LastSelectedGame);
 
-            UpdateSplits();
         }
 
+        
         #region Commands
 
         public DelegateCommand OpenProfileEditorCommand { get; }
@@ -110,12 +113,12 @@ namespace AutoHitCounter.ViewModels
             {
                 if (SetProperty(ref _selectedGame, value))
                 {
-                    SwapModule();
                     Profiles.Clear();
                     foreach (var p in _profileService.GetProfiles(_selectedGame?.GameName))
                         Profiles.Add(p);
 
                     ActiveProfile = Profiles.FirstOrDefault();
+                    SwapModule();
                 }
             }
         }
@@ -189,6 +192,11 @@ namespace AutoHitCounter.ViewModels
         private void OnNotAttached()
         {
             AttachedText = "Not attached";
+        }
+        
+        private void LoadSettings()
+        {
+            ShowNotes = SettingsManager.Default.ShowNotesSection;
         }
 
         private void SwapModule()

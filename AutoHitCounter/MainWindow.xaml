@@ -12,7 +12,7 @@
         Style="{StaticResource DefaultWindowStyle}"
         WindowStyle="None"
         AllowsTransparency="True"
-        Title="Auto Hit Counter" Height="350" Width="525">
+        Title="Auto Hit Counter" Height="720" Width="525">
     <Window.Resources>
         <FontFamily x:Key="AppFont">Segoe UI</FontFamily>
         <system:Double x:Key="FontSizeHeader">15</system:Double>

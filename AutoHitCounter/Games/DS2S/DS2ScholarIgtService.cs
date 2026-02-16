@@ -12,8 +12,6 @@ namespace AutoHitCounter.Games.DS2S;
 public class DS2ScholarIgtService(IMemoryService memoryService, HookManager hookManager)
 {
     private long _baseMs;
-    private bool _newGameStarted;
-    private bool _transitionStarted;
     private readonly Stopwatch _stopwatch = new();
     private readonly nint _igtState = CodeCaveOffsets.Base + CodeCaveOffsets.IgtState;
 

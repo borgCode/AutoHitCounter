@@ -50,6 +50,7 @@ public class EldenRingModule : IGameModule, IDisposable
         _eventService.InstallHook();
         _hitService.InstallHooks();
         _igtPtr = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
+        Console.WriteLine($@"{(long) _igtPtr:X}");
         _tickService.RegisterGameTick(Tick);
     }
 
@@ -64,7 +65,9 @@ public class EldenRingModule : IGameModule, IDisposable
 
     private void Tick()
     {
-        if (_hitService.HasHit() && _lastHit != null && (DateTime.Now - _lastHit.Value).TotalSeconds < 3)
+        if (!IsLoaded()) return;
+        
+        if (_hitService.HasHit() && (_lastHit == null || (DateTime.Now - _lastHit.Value).TotalSeconds > 3))
         {
             OnHit?.Invoke(1);
             _lastHit = DateTime.Now;
@@ -76,6 +79,12 @@ public class EldenRingModule : IGameModule, IDisposable
         }
 
         OnIgtChanged?.Invoke(_memoryService.Read<uint>(_igtPtr));
+    }
+
+    private bool IsLoaded()
+    {
+        var worldChrman = _memoryService.Read<nint>(WorldChrMan.Base);
+        return _memoryService.Read<nint>(worldChrman + WorldChrMan.PlayerIns) != 0;
     }
 
     public void Dispose()

@@ -27,6 +27,8 @@ public class SettingsManager
     public bool EnableHotkeys { get; set; }
     public bool GlobalHotkeys { get; set; }
     public bool BlockHotkeysFromGame { get; set; }
+    public bool AlwaysOnTop { get; set; }
+    public bool ShowNotesSection { get; set; }
     
     
     public void Save()
