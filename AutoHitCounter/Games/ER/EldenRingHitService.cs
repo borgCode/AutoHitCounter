@@ -38,11 +38,11 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         var staggerCheckFlag = CodeCaveOffsets.Base + CodeCaveOffsets.StaggerCheckFlag;
         var code = CodeCaveOffsets.Base + CodeCaveOffsets.HitCode;
         AsmHelper.WriteRelativeOffsets(bytes, [
-            (code + 0x8, WorldChrMan.Base, 7, 0x8 + 3),
-            (code + 0x4B, Functions.ChrInsByHandle, 5, 0x4B + 1),
-            (code + 0xAC, staggerCheckFlag, 7, 0xAC + 2),
-            (code + 0xB5, hit, 6, 0xB5 + 2),
-            (code + 0xBE, Hooks.Hit + 5, 5, 0xBE + 1),
+            (code + 0xC, WorldChrMan.Base, 7, 0xC + 3),
+            (code + 0x58, Functions.ChrInsByHandle, 5, 0x58 + 1),
+            (code + 0xB9, staggerCheckFlag, 7, 0xB9 + 2),
+            (code + 0xC2, hit, 6, 0xC2 + 2),
+            (code + 0xCC, Hooks.Hit + 5, 5, 0xCC + 1),
         ]);
         
         memoryService.WriteBytes(code, bytes);
