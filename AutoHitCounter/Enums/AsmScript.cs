@@ -17,5 +17,9 @@ public enum AsmScript
     EldenRingHit,
     EldenRingFallDamage,
     EldenRingKillBox,
+    EldenRingAuxDamageAttacker,
+    EldenRingAuxProc,
+    EldenRingDeathFromSelfAux,
+    EldenRingStaggerEndure,
     EldenRingEventLog
 }

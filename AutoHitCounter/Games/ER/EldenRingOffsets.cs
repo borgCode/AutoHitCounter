@@ -82,6 +82,10 @@ public static class EldenRingOffsets
         public static nint Hit;
         public static nint FallDamage;
         public static nint KillBox;
+        public static nint AuxDamageAttacker;
+        public static nint AuxProc;
+        public static nint DeathFromSelfAux;
+        public static nint EndureStagger;
         public static nint SetEvent;
     }
 
@@ -193,6 +197,81 @@ public static class EldenRingOffsets
             Version2_6_0 or Version2_6_1 => 0x44DC5D,
             _ => 0
         };
+        
+        Hooks.AuxDamageAttacker = moduleBase + Version switch
+        {
+            // WARNING: No match found for: Version1_2_0, Version1_2_1, Version1_2_2, Version1_2_3, Version1_3_0, Version1_3_1, Version1_3_2, Version1_4_0, Version1_4_1, Version1_5_0, Version1_6_0, Version1_7_0
+            Version1_8_0 or Version1_8_1 => 0x3F8602,
+            Version1_9_0 or Version1_9_1 => 0x3F8732,
+            Version2_0_0 or Version2_0_1 => 0x3F8802,
+            Version2_2_0 or Version2_2_3 or Version2_6_0 or Version2_6_1 => 0x3FAF92,
+            Version2_3_0 => 0x3FAFA2,
+            Version2_4_0 or Version2_5_0 => 0x3FAFC2,
+            _ => 0
+        };
+        
+        Hooks.AuxProc = moduleBase + Version switch
+        {
+            Version1_2_0 => 0x434994,
+            Version1_2_1 or Version1_2_2 => 0x434A04,
+            Version1_2_3 => 0x434B24,
+            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x435784,
+            Version1_4_0 => 0x437E34,
+            Version1_4_1 => 0x437E44,
+            Version1_5_0 => 0x438284,
+            Version1_6_0 => 0x4390C4,
+            Version1_7_0 => 0x439144,
+            Version1_8_0 or Version1_8_1 => 0x43AAA4,
+            Version1_9_0 or Version1_9_1 => 0x43ABE4,
+            Version2_0_0 or Version2_0_1 => 0x43AC84,
+            Version2_2_0 or Version2_2_3 => 0x43D9E4,
+            Version2_3_0 => 0x43DA04,
+            Version2_4_0 or Version2_5_0 => 0x43DA44,
+            Version2_6_0 or Version2_6_1 => 0x43DA14,
+            _ => 0
+        };
+
+        Hooks.DeathFromSelfAux = moduleBase + Version switch
+        {
+            Version1_2_0 => 0x437F25,
+            Version1_2_1 or Version1_2_2 => 0x437F95,
+            Version1_2_3 => 0x4380B5,
+            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x438D15,
+            Version1_4_0 => 0x43B3C5,
+            Version1_4_1 => 0x43B405,
+            Version1_5_0 => 0x43B845,
+            Version1_6_0 => 0x43C685,
+            Version1_7_0 => 0x43C705,
+            Version1_8_0 or Version1_8_1 => 0x43E065,
+            Version1_9_0 or Version1_9_1 => 0x43E1A5,
+            Version2_0_0 or Version2_0_1 => 0x43E248,
+            Version2_2_0 or Version2_2_3 => 0x440FA8,
+            Version2_3_0 => 0x4410B8,
+            Version2_4_0 or Version2_5_0 => 0x4410F8,
+            Version2_6_0 or Version2_6_1 => 0x4410C8,
+            _ => 0
+        };
+        
+        Hooks.EndureStagger = moduleBase + Version switch
+        {
+            Version1_2_0 => 0x43D743,
+            Version1_2_1 or Version1_2_2 => 0x43D7B3,
+            Version1_2_3 => 0x43D8D3,
+            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x43E4E3,
+            Version1_4_0 => 0x440D03,
+            Version1_4_1 => 0x440C13,
+            Version1_5_0 => 0x441053,
+            Version1_6_0 => 0x441E93,
+            Version1_7_0 => 0x441F13,
+            Version1_8_0 or Version1_8_1 => 0x443873,
+            Version1_9_0 or Version1_9_1 => 0x4439B3,
+            Version2_0_0 or Version2_0_1 => 0x443A83,
+            Version2_2_0 or Version2_2_3 => 0x446853,
+            Version2_3_0 => 0x446963,
+            Version2_4_0 or Version2_5_0 => 0x4469A3,
+            Version2_6_0 or Version2_6_1 => 0x446973,
+            _ => 0
+        };
 
         
         Hooks.SetEvent = moduleBase + Version switch
@@ -276,6 +355,10 @@ public static class EldenRingOffsets
             PrintOffset("Hit", Hooks.Hit);
             PrintOffset("FallDamage", Hooks.FallDamage);
             PrintOffset("KillBox", Hooks.KillBox);
+            PrintOffset("AuxDamageAttacker", Hooks.AuxDamageAttacker);
+            PrintOffset("AuxProc", Hooks.AuxProc);
+            PrintOffset("DeathFromSelfAux", Hooks.DeathFromSelfAux);
+            PrintOffset("EndureStagger", Hooks.EndureStagger);
             PrintOffset("SetEvent", Hooks.SetEvent);
            
             

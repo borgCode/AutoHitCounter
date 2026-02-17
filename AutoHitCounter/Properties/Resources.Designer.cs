@@ -60,6 +60,57 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 50                      push   rax
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
+        ///48 3b 98 08 e5 01 00    cmp    rbx,QWORD PTR [rax+0x1e508]
+        ///75 12                   jne    23 &lt;skip&gt;
+        ///48 3b b0 08 e5 01 00    cmp    rsi,QWORD PTR [rax+0x1e508]
+        ///74 09                   je     23 &lt;skip&gt;
+        ///c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 21 &lt;_main+0x21&gt;
+        ///eb 07                   jmp    2a &lt;exit&gt;
+        ///000000000023 &lt;skip&gt;:
+        ///c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0] [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string EldenRingAuxDamageAttacker {
+            get {
+                return ResourceManager.GetString("EldenRingAuxDamageAttacker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 09 83 b8 00 00 00       or     DWORD PTR [rbx+0xb8],eax
+        ///80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # d &lt;_main+0xd&gt;
+        ///74 06                   je     15 &lt;skip&gt;
+        ///ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 15 &lt;skip&gt;
+        ///000000000015 &lt;skip&gt;:
+        ///e9 00 00 00 00          jmp    1a &lt;skip+0x5&gt;.
+        /// </summary>
+        internal static string EldenRingAuxProc {
+            get {
+                return ResourceManager.GetString("EldenRingAuxProc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 53                      push   rbx
+        ///48 8b 1d 00 00 00 00    mov    rbx,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
+        ///48 8b 9b 08 e5 01 00    mov    rbx,QWORD PTR [rbx+0x1e508]
+        ///48 8b 9b 90 01 00 00    mov    rbx,QWORD PTR [rbx+0x190]
+        ///48 39 0b                cmp    QWORD PTR [rbx],rcx
+        ///75 12                   jne    2d &lt;skip&gt;
+        ///8b 99 38 01 00 00       mov    ebx,DWORD PTR [rcx+0x138]
+        ///01 d3                   add    ebx,edx
+        ///85 db                   test   ebx,ebx
+        ///7f 06                   jg     2d &lt;skip&gt;
+        ///ff 05 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string EldenRingDeathFromSelfAux {
+            get {
+                return ResourceManager.GetString("EldenRingDeathFromSelfAux", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 48 89 5c 24 08          mov    QWORD PTR [rsp+0x8],rbx
         ///50                      push   rax
         ///53                      push   rbx
@@ -127,7 +178,7 @@ namespace AutoHitCounter.Properties {
         ///48 8b 82 08 e5 01 00    mov    rax,QWORD PTR [rdx+0x1e508]
         ///48 8b 80 90 01 00 00    mov    rax,QWORD PTR [rax+0x190]
         ///48 3b 88 98 00 00 00    cmp    rcx,QWORD PTR [rax+0x98]
-        ///74 3f                   je     65 &lt;validate_hit&gt;
+        ///74 43                   je     69 &lt;validate_hit&gt;
         ///48 8b 80 e8 00 00 00    mov    rax,QWORD PTR [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string EldenRingHit {
@@ -152,6 +203,25 @@ namespace AutoHitCounter.Properties {
         internal static string EldenRingKillBox {
             get {
                 return ResourceManager.GetString("EldenRingKillBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # 7 &lt;_main+0x7&gt;
+        ///74 11                   je     1a &lt;original&gt;
+        ///84 c0                   test   al,al
+        ///74 06                   je     13 &lt;exit&gt;
+        ///ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 13 &lt;exit&gt;
+        ///000000000013 &lt;exit&gt;:
+        ///c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 1a &lt;original&gt;
+        ///00000000001a &lt;original&gt;:
+        ///45 0f 57 c9             xorps  xmm9,xmm9
+        ///84 c0                   test   al,al
+        ///e9 00 00 00 00          jmp     [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string EldenRingStaggerEndure {
+            get {
+                return ResourceManager.GetString("EldenRingStaggerEndure", resourceCulture);
             }
         }
         
