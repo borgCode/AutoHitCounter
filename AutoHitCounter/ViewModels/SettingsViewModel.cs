@@ -46,7 +46,19 @@ public class SettingsViewModel : BaseViewModel
             if (!SetProperty(ref _isShowNotesEnabled, value)) return;
             SettingsManager.Default.ShowNotesSection = value;
             SettingsManager.Default.Save();
-            _stateService.Publish(State.SettingsChanged);
+        }
+    }
+    
+    private bool _allowManualSplitOnAutoSplits;
+
+    public bool AllowManualSplitOnAutoSplits
+    {
+        get => _allowManualSplitOnAutoSplits;
+        set
+        {
+            if (!SetProperty(ref _allowManualSplitOnAutoSplits, value)) return;
+            SettingsManager.Default.AllowManualSplitOnAutoSplits = value;
+            SettingsManager.Default.Save();
         }
     }
     
@@ -63,6 +75,9 @@ public class SettingsViewModel : BaseViewModel
         
         _isShowNotesEnabled = SettingsManager.Default.ShowNotesSection;
         OnPropertyChanged(nameof(IsShowNotesEnabled));
+
+        _allowManualSplitOnAutoSplits = SettingsManager.Default.AllowManualSplitOnAutoSplits;
+        OnPropertyChanged(nameof(AllowManualSplitOnAutoSplits));
     }
 
     #endregion

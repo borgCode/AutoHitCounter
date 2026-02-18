@@ -25,6 +25,8 @@ namespace AutoHitCounter.ViewModels
         public SettingsViewModel Settings { get; }
         public HotkeyTabViewModel Hotkeys { get; }
 
+        private bool _allowManualSplitOnAutoSplits;
+
         public MainViewModel(IMemoryService memoryService, HotkeyManager hotkeyManager,
             GameModuleFactory gameModuleFactory,
             IProfileService profileService, IStateService stateService, SettingsViewModel settings,
@@ -39,16 +41,14 @@ namespace AutoHitCounter.ViewModels
 
             stateService.Subscribe(State.Attached, OnAttached);
             stateService.Subscribe(State.NotAttached, OnNotAttached);
-            stateService.Subscribe(State.SettingsChanged, LoadSettings);
-
-            LoadSettings();
-
+            
             RegisterHotkeys();
 
             OpenProfileEditorCommand = new DelegateCommand(OpenProfileEditor);
-            
             ManualSplitCommand = new DelegateCommand(ManualAdvanceSplit);
             SaveNotesCommand = new DelegateCommand(SaveNotes);
+            ResetCommand = new DelegateCommand(ResetSplits);
+            SetPbCommand = new DelegateCommand(SetPb);
 
 
             Games.Add(new Game { GameName = "Dark Souls Remastered", ProcessName = "darksoulsremastered" });
@@ -63,19 +63,19 @@ namespace AutoHitCounter.ViewModels
         }
 
         
+
         #region Commands
 
         public DelegateCommand OpenProfileEditorCommand { get; }
 
         public DelegateCommand ManualSplitCommand { get; }
         public DelegateCommand PrevSplitCommand { get; }
-        public DelegateCommand ResetSplitsCommand { get; }
 
         public DelegateCommand IncrementHitCommand { get; }
         public DelegateCommand DecrementHitCommand { get; }
-        public DelegateCommand ResetHitsCommand { get; }
-
-        public DelegateCommand ResetTimerCommand { get; }
+        
+        public DelegateCommand ResetCommand { get; }
+        
         public DelegateCommand SetPbCommand { get; }
         
         public DelegateCommand SaveNotesCommand { get; }
@@ -148,9 +148,7 @@ namespace AutoHitCounter.ViewModels
             {
                 if (SetProperty(ref _activeProfile, value))
                 {
-                    UpdateSplits();
-                    CurrentSplit = Splits.FirstOrDefault(s => s.Type == SplitType.Child);
-                    if (CurrentSplit != null) CurrentSplit.IsCurrent = true;
+                    ResetSplits();
                 }
             }
         }
@@ -172,6 +170,17 @@ namespace AutoHitCounter.ViewModels
             get => _showNotes;
             set => SetProperty(ref _showNotes, value);
         }
+        
+        private bool _isRunComplete;
+
+        public bool IsRunComplete
+        {
+            get => _isRunComplete;
+            set => SetProperty(ref _isRunComplete, value);
+        }
+        
+        public int TotalHits => Splits.Where(s => s.Type == SplitType.Child).Sum(s => s.NumOfHits);
+        public int TotalPb => Splits.Where(s => s.Type == SplitType.Child).Sum(s => s.PersonalBest);
 
         #endregion
 
@@ -192,11 +201,6 @@ namespace AutoHitCounter.ViewModels
             AttachedText = "Not attached";
         }
         
-        private void LoadSettings()
-        {
-            ShowNotes = SettingsManager.Default.ShowNotesSection;
-        }
-
         private void SwapModule()
         {
             (_currentModule as IDisposable)?.Dispose();
@@ -205,7 +209,11 @@ namespace AutoHitCounter.ViewModels
 
             _currentModule = _gameModuleFactory.CreateModule(_selectedGame, GetActiveEvents());
             _memoryService.StartAutoAttach(_selectedGame.ProcessName);
-            _currentModule.OnHit += count => CurrentSplit.NumOfHits += count;
+            _currentModule.OnHit += count =>
+            {
+                if (IsRunComplete) return;
+                CurrentSplit.NumOfHits += count;
+            };
             _currentModule.OnEventSet += AutoAdvanceSplit;
             _currentModule.OnIgtChanged += igt => InGameTime = TimeSpan.FromMilliseconds(igt);
 
@@ -221,23 +229,31 @@ namespace AutoHitCounter.ViewModels
 
         private void ManualAdvanceSplit()
         {
-            if (CurrentSplit == null || CurrentSplit.IsAuto) return;
+            if (CurrentSplit == null || !Settings.AllowManualSplitOnAutoSplits) return;
             AdvanceSplit();
         }
 
         private void AdvanceSplit()
         {
+            if (IsRunComplete) return;
             var currentIndex = Splits.IndexOf(CurrentSplit);
             if (currentIndex < 0) return;
 
-            var next = Splits.Skip(currentIndex + 1).FirstOrDefault(s => s.Type == SplitType.Child);
-            if (next == null) return;
+            var next = Splits.Skip(currentIndex + 1).FirstOrDefault(s => s.Type == SplitType.Child) ;
+            if (next == null)
+            {
+                CurrentSplit.IsCurrent = false;
+                IsRunComplete = true;
+                OnPropertyChanged(nameof(TotalHits));
+                OnPropertyChanged(nameof(TotalPb));
+                return;
+            }
 
             CurrentSplit.IsCurrent = false;
             next.IsCurrent = true;
             CurrentSplit = next;
         }
-
+        
         private void OpenProfileEditor()
         {
             if (_selectedGame == null) return;
@@ -306,6 +322,25 @@ namespace AutoHitCounter.ViewModels
                 ActiveProfile.Splits[i].Notes = Splits[i].Notes;
             }
 
+            _profileService.SaveProfile(ActiveProfile);
+        }
+        
+        private void ResetSplits()
+        {
+            IsRunComplete = false;
+            UpdateSplits();
+            CurrentSplit = Splits.FirstOrDefault(s => s.Type == SplitType.Child);
+            if (CurrentSplit != null) CurrentSplit.IsCurrent = true;
+        }
+        
+        private void SetPb()
+        {
+            for (int i = 0; i < Splits.Count && i < ActiveProfile.Splits.Count; i++)
+            {
+                if (Splits[i].IsParent) continue;
+                Splits[i].PersonalBest = Splits[i].NumOfHits;
+                ActiveProfile.Splits[i].PersonalBest = Splits[i].NumOfHits;
+            }
             _profileService.SaveProfile(ActiveProfile);
         }
 

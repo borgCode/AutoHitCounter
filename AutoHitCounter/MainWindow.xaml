@@ -43,10 +43,10 @@
             <TabItem Header="Splits">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="54" />
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="25" />
+                        <RowDefinition Height="0.5*" />
+                        <RowDefinition Height="0.3*" />
+                        <RowDefinition Height="4*" />
+                        <RowDefinition Height="0.6*" />
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0" Margin="8,4,8,4">
@@ -234,7 +234,7 @@
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>
                                                             <Condition
-                                                                Binding="{Binding DataContext.ShowNotes,
+                                                                Binding="{Binding DataContext.Settings.IsShowNotesEnabled,
                             RelativeSource={RelativeSource AncestorType=Window}}"
                                                                 Value="True" />
                                                             <Condition Binding="{Binding IsParent}" Value="False" />
@@ -292,16 +292,46 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
 
-                    <Grid Grid.Row="3">
+                    <Grid Grid.Row="3" >
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                            <Button Content="+ Hit" Margin="5,0,0,5"></Button>
-                            <Button Content="Next Split ->" Margin="5,0,0,5"></Button>
-                            <Button Content="Reset" Margin="5,0,0,5"></Button>
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsRunComplete}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                            <Button Content="+ Hit" Margin="5,0,0,5" />
+                            <Button Content="Next Split ->" Margin="5,0,0,5" />
+                            <Button Content="Reset" Margin="5,0,0,5" />
                             <Button Content="Save Notes" Margin="5,0,0,5"
-                                    Command="{Binding SaveNotesCommand}"></Button>
+                                    Command="{Binding SaveNotesCommand}" />
                         </StackPanel>
 
-                        <TextBlock HorizontalAlignment="Right" Text="{Binding InGameTime, StringFormat=hh\\:mm\\:ss}"></TextBlock>
+                        <StackPanel Visibility="{Binding IsRunComplete, Converter={StaticResource BoolToVisConverter}}"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock Text="✓ Run Complete"
+                                       FontSize="14" FontWeight="SemiBold"
+                                       Foreground="#00CC66"
+                                       HorizontalAlignment="Center" Margin="0,4,0,6" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,6">
+                                <TextBlock Text="Total Hits: " Foreground="#999" />
+                                <TextBlock Text="{Binding TotalHits}" Foreground="White" Margin="0,0,12,0" />
+                                <TextBlock Text="PB: " Foreground="#999" />
+                                <TextBlock Text="{Binding TotalPb}" Foreground="White" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Content="Mark as PB" Margin="4,0" />
+                                <Button Content="Reset" Margin="4,0" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <TextBlock HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom"
+                                   Margin="0,0,5,5"
+                                   Text="{Binding InGameTime, StringFormat=hh\\:mm\\:ss}" />
                     </Grid>
 
                 </Grid>

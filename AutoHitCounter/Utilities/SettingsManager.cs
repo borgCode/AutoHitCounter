@@ -29,8 +29,8 @@ public class SettingsManager
     public bool BlockHotkeysFromGame { get; set; }
     public bool AlwaysOnTop { get; set; }
     public bool ShowNotesSection { get; set; }
-    
-    
+    public bool AllowManualSplitOnAutoSplits { get; set; }
+
     public void Save()
     {
         try
