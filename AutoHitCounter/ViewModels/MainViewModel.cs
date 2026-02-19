@@ -7,6 +7,7 @@ using System.Linq;
 using AutoHitCounter.Core;
 using AutoHitCounter.Enums;
 using AutoHitCounter.Interfaces;
+using AutoHitCounter.Mappers;
 using AutoHitCounter.Models;
 using AutoHitCounter.Services;
 using AutoHitCounter.Utilities;
@@ -20,6 +21,7 @@ namespace AutoHitCounter.ViewModels
         private readonly HotkeyManager _hotkeyManager;
         private readonly GameModuleFactory _gameModuleFactory;
         private readonly IProfileService _profileService;
+        private readonly OverlayServerService _overlayServerService;
         private IGameModule _currentModule;
 
         public SettingsViewModel Settings { get; }
@@ -28,7 +30,7 @@ namespace AutoHitCounter.ViewModels
         public MainViewModel(IMemoryService memoryService, HotkeyManager hotkeyManager,
             GameModuleFactory gameModuleFactory,
             IProfileService profileService, IStateService stateService, SettingsViewModel settings,
-            HotkeyTabViewModel hotkeyTabViewModel)
+            HotkeyTabViewModel hotkeyTabViewModel, OverlayServerService overlayServerService)
         {
             Settings = settings;
             Hotkeys = hotkeyTabViewModel;
@@ -36,6 +38,8 @@ namespace AutoHitCounter.ViewModels
             _hotkeyManager = hotkeyManager;
             _gameModuleFactory = gameModuleFactory;
             _profileService = profileService;
+            _overlayServerService = overlayServerService;
+            _overlayServerService.Start();
 
             stateService.Subscribe(State.Attached, OnAttached);
             stateService.Subscribe(State.NotAttached, OnNotAttached);
@@ -336,6 +340,7 @@ namespace AutoHitCounter.ViewModels
             UpdateSplits();
             CurrentSplit = Splits.FirstOrDefault(s => s.Type == SplitType.Child);
             if (CurrentSplit != null) CurrentSplit.IsCurrent = true;
+            _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
         }
 
         private void SetPb()

@@ -37,6 +37,9 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="Fleck, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>..\packages\Fleck.1.2.0\lib\net45\Fleck.dll</HintPath>
+        </Reference>
         <Reference Include="H.Hooks, Version=2.0.0.0, Culture=neutral, PublicKeyToken=603f13207e65c17b, processorArchitecture=MSIL">
           <HintPath>..\packages\H.Hooks.2.1.0-dev.26\lib\net462\H.Hooks.dll</HintPath>
         </Reference>
@@ -148,15 +151,18 @@
         <Compile Include="Interfaces\ISettingsService.cs" />
         <Compile Include="Interfaces\IStateService.cs" />
         <Compile Include="Interfaces\ITickService.cs" />
+        <Compile Include="Mappers\OverlayMapper.cs" />
         <Compile Include="Memory\CodeCaveOffsets.cs" />
         <Compile Include="Memory\HookManager.cs" />
         <Compile Include="Memory\Kernel32.cs" />
         <Compile Include="Models\Game.cs" />
+        <Compile Include="Models\OverlayState.cs" />
         <Compile Include="Models\Profile.cs" />
         <Compile Include="Models\SplitEntry.cs" />
         <Compile Include="Services\EventServiceBase.cs" />
         <Compile Include="Services\GameModuleFactory.cs" />
         <Compile Include="Services\MemoryService.cs" />
+        <Compile Include="Services\OverlayServerService.cs" />
         <Compile Include="Services\ProfileService.cs" />
         <Compile Include="Services\SettingsService.cs" />
         <Compile Include="Services\StateService.cs" />
@@ -227,6 +233,9 @@
     <ItemGroup>
         <None Include="App.config" />
         <None Include="packages.config" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="Overlay\Overlay.html" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <Import Project="..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />

@@ -22,6 +22,8 @@ namespace AutoHitCounter
             IProfileService profileService = new ProfileService();
 
             ITickService tickService = new TickService(memoryService, stateService);
+            
+            OverlayServerService overlayServerService = new OverlayServerService();
 
             HookManager hookManager = new HookManager(memoryService);
             
@@ -34,7 +36,7 @@ namespace AutoHitCounter
             var hotkeysViewModel = new HotkeyTabViewModel(hotkeyManager, stateService);
 
             var mainViewModel = new MainViewModel(memoryService, hotkeyManager, gameModuleFactory, profileService, stateService,
-                settingsViewModel, hotkeysViewModel);
+                settingsViewModel, hotkeysViewModel, overlayServerService);
             var mainWindow = new MainWindow
             {
                 DataContext = mainViewModel

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Auto Hit Counter Overlay</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: transparent;
+            font-family: 'Segoe UI', sans-serif;
+            color: #e0e0e0;
+            font-size: 16px;
+            overflow: hidden;
+        }
+        
+        #overlay {
+            display: inline-block;
+            width: 300px;
+            padding: 6px;
+        }
+
+        .header {
+            display: grid;
+            grid-template-columns: 3fr 0.5fr 0.5fr 0.5fr;
+            padding: 4px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #777;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 2px;
+        }
+
+        .header span:not(:first-child) {
+            text-align: center;
+        }
+        
+        .split-row {
+            display: grid;
+            grid-template-columns: 3fr 0.5fr 0.5fr 0.5fr;
+            padding: 4px 8px;
+            font-size: 15px;
+            font-weight: 400;
+            transition: background 0.2s ease, border-color 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .split-row:nth-child(even) {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .split-row .col-name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .split-row .col-hits,
+        .split-row .col-diff,
+        .split-row .col-pb {
+            text-align: center;
+        }
+
+        .split-row.current {
+            border-left-color: #00cc66;
+            background: rgba(0,204,102,0.06);
+        }
+
+        .split-row.parent {
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.03em;
+            color: #999;
+            padding-top: 8px;
+            border-left-color: transparent;
+            background: transparent;
+        }
+
+        .split-row.parent .col-hits,
+        .split-row.parent .col-diff,
+        .split-row.parent .col-pb {
+            visibility: hidden;
+        }
+
+        .diff-pos { color: #ff4c4c; }
+        .diff-neg { color: #00cc66; }
+        .diff-zero { color: #555; }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 8px 2px;
+            margin-top: 4px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            font-size: 13px;
+            color: #888;
+        }
+
+        .footer .totals span {
+            margin-right: 12px;
+        }
+
+        .footer .totals .label {
+            color: #666;
+        }
+
+        .footer .totals .value {
+            color: #ccc;
+            font-weight: 600;
+        }
+
+        .igt {
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+    </style>
+</head>
+<body>
+<div id="overlay">
+    <div class="header">
+        <span>Split</span>
+        <span>Hits</span>
+        <span>Diff</span>
+        <span>PB</span>
+    </div>
+    <div id="splits"></div>
+    <div class="footer">
+        <div class="totals" id="totals"></div>
+        <div class="igt" id="igt"></div>
+    </div>
+    <div class="run-complete" id="runComplete" style="display:none;">✓ Run Complete</div>
+</div>
+  
+<script>
+    (function () {
+        const WS_URL = 'ws://localhost:16200';
+        const RECONNECT_INTERVAL = 3000;
+
+        const overlay = document.getElementById('overlay');
+        const splitsEl = document.getElementById('splits');
+        const totalsEl = document.getElementById('totals');
+        const igtEl = document.getElementById('igt');
+        const runCompleteEl = document.getElementById('runComplete');
+
+        let ws = null;
+
+        function connect() {
+            ws = new WebSocket(WS_URL);
+
+            ws.onopen = function () {
+            };
+
+            ws.onclose = function () {
+                setTimeout(connect, RECONNECT_INTERVAL);
+            };
+
+            ws.onerror = function () {
+                ws.close();
+            };
+
+            ws.onmessage = function (event) {
+                const msg = JSON.parse(event.data);
+
+                if (msg.type === 'state') {
+                    renderState(msg.data);
+                } else if (msg.type === 'igt') {
+                    igtEl.textContent = msg.data;
+                }
+            };
+        }
+
+        function renderState(state) {
+            let html = '';
+            for (let i = 0; i < state.splits.length; i++) {
+                const s = state.splits[i];
+                let classes = 'split-row';
+                if (s.isParent) classes += ' parent';
+                if (s.isCurrent) classes += ' current';
+
+                var diffClass = s.diff > 0 ? 'diff-pos' : s.diff < 0 ? 'diff-neg' : 'diff-zero';
+                var diffText = s.diff > 0 ? '+' + s.diff : s.diff.toString();
+
+                html += '<div class="' + classes + '">'
+                    + '<span class="col-name">' + escapeHtml(s.name) + '</span>'
+                    + '<span class="col-hits">' + s.hits + '</span>'
+                    + '<span class="col-diff ' + diffClass + '">' + diffText + '</span>'
+                    + '<span class="col-pb">' + s.pb + '</span>'
+                    + '</div>';
+            }
+            splitsEl.innerHTML = html;
+
+            totalsEl.innerHTML = '<span><span class="label">Hits </span><span class="value">' + state.totalHits + '</span></span>'
+                + '<span><span class="label">PB </span><span class="value">' + state.totalPb + '</span></span>';
+
+            if (state.inGameTime) {
+                igtEl.textContent = state.inGameTime;
+            }
+
+            runCompleteEl.style.display = state.isRunComplete ? 'block' : 'none';
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.appendChild(document.createTextNode(text));
+            return div.innerHTML;
+        }
+
+        connect();
+    })();
+</script>
+</body>
+</html>
