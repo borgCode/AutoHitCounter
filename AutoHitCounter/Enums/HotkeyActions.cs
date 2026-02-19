@@ -6,7 +6,7 @@ public enum HotkeyActions
 {
     NextSplit,
     PreviousSplit,
-    ResetSplits,
+    Reset,
     IncrementHit,
     DecrementHit,
     ResetHits,

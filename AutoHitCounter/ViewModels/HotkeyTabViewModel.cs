@@ -37,10 +37,9 @@ public class HotkeyTabViewModel : BaseViewModel
         [
             new("Next Split", HotkeyActions.NextSplit),
             new("Previous Split", HotkeyActions.PreviousSplit),
-            new("Reset Splits", HotkeyActions.ResetSplits),
+            new("Reset", HotkeyActions.Reset),
             new("Increment Hit", HotkeyActions.IncrementHit),
             new("Decrement Hit", HotkeyActions.DecrementHit),
-            new("Reset Hits", HotkeyActions.ResetHits),
             
             
         ];

@@ -25,8 +25,6 @@ namespace AutoHitCounter.ViewModels
         public SettingsViewModel Settings { get; }
         public HotkeyTabViewModel Hotkeys { get; }
 
-        private bool _allowManualSplitOnAutoSplits;
-
         public MainViewModel(IMemoryService memoryService, HotkeyManager hotkeyManager,
             GameModuleFactory gameModuleFactory,
             IProfileService profileService, IStateService stateService, SettingsViewModel settings,
@@ -41,12 +39,18 @@ namespace AutoHitCounter.ViewModels
 
             stateService.Subscribe(State.Attached, OnAttached);
             stateService.Subscribe(State.NotAttached, OnNotAttached);
-            
+
             RegisterHotkeys();
 
             OpenProfileEditorCommand = new DelegateCommand(OpenProfileEditor);
-            ManualSplitCommand = new DelegateCommand(ManualAdvanceSplit);
             SaveNotesCommand = new DelegateCommand(SaveNotes);
+
+            ManualSplitCommand = new DelegateCommand(ManualAdvanceSplit);
+            PrevSplitCommand = new DelegateCommand(PreviousSplit);
+
+            IncrementHitCommand = new DelegateCommand(IncrementHit);
+            DecrementHitCommand = new DelegateCommand(DecrementHit);
+
             ResetCommand = new DelegateCommand(ResetSplits);
             SetPbCommand = new DelegateCommand(SetPb);
 
@@ -59,10 +63,7 @@ namespace AutoHitCounter.ViewModels
             Games.Add(new Game { GameName = "Elden Ring", ProcessName = "eldenring" });
 
             SelectedGame = Games.FirstOrDefault(game => game.GameName == SettingsManager.Default.LastSelectedGame);
-
         }
-
-        
 
         #region Commands
 
@@ -73,11 +74,11 @@ namespace AutoHitCounter.ViewModels
 
         public DelegateCommand IncrementHitCommand { get; }
         public DelegateCommand DecrementHitCommand { get; }
-        
+
         public DelegateCommand ResetCommand { get; }
-        
+
         public DelegateCommand SetPbCommand { get; }
-        
+
         public DelegateCommand SaveNotesCommand { get; }
 
         #endregion
@@ -170,7 +171,7 @@ namespace AutoHitCounter.ViewModels
             get => _showNotes;
             set => SetProperty(ref _showNotes, value);
         }
-        
+
         private bool _isRunComplete;
 
         public bool IsRunComplete
@@ -178,7 +179,7 @@ namespace AutoHitCounter.ViewModels
             get => _isRunComplete;
             set => SetProperty(ref _isRunComplete, value);
         }
-        
+
         public int TotalHits => Splits.Where(s => s.Type == SplitType.Child).Sum(s => s.NumOfHits);
         public int TotalPb => Splits.Where(s => s.Type == SplitType.Child).Sum(s => s.PersonalBest);
 
@@ -189,6 +190,10 @@ namespace AutoHitCounter.ViewModels
         private void RegisterHotkeys()
         {
             _hotkeyManager.RegisterAction(HotkeyActions.NextSplit, ManualAdvanceSplit);
+            _hotkeyManager.RegisterAction(HotkeyActions.PreviousSplit, PreviousSplit);
+            _hotkeyManager.RegisterAction(HotkeyActions.Reset, ResetSplits);
+            _hotkeyManager.RegisterAction(HotkeyActions.IncrementHit, IncrementHit);
+            _hotkeyManager.RegisterAction(HotkeyActions.DecrementHit, DecrementHit);
         }
 
         private void OnAttached()
@@ -200,7 +205,7 @@ namespace AutoHitCounter.ViewModels
         {
             AttachedText = "Not attached";
         }
-        
+
         private void SwapModule()
         {
             (_currentModule as IDisposable)?.Dispose();
@@ -239,7 +244,7 @@ namespace AutoHitCounter.ViewModels
             var currentIndex = Splits.IndexOf(CurrentSplit);
             if (currentIndex < 0) return;
 
-            var next = Splits.Skip(currentIndex + 1).FirstOrDefault(s => s.Type == SplitType.Child) ;
+            var next = Splits.Skip(currentIndex + 1).FirstOrDefault(s => s.Type == SplitType.Child);
             if (next == null)
             {
                 CurrentSplit.IsCurrent = false;
@@ -253,7 +258,7 @@ namespace AutoHitCounter.ViewModels
             next.IsCurrent = true;
             CurrentSplit = next;
         }
-        
+
         private void OpenProfileEditor()
         {
             if (_selectedGame == null) return;
@@ -312,7 +317,7 @@ namespace AutoHitCounter.ViewModels
                 _ => new()
             };
         }
-        
+
         private void SaveNotes()
         {
             if (ActiveProfile == null) return;
@@ -324,7 +329,7 @@ namespace AutoHitCounter.ViewModels
 
             _profileService.SaveProfile(ActiveProfile);
         }
-        
+
         private void ResetSplits()
         {
             IsRunComplete = false;
@@ -332,7 +337,7 @@ namespace AutoHitCounter.ViewModels
             CurrentSplit = Splits.FirstOrDefault(s => s.Type == SplitType.Child);
             if (CurrentSplit != null) CurrentSplit.IsCurrent = true;
         }
-        
+
         private void SetPb()
         {
             for (int i = 0; i < Splits.Count && i < ActiveProfile.Splits.Count; i++)
@@ -341,7 +346,31 @@ namespace AutoHitCounter.ViewModels
                 Splits[i].PersonalBest = Splits[i].NumOfHits;
                 ActiveProfile.Splits[i].PersonalBest = Splits[i].NumOfHits;
             }
+
             _profileService.SaveProfile(ActiveProfile);
+        }
+
+        private void PreviousSplit()
+        {
+            var currentIndex = Splits.IndexOf(CurrentSplit);
+            if (currentIndex < 0) return;
+            var prev = Splits.Take(currentIndex).LastOrDefault(s => s.Type == SplitType.Child);
+            if (prev == null) return;
+            CurrentSplit.IsCurrent = false;
+            prev.IsCurrent = true;
+            CurrentSplit = prev;
+        }
+
+        private void IncrementHit()
+        {
+            if (IsRunComplete || CurrentSplit == null) return;
+            CurrentSplit.NumOfHits++;
+        }
+
+        private void DecrementHit()
+        {
+            if (IsRunComplete || CurrentSplit == null || CurrentSplit.NumOfHits <= 0) return;
+            CurrentSplit.NumOfHits--;
         }
 
         #endregion
