@@ -86,6 +86,7 @@ public static class EldenRingOffsets
         public static nint AuxProc;
         public static nint DeathFromSelfAux;
         public static nint EndureStagger;
+        public static nint EnvKilling;
         public static nint SetEvent;
     }
 
@@ -273,6 +274,17 @@ public static class EldenRingOffsets
             _ => 0
         };
 
+        Hooks.EnvKilling = moduleBase + Version switch
+        {
+            // WARNING: No match found for: Version1_2_0, Version1_2_1, Version1_2_2, Version1_2_3, Version1_3_0, Version1_3_1, Version1_3_2, Version1_4_0, Version1_4_1, Version1_5_0, Version1_6_0, Version1_7_0, Version1_8_0, Version1_8_1, Version1_9_0, Version1_9_1
+            Version2_0_0 or Version2_0_1 => 0x44578E,
+            Version2_2_0 or Version2_2_3 => 0x44851E,
+            Version2_3_0 => 0x44862E,
+            Version2_4_0 or Version2_5_0 => 0x44866E,
+            Version2_6_0 or Version2_6_1 => 0x44863E,
+            _ => 0
+        };
+
         
         Hooks.SetEvent = moduleBase + Version switch
         {
@@ -359,6 +371,7 @@ public static class EldenRingOffsets
             PrintOffset("AuxProc", Hooks.AuxProc);
             PrintOffset("DeathFromSelfAux", Hooks.DeathFromSelfAux);
             PrintOffset("EndureStagger", Hooks.EndureStagger);
+            PrintOffset("EnvKilling", Hooks.EnvKilling);
             PrintOffset("SetEvent", Hooks.SetEvent);
            
             

@@ -21,6 +21,7 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         InstallAuxHooks();
         InstallDeathFromSelfAuxHook();
         InstallStaggerEndureHook();
+        InstallEnvKillingHook();
     }
 
     public bool HasHit()
@@ -38,11 +39,11 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         var staggerCheckFlag = CodeCaveOffsets.Base + CodeCaveOffsets.StaggerCheckFlag;
         var code = CodeCaveOffsets.Base + CodeCaveOffsets.HitCode;
         AsmHelper.WriteRelativeOffsets(bytes, [
-            (code + 0xC, WorldChrMan.Base, 7, 0xC + 3),
-            (code + 0x58, Functions.ChrInsByHandle, 5, 0x58 + 1),
-            (code + 0xB9, staggerCheckFlag, 7, 0xB9 + 2),
-            (code + 0xC2, hit, 6, 0xC2 + 2),
-            (code + 0xCC, Hooks.Hit + 5, 5, 0xCC + 1),
+            (code + 0x26, WorldChrMan.Base, 7, 0x26 + 3),
+            (code + 0x72, Functions.ChrInsByHandle, 5, 0x72 + 1),
+            (code + 0xD3, staggerCheckFlag, 7, 0xD3 + 2),
+            (code + 0xDC, hit, 6, 0xDC + 2),
+            (code + 0xE6, Hooks.Hit + 5, 5, 0xE6 + 1),
         ]);
         
         memoryService.WriteBytes(code, bytes);
@@ -149,5 +150,23 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         
         memoryService.WriteBytes(code, bytes);
         hookManager.InstallHook(code, Hooks.EndureStagger, [0x45, 0x0F, 0x57, 0xC9, 0x84, 0xC0]);
+    }
+
+    private void InstallEnvKillingHook()
+    {
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingEnvKilling);
+        var hit = CodeCaveOffsets.Base + CodeCaveOffsets.Hit;
+        var code = CodeCaveOffsets.Base + CodeCaveOffsets.EnvKilling;
+        
+        AsmHelper.WriteRelativeOffsets(bytes, [
+        (code + 0x15, WorldChrMan.Base, 7, 0x15 + 3),
+        (code + 0x4E, Functions.ChrInsByHandle, 5, 0x4E + 1),
+        (code + 0x66, hit, 6, 0x66 + 2),
+        (code + 0x70, Hooks.EnvKilling + 6, 5, 0x70 + 1),
+        ]);
+        
+        memoryService.WriteBytes(code, bytes);
+        hookManager.InstallHook(code, Hooks.EnvKilling, [0xF3, 0x0F, 0x11, 0x4C, 0x24, 0x28]);
+        
     }
 }

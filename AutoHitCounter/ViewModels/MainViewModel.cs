@@ -23,6 +23,7 @@ namespace AutoHitCounter.ViewModels
         private readonly IProfileService _profileService;
         private readonly OverlayServerService _overlayServerService;
         private IGameModule _currentModule;
+        private string _lastIgt;
 
         public SettingsViewModel Settings { get; }
         public HotkeyTabViewModel Hotkeys { get; }
@@ -222,9 +223,19 @@ namespace AutoHitCounter.ViewModels
             {
                 if (IsRunComplete) return;
                 CurrentSplit.NumOfHits += count;
+                _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
             };
             _currentModule.OnEventSet += AutoAdvanceSplit;
-            _currentModule.OnIgtChanged += igt => InGameTime = TimeSpan.FromMilliseconds(igt);
+            _currentModule.OnIgtChanged += igt =>
+            {
+                InGameTime = TimeSpan.FromMilliseconds(igt);
+                var formatted = InGameTime.ToString(@"hh\:mm\:ss");
+                if (formatted != _lastIgt)
+                {
+                    _lastIgt = formatted;
+                    _overlayServerService.BroadcastIgt(formatted);
+                }
+            };
 
             SettingsManager.Default.LastSelectedGame = _selectedGame.GameName;
             SettingsManager.Default.Save();
@@ -255,12 +266,16 @@ namespace AutoHitCounter.ViewModels
                 IsRunComplete = true;
                 OnPropertyChanged(nameof(TotalHits));
                 OnPropertyChanged(nameof(TotalPb));
-                return;
+               
             }
-
-            CurrentSplit.IsCurrent = false;
-            next.IsCurrent = true;
-            CurrentSplit = next;
+            else
+            {
+                CurrentSplit.IsCurrent = false;
+                next.IsCurrent = true;
+                CurrentSplit = next; 
+            }
+            
+            _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
         }
 
         private void OpenProfileEditor()
@@ -353,6 +368,7 @@ namespace AutoHitCounter.ViewModels
             }
 
             _profileService.SaveProfile(ActiveProfile);
+            _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
         }
 
         private void PreviousSplit()
@@ -364,18 +380,21 @@ namespace AutoHitCounter.ViewModels
             CurrentSplit.IsCurrent = false;
             prev.IsCurrent = true;
             CurrentSplit = prev;
+            _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
         }
 
         private void IncrementHit()
         {
             if (IsRunComplete || CurrentSplit == null) return;
             CurrentSplit.NumOfHits++;
+            _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
         }
 
         private void DecrementHit()
         {
             if (IsRunComplete || CurrentSplit == null || CurrentSplit.NumOfHits <= 0) return;
             CurrentSplit.NumOfHits--;
+            _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
         }
 
         #endregion

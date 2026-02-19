@@ -111,6 +111,25 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to f3 0f 11 4c 24 28       movss  DWORD PTR [rsp+0x28],xmm1
+        ///52                      push   rdx
+        ///41 03 95 38 01 00 00    add    edx,DWORD PTR [r13+0x138]
+        ///85 d2                   test   edx,edx
+        ///7f 5d                   jg     6f &lt;skip&gt;
+        ///51                      push   rcx
+        ///41 50                   push   r8
+        ///4c 8b 05 00 00 00 00    mov    r8,QWORD PTR [rip+0x0]        # 1c &lt;_main+0x1c&gt;
+        ///49 8b 88 08 e5 01 00    mov    rcx,QWORD PTR [r8+0x1e508]
+        ///48 8b 89 90 01 00 00    mov    rcx,QWORD PTR [rcx+0x190]
+        ///4c 39 29   [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string EldenRingEnvKilling {
+            get {
+                return ResourceManager.GetString("EldenRingEnvKilling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 48 89 5c 24 08          mov    QWORD PTR [rsp+0x8],rbx
         ///50                      push   rax
         ///53                      push   rbx
@@ -171,16 +190,16 @@ namespace AutoHitCounter.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 48 89 5c 24 08          mov    QWORD PTR [rsp+0x8],rbx
+        ///81 7a 60 40 42 0f 00    cmp    DWORD PTR [rdx+0x60],0xf4240
+        ///0f 84 d4 00 00 00       je     e6 &lt;skip_all&gt;
+        ///81 7a 28 d1 b3 98 00    cmp    DWORD PTR [rdx+0x28],0x98b3d1
+        ///0f 84 c7 00 00 00       je     e6 &lt;skip_all&gt;
         ///50                      push   rax
         ///57                      push   rdi
         ///52                      push   rdx
         ///53                      push   rbx
         ///48 89 d7                mov    rdi,rdx
-        ///48 8b 15 00 00 00 00    mov    rdx,QWORD PTR [rip+0x0]        # 13 &lt;_main+0x13&gt;
-        ///48 8b 82 08 e5 01 00    mov    rax,QWORD PTR [rdx+0x1e508]
-        ///48 39 c7                cmp    rdi,rax
-        ///0f 84 a5 00 00 00       je     c8 &lt;skip_count&gt;
-        ///48 8b 80 90 01 00 00    mov    rax,QWORD PT [rest of string was truncated]&quot;;.
+        ///48 8b 15 00 00 00 00    mov    rdx,QWORD PTR [rip+0x0]    [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string EldenRingHit {
             get {
