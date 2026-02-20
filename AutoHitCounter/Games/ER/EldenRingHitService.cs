@@ -43,12 +43,12 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code, stateInfoCheckFlag, 7, 2),
-            (code + 0x2D, WorldChrMan.Base, 7, 0x2D + 3),
-            (code + 0x79, Functions.ChrInsByHandle, 5, 0x79 + 1),
-            (code + 0xDA, staggerCheckFlag, 7, 0xDA + 2),
-            (code + 0xEB, stateInfoCheckFlag, 7, 0xEB + 2),
-            (code + 0xF4, hit, 6, 0xF4 + 2),
-            (code + 0xFE, Hooks.Hit + 5, 5, 0xFE + 1),
+            (code + 0x32, WorldChrMan.Base, 7, 0x32 + 3),
+            (code + 0x7E, Functions.ChrInsByHandle, 5, 0x7E + 1),
+            (code + 0xDF, staggerCheckFlag, 7, 0xDF + 2),
+            (code + 0xF0, stateInfoCheckFlag, 7, 0xF0 + 2),
+            (code + 0xF9, hit, 6, 0xF9 + 2),
+            (code + 0x103, Hooks.Hit + 5, 5, 0x103 + 1),
         ]);
         
         memoryService.WriteBytes(code, bytes);
