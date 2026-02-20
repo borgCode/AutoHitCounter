@@ -86,10 +86,10 @@ public static class DS3Offsets
 
         
         
-        _baseAddr = moduleBase;
+       
         
 #if DEBUG
-        
+         _baseAddr = moduleBase;
         Console.WriteLine("--- Base Pointers ---");
         PrintOffset("WorldChrMan.Base", WorldChrMan.Base);
             

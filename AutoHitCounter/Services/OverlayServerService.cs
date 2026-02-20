@@ -23,7 +23,7 @@ public class OverlayServerService : IDisposable
     {
         try
         {
-            _server = new WebSocketServer($"ws://0.0.0.0:{Port}");
+            _server = new WebSocketServer($"ws://127.0.0.1:{Port}");
             _server.Start(socket =>
             {
                 socket.OnOpen = () =>

@@ -145,10 +145,10 @@ public static class DS2ScholarOffsets
 
 
         
-        _baseAddr = moduleBase;
+        
         
 #if DEBUG
-        
+        _baseAddr = moduleBase;
         Console.WriteLine("--- Base Pointers ---");
         PrintOffset("GameManagerImp.Base", GameManagerImp.Base);
         
