@@ -221,7 +221,7 @@ namespace AutoHitCounter.ViewModels
             _memoryService.StartAutoAttach(_selectedGame.ProcessName);
             _currentModule.OnHit += count =>
             {
-                if (IsRunComplete) return;
+                if (IsRunComplete || CurrentSplit == null) return;
                 CurrentSplit.NumOfHits += count;
                 _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
             };

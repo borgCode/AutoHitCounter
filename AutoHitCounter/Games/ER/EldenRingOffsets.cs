@@ -1,6 +1,5 @@
 ﻿// 
 
-using System;
 using AutoHitCounter.Utilities;
 using static AutoHitCounter.Games.ER.EldenRingVersion;
 
@@ -88,6 +87,7 @@ public static class EldenRingOffsets
         public static nint EndureStagger;
         public static nint EnvKilling;
         public static nint CheckStateInfo;
+        public static nint CheckDeflectTear;
         public static nint SetEvent;
     }
 
@@ -306,6 +306,21 @@ public static class EldenRingOffsets
             Version2_6_0 or Version2_6_1 => 0x448E1C,
             _ => 0
         };
+        
+        Hooks.CheckDeflectTear = moduleBase + Version switch
+        {
+            // WARNING: No match found for: Version1_2_0, Version1_2_1, Version1_2_2, Version1_2_3, Version1_3_0, Version1_3_1, Version1_3_2, Version1_4_0, Version1_4_1, Version1_5_0, Version1_6_0
+            Version1_7_0 => 0x4431DD,
+            Version1_8_0 or Version1_8_1 => 0x444B4D,
+            Version1_9_0 or Version1_9_1 => 0x444C8D,
+            Version2_0_0 or Version2_0_1 => 0x444D5D,
+            Version2_2_0 or Version2_2_3 => 0x447AEC,
+            Version2_3_0 => 0x447BFC,
+            Version2_4_0 or Version2_5_0 => 0x447C3C,
+            Version2_6_0 or Version2_6_1 => 0x447C0C,
+            _ => 0
+        };
+
 
         
         Hooks.SetEvent = moduleBase + Version switch
@@ -395,6 +410,7 @@ public static class EldenRingOffsets
             PrintOffset("EndureStagger", Hooks.EndureStagger);
             PrintOffset("EnvKilling", Hooks.EnvKilling);
             PrintOffset("CheckStateInfo", Hooks.CheckStateInfo);
+            PrintOffset("CheckDeflectTear", Hooks.CheckDeflectTear);
             PrintOffset("SetEvent", Hooks.SetEvent);
            
             

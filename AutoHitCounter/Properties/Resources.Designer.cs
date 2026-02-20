@@ -108,6 +108,24 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to f3 0f 10 6d a0          movss  xmm5,DWORD PTR [rbp-0x60]
+        ///80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # c &lt;_main+0xc&gt;
+        ///74 24                   je     32 &lt;done&gt;
+        ///c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 15 &lt;_main+0x15&gt;
+        ///45 0f 57 ff             xorps  xmm15,xmm15
+        ///44 0f 2f 7d 20          comiss xmm15,DWORD PTR [rbp+0x20]
+        ///72 0c                   jb     2c &lt;count_hit&gt;
+        ///41 80 bf 59 02 00 00    cmp    BYTE PTR [r15+0x259],0x0
+        ///00
+        ///75 02                   jne    2c &lt;count_hi [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string EldenRingDeflectTear {
+            get {
+                return ResourceManager.GetString("EldenRingDeflectTear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to f3 0f 11 4c 24 28       movss  DWORD PTR [rsp+0x28],xmm1
         ///52                      push   rdx
         ///41 03 95 38 01 00 00    add    edx,DWORD PTR [r13+0x138]
@@ -188,16 +206,14 @@ namespace AutoHitCounter.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 7 &lt;_main+0x7&gt;
+        ///c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # e &lt;_main+0xe&gt;
         ///48 89 5c 24 08          mov    QWORD PTR [rsp+0x8],rbx
         ///48 85 d2                test   rdx,rdx
-        ///74 1a                   je     2b &lt;null_attacker&gt;
+        ///74 1a                   je     32 &lt;null_attacker&gt;
         ///81 7a 60 40 42 0f 00    cmp    DWORD PTR [rdx+0x60],0xf4240
-        ///0f 84 e5 00 00 00       je     103 &lt;skip_all&gt;
+        ///0f 84 10 01 00 00       je     135 &lt;skip_all&gt;
         ///81 7a 28 d1 b3 98 00    cmp    DWORD PTR [rdx+0x28],0x98b3d1
-        ///0f 84 d8 00 00 00       je     103 &lt;skip_all&gt;
-        ///00000000002b &lt;null_attacker&gt;:
-        ///50                      push   rax
-        ///57  [rest of string was truncated]&quot;;.
+        ///0f 84 03 01 00 00       je     135 &lt;ski [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string EldenRingHit {
             get {

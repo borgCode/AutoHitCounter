@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using AutoHitCounter.Enums;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Models;
 
@@ -21,6 +22,7 @@ public class ProfileService : IProfileService
     public ProfileService()
     {
         _profiles = LoadProfiles();
+        EnsureTestProfile();
     }
 
     public List<Profile> GetProfiles(string gameName)
@@ -78,5 +80,36 @@ public class ProfileService : IProfileService
 
         var json = JsonSerializer.Serialize(_profiles, new JsonSerializerOptions { WriteIndented = true });
         File.WriteAllText(ProfilesPath, json);
+    }
+    
+    private void EnsureTestProfile()
+    {
+        const string gameName = "Elden Ring";
+    
+        if (!_profiles.TryGetValue(gameName, out var list))
+        {
+            list = new List<Profile>();
+            _profiles[gameName] = list;
+        }
+
+        if (list.Exists(p => p.Name == "Test Profile")) return;
+
+        var testProfile = new Profile
+        {
+            Name = "Test Profile",
+            GameName = gameName,
+            Splits = new List<SplitEntry>
+            {
+                new SplitEntry
+                {
+                    Name = "Test Split",
+                    EventId = null,
+                    Type = SplitType.Child
+                }
+            }
+        };
+
+        list.Add(testProfile);
+        WriteToDisk();
     }
 }
