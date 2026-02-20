@@ -22,5 +22,6 @@ public enum AsmScript
     EldenRingSpEffectTickDamage,
     EldenRingStaggerEndure,
     EldenRingEnvKilling,
+    EldenRingCheckStateInfo,
     EldenRingEventLog
 }

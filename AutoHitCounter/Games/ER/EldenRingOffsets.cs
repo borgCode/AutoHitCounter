@@ -87,6 +87,7 @@ public static class EldenRingOffsets
         public static nint SpEffectTickDamage;
         public static nint EndureStagger;
         public static nint EnvKilling;
+        public static nint CheckStateInfo;
         public static nint SetEvent;
     }
 
@@ -285,6 +286,27 @@ public static class EldenRingOffsets
             _ => 0
         };
 
+        Hooks.CheckStateInfo = moduleBase + Version switch
+        {
+            Version1_2_0 => 0x43F7E3,
+            Version1_2_1 or Version1_2_2 => 0x43F853,
+            Version1_2_3 => 0x43F973,
+            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x440583,
+            Version1_4_0 => 0x442D9B,
+            Version1_4_1 => 0x442CAB,
+            Version1_5_0 => 0x4430EB,
+            Version1_6_0 => 0x444153,
+            Version1_7_0 => 0x4442A3,
+            Version1_8_0 or Version1_8_1 => 0x445C33,
+            Version1_9_0 or Version1_9_1 => 0x445D73,
+            Version2_0_0 or Version2_0_1 => 0x445F0B,
+            Version2_2_0 or Version2_2_3 => 0x448CFC,
+            Version2_3_0 => 0x448E0C,
+            Version2_4_0 or Version2_5_0 => 0x448E4C,
+            Version2_6_0 or Version2_6_1 => 0x448E1C,
+            _ => 0
+        };
+
         
         Hooks.SetEvent = moduleBase + Version switch
         {
@@ -372,6 +394,7 @@ public static class EldenRingOffsets
             PrintOffset("SpEffectTickDamage", Hooks.SpEffectTickDamage);
             PrintOffset("EndureStagger", Hooks.EndureStagger);
             PrintOffset("EnvKilling", Hooks.EnvKilling);
+            PrintOffset("CheckStateInfo", Hooks.CheckStateInfo);
             PrintOffset("SetEvent", Hooks.SetEvent);
            
             

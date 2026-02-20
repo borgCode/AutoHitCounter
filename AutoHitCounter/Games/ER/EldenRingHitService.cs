@@ -1,7 +1,6 @@
 ﻿// 
 
 using AutoHitCounter.Enums;
-using AutoHitCounter.Games.DS2S;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
 using AutoHitCounter.Utilities;
@@ -22,8 +21,10 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         InstallSpEffectTickDamageHook();
         InstallStaggerEndureHook();
         InstallEnvKillingHook();
+        InstallCheckStateInfoHook();
     }
 
+    
     public bool HasHit()
     {
         var current = memoryService.Read<int>(CodeCaveOffsets.Base + CodeCaveOffsets.Hit);
@@ -37,13 +38,17 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingHit);
         var hit = CodeCaveOffsets.Base + CodeCaveOffsets.Hit;
         var staggerCheckFlag = CodeCaveOffsets.Base + CodeCaveOffsets.StaggerCheckFlag;
+        var stateInfoCheckFlag = CodeCaveOffsets.Base + CodeCaveOffsets.StateInfoCheckFlag;
         var code = CodeCaveOffsets.Base + CodeCaveOffsets.HitCode;
+        
         AsmHelper.WriteRelativeOffsets(bytes, [
-            (code + 0x26, WorldChrMan.Base, 7, 0x26 + 3),
-            (code + 0x72, Functions.ChrInsByHandle, 5, 0x72 + 1),
-            (code + 0xD3, staggerCheckFlag, 7, 0xD3 + 2),
-            (code + 0xDC, hit, 6, 0xDC + 2),
-            (code + 0xE6, Hooks.Hit + 5, 5, 0xE6 + 1),
+            (code, stateInfoCheckFlag, 7, 2),
+            (code + 0x2D, WorldChrMan.Base, 7, 0x2D + 3),
+            (code + 0x79, Functions.ChrInsByHandle, 5, 0x79 + 1),
+            (code + 0xDA, staggerCheckFlag, 7, 0xDA + 2),
+            (code + 0xEB, stateInfoCheckFlag, 7, 0xEB + 2),
+            (code + 0xF4, hit, 6, 0xF4 + 2),
+            (code + 0xFE, Hooks.Hit + 5, 5, 0xFE + 1),
         ]);
         
         memoryService.WriteBytes(code, bytes);
@@ -168,5 +173,24 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         memoryService.WriteBytes(code, bytes);
         hookManager.InstallHook(code, Hooks.EnvKilling, [0xF3, 0x0F, 0x11, 0x4C, 0x24, 0x28]);
         
+    }
+    
+    private void InstallCheckStateInfoHook()
+    {
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingCheckStateInfo);
+        var stateInfoCheckFlag = CodeCaveOffsets.Base + CodeCaveOffsets.StateInfoCheckFlag;
+        var hit = CodeCaveOffsets.Base + CodeCaveOffsets.Hit;
+        var code = CodeCaveOffsets.Base + CodeCaveOffsets.StateInfoCheck;
+        
+        
+        AsmHelper.WriteRelativeOffsets(bytes, [
+            (code, stateInfoCheckFlag, 7, 2),
+            (code + 0x12, hit, 6, 0x12 + 2),
+            (code + 0x1F, Hooks.CheckStateInfo + 7, 5, 0x1F + 1)
+        ]);
+        
+        memoryService.WriteBytes(code, bytes);
+        hookManager.InstallHook(code, Hooks.CheckStateInfo, [0x0F, 0xB6, 0x81, 0x59, 0x02, 0x00, 0x00]);
+
     }
 }
