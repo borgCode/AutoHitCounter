@@ -197,36 +197,18 @@ e9 00 00 00 00          jmp    103 &lt;skip_all+0x5&gt;</value>
 48 8b 81 08 e5 01 00    mov    rax,QWORD PTR [rcx+0x1e508]
 48 8b 80 90 01 00 00    mov    rax,QWORD PTR [rax+0x190]
 4c 3b 38                cmp    r15,QWORD PTR [rax]
-74 38                   je     59 &lt;validate_fall&gt;
-48 8b 80 e8 00 00 00    mov    rax,QWORD PTR [rax+0xe8]
-48 8b 40 10             mov    rax,QWORD PTR [rax+0x10]
-83 78 50 00             cmp    DWORD PTR [rax+0x50],0x0
-74 3b                   je     6d &lt;skip_count&gt;
-52                      push   rdx
-41 50                   push   r8
-41 51                   push   r9
-48 8d 50 18             lea    rdx,[rax+0x18]
-48 83 ec 18             sub    rsp,0x18
-e8 00 00 00 00          call   44 &lt;_main+0x44&gt;
-48 83 c4 18             add    rsp,0x18
-41 59                   pop    r9
-41 58                   pop    r8
-5a                      pop    rdx
-48 8b 80 90 01 00 00    mov    rax,QWORD PTR [rax+0x190]
-4c 3b 38                cmp    r15,QWORD PTR [rax]
-75 14                   jne    6d &lt;skip_count&gt;
-000000000059 &lt;validate_fall&gt;:
+75 14                   jne    35 &lt;skip_count&gt;
 40 84 ff                test   dil,dil
-75 09                   jne    67 &lt;real_hit&gt;
+75 09                   jne    2f &lt;real_hit&gt;
 67 41 8d 04 16          lea    eax,[r14d+edx*1]
 85 c0                   test   eax,eax
-7f 06                   jg     6d &lt;skip_count&gt;
-000000000067 &lt;real_hit&gt;:
-ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 6d &lt;skip_count&gt;
-00000000006d &lt;skip_count&gt;:
+7f 06                   jg     35 &lt;skip_count&gt;
+00000000002f &lt;real_hit&gt;:
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 35 &lt;skip_count&gt;
+000000000035 &lt;skip_count&gt;:
 59                      pop    rcx
 58                      pop    rax
-e9 00 00 00 00          jmp    74 &lt;skip_count+0x7&gt;</value>
+e9 00 00 00 00          jmp    3c &lt;skip_count+0x7&gt;</value>
   </data>
   <data name="EldenRingKillBox" xml:space="preserve">
     <value>c6 44 24 28 01          mov    BYTE PTR [rsp+0x28],0x1

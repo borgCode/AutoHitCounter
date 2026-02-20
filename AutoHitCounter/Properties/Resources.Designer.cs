@@ -175,9 +175,10 @@ namespace AutoHitCounter.Properties {
         ///48 8b 81 08 e5 01 00    mov    rax,QWORD PTR [rcx+0x1e508]
         ///48 8b 80 90 01 00 00    mov    rax,QWORD PTR [rax+0x190]
         ///4c 3b 38                cmp    r15,QWORD PTR [rax]
-        ///74 38                   je     59 &lt;validate_fall&gt;
-        ///48 8b 80 e8 00 00 00    mov    rax,QWORD PTR [rax+0xe8]
-        ///48 8b 40 10             mov [rest of string was truncated]&quot;;.
+        ///75 14                   jne    35 &lt;skip_count&gt;
+        ///40 84 ff                test   dil,dil
+        ///75 09                   jne    2f &lt;real_hit&gt;
+        ///6 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string EldenRingFallDamage {
             get {
