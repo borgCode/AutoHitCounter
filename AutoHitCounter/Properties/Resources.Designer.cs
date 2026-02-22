@@ -110,25 +110,6 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 53                      push   rbx
-        ///48 8b 1d 00 00 00 00    mov    rbx,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
-        ///48 8b 9b 08 e5 01 00    mov    rbx,QWORD PTR [rbx+0x1e508]
-        ///48 8b 9b 90 01 00 00    mov    rbx,QWORD PTR [rbx+0x190]
-        ///48 39 0b                cmp    QWORD PTR [rbx],rcx
-        ///75 12                   jne    2d &lt;skip&gt;
-        ///8b 99 38 01 00 00       mov    ebx,DWORD PTR [rcx+0x138]
-        ///01 d3                   add    ebx,edx
-        ///85 db                   test   ebx,ebx
-        ///7f 06                   jg     2d &lt;skip&gt;
-        ///ff 05 [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string EldenRingDeathFromSelfAux {
-            get {
-                return ResourceManager.GetString("EldenRingDeathFromSelfAux", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to f3 0f 10 6d a0          movss  xmm5,DWORD PTR [rbp-0x60]
         ///80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # c &lt;_main+0xc&gt;
         ///74 24                   je     32 &lt;done&gt;
@@ -258,6 +239,26 @@ namespace AutoHitCounter.Properties {
         internal static string EldenRingKillBox {
             get {
                 return ResourceManager.GetString("EldenRingKillBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 53                      push   rbx
+        ///50                      push   rax
+        ///41 50                   push   r8
+        ///48 8b 1d 00 00 00 00    mov    rbx,QWORD PTR [rip+0x0]        # b &lt;_main+0xb&gt;
+        ///48 8b 9b 08 e5 01 00    mov    rbx,QWORD PTR [rbx+0x1e508]
+        ///48 8b 83 90 01 00 00    mov    rax,QWORD PTR [rbx+0x190]
+        ///48 39 08                cmp    QWORD PTR [rax],rcx
+        ///0f 85 96 00 00 00       jne    b8 &lt;skip&gt;
+        ///4c 8b 83 78 01 00 00    mov    r8,QWORD PTR [rbx+0x178]
+        ///4d 8b 40 08             mov    r8,QWORD PTR [r8+0x8]
+        ///
+        ///0 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string EldenRingSpEffectTickDamage {
+            get {
+                return ResourceManager.GetString("EldenRingSpEffectTickDamage", resourceCulture);
             }
         }
         

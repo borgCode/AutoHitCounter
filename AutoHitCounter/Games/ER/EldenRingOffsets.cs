@@ -84,7 +84,7 @@ public static class EldenRingOffsets
         public static nint KillBox;
         public static nint AuxDamageAttacker;
         public static nint AuxProc;
-        public static nint DeathFromSelfAux;
+        public static nint SpEffectTickDamage;
         public static nint EndureStagger;
         public static nint EnvKilling;
         public static nint CheckStateInfo;
@@ -234,7 +234,7 @@ public static class EldenRingOffsets
             _ => 0
         };
 
-        Hooks.DeathFromSelfAux = moduleBase + Version switch
+        Hooks.SpEffectTickDamage = moduleBase + Version switch
         {
             Version1_2_0 => 0x437F25,
             Version1_2_1 or Version1_2_2 => 0x437F95,
@@ -407,7 +407,7 @@ public static class EldenRingOffsets
             PrintOffset("KillBox", Hooks.KillBox);
             PrintOffset("AuxDamageAttacker", Hooks.AuxDamageAttacker);
             PrintOffset("AuxProc", Hooks.AuxProc);
-            PrintOffset("DeathFromSelfAux", Hooks.DeathFromSelfAux);
+            PrintOffset("SpEffectTickDamage", Hooks.SpEffectTickDamage);
             PrintOffset("EndureStagger", Hooks.EndureStagger);
             PrintOffset("EnvKilling", Hooks.EnvKilling);
             PrintOffset("CheckStateInfo", Hooks.CheckStateInfo);
