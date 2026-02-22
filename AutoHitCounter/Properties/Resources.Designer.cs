@@ -211,11 +211,12 @@ namespace AutoHitCounter.Properties {
         ///c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # e &lt;_main+0xe&gt;
         ///48 89 5c 24 08          mov    QWORD PTR [rsp+0x8],rbx
         ///48 85 d2                test   rdx,rdx
-        ///74 27                   je     3f &lt;null_attacker&gt;
+        ///74 23                   je     3b &lt;null_attacker&gt;
         ///81 7a 60 40 42 0f 00    cmp    DWORD PTR [rdx+0x60],0xf4240
-        ///0f 84 39 01 00 00       je     15e &lt;skip_all&gt;
-        ///81 7a 60 00 b4 c4 04    cmp    DWORD PTR [rdx+0x60],0x4c4b400
-        ///0f 84 2c 01 00 00       je     15e &lt;sk [rest of string was truncated]&quot;;.
+        ///0f 84 35 01 00 00       je     15a &lt;skip_all&gt;
+        ///50                      push   rax
+        ///41 8b 40 40             mov    eax,DWORD PTR [r8+0x40]
+        ///2d 80 38  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string EldenRingHit {
             get {
