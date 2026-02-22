@@ -55,6 +55,8 @@ public static class DS2ScholarOffsets
 
     }
 
+    public static nint MapId;
+
 
     public static class Hooks
     {
@@ -85,6 +87,14 @@ public static class DS2ScholarOffsets
             Version1_0_3 => 0x16148F0,
             _ => 0
         };
+        
+        MapId = moduleBase + Version switch
+        {
+            Version1_0_2 => 0x15641B4,
+            Version1_0_3 => 0x156D1C4,
+            _ => 0
+        };
+
         
         
         Hooks.Hit = moduleBase+ Version switch
@@ -166,6 +176,7 @@ public static class DS2ScholarOffsets
         _baseAddr = moduleBase;
         Console.WriteLine("--- Base Pointers ---");
         PrintOffset("GameManagerImp.Base", GameManagerImp.Base);
+        PrintOffset("MapId", MapId);
         
         Console.WriteLine("\n--- Hooks ---");
         PrintOffset("Hit", Hooks.Hit);

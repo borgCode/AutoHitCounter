@@ -18,7 +18,7 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         InstallFallDamageHook();
         InstallKillBoxHook();
         InstallAuxHooks();
-        InstallSpEffectTickDamageHook();
+        InstallDeathFromSelfAuxHook();
         InstallStaggerEndureHook();
         InstallEnvKillingHook();
         InstallCheckStateInfoHook();
@@ -102,9 +102,9 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         var code = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.CheckAuxAttacker;
         AsmHelper.WriteRelativeOffsets(bytes, [
         (code + 0x1, WorldChrMan.Base, 7, 0x1 + 3),
-        (code + 0x1A, checkAuxFlag, 7, 0x1A + 2),
-        (code + 0x23, checkAuxFlag, 7, 0x23 + 2),
-        (code + 0x32, Hooks.AuxDamageAttacker + 7, 5, 0x32 + 1)
+        (code + 0x28, checkAuxFlag, 7, 0x28 + 2),
+        (code + 0x31, checkAuxFlag, 7, 0x31 + 2),
+        (code + 0x40, Hooks.AuxDamageAttacker + 7, 5, 0x40 + 1)
         ]);
         
         memoryService.WriteBytes(code, bytes);
@@ -127,19 +127,19 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         hookManager.InstallHook(code, Hooks.AuxProc, [0x09, 0x83, 0xB8, 0x00, 0x00, 0x00]);
     }
 
-    private void InstallSpEffectTickDamageHook()
+    private void InstallDeathFromSelfAuxHook()
     {
-        var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingSpEffectTickDamage);
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingDeathFromSelfAux);
         var hit = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.Hit;
-        var code = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.SpEffectTickDamage;
+        var code = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.DeathFromSelfAux;
         AsmHelper.WriteRelativeOffsets(bytes, [
-            (code + 0x4, WorldChrMan.Base, 7, 0x4 + 3),
-            (code + 0x70, hit, 6, 0x70 + 2),
-            (code + 0x80, Hooks.SpEffectTickDamage + 6, 5, 0x80 + 1),
+            (code + 0x1, WorldChrMan.Base, 7, 0x1 + 3),
+            (code + 0x27, hit, 6, 0x27 + 2),
+            (code + 0x34, Hooks.DeathFromSelfAux + 6, 5, 0x34 + 1),
         ]);
         
         memoryService.WriteBytes(code, bytes);
-        hookManager.InstallHook(code, Hooks.SpEffectTickDamage, [0xF3, 0x0F, 0x11, 0x44, 0x24, 0x20]);
+        hookManager.InstallHook(code, Hooks.DeathFromSelfAux, [0xF3, 0x0F, 0x11, 0x44, 0x24, 0x20]);
     }
 
     private void InstallStaggerEndureHook()
