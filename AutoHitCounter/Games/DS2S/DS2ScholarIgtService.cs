@@ -2,6 +2,7 @@
 
 using System.Diagnostics;
 using AutoHitCounter.Enums;
+using AutoHitCounter.Games.ER;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
 using AutoHitCounter.Utilities;
@@ -13,7 +14,7 @@ public class DS2ScholarIgtService(IMemoryService memoryService, HookManager hook
 {
     private long _baseMs;
     private readonly Stopwatch _stopwatch = new();
-    private readonly nint _igtState = CodeCaveOffsets.Base + CodeCaveOffsets.IgtState;
+    private readonly nint _igtState = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.IgtState;
 
     private readonly nint _saveDataManager = memoryService.FollowPointers(GameManagerImp.Base,
     [
@@ -33,7 +34,7 @@ public class DS2ScholarIgtService(IMemoryService memoryService, HookManager hook
 
     private void InstallIgtNewGameHook()
     {
-        var code = CodeCaveOffsets.Base + CodeCaveOffsets.IgtNewGameCode;
+        var code = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.IgtNewGameCode;
         var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarIgtNewGame);
         var hook = Hooks.IgtNewGame;
         
@@ -48,7 +49,7 @@ public class DS2ScholarIgtService(IMemoryService memoryService, HookManager hook
 
     private void InstallIgtStopHook()
     {
-        var code = CodeCaveOffsets.Base + CodeCaveOffsets.IgtStopCode;
+        var code = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.IgtStopCode;
         var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarIgtStop);
         var hook = Hooks.IgtStop;
         var originalBytes = memoryService.ReadBytes(hook, 5);
@@ -65,7 +66,7 @@ public class DS2ScholarIgtService(IMemoryService memoryService, HookManager hook
 
     private void InstallIgtLoadGameHook()
     {
-        var code = CodeCaveOffsets.Base + CodeCaveOffsets.IgtLoadGameCode;
+        var code = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.IgtLoadGameCode;
         var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarIgtLoadGame);
         var hook = Hooks.IgtLoadGame;
         

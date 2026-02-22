@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using AutoHitCounter.Enums;
+using AutoHitCounter.Games.ER;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
 using AutoHitCounter.Services;
@@ -17,10 +18,10 @@ public class DS2ScholarEventService(
 {
     public override void InstallHook()
     {
-        var code = CodeCaveOffsets.Base + CodeCaveOffsets.EventLogCode;
+        var code = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.EventLogCode;
         var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarEventLog);
-        var writeIndex = CodeCaveOffsets.Base + CodeCaveOffsets.EventLogWriteIdx;
-        var buffer = CodeCaveOffsets.Base + CodeCaveOffsets.EventLogBuffer;
+        var writeIndex = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.EventLogWriteIdx;
+        var buffer = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.EventLogBuffer;
         var hookLoc = DS2ScholarOffsets.Hooks.SetEvent;
         
         AsmHelper.WriteRelativeOffsets(bytes, [

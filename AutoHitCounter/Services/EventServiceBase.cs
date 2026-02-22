@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using AutoHitCounter.Games.ER;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
 
@@ -15,8 +16,8 @@ public abstract class EventServiceBase(
 {
     private int _readIndex;
 
-    private readonly nint _writeIndexAddr = CodeCaveOffsets.Base + CodeCaveOffsets.EventLogWriteIdx;
-    private readonly nint _bufferAddr = CodeCaveOffsets.Base + CodeCaveOffsets.EventLogBuffer;
+    private readonly nint _writeIndexAddr = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.EventLogWriteIdx;
+    private readonly nint _bufferAddr = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.EventLogBuffer;
 
     public abstract void InstallHook();
     

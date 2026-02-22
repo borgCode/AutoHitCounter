@@ -122,6 +122,7 @@
         <Compile Include="Games\DS2S\DS2ScholarOffsets.cs" />
         <Compile Include="Games\DS2S\DS2ScholarVersion.cs" />
         <Compile Include="Games\DS2S\DS2TimerStatus.cs" />
+        <Compile Include="Games\DS2S\DS2ScholarCustomCodeOffsets.cs" />
         <Compile Include="Games\DS2\DS2VanillaEventService.cs" />
         <Compile Include="Games\DS2\DS2VanillaHitService.cs" />
         <Compile Include="Games\DS2\DS2VanillaModule.cs" />
@@ -137,6 +138,7 @@
         <Compile Include="Games\DSR\DSRModule.cs" />
         <Compile Include="Games\DSR\DSROffsets.cs" />
         <Compile Include="Games\DSR\DSRVersion.cs" />
+        <Compile Include="Games\ER\EldenRingCustomCodeOffsets.cs" />
         <Compile Include="Games\ER\EldenRingEventService.cs" />
         <Compile Include="Games\ER\EldenRingHitService.cs" />
         <Compile Include="Games\ER\EldenRingModule.cs" />
@@ -155,7 +157,6 @@
         <Compile Include="Interfaces\IStateService.cs" />
         <Compile Include="Interfaces\ITickService.cs" />
         <Compile Include="Mappers\OverlayMapper.cs" />
-        <Compile Include="Memory\CodeCaveOffsets.cs" />
         <Compile Include="Memory\HookManager.cs" />
         <Compile Include="Memory\Kernel32.cs" />
         <Compile Include="Models\Game.cs" />

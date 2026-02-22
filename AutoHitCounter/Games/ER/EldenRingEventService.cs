@@ -17,10 +17,10 @@ public class EldenRingEventService(
 {
     public override void InstallHook()
     {
-        var code = CodeCaveOffsets.Base + CodeCaveOffsets.EventLogCode;
+        var code = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.EventLogCode;
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingEventLog);
-        var writeIndex = CodeCaveOffsets.Base + CodeCaveOffsets.EventLogWriteIdx;
-        var buffer = CodeCaveOffsets.Base + CodeCaveOffsets.EventLogBuffer;
+        var writeIndex = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.EventLogWriteIdx;
+        var buffer = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.EventLogBuffer;
         var hookLoc = EldenRingOffsets.Hooks.SetEvent;
 
         AsmHelper.WriteRelativeOffsets(bytes, [

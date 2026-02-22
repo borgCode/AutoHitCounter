@@ -43,6 +43,12 @@ public class DS2ScholarModule : IGameModule, IDisposable
     {
         InitializeOffsets();
         
+        DS2ScholarCustomCodeOffsets.Base = _memoryService.AllocCustomCodeMem();
+        
+#if DEBUG
+        Console.WriteLine($@"Code cave: 0x{(long)DS2ScholarCustomCodeOffsets.Base:X}");
+#endif
+        
         _hitService = new DS2ScholarHitService(_memoryService, _hookManager);
         _hitService.InstallHooks();
         _eventService = new DS2ScholarEventService(_memoryService, _hookManager, _events);
@@ -65,7 +71,7 @@ public class DS2ScholarModule : IGameModule, IDisposable
     
     private void Tick()
     {
-        if (_hitService.HasHit() && _lastHit != null && (DateTime.Now - _lastHit.Value).TotalSeconds < 3)
+        if (_hitService.HasHit() && (_lastHit == null || (DateTime.Now - _lastHit.Value).TotalSeconds > 3))
         {
             OnHit?.Invoke(1);
             _lastHit = DateTime.Now;

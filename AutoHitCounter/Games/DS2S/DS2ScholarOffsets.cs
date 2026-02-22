@@ -59,8 +59,10 @@ public static class DS2ScholarOffsets
     public static class Hooks
     {
         public static nint Hit;
-        public static nint FallDamage;
+        public static nint GeneralApplyDamage;
         public static nint KillBox;
+        public static nint CountAuxHit;
+        public static nint LightPoiseStagger;
         public static nint SetEvent;
         public static nint IgtNewGame;
         public static nint IgtStop;
@@ -85,14 +87,14 @@ public static class DS2ScholarOffsets
         };
         
         
-        Hooks.Hit = moduleBase + Version switch
+        Hooks.Hit = moduleBase+ Version switch
         {
-            Version1_0_2 => 0x1327AB,
-            Version1_0_3 => 0x134E1B,
+            Version1_0_2 => 0x133BB0,
+            Version1_0_3 => 0x136220,
             _ => 0
         };
         
-        Hooks.FallDamage = moduleBase + Version switch
+        Hooks.GeneralApplyDamage = moduleBase + Version switch
         {
             Version1_0_2 => 0x16727A,
             Version1_0_3 => 0x16A39A,
@@ -105,8 +107,21 @@ public static class DS2ScholarOffsets
             Version1_0_3 => 0x16A560,
             _ => 0
         };
+        
+        Hooks.CountAuxHit = moduleBase + Version switch
+        {
+            Version1_0_2 => 0x143D20,
+            Version1_0_3 => 0x146430,
+            _ => 0
+        };
 
-
+        Hooks.LightPoiseStagger = moduleBase + Version switch
+        {
+            Version1_0_2 => 0x1432A7,
+            Version1_0_3 => 0x145997,
+            _ => 0
+        };
+        
         Hooks.SetEvent = moduleBase + Version switch
         {
             Version1_0_2 => 0x46DED0,
@@ -154,8 +169,10 @@ public static class DS2ScholarOffsets
         
         Console.WriteLine("\n--- Hooks ---");
         PrintOffset("Hit", Hooks.Hit);
-        PrintOffset("FallDamage", Hooks.FallDamage);
+        PrintOffset("GeneralApplyDamage", Hooks.GeneralApplyDamage);
         PrintOffset("KillBox", Hooks.KillBox);
+        PrintOffset("CountAuxHit", Hooks.CountAuxHit);
+        PrintOffset("LightPoiseStagger", Hooks.LightPoiseStagger);
         PrintOffset("SetEvent", Hooks.SetEvent);
         PrintOffset("IgtStart", Hooks.IgtNewGame);
         PrintOffset("IgtStop", Hooks.IgtStop);

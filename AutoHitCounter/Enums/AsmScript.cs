@@ -5,8 +5,10 @@ namespace AutoHitCounter.Enums;
 public enum AsmScript
 {
     ScholarHit,
-    ScholarFallDamage,
+    ScholarGeneralApplyDamage,
     ScholarKillBox,
+    ScholarCountAuxHit,
+    ScholarLightPoiseStagger,
     ScholarEventLog,
     ScholarIgtNewGame,
     ScholarIgtStop,

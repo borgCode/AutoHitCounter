@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Timers;
+using AutoHitCounter.Games.ER;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
 
@@ -76,7 +77,7 @@ namespace AutoHitCounter.Services
             Kernel32.WriteProcessMemory(ProcessHandle, addr, val, val.Length, 0);
         }
 
-        public void AllocCodeCave()
+        public IntPtr AllocCustomCodeMem()
         {
             nint searchRangeStart = BaseAddress - CodeCaveSearchStart;
             nint searchRangeEnd = BaseAddress - CodeCaveSearchEnd;
@@ -87,10 +88,10 @@ namespace AutoHitCounter.Services
 
                 if (allocatedMemory != IntPtr.Zero)
                 {
-                    CodeCaveOffsets.Base = allocatedMemory;
-                    break;
+                    return allocatedMemory;
                 }
             }
+            return IntPtr.Zero;
         }
 
         public void StartAutoAttach(string processName)

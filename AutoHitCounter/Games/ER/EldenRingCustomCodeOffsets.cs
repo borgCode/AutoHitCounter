@@ -1,8 +1,8 @@
 ﻿// 
 
-namespace AutoHitCounter.Memory;
+namespace AutoHitCounter.Games.ER;
 
-public static class CodeCaveOffsets
+public static class EldenRingCustomCodeOffsets
 {
     public static nint Base;
 
@@ -26,9 +26,4 @@ public static class CodeCaveOffsets
     public const int EventLogWriteIdx = 0x1000;
     public const int EventLogCode = 0x1020;
     public const int EventLogBuffer = 0x1100; //0x1000
-
-    public const int IgtState = 0x2110;
-    public const int IgtNewGameCode = 0x2120;
-    public const int IgtStopCode = 0x2200;
-    public const int IgtLoadGameCode = 0x2260;
 }

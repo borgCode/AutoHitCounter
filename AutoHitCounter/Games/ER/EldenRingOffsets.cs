@@ -1,5 +1,6 @@
 ﻿// 
 
+using System;
 using AutoHitCounter.Utilities;
 using static AutoHitCounter.Games.ER.EldenRingVersion;
 

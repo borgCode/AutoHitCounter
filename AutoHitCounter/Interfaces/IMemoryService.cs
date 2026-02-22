@@ -1,5 +1,6 @@
 ﻿// 
 
+using System;
 using System.Diagnostics;
 
 namespace AutoHitCounter.Interfaces
@@ -18,7 +19,7 @@ namespace AutoHitCounter.Interfaces
         void WriteBytes(nint addr, byte[] val);
         void Write<T>(nint addr, T value) where T : unmanaged;
         
-        void AllocCodeCave();
+        IntPtr AllocCustomCodeMem();
         
         void StartAutoAttach(string processName);
         void StopAutoAttach();
