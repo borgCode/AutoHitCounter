@@ -12,7 +12,7 @@ using AutoHitCounter.Utilities;
 
 namespace AutoHitCounter.ViewModels;
 
-public class ProfileEditorViewModel : BaseViewModel
+public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
 {
     private readonly IProfileService _profileService;
     private readonly Dictionary<uint, string> _allEvents;
@@ -111,6 +111,13 @@ public class ProfileEditorViewModel : BaseViewModel
     #endregion
 
     #region Public Methods
+    
+    public void MoveItem(object draggedItem, int dropIndex)
+    {
+        if (draggedItem is SplitEntry entry)
+            MoveSplit(entry, dropIndex);
+    }
+    
 
     public void MoveSplit(SplitEntry draggedEntry, int dropIndex)
     {

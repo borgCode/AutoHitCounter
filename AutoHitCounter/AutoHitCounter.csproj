@@ -106,6 +106,7 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
+        <Compile Include="Behaviors\InsertionAdorner.cs" />
         <Compile Include="Behaviors\SplitListDragDropBehavior.cs" />
         <Compile Include="Converters\ExpanderArrowConverter.cs" />
         <Compile Include="Converters\InverseBoolConverter.cs" />
@@ -153,6 +154,7 @@
         <Compile Include="Interfaces\IGameModule.cs" />
         <Compile Include="Interfaces\IHitService.cs" />
         <Compile Include="Interfaces\IProfileService.cs" />
+        <Compile Include="Interfaces\IReorderHandler.cs" />
         <Compile Include="Interfaces\ISettingsService.cs" />
         <Compile Include="Interfaces\IStateService.cs" />
         <Compile Include="Interfaces\ITickService.cs" />

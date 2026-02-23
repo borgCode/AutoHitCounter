@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:converters="clr-namespace:AutoHitCounter.Converters"
-        xmlns:behaviors="clr-namespace:AutoHitCounter.Behaviors"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:controls="clr-namespace:AutoHitCounter.Views.Controls"
+        xmlns:behaviors="clr-namespace:AutoHitCounter.Behaviors"
         mc:Ignorable="d"
         Style="{StaticResource DefaultWindowStyle}"
         WindowStyle="None"
@@ -32,10 +32,9 @@
         <controls:TitleBar Grid.Row="0" Title="Auto Hit Counter" />
 
         <Grid Grid.Row="1" Margin="5">
-            <TextBlock Text="{Binding AppVer}"></TextBlock>
+            <TextBlock Text="{Binding AppVer}" />
             <TextBlock Text="{Binding AttachedText}"
-                       HorizontalAlignment="Right">
-            </TextBlock>
+                       HorizontalAlignment="Right" />
         </Grid>
 
         <TabControl Grid.Row="2" x:Name="MainTabControl">
@@ -107,29 +106,26 @@
                                        Text="Hits"
                                        FontFamily="{StaticResource AppFont}"
                                        FontSize="{StaticResource FontSizeHeader}"
-                                       HorizontalAlignment="Center" VerticalAlignment="Center">
-                            </TextBlock>
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" />
 
                             <TextBlock Grid.Column="2"
                                        Text="Diff"
                                        FontFamily="{StaticResource AppFont}"
                                        FontSize="{StaticResource FontSizeHeader}"
-                                       HorizontalAlignment="Center" VerticalAlignment="Center">
-                            </TextBlock>
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" />
 
                             <TextBlock Grid.Column="3"
                                        Text="PB"
                                        FontFamily="{StaticResource AppFont}"
                                        FontSize="{StaticResource FontSizeHeader}"
-                                       HorizontalAlignment="Center" VerticalAlignment="Center">
-
-                            </TextBlock>
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Grid>
                     </Border>
                     <ListBox Grid.Row="2"
                              ItemsSource="{Binding Splits}"
                              SelectedItem="{Binding SelectedSplit}"
                              AlternationCount="2"
+                             behaviors:SplitListDragDropBehavior.IsEnabled="True"
                              Background="Transparent"
                              BorderThickness="0"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">

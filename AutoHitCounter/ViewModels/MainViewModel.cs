@@ -15,7 +15,7 @@ using AutoHitCounter.Views.Windows;
 
 namespace AutoHitCounter.ViewModels
 {
-    public class MainViewModel : BaseViewModel
+    public class MainViewModel : BaseViewModel, IReorderHandler
     {
         private readonly IMemoryService _memoryService;
         private readonly HotkeyManager _hotkeyManager;
@@ -194,6 +194,46 @@ namespace AutoHitCounter.ViewModels
 
         public int TotalHits => Splits.Where(s => s.Type == SplitType.Child).Sum(s => s.NumOfHits);
         public int TotalPb => Splits.Where(s => s.Type == SplitType.Child).Sum(s => s.PersonalBest);
+
+        #endregion
+
+        #region Public Methods
+
+        public void MoveItem(object draggedItem, int dropIndex)
+        {
+            if (draggedItem is not SplitViewModel entry) return;
+            if (entry.IsParent) return;
+            if (dropIndex < 0) return;
+
+            var oldIndex = Splits.IndexOf(entry);
+            if (oldIndex < 0 || oldIndex == dropIndex) return;
+            
+            var groupStart = oldIndex;
+            for (int i = oldIndex - 1; i >= 0; i--)
+            {
+                if (Splits[i].IsParent) { groupStart = i + 1; break; }
+                if (i == 0) groupStart = 0;
+            }
+
+            var groupEnd = Splits.Count - 1;
+            for (int i = oldIndex + 1; i < Splits.Count; i++)
+            {
+                if (Splits[i].IsParent) { groupEnd = i - 1; break; }
+            }
+            
+            if (dropIndex < groupStart) dropIndex = groupStart;
+            if (dropIndex > groupEnd + 1) dropIndex = groupEnd + 1;
+
+            if (oldIndex == dropIndex) return;
+
+            Splits.RemoveAt(oldIndex);
+
+            if (dropIndex > oldIndex)
+                dropIndex--;
+
+            Splits.Insert(dropIndex, entry);
+            _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
+        }
 
         #endregion
 
