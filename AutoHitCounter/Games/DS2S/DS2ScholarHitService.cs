@@ -4,6 +4,7 @@ using AutoHitCounter.Enums;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
 using AutoHitCounter.Utilities;
+using static AutoHitCounter.Games.DS2S.DS2ScholarCustomCodeOffsets;
 using static AutoHitCounter.Games.DS2S.DS2ScholarOffsets;
 
 namespace AutoHitCounter.Games.DS2S;
@@ -23,7 +24,7 @@ public class DS2ScholarHitService(IMemoryService memoryService, HookManager hook
 
     public bool HasHit()
     {
-        var current = memoryService.Read<int>(DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.Hit);
+        var current = memoryService.Read<int>(Base + Hit);
         var newHits = current - _lastHitCount;
         _lastHitCount = current;
         return newHits > 0;
@@ -33,10 +34,10 @@ public class DS2ScholarHitService(IMemoryService memoryService, HookManager hook
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarHit);
 
-        var hit = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.Hit;
-        var auxCheckFlag = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.CheckAuxProcFlag;
+        var hit = Base + Hit;
+        var auxCheckFlag = Base + CheckAuxProcFlag;
 
-        var code = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.HitCode;
+        var code = Base + HitCode;
 
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code, auxCheckFlag, 7, 2),
@@ -55,8 +56,8 @@ public class DS2ScholarHitService(IMemoryService memoryService, HookManager hook
     private void InstallGeneralDamageHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarGeneralApplyDamage);
-        var hit = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.Hit;
-        var code = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.GeneralApplyDamage;
+        var hit = Base + Hit;
+        var code = Base + GeneralApplyDamage;
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x1, GameManagerImp.Base, 7, 0x1 + 3),
             (code + 0x15, hit, 6, 0x15 + 2),
@@ -70,8 +71,8 @@ public class DS2ScholarHitService(IMemoryService memoryService, HookManager hook
     private void InstallKillBoxHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarKillBox);
-        var hit = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.Hit;
-        var code = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.KillBox;
+        var hit = Base + Hit;
+        var code = Base + KillBox;
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x4, GameManagerImp.Base, 7, 0x4 + 3),
             (code + 0x18, hit, 6, 0x18 + 2),
@@ -86,10 +87,10 @@ public class DS2ScholarHitService(IMemoryService memoryService, HookManager hook
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarCountAuxHit);
         
-        var hit = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.Hit;
-        var auxCheckFlag = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.CheckAuxProcFlag;
+        var hit = Base + Hit;
+        var auxCheckFlag = Base + CheckAuxProcFlag;
         
-        var code = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.CountAuxHit;
+        var code = Base + CountAuxHit;
         
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x6, auxCheckFlag, 7, 0x6 + 2),
@@ -105,8 +106,8 @@ public class DS2ScholarHitService(IMemoryService memoryService, HookManager hook
     private void InstallLightPoiseStaggerHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarLightPoiseStagger);
-        var hit = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.Hit;
-        var code = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.LightPoiseStagger;
+        var hit = Base + Hit;
+        var code = Base + LightPoiseStagger;
         
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x6, GameManagerImp.Base, 7, 0x6 + 3),

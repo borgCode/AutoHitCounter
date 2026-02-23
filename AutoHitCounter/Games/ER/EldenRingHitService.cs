@@ -4,6 +4,7 @@ using AutoHitCounter.Enums;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
 using AutoHitCounter.Utilities;
+using static AutoHitCounter.Games.ER.EldenRingCustomCodeOffsets;
 using static AutoHitCounter.Games.ER.EldenRingOffsets;
 
 namespace AutoHitCounter.Games.ER;
@@ -30,7 +31,7 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
 
     private void WritePlayerDeadCheck()
     {
-        var code = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.CheckPlayerDead;
+        var code = Base + CheckPlayerDead;
 
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingCheckPlayerDead);
         AsmHelper.WriteRelativeOffset(bytes, code, WorldChrMan.Base, 7, 3);
@@ -39,7 +40,7 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
 
     public bool HasHit()
     {
-        var current = memoryService.Read<int>(EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.Hit);
+        var current = memoryService.Read<int>(Base + Hit);
         var newHits = current - _lastHitCount;
         _lastHitCount = current;
         return newHits > 0;
@@ -48,12 +49,12 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
     private void InstallHitHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingHit);
-        var hit = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.Hit;
-        var staggerCheckFlag = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.StaggerCheckFlag;
-        var stateInfoCheckFlag = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.StateInfoCheckFlag;
-        var deflectTearCheckFlag = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.DeflectTearCheckFlag;
-        var checkPlayerDeadFunc = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.CheckPlayerDead;
-        var code = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.HitCode;
+        var hit = Base + Hit;
+        var staggerCheckFlag = Base + StaggerCheckFlag;
+        var stateInfoCheckFlag = Base + StateInfoCheckFlag;
+        var deflectTearCheckFlag = Base + DeflectTearCheckFlag;
+        var checkPlayerDeadFunc = Base + CheckPlayerDead;
+        var code = Base + HitCode;
 
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code, stateInfoCheckFlag, 7, 2),
@@ -76,8 +77,8 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
     private void InstallFallDamageHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingFallDamage);
-        var hit = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.Hit;
-        var code = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.FallDamage;
+        var hit = Base + Hit;
+        var code = Base + FallDamage;
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x7, WorldChrMan.Base, 7, 0x7 + 3),
             (code + 0x2F, hit, 6, 0x2F + 2),
@@ -91,8 +92,8 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
     private void InstallKillBoxHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingKillBox);
-        var hit = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.Hit;
-        var code = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.KillBox;
+        var hit = Base + Hit;
+        var code = Base + KillBox;
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x7, WorldChrMan.Base, 7, 0x7 + 3),
             (code + 0x33, Functions.HasSpEffectId, 5, 0x33 + 1),
@@ -105,7 +106,7 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
 
     private void InstallAuxHooks()
     {
-        var checkAuxFlag = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.CheckAuxProcFlag;
+        var checkAuxFlag = Base + CheckAuxProcFlag;
         InstallAuxDamageAttackerHook(checkAuxFlag);
         InstallAuxProcHook(checkAuxFlag);
     }
@@ -113,7 +114,7 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
     private void InstallAuxDamageAttackerHook(nint checkAuxFlag)
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingAuxDamageAttacker);
-        var code = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.CheckAuxAttacker;
+        var code = Base + CheckAuxAttacker;
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x1, WorldChrMan.Base, 7, 0x1 + 3),
             (code + 0x28, checkAuxFlag, 7, 0x28 + 2),
@@ -128,8 +129,8 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
     private void InstallAuxProcHook(nint checkAuxFlag)
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingAuxProc);
-        var hit = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.Hit;
-        var code = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.AuxProc;
+        var hit = Base + Hit;
+        var code = Base + AuxProc;
 
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x6, checkAuxFlag, 7, 0x6 + 2),
@@ -144,10 +145,10 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
     private void InstallSpEffectTickDamageHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingSpEffectTickDamage);
-        var hit = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.Hit;
-        var checkPlayerDeadFunc = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.CheckPlayerDead;
+        var hit = Base + Hit;
+        var checkPlayerDeadFunc = Base + CheckPlayerDead;
 
-        var code = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.SpEffectTickDamage;
+        var code = Base + SpEffectTickDamage;
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x4, checkPlayerDeadFunc, 5, 0x4 + 1),
             (code + 0xF, WorldChrMan.Base, 7, 0xF + 3),
@@ -162,9 +163,9 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
     private void InstallStaggerEndureHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingStaggerEndure);
-        var staggerCheckFlag = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.StaggerCheckFlag;
-        var hit = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.Hit;
-        var code = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.StaggerEndure;
+        var staggerCheckFlag = Base + StaggerCheckFlag;
+        var hit = Base + Hit;
+        var code = Base + StaggerEndure;
 
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code, staggerCheckFlag, 7, 2),
@@ -180,10 +181,10 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
     private void InstallEnvKillingHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingEnvKilling);
-        var hit = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.Hit;
-        var checkPlayerDeadFunc = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.CheckPlayerDead;
+        var hit = Base + Hit;
+        var checkPlayerDeadFunc = Base + CheckPlayerDead;
 
-        var code = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.EnvKilling;
+        var code = Base + EnvKilling;
 
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x7, checkPlayerDeadFunc, 5, 0x7 + 1),
@@ -201,9 +202,9 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
     private void InstallCheckStateInfoHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingCheckStateInfo);
-        var stateInfoCheckFlag = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.StateInfoCheckFlag;
-        var hit = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.Hit;
-        var code = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.StateInfoCheck;
+        var stateInfoCheckFlag = Base + StateInfoCheckFlag;
+        var hit = Base + Hit;
+        var code = Base + StateInfoCheck;
 
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code, stateInfoCheckFlag, 7, 2),
@@ -218,9 +219,9 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
     private void InstallDeflectTearHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingDeflectTear);
-        var hit = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.Hit;
-        var deflectTearCheckFlag = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.DeflectTearCheckFlag;
-        var code = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.DeflectTearCheck;
+        var hit = Base + Hit;
+        var deflectTearCheckFlag = Base + DeflectTearCheckFlag;
+        var code = Base + DeflectTearCheck;
 
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x5, deflectTearCheckFlag, 7, 0x5 + 2),
@@ -236,10 +237,10 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
     private void InstallKillChrHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingKillChr);
-        var hit = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.Hit;
-        var checkPlayerDeadFunc = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.CheckPlayerDead;
+        var hit = Base + Hit;
+        var checkPlayerDeadFunc = Base + CheckPlayerDead;
 
-        var code = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.KillChr;
+        var code = Base + KillChr;
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x1, checkPlayerDeadFunc, 5, 0x1 + 1),
             (code + 0x8, WorldChrMan.Base, 7, 0x8 + 3),

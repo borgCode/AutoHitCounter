@@ -184,6 +184,13 @@ namespace AutoHitCounter.ViewModels
             get => _isRunComplete;
             set => SetProperty(ref _isRunComplete, value);
         }
+        
+        private string _inGameTimeFormatted;
+        public string InGameTimeFormatted
+        {
+            get => _inGameTimeFormatted;
+            set => SetProperty(ref _inGameTimeFormatted, value);
+        }
 
         public int TotalHits => Splits.Where(s => s.Type == SplitType.Child).Sum(s => s.NumOfHits);
         public int TotalPb => Splits.Where(s => s.Type == SplitType.Child).Sum(s => s.PersonalBest);
@@ -226,16 +233,7 @@ namespace AutoHitCounter.ViewModels
                 _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
             };
             _currentModule.OnEventSet += AutoAdvanceSplit;
-            _currentModule.OnIgtChanged += igt =>
-            {
-                InGameTime = TimeSpan.FromMilliseconds(igt);
-                var formatted = InGameTime.ToString(@"hh\:mm\:ss");
-                if (formatted != _lastIgt)
-                {
-                    _lastIgt = formatted;
-                    _overlayServerService.BroadcastIgt(formatted);
-                }
-            };
+            _currentModule.OnIgtChanged += UpdateInGameTime;
 
             SettingsManager.Default.LastSelectedGame = _selectedGame.GameName;
             SettingsManager.Default.Save();
@@ -276,6 +274,19 @@ namespace AutoHitCounter.ViewModels
             }
             
             _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
+        }
+
+        private void UpdateInGameTime(long igt)
+        {
+            InGameTime = TimeSpan.FromMilliseconds(igt);
+            var totalHours = (int)InGameTime.TotalHours;
+            var formatted = $"{totalHours:D3}:{InGameTime.Minutes:D2}:{InGameTime.Seconds:D2}";
+            if (formatted != _lastIgt)
+            {
+                _lastIgt = formatted;
+                InGameTimeFormatted = formatted;
+                _overlayServerService.BroadcastIgt(formatted);
+            }
         }
 
         private void OpenProfileEditor()
