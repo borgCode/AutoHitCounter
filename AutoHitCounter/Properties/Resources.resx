@@ -846,4 +846,24 @@ ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 1f &lt;exit&gt;
 89 02                   mov    DWORD PTR [rdx],eax
 e9 00 00 00 00          jmp    2b &lt;exit+0xc&gt;</value>
   </data>
+  <data name="EldenRingCheckPlayerDead" xml:space="preserve">
+    <value>48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 7 &lt;_main+0x7&gt;
+48 85 c0                test   rax,rax
+74 28                   je     34 &lt;dead&gt;
+48 8b 80 08 e5 01 00    mov    rax,QWORD PTR [rax+0x1e508]
+48 85 c0                test   rax,rax
+74 1c                   je     34 &lt;dead&gt;
+48 8b 80 90 01 00 00    mov    rax,QWORD PTR [rax+0x190]
+48 85 c0                test   rax,rax
+74 10                   je     34 &lt;dead&gt;
+48 8b 00                mov    rax,QWORD PTR [rax]
+48 85 c0                test   rax,rax
+74 08                   je     34 &lt;dead&gt;
+83 b8 38 01 00 00 00    cmp    DWORD PTR [rax+0x138],0x0
+c3                      ret
+
+000000000034 &lt;dead&gt;:
+31 c0                   xor    eax,eax
+c3                      ret</value>
+  </data>
 </root>

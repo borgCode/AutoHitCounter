@@ -1,5 +1,6 @@
 ﻿// 
 
+using System;
 using AutoHitCounter.Enums;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
@@ -14,6 +15,8 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
     
     public void InstallHooks()
     {
+        WritePlayerDeadCheck();
+        
         InstallHitHook();
         InstallFallDamageHook();
         InstallKillBoxHook();
@@ -23,6 +26,15 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         InstallEnvKillingHook();
         InstallCheckStateInfoHook();
         InstallDeflectTearHook();
+    }
+    
+    private void WritePlayerDeadCheck()
+    {
+        var code = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.CheckPlayerDead;
+        
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingCheckPlayerDead);
+        AsmHelper.WriteRelativeOffset(bytes, code, WorldChrMan.Base, 7, 3);
+        memoryService.WriteBytes(code, bytes);
     }
 
     public bool HasHit()

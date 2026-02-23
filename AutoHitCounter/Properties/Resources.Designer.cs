@@ -94,6 +94,25 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 7 &lt;_main+0x7&gt;
+        ///48 85 c0                test   rax,rax
+        ///74 28                   je     34 &lt;dead&gt;
+        ///48 8b 80 08 e5 01 00    mov    rax,QWORD PTR [rax+0x1e508]
+        ///48 85 c0                test   rax,rax
+        ///74 1c                   je     34 &lt;dead&gt;
+        ///48 8b 80 90 01 00 00    mov    rax,QWORD PTR [rax+0x190]
+        ///48 85 c0                test   rax,rax
+        ///74 10                   je     34 &lt;dead&gt;
+        ///48 8b 00                mov    rax,QWORD PTR [rax]
+        ///48 85 c0          [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string EldenRingCheckPlayerDead {
+            get {
+                return ResourceManager.GetString("EldenRingCheckPlayerDead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # 7 &lt;_main+0x7&gt;
         ///74 0f                   je     18 &lt;original&gt;
         ///80 b9 56 01 00 00 20    cmp    BYTE PTR [rcx+0x156],0x20
