@@ -232,6 +232,15 @@ namespace AutoHitCounter.ViewModels
                 dropIndex--;
 
             Splits.Insert(dropIndex, entry);
+            
+            if (ActiveProfile?.Splits != null && oldIndex < ActiveProfile.Splits.Count)
+            {
+                var profileEntry = ActiveProfile.Splits[oldIndex];
+                ActiveProfile.Splits.RemoveAt(oldIndex);
+                ActiveProfile.Splits.Insert(dropIndex, profileEntry);
+                _profileService.SaveProfile(ActiveProfile);
+            }
+            
             _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
         }
 
