@@ -1,6 +1,5 @@
 ﻿// 
 
-using System;
 using AutoHitCounter.Enums;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
@@ -26,6 +25,7 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         InstallEnvKillingHook();
         InstallCheckStateInfoHook();
         InstallDeflectTearHook();
+        InstallKillChrHook();
     }
 
     private void WritePlayerDeadCheck()
@@ -231,5 +231,23 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
 
         memoryService.WriteBytes(code, bytes);
         hookManager.InstallHook(code, Hooks.CheckDeflectTear, [0xF3, 0x0F, 0x10, 0x6D, 0xA0]);
+    }
+
+    private void InstallKillChrHook()
+    {
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingKillChr);
+        var hit = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.Hit;
+        var checkPlayerDeadFunc = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.CheckPlayerDead;
+
+        var code = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.KillChr;
+        AsmHelper.WriteRelativeOffsets(bytes, [
+            (code + 0x1, checkPlayerDeadFunc, 5, 0x1 + 1),
+            (code + 0x8, WorldChrMan.Base, 7, 0x8 + 3),
+            (code + 0x18, hit, 6, 0x18 + 2),
+            (code + 0x24, Hooks.KillChr + 6, 5, 0x24 + 1),
+        ]);
+
+        memoryService.WriteBytes(code, bytes);
+        hookManager.InstallHook(code, Hooks.KillChr, [0x40, 0x53, 0x48, 0x83, 0xEC, 0x40]);
     }
 }

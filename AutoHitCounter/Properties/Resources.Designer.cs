@@ -264,6 +264,26 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 50                      push   rax
+        ///e8 00 00 00 00          call   6 &lt;_main+0x6&gt;
+        ///74 16                   je     1e &lt;exit&gt;
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # f &lt;_main+0xf&gt;
+        ///48 3b 88 08 e5 01 00    cmp    rcx,QWORD PTR [rax+0x1e508]
+        ///75 06                   jne    1e &lt;exit&gt;
+        ///ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 1e &lt;exit&gt;
+        ///
+        ///00000000001e &lt;exit&gt;:
+        ///58                      pop    rax
+        ///53                      push   rbx
+        ///48 83 ec 40             sub    rsp,0x40        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string EldenRingKillChr {
+            get {
+                return ResourceManager.GetString("EldenRingKillChr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 53                      push   rbx
         ///50                      push   rax
         ///41 50                   push   r8

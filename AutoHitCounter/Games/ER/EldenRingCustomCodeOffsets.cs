@@ -25,6 +25,8 @@ public static class EldenRingCustomCodeOffsets
     public const int StateInfoCheck = 0x1200;
     public const int DeflectTearCheck = 0x1400;
 
+    public const int KillChr = 0x1600;
+
     public const int EventLogWriteIdx = 0x2000;
     public const int EventLogCode = 0x2020;
     public const int EventLogBuffer = 0x2100; //0x1000

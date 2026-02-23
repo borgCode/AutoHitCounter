@@ -89,6 +89,7 @@ public static class EldenRingOffsets
         public static nint EnvKilling;
         public static nint CheckStateInfo;
         public static nint CheckDeflectTear;
+        public static nint KillChr;
         public static nint SetEvent;
     }
 
@@ -321,6 +322,19 @@ public static class EldenRingOffsets
             Version2_6_0 or Version2_6_1 => 0x447C0C,
             _ => 0
         };
+        
+        Hooks.KillChr = moduleBase + Version switch
+        {
+            // WARNING: No match found for: Version1_2_0, Version1_2_1, Version1_2_2, Version1_2_3, Version1_3_0, Version1_3_1, Version1_3_2, Version1_4_0, Version1_4_1, Version1_5_0, Version1_6_0, Version1_7_0
+            Version1_8_0 or Version1_8_1 => 0x3FA160,
+            Version1_9_0 or Version1_9_1 => 0x3FA2A0,
+            Version2_0_0 or Version2_0_1 => 0x3FA370,
+            Version2_2_0 or Version2_2_3 or Version2_6_0 or Version2_6_1 => 0x3FCC60,
+            Version2_3_0 => 0x3FCC70,
+            Version2_4_0 or Version2_5_0 => 0x3FCC90,
+            _ => 0
+        };
+
 
 
         
@@ -412,6 +426,7 @@ public static class EldenRingOffsets
             PrintOffset("EnvKilling", Hooks.EnvKilling);
             PrintOffset("CheckStateInfo", Hooks.CheckStateInfo);
             PrintOffset("CheckDeflectTear", Hooks.CheckDeflectTear);
+            PrintOffset("KillChr", Hooks.KillChr);
             PrintOffset("SetEvent", Hooks.SetEvent);
            
             
