@@ -78,14 +78,14 @@ namespace AutoHitCounter.Properties {
         /// <summary>
         ///   Looks up a localized string similar to 50                      push   rax
         ///e8 00 00 00 00          call   6 &lt;_main+0x6&gt;
-        ///74 25                   je     2d &lt;skip&gt;
+        ///74 27                   je     2f &lt;skip&gt;
         ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # f &lt;_main+0xf&gt;
         ///48 3b 90 80 00 00 00    cmp    rdx,QWORD PTR [rax+0x80]
-        ///75 15                   jne    2d &lt;skip&gt;
+        ///75 17                   jne    2f &lt;skip&gt;
         ///4d 85 c0                test   r8,r8
         ///74 09                   je     26 &lt;set_check_proc_flag&gt;
         ///4c 3b 80 80 00 00 00    cmp    r8,QWORD PTR [rax+0x80]
-        ///74 07                   je     2d &lt;skip&gt;
+        ///74 09                   je     2f &lt;skip&gt;
         ///
         ///000000000026 &lt;s [rest of string was truncated]&quot;;.
         /// </summary>
