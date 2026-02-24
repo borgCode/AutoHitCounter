@@ -50,7 +50,9 @@ namespace AutoHitCounter.ViewModels
             OpenProfileEditorCommand = new DelegateCommand(OpenProfileEditor);
             SaveNotesCommand = new DelegateCommand(SaveNotes);
 
+
             ManualSplitCommand = new DelegateCommand(ManualAdvanceSplit);
+            AdvanceSplitCommand = new DelegateCommand(AdvanceSplit);
             PrevSplitCommand = new DelegateCommand(PreviousSplit);
 
             IncrementHitCommand = new DelegateCommand(IncrementHit);
@@ -75,6 +77,7 @@ namespace AutoHitCounter.ViewModels
         public DelegateCommand OpenProfileEditorCommand { get; }
 
         public DelegateCommand ManualSplitCommand { get; }
+        public DelegateCommand AdvanceSplitCommand { get; }
         public DelegateCommand PrevSplitCommand { get; }
 
         public DelegateCommand IncrementHitCommand { get; }
@@ -121,7 +124,8 @@ namespace AutoHitCounter.ViewModels
                     foreach (var p in _profileService.GetProfiles(_selectedGame?.GameName))
                         Profiles.Add(p);
 
-                    ActiveProfile = Profiles.FirstOrDefault();
+                    ActiveProfile = Profiles.FirstOrDefault(p => p.Name == SettingsManager.Default.LastSelectedProfile)
+                                    ?? Profiles.FirstOrDefault();
                     SwapModule();
                 }
             }
@@ -154,6 +158,12 @@ namespace AutoHitCounter.ViewModels
             {
                 if (SetProperty(ref _activeProfile, value))
                 {
+                    if (value != null)
+                    {
+                        SettingsManager.Default.LastSelectedProfile = value.Name;
+                        SettingsManager.Default.Save();
+                    }
+
                     ResetSplits();
                 }
             }
@@ -184,8 +194,9 @@ namespace AutoHitCounter.ViewModels
             get => _isRunComplete;
             set => SetProperty(ref _isRunComplete, value);
         }
-        
+
         private string _inGameTimeFormatted;
+
         public string InGameTimeFormatted
         {
             get => _inGameTimeFormatted;
@@ -207,20 +218,29 @@ namespace AutoHitCounter.ViewModels
 
             var oldIndex = Splits.IndexOf(entry);
             if (oldIndex < 0 || oldIndex == dropIndex) return;
-            
+
             var groupStart = oldIndex;
             for (int i = oldIndex - 1; i >= 0; i--)
             {
-                if (Splits[i].IsParent) { groupStart = i + 1; break; }
+                if (Splits[i].IsParent)
+                {
+                    groupStart = i + 1;
+                    break;
+                }
+
                 if (i == 0) groupStart = 0;
             }
 
             var groupEnd = Splits.Count - 1;
             for (int i = oldIndex + 1; i < Splits.Count; i++)
             {
-                if (Splits[i].IsParent) { groupEnd = i - 1; break; }
+                if (Splits[i].IsParent)
+                {
+                    groupEnd = i - 1;
+                    break;
+                }
             }
-            
+
             if (dropIndex < groupStart) dropIndex = groupStart;
             if (dropIndex > groupEnd + 1) dropIndex = groupEnd + 1;
 
@@ -232,7 +252,7 @@ namespace AutoHitCounter.ViewModels
                 dropIndex--;
 
             Splits.Insert(dropIndex, entry);
-            
+
             if (ActiveProfile?.Splits != null && oldIndex < ActiveProfile.Splits.Count)
             {
                 var profileEntry = ActiveProfile.Splits[oldIndex];
@@ -240,7 +260,7 @@ namespace AutoHitCounter.ViewModels
                 ActiveProfile.Splits.Insert(dropIndex, profileEntry);
                 _profileService.SaveProfile(ActiveProfile);
             }
-            
+
             _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
         }
 
@@ -313,15 +333,14 @@ namespace AutoHitCounter.ViewModels
                 IsRunComplete = true;
                 OnPropertyChanged(nameof(TotalHits));
                 OnPropertyChanged(nameof(TotalPb));
-               
             }
             else
             {
                 CurrentSplit.IsCurrent = false;
                 next.IsCurrent = true;
-                CurrentSplit = next; 
+                CurrentSplit = next;
             }
-            
+
             _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
         }
 

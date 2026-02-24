@@ -71,7 +71,7 @@
                                    Text="{Binding FilteredEvents.Count, StringFormat='{}{0} events'}" />
                     </Grid>
 
-                    <Border Grid.Row="1" BorderBrush="#222244" BorderThickness="0,0,0,1"
+                    <Border Grid.Row="1" BorderBrush="#B37c4d85" BorderThickness="0,0,0,1"
                             Padding="8,0,8,8">
                         <TextBox
                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
@@ -90,13 +90,13 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="ListBoxItem">
-                                            <Border x:Name="Bd" Padding="10,6" BorderBrush="#1e1e38"
+                                            <Border x:Name="Bd" Padding="10,6" BorderBrush="#B37c4d85"
                                                     BorderThickness="0,0,0,1" Background="Transparent">
                                                 <ContentPresenter />
                                             </Border>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter TargetName="Bd" Property="Background" Value="#222248" />
+                                                    <Setter TargetName="Bd" Property="Background" Value="#6683518c" />
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
@@ -167,16 +167,16 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="ListBoxItem">
-                                            <Border x:Name="Bd" Padding="8,6" BorderBrush="#1e1e38"
+                                            <Border x:Name="Bd" Padding="8,6" BorderBrush="#B37c4d85"
                                                     BorderThickness="0,0,0,1" Background="Transparent">
                                                 <ContentPresenter />
                                             </Border>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter TargetName="Bd" Property="Background" Value="#222248" />
+                                                    <Setter TargetName="Bd" Property="Background" Value="#6683518c" />
                                                 </Trigger>
                                                 <Trigger Property="IsSelected" Value="True">
-                                                    <Setter TargetName="Bd" Property="Background" Value="#2a2a50" />
+                                                    <Setter TargetName="Bd" Property="Background" Value="#B37c4d85" />
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>

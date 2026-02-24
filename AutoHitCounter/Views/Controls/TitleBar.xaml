@@ -14,7 +14,11 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-
+            
+            <Image Source="pack://application:,,,/Assets/icon.ico"
+                   Width="16" Height="16"
+                   Margin="5,0,5,0"
+                   VerticalAlignment="Center" />
             
             <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=UserControl}}"
                        Grid.Column="1"

@@ -21,6 +21,8 @@ public class SettingsManager
     
     [DefaultValue("Dark Souls Remastered")]
     public string LastSelectedGame { get; set; }
+    
+    public string LastSelectedProfile { get; set; }
     public double MainWindowLeft { get; set; }
     public double MainWindowTop { get; set; }
     public string HotkeyActionIds { get; set; } = "";

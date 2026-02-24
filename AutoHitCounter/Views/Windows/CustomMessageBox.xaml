@@ -16,7 +16,7 @@
         Background="Transparent"
         >
     <Border Background="#2D2D30" 
-            BorderBrush="#92400E" 
+            BorderBrush="#472d4c" 
             BorderThickness="1" 
             CornerRadius="4"
             Margin="10">
@@ -32,7 +32,7 @@
             </Grid.RowDefinitions>
             
             <Border Grid.Row="0" 
-                    Background="#92400E" 
+                    Background="#472d4c" 
                     CornerRadius="3,3,0,0"
                     MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <TextBlock x:Name="TitleText"

@@ -7,11 +7,11 @@
         <Color x:Key="BackgroundColor">#121212</Color>
         <Color x:Key="PanelColor">#1A1A1A</Color>
         <Color x:Key="TextColor">#EAEAEA</Color>
-        <Color x:Key="AccentColor">#b37c07 </Color>
-        <Color x:Key="HoverColor">#C27927 </Color>
+        <Color x:Key="AccentColor">#7c4d85</Color>
+        <Color x:Key="HoverColor">#83518c </Color>
         <Color x:Key="BorderColor">#333333</Color>
         <Color x:Key="ControlBackgroundColor">#252525</Color>
-        <Color x:Key="TitleBarColor">#92400E  </Color>
+        <Color x:Key="TitleBarColor">#472d4c  </Color>
 
 
         <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}" />
@@ -389,7 +389,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
+        <!-- Tab Customization -->
         <Style TargetType="TabControl">
             <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
@@ -467,7 +467,7 @@
         <Style TargetType="ScrollBar">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderBrush" Value="Transparent" />
-            <Setter Property="Foreground" Value="#92400E  " />
+            <Setter Property="Foreground" Value="#8F5999  " />
             <Setter Property="Width" Value="8" />
             <Setter Property="Template">
                 <Setter.Value>

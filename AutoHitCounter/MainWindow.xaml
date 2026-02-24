@@ -8,6 +8,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:controls="clr-namespace:AutoHitCounter.Views.Controls"
         xmlns:behaviors="clr-namespace:AutoHitCounter.Behaviors"
+        Icon="pack://application:,,,/Assets/icon.ico"
         mc:Ignorable="d"
         Style="{StaticResource DefaultWindowStyle}"
         WindowStyle="None"
@@ -30,15 +31,22 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <controls:TitleBar Grid.Row="0" Title="Auto Hit Counter" />
-
+        <!-- Tool Attachment Info -->
         <Grid Grid.Row="1" Margin="5">
             <TextBlock Text="{Binding AppVer}" />
+            <Button x:Name="CheckUpdateButton" Content="Check for Updates"
+                    Click="CheckUpdateButton_Click"
+                    Margin="5,0,5,-2"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center">
+            </Button>
             <TextBlock Text="{Binding AttachedText}"
                        HorizontalAlignment="Right" />
         </Grid>
-
+        <!-- Main Tabs -->
         <TabControl Grid.Row="2" x:Name="MainTabControl">
 
+            <!-- Splits Tab -->
             <TabItem Header="Splits">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -96,6 +104,7 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
+                            <!-- Splits Header -->
                             <TextBlock FontFamily="{StaticResource AppFont}"
                                        FontSize="{StaticResource FontSizeHeader}"
                                        Text="Split"
@@ -130,27 +139,54 @@
                              BorderThickness="0"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 
+                        <!-- Split List -->
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                                 <Setter Property="BorderThickness" Value="3,0,0,0" />
                                 <Setter Property="BorderBrush" Value="Transparent" />
-                                <Style.Triggers>
-                                    <Trigger Property="ListBox.AlternationIndex" Value="0">
-                                        <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
-                                    </Trigger>
-                                    <Trigger Property="ListBox.AlternationIndex" Value="1">
-                                        <Setter Property="Background" Value="#222222" />
-                                    </Trigger>
-                                    <DataTrigger Binding="{Binding IsCurrent}" Value="True">
-                                        <Setter Property="BorderBrush" Value="#00CC66" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsParent}" Value="True">
-                                        <Setter Property="Background" Value="#1A1A1A" />
-                                        <Setter Property="BorderBrush" Value="Transparent" />
-                                        <Setter Property="FontWeight" Value="SemiBold" />
-                                    </DataTrigger>
-                                </Style.Triggers>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <Border x:Name="Border"
+                                                    Background="{TemplateBinding Background}"
+                                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                                    SnapsToDevicePixels="True">
+                                                <ContentPresenter
+                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                    Margin="{TemplateBinding Padding}"
+                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="ListBox.AlternationIndex" Value="0">
+                                                    <Setter TargetName="Border" Property="Background"
+                                                            Value="{StaticResource BackgroundBrush}" />
+                                                </Trigger>
+                                                <Trigger Property="ListBox.AlternationIndex" Value="1">
+                                                    <Setter TargetName="Border" Property="Background" Value="#222222" />
+                                                </Trigger>
+                                                <!-- Split Colours -->
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Border" Property="Background" Value="#6683518c" />
+                                                </Trigger>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="Border" Property="Background" Value="#B37c4d85" />
+                                                </Trigger>
+                                                <DataTrigger Binding="{Binding IsCurrent}" Value="True">
+                                                    <Setter TargetName="Border" Property="BorderBrush" Value="#9D61A8" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsParent}" Value="True">
+                                                    <Setter TargetName="Border" Property="Background" Value="#1A1A1A" />
+                                                    <Setter TargetName="Border" Property="BorderBrush"
+                                                            Value="Transparent" />
+                                                    <Setter Property="FontWeight" Value="SemiBold" />
+                                                </DataTrigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
                             </Style>
                         </ListBox.ItemContainerStyle>
 
@@ -164,6 +200,7 @@
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
+
 
                                         <TextBlock Grid.Column="0"
                                                    Text="{Binding Name}"
@@ -246,7 +283,7 @@
                                                  AcceptsReturn="True"
                                                  FontSize="11"
                                                  Foreground="#777"
-                                                 
+
                                                  Padding="2">
                                             <TextBox.Style>
                                                 <Style TargetType="TextBox">
@@ -266,13 +303,14 @@
                                                             </MultiTrigger.Conditions>
                                                             <Setter Property="Background">
                                                                 <Setter.Value>
-                                                                    <VisualBrush AlignmentX="Left" AlignmentY="Top" Stretch="None">
+                                                                    <VisualBrush AlignmentX="Left" AlignmentY="Top"
+                                                                            Stretch="None">
                                                                         <VisualBrush.Visual>
-                                                                            <TextBlock Text="Add notes..." 
-                                                                                Foreground="#444" 
-                                                                                FontSize="11"
-                                                                                FontStyle="Italic"
-                                                                                Margin="4,2,0,0" />
+                                                                            <TextBlock Text="Add notes..."
+                                                                                    Foreground="#444"
+                                                                                    FontSize="11"
+                                                                                    FontStyle="Italic"
+                                                                                    Margin="4,2,0,0" />
                                                                         </VisualBrush.Visual>
                                                                     </VisualBrush>
                                                                 </Setter.Value>
@@ -288,7 +326,7 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
 
-                    <Grid Grid.Row="3" >
+                    <Grid Grid.Row="3">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                             <StackPanel.Style>
                                 <Style TargetType="StackPanel">
@@ -299,13 +337,30 @@
                                     </Style.Triggers>
                                 </Style>
                             </StackPanel.Style>
-                            <Button Content="+ Hit" Margin="5,0,0,5" />
-                            <Button Content="Next Split ->" Margin="5,0,0,5" />
-                            <Button Content="Reset" Margin="5,0,0,5" />
-                            <Button Content="Save Notes" Margin="5,0,0,5"
-                                    Command="{Binding SaveNotesCommand}" />
+                            <Button Content="- Hit" Margin="5,0,0,5"
+                                    Height="23" VerticalAlignment="Bottom"
+                                    Command="{Binding DecrementHitCommand}" />
+                            <Button Content="+ Hit" Margin="5,0,0,5"
+                                    Height="23" VerticalAlignment="Bottom"
+                                    Command="{Binding IncrementHitCommand}" />
+                            <Button Content="← Prev Split" Margin="5,0,0,5"
+                                    Height="23" VerticalAlignment="Bottom"
+                                    Command="{Binding PrevSplitCommand}" />
+                            <Button Content="Next Split →" Margin="5,0,0,5"
+                                    Height="23" VerticalAlignment="Bottom"
+                                    Command="{Binding AdvanceSplitCommand}" />
+                            <Button Content="Reset" Margin="5,0,0,5"
+                                    Height="23" VerticalAlignment="Bottom"
+                                    Command="{Binding ResetCommand}" />
+                            <!-- Not sure what to do with this -->
+                            <Button Content="Run Notes" Margin="5,0,0,5"
+                                    Height="23" VerticalAlignment="Bottom" />
+                            
+                            <!-- Consider Adding a checkbox for notes Column or something, ask shilkey, 
+                            also consider moving the igt elsewhere for buttons space -->
+                            
                         </StackPanel>
-
+                        <!-- Potentially turn this into a popup window -->
                         <StackPanel Visibility="{Binding IsRunComplete, Converter={StaticResource BoolToVisConverter}}"
                                     HorizontalAlignment="Center" VerticalAlignment="Center">
                             <TextBlock Text="✓ Run Complete"
@@ -332,10 +387,13 @@
 
                 </Grid>
             </TabItem>
+
+            <!-- Hotkeys Tab -->
             <TabItem Header="Hotkeys">
                 <controls:HotkeysTab DataContext="{Binding Hotkeys}" />
             </TabItem>
 
+            <!-- Settings Tab -->
             <TabItem Header="Settings">
                 <controls:SettingsTab DataContext="{Binding Settings}" />
             </TabItem>
