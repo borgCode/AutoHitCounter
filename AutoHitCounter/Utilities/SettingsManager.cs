@@ -32,6 +32,7 @@ public class SettingsManager
     public bool AlwaysOnTop { get; set; }
     public bool ShowNotesSection { get; set; }
     public bool AllowManualSplitOnAutoSplits { get; set; }
+    public bool PracticeMode { get; set; }
 
     public void Save()
     {

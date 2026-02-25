@@ -64,14 +64,21 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Grid.Column="0" Margin="0,0,4,0">
-                            <TextBlock Text="GAME"
-                                       FontFamily="{StaticResource AppFont}"
-                                       FontSize="10"
-                                       Foreground="#666666"
-                                       Margin="2,0,0,2" />
-                            <ComboBox ItemsSource="{Binding Games}"
-                                      SelectedItem="{Binding SelectedGame}"
-                                      DisplayMemberPath="GameName" />
+                            <TextBlock Text="GAME" FontFamily="{StaticResource AppFont}" FontSize="10"
+                                       Foreground="#666666" Margin="2,0,0,2" />
+                            <DockPanel>
+                                <Button DockPanel.Dock="Right"
+                                        Content="▶"
+                                        Command="{Binding TrackGameCommand}"
+                                        Width="22" Height="22"
+                                        Margin="4,0,0,0"
+                                        ToolTip="{Binding TrackingText}" />
+                                <ComboBox ItemsSource="{Binding Games}"
+                                          SelectedItem="{Binding SelectedGame}"
+                                          DisplayMemberPath="GameName" />
+                            </DockPanel>
+                            <TextBlock Text="{Binding TrackingText}"
+                                       FontSize="9" Foreground="#555555" Margin="2,1,0,0" />
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" Margin="4,0,4,0">

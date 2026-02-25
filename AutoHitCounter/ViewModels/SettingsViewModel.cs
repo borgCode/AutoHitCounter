@@ -61,6 +61,19 @@ public class SettingsViewModel : BaseViewModel
             SettingsManager.Default.Save();
         }
     }
+
+    private bool _isPracticeMode;
+
+    public bool IsPracticeMode
+    {
+        get => _isPracticeMode;
+        set
+        {
+            if (!SetProperty(ref _isPracticeMode, value)) return;
+            SettingsManager.Default.PracticeMode = value;
+            SettingsManager.Default.Save();
+        }
+    }
     
     
     
@@ -78,6 +91,9 @@ public class SettingsViewModel : BaseViewModel
 
         _allowManualSplitOnAutoSplits = SettingsManager.Default.AllowManualSplitOnAutoSplits;
         OnPropertyChanged(nameof(AllowManualSplitOnAutoSplits));
+
+        _isPracticeMode = SettingsManager.Default.PracticeMode;
+        OnPropertyChanged(nameof(IsPracticeMode));
     }
 
     #endregion

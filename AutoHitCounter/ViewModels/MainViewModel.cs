@@ -1,4 +1,4 @@
-﻿// 
+//
 
 using System;
 using System.Collections.Generic;
@@ -25,6 +25,17 @@ namespace AutoHitCounter.ViewModels
         private IGameModule _currentModule;
         private string _lastIgt;
 
+        private class RunSnapshot(int currentSplitIndex, int[] hitCounts, bool isRunComplete, TimeSpan inGameTime)
+        {
+            public int CurrentSplitIndex { get; } = currentSplitIndex;
+            public int[] HitCounts { get; } = hitCounts;
+            public bool IsRunComplete { get; } = isRunComplete;
+            public TimeSpan InGameTime { get; } = inGameTime;
+        }
+        
+        
+        private readonly Dictionary<string, RunSnapshot> _runSnapshots = new();
+
         public SettingsViewModel Settings { get; }
         public HotkeyTabViewModel Hotkeys { get; }
 
@@ -49,7 +60,7 @@ namespace AutoHitCounter.ViewModels
 
             OpenProfileEditorCommand = new DelegateCommand(OpenProfileEditor);
             SaveNotesCommand = new DelegateCommand(SaveNotes);
-
+            TrackGameCommand = new DelegateCommand(StartTrackingGame);
 
             ManualSplitCommand = new DelegateCommand(ManualAdvanceSplit);
             AdvanceSplitCommand = new DelegateCommand(AdvanceSplit);
@@ -70,11 +81,15 @@ namespace AutoHitCounter.ViewModels
             Games.Add(new Game { GameName = "Elden Ring", ProcessName = "eldenring" });
 
             SelectedGame = Games.FirstOrDefault(game => game.GameName == SettingsManager.Default.LastSelectedGame);
+            if (_selectedGame != null)
+                StartTrackingGame();
         }
 
         #region Commands
 
         public DelegateCommand OpenProfileEditorCommand { get; }
+
+        public DelegateCommand TrackGameCommand { get; }
 
         public DelegateCommand ManualSplitCommand { get; }
         public DelegateCommand AdvanceSplitCommand { get; }
@@ -118,18 +133,42 @@ namespace AutoHitCounter.ViewModels
             get => _selectedGame;
             set
             {
-                if (SetProperty(ref _selectedGame, value))
-                {
-                    Profiles.Clear();
-                    foreach (var p in _profileService.GetProfiles(_selectedGame?.GameName))
-                        Profiles.Add(p);
+                if (_selectedGame == value) return;
 
-                    ActiveProfile = Profiles.FirstOrDefault(p => p.Name == SettingsManager.Default.LastSelectedProfile)
-                                    ?? Profiles.FirstOrDefault();
+                if (_activeProfile != null)
+                {
+                    var outKey = $"{_selectedGame?.GameName}|{_activeProfile.Name}";
+                    _runSnapshots[outKey] = CaptureSnapshot();
+                }
+        
+                SetProperty(ref _selectedGame, value);
+                _activeProfile = null;
+
+                Profiles.Clear();
+                foreach (var p in _profileService.GetProfiles(_selectedGame?.GameName))
+                    Profiles.Add(p);
+
+                ActiveProfile = Profiles.FirstOrDefault(p => p.Name == SettingsManager.Default.LastSelectedProfile)
+                                ?? Profiles.FirstOrDefault();
+            }
+        }
+
+        private Game _activeGame;
+
+        public Game ActiveGame
+        {
+            get => _activeGame;
+            private set
+            {
+                if (SetProperty(ref _activeGame, value))
+                {
                     SwapModule();
+                    OnPropertyChanged(nameof(TrackingText));
                 }
             }
         }
+
+        public string TrackingText => _activeGame != null ? $"Tracking: {_activeGame.GameName}" : "Not tracking";
 
         public ObservableCollection<SplitViewModel> Splits { get; } = new();
 
@@ -156,16 +195,23 @@ namespace AutoHitCounter.ViewModels
             get => _activeProfile;
             set
             {
-                if (SetProperty(ref _activeProfile, value))
+                if (_activeProfile == value) return;
+                
+                if (_activeProfile != null)
                 {
-                    if (value != null)
-                    {
-                        SettingsManager.Default.LastSelectedProfile = value.Name;
-                        SettingsManager.Default.Save();
-                    }
-
-                    ResetSplits();
+                    var outKey = $"{_selectedGame?.GameName}|{_activeProfile.Name}";
+                    _runSnapshots[outKey] = CaptureSnapshot();
                 }
+
+                SetProperty(ref _activeProfile, value);
+
+                if (value != null)
+                {
+                    SettingsManager.Default.LastSelectedProfile = value.Name;
+                    SettingsManager.Default.Save();
+                }
+
+                LoadProfile(value);
             }
         }
 
@@ -279,37 +325,60 @@ namespace AutoHitCounter.ViewModels
 
         private void OnAttached()
         {
-            AttachedText = $"Attached to {SelectedGame.ProcessName}.exe";
+            var processName = _memoryService.TargetProcess?.ProcessName;
+            AttachedText = $"Attached to {processName}.exe";
+            OnPropertyChanged(nameof(TrackingText));
+            
+            if (_activeGame == null && processName != null)
+            {
+                var matches = Games.Where(g =>
+                    g.ProcessName.Equals(processName, StringComparison.OrdinalIgnoreCase)).ToList();
+                if (matches.Count == 1)
+                {
+                    SelectedGame = matches[0];
+                    StartTrackingGame();
+                }
+            }
         }
 
         private void OnNotAttached()
         {
             AttachedText = "Not attached";
+            OnPropertyChanged(nameof(TrackingText));
+        }
+
+        private void StartTrackingGame()
+        {
+            if (_selectedGame == null) return;
+            ActiveGame = _selectedGame;
         }
 
         private void SwapModule()
         {
             (_currentModule as IDisposable)?.Dispose();
 
-            if (_selectedGame == null) return;
+            if (_activeGame == null) return;
 
-            _currentModule = _gameModuleFactory.CreateModule(_selectedGame, GetActiveEvents());
-            _memoryService.StartAutoAttach(_selectedGame.ProcessName);
+            _currentModule = _gameModuleFactory.CreateModule(_activeGame, GetActiveEvents());
+            _memoryService.StartAutoAttach(_activeGame.ProcessName);
             _currentModule.OnHit += count =>
             {
                 if (IsRunComplete || CurrentSplit == null) return;
+                if (_selectedGame != _activeGame) return;
                 CurrentSplit.NumOfHits += count;
                 _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
             };
             _currentModule.OnEventSet += AutoAdvanceSplit;
             _currentModule.OnIgtChanged += UpdateInGameTime;
 
-            SettingsManager.Default.LastSelectedGame = _selectedGame.GameName;
+            SettingsManager.Default.LastSelectedGame = _activeGame.GameName;
             SettingsManager.Default.Save();
         }
 
         private void AutoAdvanceSplit()
         {
+            if (_selectedGame != _activeGame) return;
+            if (Settings.IsPracticeMode) return;
             if (CurrentSplit == null) return;
             AdvanceSplit();
         }
@@ -427,12 +496,60 @@ namespace AutoHitCounter.ViewModels
             _profileService.SaveProfile(ActiveProfile);
         }
 
-        private void ResetSplits()
+        private RunSnapshot CaptureSnapshot()
+        {
+            var children = Splits.Where(s => s.Type == SplitType.Child).ToList();
+            var hits = children.Select(s => s.NumOfHits).ToArray();
+            var index = CurrentSplit != null ? Splits.IndexOf(CurrentSplit) : -1;
+            return new RunSnapshot(index, hits, IsRunComplete, InGameTime);
+        }
+
+        private void LoadProfile(Profile profile)
         {
             IsRunComplete = false;
             UpdateSplits();
+            var key = $"{_selectedGame?.GameName}|{profile?.Name}";
+            if (profile != null && _runSnapshots.TryGetValue(key, out var snapshot))
+                RestoreSnapshot(snapshot);
+            else
+                InitFreshRun();
+
+            OnPropertyChanged(nameof(TotalHits));
+            OnPropertyChanged(nameof(TotalPb));
+            _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
+        }
+
+        private void RestoreSnapshot(RunSnapshot snapshot)
+        {
+            IsRunComplete = snapshot.IsRunComplete;
+            InGameTime = snapshot.InGameTime;
+            var children = Splits.Where(s => s.Type == SplitType.Child).ToList();
+            for (int i = 0; i < children.Count && i < snapshot.HitCounts.Length; i++)
+                children[i].NumOfHits = snapshot.HitCounts[i];
+
+            if (!IsRunComplete)
+            {
+                var toRestore = snapshot.CurrentSplitIndex >= 0 && snapshot.CurrentSplitIndex < Splits.Count
+                    ? Splits[snapshot.CurrentSplitIndex]
+                    : Splits.FirstOrDefault(s => s.Type == SplitType.Child);
+                CurrentSplit = toRestore;
+                if (CurrentSplit != null) CurrentSplit.IsCurrent = true;
+            }
+        }
+
+        private void InitFreshRun()
+        {
             CurrentSplit = Splits.FirstOrDefault(s => s.Type == SplitType.Child);
             if (CurrentSplit != null) CurrentSplit.IsCurrent = true;
+        }
+
+        private void ResetSplits()
+        {
+            var key = $"{_selectedGame?.GameName}|{_activeProfile?.Name}";
+            _runSnapshots.Remove(key);
+            IsRunComplete = false;
+            UpdateSplits();
+            InitFreshRun();
             _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
         }
 
