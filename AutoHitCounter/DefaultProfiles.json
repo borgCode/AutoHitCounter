@@ -1901,5 +1901,178 @@
         }
       ]
     }
+  ],
+  "Dark Souls 3": [
+    {
+      "Name": "Test",
+      "GameName": "Dark Souls 3",
+      "Splits": [
+        {
+          "EventId": null,
+          "Name": "Test",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Test",
+          "IsAuto": false
+        }
+      ]
+    },
+    {
+      "Name": "ggyhg",
+      "GameName": "Dark Souls 3",
+      "Splits": []
+    },
+    {
+      "Name": "Any%",
+      "GameName": "Dark Souls 3",
+      "Splits": [
+        {
+          "EventId": 14000800,
+          "Name": "Iudex Gundyr",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Iudex Gundyr",
+          "IsAuto": true
+        },
+        {
+          "EventId": 13000800,
+          "Name": "Vordt of the Boreal Valley",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Vordt of the Boreal Valley",
+          "IsAuto": true
+        },
+        {
+          "EventId": 13300800,
+          "Name": "Abyss Watchers",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Abyss Watchers",
+          "IsAuto": true
+        },
+        {
+          "EventId": 13300850,
+          "Name": "Crystal Sage",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Crystal Sage",
+          "IsAuto": true
+        },
+        {
+          "EventId": 13500800,
+          "Name": "Deacons of the Deep",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Deacons of the Deep",
+          "IsAuto": true
+        },
+        {
+          "EventId": 13800800,
+          "Name": "High Lord Wolnir",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "High Lord Wolnir",
+          "IsAuto": true
+        },
+        {
+          "EventId": 13700850,
+          "Name": "Pontiff Sulyvahn",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Pontiff Sulyvahn",
+          "IsAuto": true
+        },
+        {
+          "EventId": 13700800,
+          "Name": "Aldrich, Devourer of Gods",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Aldrich, Devourer of Gods",
+          "IsAuto": true
+        },
+        {
+          "EventId": 13900800,
+          "Name": "Yhorm the Giant",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Yhorm the Giant",
+          "IsAuto": true
+        },
+        {
+          "EventId": 13000890,
+          "Name": "Dancer of the Boreal Valley",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Dancer of the Boreal Valley",
+          "IsAuto": true
+        },
+        {
+          "EventId": 13010800,
+          "Name": "Dragonslayer Armour",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Dragonslayer Armour",
+          "IsAuto": true
+        },
+        {
+          "EventId": 13410830,
+          "Name": "Twin Princes",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Twin Princes",
+          "IsAuto": true
+        },
+        {
+          "EventId": 14100800,
+          "Name": "Soul of Cinder",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Soul of Cinder",
+          "IsAuto": true
+        }
+      ]
+    }
   ]
 }
