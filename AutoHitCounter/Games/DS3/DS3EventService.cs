@@ -1,9 +1,12 @@
 ﻿// 
 
 using System.Collections.Generic;
+using AutoHitCounter.Enums;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
 using AutoHitCounter.Services;
+using AutoHitCounter.Utilities;
+using static AutoHitCounter.Games.DS3.DS3CustomCodeOffsets;
 
 namespace AutoHitCounter.Games.DS3;
 
@@ -12,6 +15,20 @@ public class DS3EventService(IMemoryService memoryService, HookManager hookManag
 {
     public override void InstallHook()
     {
-        throw new System.NotImplementedException();
+        var code = Base + EventLogCode;
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.DS3EventLog);
+        var writeIndex = Base + EventLogWriteIdx;
+        var buffer = Base + EventLogBuffer;
+        var hookLoc = DS3Offsets.Hooks.SetEvent;
+        
+        AsmHelper.WriteRelativeOffsets(bytes, [
+            (code + 0x3, writeIndex, 6, 0x3 + 2),
+            (code + 0xE, buffer, 7, 0xE + 3),
+            (code + 0x26, writeIndex, 6, 0x26 + 2),
+            (code + 0x34, hookLoc + 0x5, 5, 0x34 + 1)
+        ]);
+        
+        MemoryService.WriteBytes(code, bytes);
+        HookManager.InstallHook(code, hookLoc, [0x40, 0x55, 0x57, 0x41, 0x54]);
     }
 }

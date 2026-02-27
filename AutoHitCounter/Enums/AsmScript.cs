@@ -22,6 +22,7 @@ public enum AsmScript
     DS3GetSpEffect,
     DS3JailerDrain,
     DS3FallDamage,
+    DS3EventLog,
     
     
     

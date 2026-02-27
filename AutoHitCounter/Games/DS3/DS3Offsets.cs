@@ -70,6 +70,7 @@ public static class DS3Offsets
         public static nint AuxProc;
         public static nint HasJailerDrain;
         public static nint FallDamage;
+        public static nint SetEvent;
     }
 
 
@@ -242,6 +243,24 @@ public static class DS3Offsets
             Version1_15_2_0 => 0x9C7F3A,
             _ => 0
         };
+        
+        Hooks.SetEvent = moduleBase + Version switch
+        {
+            Version1_3_2_0 => 0x4BFB80,
+            Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0x4BFC10,
+            Version1_5_0_0 or Version1_5_1_0 => 0x4BFEF0,
+            Version1_6_0_0 => 0x4C04C0,
+            Version1_7_0_0 => 0x4C13D0,
+            Version1_8_0_0 => 0x4C43D0,
+            Version1_9_0_0 or Version1_10_0_0 => 0x4C43E0,
+            Version1_11_0_0 => 0x4C4DE0,
+            Version1_12_0_0 => 0x4C4F40,
+            Version1_13_0_0 or Version1_14_0_0 or Version1_15_0_0 => 0x4C5060,
+            Version1_15_1_0 => 0x4C5E30,
+            Version1_15_2_0 => 0x4C5E20,
+            _ => 0
+        };
+
 
         
 #if DEBUG

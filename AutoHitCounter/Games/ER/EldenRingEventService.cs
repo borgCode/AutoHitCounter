@@ -6,6 +6,7 @@ using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
 using AutoHitCounter.Services;
 using AutoHitCounter.Utilities;
+using static AutoHitCounter.Games.ER.EldenRingCustomCodeOffsets;
 
 namespace AutoHitCounter.Games.ER;
 
@@ -17,10 +18,10 @@ public class EldenRingEventService(
 {
     public override void InstallHook()
     {
-        var code = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.EventLogCode;
+        var code = Base + EventLogCode;
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingEventLog);
-        var writeIndex = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.EventLogWriteIdx;
-        var buffer = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.EventLogBuffer;
+        var writeIndex = Base + EventLogWriteIdx;
+        var buffer = Base + EventLogBuffer;
         var hookLoc = EldenRingOffsets.Hooks.SetEvent;
 
         AsmHelper.WriteRelativeOffsets(bytes, [
