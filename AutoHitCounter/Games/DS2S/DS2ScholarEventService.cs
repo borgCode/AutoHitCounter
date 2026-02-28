@@ -7,6 +7,7 @@ using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
 using AutoHitCounter.Services;
 using AutoHitCounter.Utilities;
+using static AutoHitCounter.Games.DS2S.DS2ScholarCustomCodeOffsets;
 
 namespace AutoHitCounter.Games.DS2S;
 
@@ -14,14 +15,14 @@ public class DS2ScholarEventService(
     IMemoryService memoryService,
     HookManager hookManager,
     Dictionary<uint,string> events)
-    : EventServiceBase(memoryService, hookManager, events)
+    : EventServiceBase(memoryService, hookManager, events, Base + EventLogWriteIdx, Base + EventLogBuffer)
 {
     public override void InstallHook()
     {
-        var code = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.EventLogCode;
+        var code = Base + EventLogCode;
         var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarEventLog);
-        var writeIndex = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.EventLogWriteIdx;
-        var buffer = DS2ScholarCustomCodeOffsets.Base + DS2ScholarCustomCodeOffsets.EventLogBuffer;
+        var writeIndex = Base + EventLogWriteIdx;
+        var buffer = Base + EventLogBuffer;
         var hookLoc = DS2ScholarOffsets.Hooks.SetEvent;
         
         AsmHelper.WriteRelativeOffsets(bytes, [

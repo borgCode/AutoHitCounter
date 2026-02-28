@@ -18,4 +18,8 @@ public class SKCustomCodeOffsets
     public const int FadeFall = 0x580;
     public const int ApplyHealthDelta = 0x600;
     public const int StaggerCheck = 0x700;
+    
+    public const int EventLogWriteIdx = 0x2000;
+    public const int EventLogCode = 0x2020;
+    public const int EventLogBuffer = 0x2100;
 }

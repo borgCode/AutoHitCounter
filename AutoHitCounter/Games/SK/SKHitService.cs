@@ -56,12 +56,14 @@ public class SKHitService(IMemoryService memoryService, HookManager hookManager)
             (code, pendingHitFlag, 7, 2),
             (code + 0xD, checkPlayerDeadFunc, 5, 0xD + 1),
             (code + 0x18, WorldChrMan.Base, 7, 0x18 + 3),
-            (code + 0x8B, WorldChrMan.Base, 7, 0x8B + 3),
-            (code + 0xA5, Functions.HasSpEffectId, 5, 0xA5 + 1),
-            (code + 0xB0, staggerCheckFlag, 7, 0xB0 + 2),
-            (code + 0xB9, hit, 6, 0xB9 + 2),
-            (code + 0xC1, pendingHitFlag, 7, 0xC1 + 2),
-            (code + 0xC9, Hooks.Hit + 5, 5, 0xC9 + 1),
+            (code + 0xA5, WorldChrMan.Base, 7, 0xA5 + 3),
+            (code + 0xBF, Functions.HasSpEffectId, 5, 0xBF + 1),
+            (code + 0xCA, staggerCheckFlag, 7, 0xCA + 2),
+            (code + 0xD7, EventFlagMan.Base, 7, 0xD7 + 3),
+            (code + 0xE3, Functions.GetEvent, 5, 0xE3 + 1),
+            (code + 0xF0, hit, 6, 0xF0 + 2),
+            (code + 0xF8, pendingHitFlag, 7, 0xF8 + 2),
+            (code + 0x100, Hooks.Hit + 5, 5, 0x100 + 1),
         ]);
         memoryService.WriteBytes(code, bytes);
         hookManager.InstallHook(code, Hooks.Hit, [0x48, 0x89, 0x44, 0x24, 0x50]);

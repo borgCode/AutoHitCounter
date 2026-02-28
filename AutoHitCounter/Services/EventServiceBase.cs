@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using AutoHitCounter.Games.ER;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
 
@@ -11,13 +10,12 @@ namespace AutoHitCounter.Services;
 public abstract class EventServiceBase(
     IMemoryService memoryService,
     HookManager hookManager,
-    Dictionary<uint, string> events)
+    Dictionary<uint, string> events,
+    nint writeIdx,
+    nint logBuffer)
     : IEventService
 {
     private int _readIndex;
-
-    private readonly nint _writeIndexAddr = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.EventLogWriteIdx;
-    private readonly nint _bufferAddr = EldenRingCustomCodeOffsets.Base + EldenRingCustomCodeOffsets.EventLogBuffer;
 
     public abstract void InstallHook();
     
@@ -26,7 +24,7 @@ public abstract class EventServiceBase(
     
     public bool ShouldSplit()
     {
-        var writeIndex = memoryService.Read<int>(_writeIndexAddr);
+        var writeIndex = memoryService.Read<int>(writeIdx);
         if (writeIndex == _readIndex) return false;
 
         int entriesToRead = (writeIndex - _readIndex) & 511;
@@ -34,7 +32,7 @@ public abstract class EventServiceBase(
 
         if (bytesToRead > 0)
         {
-            var dataBytes = memoryService.ReadBytes(_bufferAddr + (_readIndex * 5), bytesToRead);
+            var dataBytes = memoryService.ReadBytes(logBuffer + (_readIndex * 5), bytesToRead);
 
             for (int i = 0; i < entriesToRead; i++)
             {

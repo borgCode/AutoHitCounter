@@ -42,6 +42,11 @@ public static class SKOffsets
 
         public const int PlayerIns = 0x88;
     }
+    
+    public static class EventFlagMan
+    {
+        public static IntPtr Base;
+    }
 
     public static nint FallDmgRetAddr;
 
@@ -58,6 +63,7 @@ public static class SKOffsets
     public static class Functions
     {
         public static nint HasSpEffectId;
+        public static nint GetEvent;
     }
 
     private static void InitializeBaseAddresses(nint moduleBase)
@@ -68,6 +74,15 @@ public static class SKOffsets
             Version1_3_0 or Version1_4_0 => 0x3B68E30,
             Version1_5_0 => 0x3D7A140,
             Version1_6_0 => 0x3D7A1E0,
+            _ => 0
+        };
+        
+        EventFlagMan.Base = moduleBase + Version switch
+        {
+            Version1_2_0 => 0x3B43248,
+            Version1_3_0 or Version1_4_0 => 0x3B44288,
+            Version1_5_0 => 0x3D55F48,
+            Version1_6_0 => 0x3D55FE8,
             _ => 0
         };
         
@@ -136,13 +151,20 @@ public static class SKOffsets
             _ => 0
         };
 
-
+        Functions.GetEvent = moduleBase + Version switch
+        {
+            Version1_2_0 => 0x6C15A0,
+            Version1_3_0 or Version1_4_0 => 0x6C1600,
+            Version1_5_0 or Version1_6_0 => 0x6C3E60,
+            _ => 0
+        };
 
 
 #if DEBUG
         _baseAddr = moduleBase;
         Console.WriteLine("--- Globals ---");
         PrintOffset("WorldChrMan.Base", WorldChrMan.Base);
+        PrintOffset("EventFlagMan.Base", EventFlagMan.Base);
         PrintOffset("FallDmgRetAddr", FallDmgRetAddr);
         
 
@@ -158,6 +180,7 @@ public static class SKOffsets
 
         Console.WriteLine("\n--- Functions ---");
         PrintOffset("Functions.HasSpEffectId", Functions.HasSpEffectId);
+        PrintOffset("Functions.GetEvent", Functions.GetEvent);
 
 
         Console.WriteLine("\n====================================\n");
