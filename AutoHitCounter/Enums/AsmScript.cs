@@ -26,6 +26,12 @@ public enum AsmScript
     DS3EventLog,
     
     
+    SKCheckPlayerDead,
+    SKHit,
+    SKDeflectCheck,
+    SKLethalFall,
+    SKFadeFall,
+    SKApplyHealthDelta,
     
     EldenRingHit,
     EldenRingCheckPlayerDead,

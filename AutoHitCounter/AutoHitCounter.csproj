@@ -146,6 +146,7 @@
         <Compile Include="Games\ER\EldenRingModule.cs" />
         <Compile Include="Games\ER\EldenRingOffsets.cs" />
         <Compile Include="Games\ER\EldenRingVersion.cs" />
+        <Compile Include="Games\SK\SKCustomCodeOffsets.cs" />
         <Compile Include="Games\SK\SKEventService.cs" />
         <Compile Include="Games\SK\SKHitService.cs" />
         <Compile Include="Games\SK\SKModule.cs" />

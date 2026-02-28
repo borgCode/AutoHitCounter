@@ -1,18 +1,19 @@
 ﻿// 
 
+using System.Collections.Generic;
 using AutoHitCounter.Interfaces;
+using AutoHitCounter.Memory;
+using AutoHitCounter.Services;
 
 namespace AutoHitCounter.Games.SK;
 
-public class SKEventService : IEventService
+public class SKEventService(IMemoryService memoryService, HookManager hookManager, Dictionary<uint, string> events) 
+    : EventServiceBase(memoryService, hookManager, events)
 {
-    public void InstallHook()
+    
+    public override void InstallHook()
     {
         throw new System.NotImplementedException();
     }
-
-    public bool ShouldSplit()
-    {
-        throw new System.NotImplementedException();
-    }
+    
 }

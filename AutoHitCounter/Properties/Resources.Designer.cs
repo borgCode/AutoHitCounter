@@ -716,5 +716,123 @@ namespace AutoHitCounter.Properties {
                 return ResourceManager.GetString("ScholarLightPoiseStagger", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 50                      push   rax
+        ///48 b8 00 00 00 00 00    movabs rax,0x0
+        ///00 00 00 
+        ///48 39 44 24 08          cmp    QWORD PTR [rsp+0x8],rax
+        ///74 40                   je     52 &lt;skip&gt;
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 19 &lt;_main+0x19&gt;
+        ///48 85 c0                test   rax,rax
+        ///74 34                   je     52 &lt;skip&gt;
+        ///48 8b 80 88 00 00 00    mov    rax,QWORD PTR [rax+0x88]
+        ///48 85 c0                test   rax,rax
+        ///74 28                   je     52 &lt;skip&gt;
+        ///48 8b 80 f8 1f 00 00    m [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SKApplyHealthDelta {
+            get {
+                return ResourceManager.GetString("SKApplyHealthDelta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 48 8b 05 00 00 00 00
+        ///48 85 c0
+        ///74 29
+        ///48 8b 80 88 00 00 00
+        ///48 85 c0
+        ///74 1d
+        ///48 8b 80 f8 1f 00 00
+        ///48 85 c0
+        ///74 11
+        ///48 8b 40 18
+        ///48 85 c0
+        ///74 08
+        ///83 b8 30 01 00 00 00
+        ///c3
+        ///31 c0
+        ///c3.
+        /// </summary>
+        internal static string SKCheckPlayerDead {
+            get {
+                return ResourceManager.GetString("SKCheckPlayerDead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to c7 45 c0 ff ff ff ff    mov    DWORD PTR [rbp-0x40],0xffffffff
+        ///80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # e &lt;_main+0xe&gt;
+        ///74 10                   je     20 &lt;exit&gt;
+        ///41 80 bf c7 01 00 00    cmp    BYTE PTR [r15+0x1c7],0x0
+        ///00
+        ///75 06                   jne    20 &lt;exit&gt;
+        ///ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 20 &lt;exit&gt;
+        ///000000000020 &lt;exit&gt;:
+        ///e9 00 00 00 00          jmp    25 &lt;exit+0x5&gt;.
+        /// </summary>
+        internal static string SKDeflectCheck {
+            get {
+                return ResourceManager.GetString("SKDeflectCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 53                      push   rbx
+        ///48 8b 1d 00 00 00 00    mov    rbx,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
+        ///48 85 db                test   rbx,rbx
+        ///74 0f                   je     1c &lt;exit&gt;
+        ///48 3b 83 88 00 00 00    cmp    rax,QWORD PTR [rbx+0x88]
+        ///75 06                   jne    1c &lt;exit&gt;
+        ///ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 1c &lt;exit&gt;
+        ///
+        ///00000000001c &lt;exit&gt;:
+        ///5b                      pop    rbx
+        ///48 8b 88 f8 1f 00 00    mov    rcx,QWORD PTR [rax+0x1ff8]
+        ///e9 00 00 00 00          jm [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SKFadeFall {
+            get {
+                return ResourceManager.GetString("SKFadeFall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 7 &lt;_main+0x7&gt;
+        ///48 89 44 24 50          mov    QWORD PTR [rsp+0x50],rax
+        ///50                      push   rax
+        ///e8 00 00 00 00          call   12 &lt;_main+0x12&gt;
+        ///74 74                   je     88 &lt;skip_count&gt;
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 1b &lt;_main+0x1b&gt;
+        ///48 8b 80 88 00 00 00    mov    rax,QWORD PTR [rax+0x88]
+        ///48 39 d0                cmp    rax,rdx
+        ///74 61                   je     88 &lt;skip_count&gt;
+        ///48 8b 80 f8 1f 00 0 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SKHit {
+            get {
+                return ResourceManager.GetString("SKHit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 53                      push   rbx
+        ///48 8b 1d 00 00 00 00    mov    rbx,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
+        ///48 85 db                test   rbx,rbx
+        ///74 0f                   je     1c &lt;exit&gt;
+        ///48 3b 83 88 00 00 00    cmp    rax,QWORD PTR [rbx+0x88]
+        ///75 06                   jne    1c &lt;exit&gt;
+        ///ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 1c &lt;exit&gt;
+        ///00000000001c &lt;exit&gt;:
+        ///5b                      pop    rbx
+        ///48 8b 88 f8 1f 00 00    mov    rcx,QWORD PTR [rax+0x1ff8]
+        ///e9 00 00 00 00          jmp  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SKLethalFall {
+            get {
+                return ResourceManager.GetString("SKLethalFall", resourceCulture);
+            }
+        }
     }
 }
