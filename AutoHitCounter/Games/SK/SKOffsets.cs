@@ -42,7 +42,7 @@ public static class SKOffsets
 
         public const int PlayerIns = 0x88;
     }
-    
+
     public static class EventFlagMan
     {
         public static IntPtr Base;
@@ -58,6 +58,9 @@ public static class SKOffsets
         public static nint ApplyHealthDelta;
         public static nint PostHit;
         public static nint StaggerIgnoreCheck;
+        public static nint AuxProc;
+        public static nint CheckAuxAttacker;
+        public static nint HkbFireEvent;
     }
 
     public static class Functions
@@ -76,7 +79,7 @@ public static class SKOffsets
             Version1_6_0 => 0x3D7A1E0,
             _ => 0
         };
-        
+
         EventFlagMan.Base = moduleBase + Version switch
         {
             Version1_2_0 => 0x3B43248,
@@ -85,7 +88,7 @@ public static class SKOffsets
             Version1_6_0 => 0x3D55FE8,
             _ => 0
         };
-        
+
         FallDmgRetAddr = moduleBase + Version switch
         {
             Version1_2_0 => 0xB811C7,
@@ -93,8 +96,8 @@ public static class SKOffsets
             Version1_5_0 or Version1_6_0 => 0xB97FC7,
             _ => 0
         };
-        
-        
+
+
         Hooks.Hit = moduleBase + Version switch
         {
             Version1_2_0 => 0xB589F6,
@@ -102,7 +105,7 @@ public static class SKOffsets
             Version1_5_0 or Version1_6_0 => 0xB6F6A6,
             _ => 0
         };
-        
+
         Hooks.LethalFall = moduleBase + Version switch
         {
             Version1_2_0 => 0xB809C4,
@@ -118,7 +121,7 @@ public static class SKOffsets
             Version1_5_0 or Version1_6_0 => 0xB97764,
             _ => 0
         };
-        
+
         Hooks.ApplyHealthDelta = moduleBase + Version switch
         {
             Version1_2_0 => 0xBBDBE0,
@@ -134,7 +137,7 @@ public static class SKOffsets
             Version1_5_0 or Version1_6_0 => 0xB6F125,
             _ => 0
         };
-        
+
         Hooks.StaggerIgnoreCheck = moduleBase + Version switch
         {
             Version1_2_0 => 0xB55456,
@@ -142,7 +145,33 @@ public static class SKOffsets
             Version1_5_0 or Version1_6_0 => 0xB6C106,
             _ => 0
         };
+
+        Hooks.AuxProc = moduleBase + Version switch
+        {
+            Version1_2_0 => 0xBC2C2C,
+            Version1_3_0 or Version1_4_0 => 0xBC32DC,
+            Version1_5_0 or Version1_6_0 => 0xBD9D8C,
+            _ => 0
+        };
+
+
+        Hooks.CheckAuxAttacker = moduleBase + Version switch
+        {
+            Version1_2_0 => 0x9F101D,
+            Version1_3_0 or Version1_4_0 => 0x9F16AD,
+            Version1_5_0 or Version1_6_0 => 0xA00F7D,
+            _ => 0
+        };
         
+        Hooks.HkbFireEvent = moduleBase + Version switch
+        {
+            Version1_2_0 => 0x13AEC89,
+            Version1_3_0 or Version1_4_0 => 0x13AF7B9,
+            Version1_5_0 => 0x13F8FA9,
+            Version1_6_0 => 0x13F9379,
+            _ => 0
+        };
+
         Functions.HasSpEffectId = moduleBase + Version switch
         {
             Version1_2_0 => 0xBE77E0,
@@ -166,7 +195,6 @@ public static class SKOffsets
         PrintOffset("WorldChrMan.Base", WorldChrMan.Base);
         PrintOffset("EventFlagMan.Base", EventFlagMan.Base);
         PrintOffset("FallDmgRetAddr", FallDmgRetAddr);
-        
 
 
         Console.WriteLine("\n--- Hooks ---");
@@ -176,6 +204,9 @@ public static class SKOffsets
         PrintOffset("Hooks.ApplyHealthDelta", Hooks.ApplyHealthDelta);
         PrintOffset("Hooks.PostHit", Hooks.PostHit);
         PrintOffset("Hooks.StaggerIgnoreCheck", Hooks.StaggerIgnoreCheck);
+        PrintOffset("Hooks.AuxProc", Hooks.AuxProc);
+        PrintOffset("Hooks.CheckAuxAttacker", Hooks.CheckAuxAttacker);
+        PrintOffset("Hooks.HkbFireEvent", Hooks.HkbFireEvent);
 
 
         Console.WriteLine("\n--- Functions ---");

@@ -33,6 +33,9 @@ public enum AsmScript
     SKApplyHealthDelta,
     SKPostHit,
     SKStaggerIgnoreCheck,
+    SKAuxProc,
+    SKCheckAuxAttacker,
+    SKHkbFireEvent,
 
     EldenRingHit,
     EldenRingCheckPlayerDead,

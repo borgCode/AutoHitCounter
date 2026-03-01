@@ -23,6 +23,9 @@ public class SKHitService(IMemoryService memoryService, HookManager hookManager)
         InstallFadeFall();
         InstallApplyHealthDeltaHook();
         InstallStaggerIgnoreCheck();
+        InstallAuxProcHook();
+        InstallCheckAuxAttackerHook();
+        InstallHkbFireEventHook();
     }
 
     public bool HasHit()
@@ -160,5 +163,57 @@ public class SKHitService(IMemoryService memoryService, HookManager hookManager)
 
         memoryService.WriteBytes(code, bytes);
         hookManager.InstallHook(code, Hooks.StaggerIgnoreCheck, [0x45, 0x0F, 0x57, 0xC0, 0x85, 0xC0]);
+    }
+
+    private void InstallAuxProcHook()
+    {
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.SKAuxProc);
+        var checkAuxFlag = Base + CheckAuxFlag;
+        var hit = Base + Hit;
+        var code = Base + CheckAux;
+
+        AsmHelper.WriteRelativeOffsets(bytes, [
+            (code + 0x6, checkAuxFlag, 7, 0x6 + 2),
+            (code + 0xF, hit, 6, 0xF + 2),
+            (code + 0x15, Hooks.AuxProc + 6, 5, 0x15 + 1),
+        ]);
+
+        memoryService.WriteBytes(code, bytes);
+        hookManager.InstallHook(code, Hooks.AuxProc, [0xD3, 0xE0, 0x41, 0x09, 0x41, 0x4C]);
+    }
+
+    private void InstallCheckAuxAttackerHook()
+    {
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.SKCheckAuxAttacker);
+        var checkAuxFlag = Base + CheckAuxFlag;
+        var code = Base + CheckAuxAttacker;
+
+        AsmHelper.WriteRelativeOffsets(bytes, [
+            (code + 0x8, WorldChrMan.Base, 7, 0x8 + 3),
+            (code + 0x25, checkAuxFlag, 7, 0x25 + 2),
+            (code + 0x2E, checkAuxFlag, 7, 0x2E + 2),
+            (code + 0x36, Hooks.CheckAuxAttacker + 7, 5, 0x36 + 1),
+        ]);
+
+        memoryService.WriteBytes(code, bytes);
+        hookManager.InstallHook(code, Hooks.CheckAuxAttacker, [0x48, 0x81, 0xEC, 0xA0, 0x00, 0x00, 0x00]);
+    }
+
+    private void InstallHkbFireEventHook()
+    {
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.SKHkbFireEvent);
+        var hit = Base + Hit;
+        var checkPlayerDeadFunc = Base + CheckPlayerDead;
+        var code = Base + HkbFireEvent;
+
+
+        AsmHelper.WriteRelativeOffsets(bytes, [
+            (code + 0x1, checkPlayerDeadFunc, 5, 0x1 + 1),
+            (code + 0x9, WorldChrMan.Base, 7, 0x9 + 3),
+            (code + 0x29, hit, 6, 0x29 + 2),
+            (code + 0x38, Hooks.HkbFireEvent + 7, 5, 0x38 + 1),
+        ]);
+        memoryService.WriteBytes(code, bytes);
+        hookManager.InstallHook(code, Hooks.HkbFireEvent, [0x48, 0x8B, 0x5F, 0x20, 0x48, 0x85, 0xDB]);
     }
 }

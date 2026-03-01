@@ -738,6 +738,42 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to d3 e0                   shl    eax,cl
+        ///41 09 41 4c             or     DWORD PTR [r9+0x4c],eax
+        ///80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # d &lt;_main+0xd&gt;
+        ///74 06                   je     15 &lt;skip&gt;
+        ///ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 15 &lt;skip&gt;
+        ///
+        ///000000000015 &lt;skip&gt;:
+        ///e9 00 00 00 00          jmp    1a &lt;skip+0x5&gt;.
+        /// </summary>
+        internal static string SKAuxProc {
+            get {
+                return ResourceManager.GetString("SKAuxProc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 48 81 ec a0 00 00 00    sub    rsp,0xa0
+        ///50                      push   rax
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # f &lt;_main+0xf&gt;
+        ///48 3b 88 88 00 00 00    cmp    rcx,QWORD PTR [rax+0x88]
+        ///75 16                   jne    2e &lt;skip&gt;
+        ///48 83 7d 7f 00          cmp    QWORD PTR [rbp+0x7f],0x0
+        ///74 06                   je     25 &lt;set_flag&gt;
+        ///48 39 43 7f             cmp    QWORD PTR [rbx+0x7f],rax
+        ///74 09                   je     2e &lt;skip&gt;
+        ///
+        ///000000000025 &lt;set_flag&gt;:
+        ///c6 05 00 00 00 00 01    mov [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SKCheckAuxAttacker {
+            get {
+                return ResourceManager.GetString("SKCheckAuxAttacker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 48 8b 05 00 00 00 00
         ///48 85 c0
         ///74 29
@@ -813,6 +849,25 @@ namespace AutoHitCounter.Properties {
         internal static string SKHit {
             get {
                 return ResourceManager.GetString("SKHit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 50                      push   rax
+        ///e8 00 00 00 00          call   6 &lt;_main+0x6&gt;
+        ///74 28                   je     30 &lt;exit&gt;
+        ///57                      push   rdi
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 10 &lt;_main+0x10&gt;
+        ///48 8b 80 88 00 00 00    mov    rax,QWORD PTR [rax+0x88]
+        ///48 8b 3f                mov    rdi,QWORD PTR [rdi]
+        ///48 3b 47 28             cmp    rax,QWORD PTR [rdi+0x28]
+        ///75 0f                   jne    2f &lt;skip&gt;
+        ///41 81 fe 64 0b 00 00    cmp    r14d,0xb64
+        ///75 06                [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SKHkbFireEvent {
+            get {
+                return ResourceManager.GetString("SKHkbFireEvent", resourceCulture);
             }
         }
         

@@ -8,6 +8,7 @@ public class SKCustomCodeOffsets
 
     public const int PendingHitFlag = 0x0;
     public const int StaggerCheckFlag = 0x1;
+    public const int CheckAuxFlag = 0x2;
 
     public const int Hit = 0x10;
     public const int CheckPlayerDead = 0x20;
@@ -18,6 +19,9 @@ public class SKCustomCodeOffsets
     public const int FadeFall = 0x580;
     public const int ApplyHealthDelta = 0x600;
     public const int StaggerCheck = 0x700;
+    public const int CheckAux = 0x800;
+    public const int CheckAuxAttacker = 0x850;
+    public const int HkbFireEvent = 0x900;
     
     public const int EventLogWriteIdx = 0x2000;
     public const int EventLogCode = 0x2020;
