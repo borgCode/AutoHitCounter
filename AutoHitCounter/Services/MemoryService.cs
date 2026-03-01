@@ -30,6 +30,7 @@ namespace AutoHitCounter.Services
         private const int CodeCaveSearchStep = 0x10000;
 
         private Timer _autoAttachTimer;
+        private readonly object _attachLock = new();
 
         public byte[] ReadBytes(nint addr, int size)
         {
@@ -105,57 +106,64 @@ namespace AutoHitCounter.Services
 
         public void StartAutoAttach(string processName)
         {
+            _autoAttachTimer?.Stop();
+            _autoAttachTimer?.Dispose();
+
             _autoAttachTimer = new Timer(AttachCheckInterval);
             _autoAttachTimer.Elapsed += (sender, e) => TryAttachToProcess(processName);
+            _autoAttachTimer.Start();
 
             TryAttachToProcess(processName);
-
-            _autoAttachTimer.Start();
         }
 
         public void StopAutoAttach()
         {
-            _autoAttachTimer.Stop();
+            _autoAttachTimer?.Stop();
+            _autoAttachTimer?.Dispose();
+            _autoAttachTimer = null;
         }
 
         private void TryAttachToProcess(string processName)
         {
-            if (ProcessHandle != IntPtr.Zero)
+            lock (_attachLock)
             {
-                if (TargetProcess == null || TargetProcess.HasExited)
+                if (ProcessHandle != IntPtr.Zero)
                 {
-                    Kernel32.CloseHandle(ProcessHandle);
-                    ProcessHandle = IntPtr.Zero;
-                    TargetProcess = null;
-                    IsAttached = false;
-                }
-
-                return;
-            }
-
-            var processes = Process.GetProcessesByName(processName);
-            if (processes.Length > 0 && !processes[0].HasExited)
-            {
-                TargetProcess = processes[0];
-                ProcessHandle = Kernel32.OpenProcess(
-                    ProcessVmRead | ProcessVmWrite | ProcessVmOperation | ProcessQueryInformation,
-                    false,
-                    TargetProcess.Id);
-
-                if (ProcessHandle == IntPtr.Zero)
-                {
-                    TargetProcess = null;
-                    IsAttached = false;
-                }
-                else
-                {
-                    if (TargetProcess.MainModule != null)
+                    if (TargetProcess == null || TargetProcess.HasExited)
                     {
-                        BaseAddress = TargetProcess.MainModule.BaseAddress;
-                        ModuleMemorySize = TargetProcess.MainModule.ModuleMemorySize;
+                        Kernel32.CloseHandle(ProcessHandle);
+                        ProcessHandle = IntPtr.Zero;
+                        TargetProcess = null;
+                        IsAttached = false;
                     }
 
-                    IsAttached = true;
+                    return;
+                }
+
+                var processes = Process.GetProcessesByName(processName);
+                if (processes.Length > 0 && !processes[0].HasExited)
+                {
+                    TargetProcess = processes[0];
+                    ProcessHandle = Kernel32.OpenProcess(
+                        ProcessVmRead | ProcessVmWrite | ProcessVmOperation | ProcessQueryInformation,
+                        false,
+                        TargetProcess.Id);
+
+                    if (ProcessHandle == IntPtr.Zero)
+                    {
+                        TargetProcess = null;
+                        IsAttached = false;
+                    }
+                    else
+                    {
+                        if (TargetProcess.MainModule != null)
+                        {
+                            BaseAddress = TargetProcess.MainModule.BaseAddress;
+                            ModuleMemorySize = TargetProcess.MainModule.ModuleMemorySize;
+                        }
+
+                        IsAttached = true;
+                    }
                 }
             }
         }
