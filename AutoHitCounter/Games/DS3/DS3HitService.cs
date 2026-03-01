@@ -13,9 +13,11 @@ namespace AutoHitCounter.Games.DS3;
 public class DS3HitService(IMemoryService memoryService, HookManager hookManager) : IHitService
 {
     private int _lastHitCount;
-    
+
     private const string Kernel32 = "kernel32.dll";
     private const string GetTickCount64 = "GetTickCount64";
+
+    public static readonly byte[] HitHookOriginalBytes = [0x48, 0x83, 0xEC, 0x50, 0x48, 0x8B, 0x41, 0x08];
     
     public void InstallHooks()
     {
@@ -36,6 +38,13 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
         var newHits = current - _lastHitCount;
         _lastHitCount = current;
         return newHits > 0;
+    }
+    //Needed because arxan 
+    public void EnsureHooksInstalled()
+    {
+        var current = memoryService.ReadBytes(Hooks.Hit, HitHookOriginalBytes.Length);
+        if (current.SequenceEqual(HitHookOriginalBytes))
+            InstallHooks();
     }
 
     private void WritePlayerDeadCheck()

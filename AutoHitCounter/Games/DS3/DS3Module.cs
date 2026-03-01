@@ -93,6 +93,8 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
     {
         if (!IsLoaded()) return;
 
+        _hitService.EnsureHooksInstalled();
+
         if (_hitService.HasHit() && (_lastHit == null || (DateTime.Now - _lastHit.Value).TotalSeconds > 3))
         {
             OnHit?.Invoke(1);
