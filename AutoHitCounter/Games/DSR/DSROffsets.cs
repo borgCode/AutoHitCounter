@@ -44,6 +44,13 @@ public static class DSROffsets
         public const int PlayerIns = 0x68;
     }
 
+    public static class GameDataMan
+    {
+        public static nint Base;
+
+        public const int Igt = 0xA4;
+    }
+
     public static nint FallDmgRetAddr;
     public static nint AuxDeathRetAddr;
     public static nint EnvDeathRetAddr;
@@ -71,6 +78,17 @@ public static class DSROffsets
             Version1_0_3_1 => 0x1C77E50,
             _ => 0
         };
+        
+        GameDataMan.Base = moduleBase + Version switch
+        {
+            Version1_0_1_0 => 0x1D00F50,
+            Version1_0_1_1 => 0x1C90F40,
+            Version1_0_1_2 => 0x1D146E0,
+            Version1_0_3_0 => 0x1D278F0,
+            Version1_0_3_1 => 0x1C8A530,
+            _ => 0
+        };
+
 
         FallDmgRetAddr= moduleBase+ Version switch
         {

@@ -59,7 +59,7 @@ public class DSRModule : IGameModule, IDisposable, IVersionedGameModule
          _eventService = new DSREventService(_memoryService, _hookManager, _events);
          _eventService.InstallHook();
          _hitService.InstallHooks();
-//         // _igtPtr = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
+         _igtPtr = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
          _tickService.RegisterGameTick(Tick);
     }
     
@@ -85,18 +85,18 @@ public class DSRModule : IGameModule, IDisposable, IVersionedGameModule
             _lastHit = DateTime.Now;
         }
 
-        // if (_eventService.ShouldSplit())
-        // {
-        //     OnEventSet?.Invoke();
-        // }
-        //
-        // OnIgtChanged?.Invoke(_memoryService.Read<uint>(_igtPtr));
+        if (_eventService.ShouldSplit())
+        {
+            OnEventSet?.Invoke();
+        }
+        
+        OnIgtChanged?.Invoke(_memoryService.Read<uint>(_igtPtr));
     }
 
     private bool IsLoaded()
     {
-        var worldChrman = _memoryService.Read<nint>(WorldChrMan.Base);
-        return _memoryService.Read<nint>(worldChrman + WorldChrMan.PlayerIns) != 0;
+        var worldChrMan = _memoryService.Read<nint>(WorldChrMan.Base);
+        return _memoryService.Read<nint>(worldChrMan + WorldChrMan.PlayerIns) != 0;
     }
 
     public void Dispose()
