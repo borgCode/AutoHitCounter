@@ -43,6 +43,13 @@ public static class SKOffsets
         public const int PlayerIns = 0x88;
     }
 
+    public static class GameDataMan
+    {
+        public static nint Base;
+
+        public const int Igt = 0x9C;
+    }
+
     public static class EventFlagMan
     {
         public static IntPtr Base;
@@ -78,6 +85,15 @@ public static class SKOffsets
             Version1_3_0 or Version1_4_0 => 0x3B68E30,
             Version1_5_0 => 0x3D7A140,
             Version1_6_0 => 0x3D7A1E0,
+            _ => 0
+        };
+        
+        GameDataMan.Base = moduleBase + Version switch
+        {
+            Version1_2_0 => 0x3B47CF0,
+            Version1_3_0 or Version1_4_0 => 0x3B48D30,
+            Version1_5_0 => 0x3D5AA20,
+            Version1_6_0 => 0x3D5AAC0,
             _ => 0
         };
 
@@ -202,6 +218,7 @@ public static class SKOffsets
         _baseAddr = moduleBase;
         Console.WriteLine("--- Globals ---");
         PrintOffset("WorldChrMan.Base", WorldChrMan.Base);
+        PrintOffset("GameDataMan.Base", GameDataMan.Base);
         PrintOffset("EventFlagMan.Base", EventFlagMan.Base);
         PrintOffset("FallDmgRetAddr", FallDmgRetAddr);
 

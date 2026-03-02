@@ -58,7 +58,7 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
         _eventService = new SKEventService(_memoryService, _hookManager, _events);
         _eventService.InstallHook();
         _hitService.InstallHooks();
-        // _igtPtr = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
+        _igtPtr = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
         _tickService.RegisterGameTick(Tick);
     }
     
@@ -87,7 +87,7 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
             OnEventSet?.Invoke();
         }
         
-        // OnIgtChanged?.Invoke(_memoryService.Read<uint>(_igtPtr));
+        OnIgtChanged?.Invoke(_memoryService.Read<uint>(_igtPtr));
     }
 
     private bool IsLoaded()
