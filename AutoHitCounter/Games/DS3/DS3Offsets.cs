@@ -81,6 +81,11 @@ public static class DS3Offsets
         public static nint SetEvent;
     }
 
+    public static class Functions
+    {
+        public static nint HasSpEffectId;
+    }
+
 
 
 
@@ -308,6 +313,27 @@ public static class DS3Offsets
             Version1_15_2_0 => 0x4C5E20,
             _ => 0
         };
+        
+        Functions.HasSpEffectId = moduleBase + Version switch
+        {
+            Version1_3_2_0 => 0x86FAF0,
+            Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0x86F840,
+            Version1_5_0_0 => 0x86FEA0,
+            Version1_5_1_0 => 0x86FCD0,
+            Version1_6_0_0 => 0x8702A0,
+            Version1_7_0_0 => 0x8711B0,
+            Version1_8_0_0 or Version1_9_0_0 => 0x87ADA0,
+            Version1_10_0_0 => 0x87AD90,
+            Version1_11_0_0 => 0x880FE0,
+            Version1_12_0_0 => 0x8817D0,
+            Version1_13_0_0 => 0x883090,
+            Version1_14_0_0 => 0x883180,
+            Version1_15_0_0 => 0x8831C0,
+            Version1_15_1_0 => 0x88B850,
+            Version1_15_2_0 => 0x88BC00,
+            _ => 0
+        };
+
 
 
         
@@ -331,7 +357,7 @@ public static class DS3Offsets
            
             
         Console.WriteLine("\n--- Functions ---");
-
+        PrintOffset("Functions.HasSpEffectId", Functions.HasSpEffectId);
             
 
         Console.WriteLine("\n====================================\n");

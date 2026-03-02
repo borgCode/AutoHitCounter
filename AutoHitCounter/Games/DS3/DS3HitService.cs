@@ -17,8 +17,6 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
     private const string Kernel32 = "kernel32.dll";
     private const string GetTickCount64 = "GetTickCount64";
 
-    public static readonly byte[] HitHookOriginalBytes = [0x48, 0x83, 0xEC, 0x50, 0x48, 0x8B, 0x41, 0x08];
-    
     public void InstallHooks()
     {
         WritePlayerDeadCheck();
@@ -39,11 +37,11 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
         _lastHitCount = current;
         return newHits > 0;
     }
-    //Needed because arxan 
+    // Needed because arxan can restore any hook site
     public void EnsureHooksInstalled()
     {
-        var current = memoryService.ReadBytes(Hooks.Hit, HitHookOriginalBytes.Length);
-        if (current.SequenceEqual(HitHookOriginalBytes))
+        nint[] hooks = [Hooks.Hit, Hooks.LethalFall, Hooks.CheckAuxAttacker, Hooks.AuxProc, Hooks.HasJailerDrain, Hooks.ApplyHealthDelta, Hooks.KillBox];
+        if (hooks.Any(h => memoryService.Read<byte>(h) != 0xE9))
             InstallHooks();
     }
 
@@ -180,8 +178,10 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
         
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x1, WorldChrMan.Base, 7, 0x1 + 3),
-            (code + 0x3B, hit, 6, 0x3B + 2),
-            (code + 0x4A, Hooks.ApplyHealthDelta + 8, 5, 0x4A + 1)
+            (code + 0x42, WorldChrMan.Base, 7, 0x42 + 3),
+            (code + 0x50, Functions.HasSpEffectId, 5, 0x50 + 1),
+            (code + 0x5B, hit, 6, 0x5B + 2),
+            (code + 0x6A, Hooks.ApplyHealthDelta + 8, 5, 0x6A + 1)
         ]);
         
         memoryService.WriteBytes(code, bytes);

@@ -63,13 +63,13 @@ namespace AutoHitCounter.Properties {
         ///   Looks up a localized string similar to 50                      push   rax
         ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
         ///48 85 c0                test   rax,rax
-        ///74 34                   je     41 &lt;skip&gt;
+        ///74 54                   je     61 &lt;skip&gt;
         ///48 8b 80 80 00 00 00    mov    rax,QWORD PTR [rax+0x80]
         ///48 85 c0                test   rax,rax
-        ///74 28                   je     41 &lt;skip&gt;
+        ///74 48                   je     61 &lt;skip&gt;
         ///48 8b 80 90 1f 00 00    mov    rax,QWORD PTR [rax+0x1f90]
         ///48 85 c0                test   rax,rax
-        ///74 1c                   je     41 &lt;skip&gt;
+        ///74 3c                   je     61 &lt;skip&gt;
         ///48 3b 48 18             cmp    rcx, [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string DS3ApplyHealthDelta {
