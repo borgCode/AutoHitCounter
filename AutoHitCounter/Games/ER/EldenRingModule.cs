@@ -27,6 +27,7 @@ public class EldenRingModule : IGameModule, IDisposable, IVersionedGameModule
 
     public event Action OnEventSet;
     public event Action<long> OnIgtChanged;
+    public event Action OnVersionDetected;
 
     private nint _igtPtr;
 
@@ -46,6 +47,7 @@ public class EldenRingModule : IGameModule, IDisposable, IVersionedGameModule
     private void Initialize()
     {
         InitializeOffsets();
+        OnVersionDetected?.Invoke();
 
         EldenRingCustomCodeOffsets.Base = _memoryService.AllocCustomCodeMem();
 #if DEBUG

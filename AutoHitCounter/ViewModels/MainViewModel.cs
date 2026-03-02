@@ -403,13 +403,18 @@ namespace AutoHitCounter.ViewModels
             _hotkeyManager.RegisterAction(HotkeyActions.DecrementHit, DecrementHit);
         }
 
-        private void OnAttached()
+        private void UpdateAttachedText()
         {
-            IsAttached = true;
             var version = (_currentModule as IVersionedGameModule)?.GameVersion;
             AttachedText = string.IsNullOrEmpty(version)
                 ? $"Attached to {SelectedGame.GameName}"
                 : $"Attached to {SelectedGame.GameName} ({version})";
+        }
+
+        private void OnAttached()
+        {
+            IsAttached = true;
+            UpdateAttachedText();
         }
 
         private void OnNotAttached()
@@ -432,6 +437,10 @@ namespace AutoHitCounter.ViewModels
             if (_activeGame == null) return;
 
             _currentModule = _gameModuleFactory.CreateModule(_activeGame, GetActiveEvents());
+
+            if (_currentModule is IVersionedGameModule versioned)
+                versioned.OnVersionDetected += UpdateAttachedText;
+
             _memoryService.StartAutoAttach(_activeGame.ProcessName);
             _currentModule.OnHit += count =>
             {

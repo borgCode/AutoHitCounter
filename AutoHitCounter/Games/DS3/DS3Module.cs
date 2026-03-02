@@ -28,6 +28,8 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
     public event Action<int> OnHit;
     public event Action OnEventSet;
     public event Action<long> OnIgtChanged;
+    public event Action OnVersionDetected;
+    
 
     public DS3Module(IMemoryService memoryService, IStateService stateService, HookManager hookManager,
         ITickService tickService, Dictionary<uint, string> events)
@@ -45,6 +47,7 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
     private void Initialize()
     {
         InitializeOffsets();
+        OnVersionDetected?.Invoke();
 
         DS3CustomCodeOffsets.Base = _memoryService.AllocCustomCodeMem();
         

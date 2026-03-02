@@ -28,6 +28,7 @@ public class DS2ScholarModule : IGameModule, IDisposable, IVersionedGameModule
     public event Action<int> OnHit;
     public event Action OnEventSet;
     public event Action<long> OnIgtChanged;
+    public event Action OnVersionDetected;
 
     public DS2ScholarModule(IMemoryService memoryService, IStateService stateService, HookManager hookManager,
         ITickService tickService, Dictionary<uint, string> events)
@@ -45,6 +46,7 @@ public class DS2ScholarModule : IGameModule, IDisposable, IVersionedGameModule
     private void Initialize()
     {
         InitializeOffsets();
+        OnVersionDetected?.Invoke();
 
         DS2ScholarCustomCodeOffsets.Base = _memoryService.AllocCustomCodeMem();
 
