@@ -198,7 +198,7 @@ public class SKHitService(IMemoryService memoryService, HookManager hookManager)
         ]);
 
         memoryService.WriteBytes(code, bytes);
-        hookManager.InstallHook(code, Hooks.CheckAuxAttacker, [0x48, 0x81, 0xEC, 0xA0, 0x00, 0x00, 0x00]);
+        hookManager.InstallHook(code, Hooks.CheckAuxAttacker, [0x49, 0x8B, 0x5D, 0x00, 0x4C, 0x89, 0xE9]);
     }
 
     private void InstallHkbFireEventHook()

@@ -831,18 +831,17 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 48 81 ec a0 00 00 00    sub    rsp,0xa0
+        ///   Looks up a localized string similar to 49 8b 5d 00             mov    rbx,QWORD PTR [r13+0x0]
+        ///4c 89 e9                mov    rcx,r13
         ///50                      push   rax
         ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # f &lt;_main+0xf&gt;
-        ///48 3b 88 88 00 00 00    cmp    rcx,QWORD PTR [rax+0x88]
-        ///75 16                   jne    2e &lt;skip&gt;
-        ///48 83 7d 7f 00          cmp    QWORD PTR [rbp+0x7f],0x0
-        ///74 06                   je     25 &lt;set_flag&gt;
-        ///48 39 43 7f             cmp    QWORD PTR [rbx+0x7f],rax
-        ///74 09                   je     2e &lt;skip&gt;
-        ///
-        ///000000000025 &lt;set_flag&gt;:
-        ///c6 05 00 00 00 00 01    mov [rest of string was truncated]&quot;;.
+        ///48 85 c0                test   rax,rax
+        ///74 1a                   je     2e &lt;skip&gt;
+        ///48 8b 80 88 00 00 00    mov    rax,QWORD PTR [rax+0x88]
+        ///4c 39 f0                cmp    rax,r14
+        ///75 0e                   jne    2e &lt;skip&gt;
+        ///48 39 c8                cmp    rax,rcx
+        ///74 09                   je     2e &lt;skip&gt; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SKCheckAuxAttacker {
             get {

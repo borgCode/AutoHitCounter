@@ -174,11 +174,12 @@ public static class SKOffsets
 
         Hooks.CheckAuxAttacker = moduleBase + Version switch
         {
-            Version1_2_0 => 0x9F101D,
-            Version1_3_0 or Version1_4_0 => 0x9F16AD,
-            Version1_5_0 or Version1_6_0 => 0xA00F7D,
+            Version1_2_0 => 0x9F109F,
+            Version1_3_0 or Version1_4_0 => 0x9F172F,
+            Version1_5_0 or Version1_6_0 => 0xA00FFF,
             _ => 0
         };
+
         
         Hooks.HkbFireEvent = moduleBase + Version switch
         {
