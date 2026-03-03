@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -8,7 +9,6 @@ using System.Windows.Controls;
 using AutoHitCounter.Models;
 using AutoHitCounter.Utilities;
 using AutoHitCounter.ViewModels;
-using TarnishedTool.Views.Windows;
 
 namespace AutoHitCounter.Views.Windows;
 
@@ -57,7 +57,8 @@ public partial class ProfileEditorWindow : Window
     {
         if (DataContext is not ProfileEditorViewModel vm) return;
 
-        var scope = MsgBox.ShowExportScope(vm.GameName);
+        var scope = MsgBox.ShowCustomButtons("Which profiles would you like to export?", "Export",
+            [CustomMessageBoxResult.All, CustomMessageBoxResult.Current, CustomMessageBoxResult.Cancel]);
         if (scope == CustomMessageBoxResult.Cancel) return;
 
         var profilesToExport = scope == CustomMessageBoxResult.All
@@ -130,7 +131,10 @@ public partial class ProfileEditorWindow : Window
 
             if (existing != null)
             {
-                var result = MsgBox.ShowImportConflict(profile.Name);
+                var result = MsgBox.ShowCustomButtons(
+                    $"Profile \"{profile.Name}\" already exists.{Environment.NewLine}What would you like to do?",
+                    "Import Conflict",
+                    [CustomMessageBoxResult.Replace, CustomMessageBoxResult.Rename, CustomMessageBoxResult.Skip]);
                 if (result == CustomMessageBoxResult.Skip) continue;
                 if (result == CustomMessageBoxResult.Rename)
                 {

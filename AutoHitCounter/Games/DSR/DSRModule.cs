@@ -102,6 +102,7 @@ public class DSRModule : IGameModule, IDisposable, IVersionedGameModule
     public void Dispose()
     {
         _stateService.Unsubscribe(State.Attached, Initialize);
+        _tickService.UnregisterGameTick();
         OnHit = null;
         OnEventSet = null;
         OnIgtChanged = null;

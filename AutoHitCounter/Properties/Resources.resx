@@ -1211,86 +1211,102 @@ c3</value>
 48 89 44 24 50          mov    QWORD PTR [rsp+0x50],rax
 50                      push   rax
 e8 00 00 00 00          call   12 &lt;_main+0x12&gt;
-0f 84 16 01 00 00       je     12e &lt;skip_count&gt;
+0f 84 4b 01 00 00       je     163 &lt;skip_count&gt;
 48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 1f &lt;_main+0x1f&gt;
 48 8b 80 88 00 00 00    mov    rax,QWORD PTR [rax+0x88]
 48 39 d0                cmp    rax,rdx
-0f 84 ff 00 00 00       je     12e &lt;skip_count&gt;
+0f 84 34 01 00 00       je     163 &lt;skip_count&gt;
 48 8b 80 f8 1f 00 00    mov    rax,QWORD PTR [rax+0x1ff8]
 48 3b 88 98 00 00 00    cmp    rcx,QWORD PTR [rax+0x98]
-0f 85 eb 00 00 00       jne    12e &lt;skip_count&gt;
+0f 85 20 01 00 00       jne    163 &lt;skip_count&gt;
 41 81 78 4c 3e 3a 05    cmp    DWORD PTR [r8+0x4c],0xf053a3e
 0f 
-0f 84 8a 00 00 00       je     db &lt;handle_dragon&gt;
-45 0f 57 ff             xorps  xmm15,xmm15
-45 0f 2f 38             comiss xmm15,DWORD PTR [r8]
-0f 82 a1 00 00 00       jb     100 &lt;set_pending&gt;
-45 0f 2f 78 04          comiss xmm15,DWORD PTR [r8+0x4]
-0f 82 96 00 00 00       jb     100 &lt;set_pending&gt;
-45 0f 2f 78 08          comiss xmm15,DWORD PTR [r8+0x8]
-0f 82 8b 00 00 00       jb     100 &lt;set_pending&gt;
-45 0f 2f 78 0c          comiss xmm15,DWORD PTR [r8+0xc]
-0f 82 80 00 00 00       jb     100 &lt;set_pending&gt;
-45 0f 2f 78 10          comiss xmm15,DWORD PTR [r8+0x10]
-72 79                   jb     100 &lt;set_pending&gt;
-41 80 b8 d9 00 00 00    cmp    BYTE PTR [r8+0xd9],0x0
-00 
-75 67                   jne    f8 &lt;hit&gt;
-41 83 b8 88 00 00 00    cmp    DWORD PTR [r8+0x88],0x0
-00 
-7d 5d                   jge    f8 &lt;hit&gt;
-41 0f b6 40 24          movzx  eax,BYTE PTR [r8+0x24]
-ff c8                   dec    eax
-83 f8 0a                cmp    eax,0xa
-0f 87 83 00 00 00       ja     12e &lt;skip_count&gt;
+0f 84 bf 00 00 00       je     110 &lt;handle_dragon&gt;
+41 81 78 4c 63 39 05    cmp    DWORD PTR [r8+0x4c],0xf053963
+0f 
+75 2b                   jne    86 &lt;proceed&gt;
 51                      push   rcx
 52                      push   rdx
-48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # b4 &lt;_main+0xb4&gt;
+ba 7f 9e 01 00          mov    edx,0x19e7f
+48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 69 &lt;_main+0x69&gt;
 48 8b 89 88 00 00 00    mov    rcx,QWORD PTR [rcx+0x88]
 48 8b 89 d0 11 00 00    mov    rcx,QWORD PTR [rcx+0x11d0]
-ba 31 88 01 00          mov    edx,0x18831
-e8 00 00 00 00          call   cc &lt;_main+0xcc&gt;
+e8 00 00 00 00          call   7c &lt;_main+0x7c&gt;
 5a                      pop    rdx
 59                      pop    rcx
 84 c0                   test   al,al
-75 5c                   jne    12e &lt;skip_count&gt;
-c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # d9 &lt;_main+0xd9&gt;
-eb 53                   jmp    12e &lt;skip_count&gt;
+0f 85 dd 00 00 00       jne    163 &lt;skip_count&gt;
 
-0000000000db &lt;handle_dragon&gt;:
+000000000086 &lt;proceed&gt;:
+45 0f 57 ff             xorps  xmm15,xmm15
+45 0f 2f 38             comiss xmm15,DWORD PTR [r8]
+0f 82 a1 00 00 00       jb     135 &lt;set_pending&gt;
+45 0f 2f 78 04          comiss xmm15,DWORD PTR [r8+0x4]
+0f 82 96 00 00 00       jb     135 &lt;set_pending&gt;
+45 0f 2f 78 08          comiss xmm15,DWORD PTR [r8+0x8]
+0f 82 8b 00 00 00       jb     135 &lt;set_pending&gt;
+45 0f 2f 78 0c          comiss xmm15,DWORD PTR [r8+0xc]
+0f 82 80 00 00 00       jb     135 &lt;set_pending&gt;
+45 0f 2f 78 10          comiss xmm15,DWORD PTR [r8+0x10]
+72 79                   jb     135 &lt;set_pending&gt;
+41 80 b8 d9 00 00 00    cmp    BYTE PTR [r8+0xd9],0x0
+00 
+75 67                   jne    12d &lt;hit&gt;
+41 83 b8 88 00 00 00    cmp    DWORD PTR [r8+0x88],0x0
+00 
+7d 5d                   jge    12d &lt;hit&gt;
+41 0f b6 40 24          movzx  eax,BYTE PTR [r8+0x24]
+ff c8                   dec    eax
+83 f8 0a                cmp    eax,0xa
+0f 87 83 00 00 00       ja     163 &lt;skip_count&gt;
+51                      push   rcx
+52                      push   rdx
+48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # e9 &lt;proceed+0x63&gt;
+48 8b 89 88 00 00 00    mov    rcx,QWORD PTR [rcx+0x88]
+48 8b 89 d0 11 00 00    mov    rcx,QWORD PTR [rcx+0x11d0]
+ba 31 88 01 00          mov    edx,0x18831
+e8 00 00 00 00          call   101 &lt;proceed+0x7b&gt;
+5a                      pop    rdx
+59                      pop    rcx
+84 c0                   test   al,al
+75 5c                   jne    163 &lt;skip_count&gt;
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 10e &lt;proceed+0x88&gt;
+eb 53                   jmp    163 &lt;skip_count&gt;
+
+00000110 &lt;handle_dragon&gt;:
 51                      push   rcx
 52                      push   rdx
 41 50                   push   r8
-48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # e6 &lt;handle_dragon+0xb&gt;
+48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 11b &lt;handle_dragon+0xb&gt;
 ba 20 d3 be 00          mov    edx,0xbed320
-e8 00 00 00 00          call   f0 &lt;handle_dragon+0x15&gt;
+e8 00 00 00 00          call   125 &lt;handle_dragon+0x15&gt;
 41 58                   pop    r8
 5a                      pop    rdx
 59                      pop    rcx
 84 c0                   test   al,al
-74 36                   je     12e &lt;skip_count&gt;
+74 36                   je     163 &lt;skip_count&gt;
 
-0000000000f8 &lt;hit&gt;:
-ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # fe &lt;hit+0x6&gt;
-eb 2e                   jmp    12e &lt;skip_count&gt;
+0000012d &lt;hit&gt;:
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 133 &lt;hit+0x6&gt;
+eb 2e                   jmp    163 &lt;skip_count&gt;
 
-00000100 &lt;set_pending&gt;:
+00000135 &lt;set_pending&gt;:
 51                      push   rcx
 52                      push   rdx
-48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 109 &lt;set_pending+0x9&gt;
+48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 13e &lt;set_pending+0x9&gt;
 48 8b 89 88 00 00 00    mov    rcx,QWORD PTR [rcx+0x88]
 48 8b 89 d0 11 00 00    mov    rcx,QWORD PTR [rcx+0x11d0]
 ba 88 a3 01 00          mov    edx,0x1a388
-e8 00 00 00 00          call   121 &lt;set_pending+0x21&gt;
+e8 00 00 00 00          call   156 &lt;set_pending+0x21&gt;
 5a                      pop    rdx
 59                      pop    rcx
 84 c0                   test   al,al
-75 07                   jne    12e &lt;skip_count&gt;
-c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 12e &lt;skip_count&gt;
+75 07                   jne    163 &lt;skip_count&gt;
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 163 &lt;skip_count&gt;
 
-0000012e &lt;skip_count&gt;:
+00000163 &lt;skip_count&gt;:
 58                      pop    rax
-e9 00 00 00 00          jmp    134 &lt;skip_count+0x6&gt;</value>
+e9 00 00 00 00          jmp    169 &lt;skip_count+0x6&gt;</value>
   </data>
   <data name="SKDeflectCheck" xml:space="preserve">
     <value>c7 45 c0 ff ff ff ff    mov    DWORD PTR [rbp-0x40],0xffffffff

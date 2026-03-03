@@ -1,9 +1,7 @@
 ﻿// 
 
-using System;
 using System.Collections.Generic;
 using AutoHitCounter.Views.Windows;
-using TarnishedTool.Views.Windows;
 
 namespace AutoHitCounter.Utilities;
 
@@ -83,22 +81,9 @@ public static class MsgBox
         return box.Result;
     }
 
-    public static CustomMessageBoxResult ShowImportConflict(string profileName)
+    public static CustomMessageBoxResult ShowCustomButtons(string message, string title, CustomMessageBoxResult[] buttons)
     {
-        var box = new CustomMessageBox(
-            $"Profile \"{profileName}\" already exists.{Environment.NewLine}What would you like to do?",
-            "Import Conflict",
-            [CustomMessageBoxResult.Replace, CustomMessageBoxResult.Rename, CustomMessageBoxResult.Skip]);
-        box.ShowDialog();
-        return box.ResultValue;
-    }
-
-    public static CustomMessageBoxResult ShowExportScope(string gameName)
-    {
-        var box = new CustomMessageBox(
-            $"Which profiles would you like to export?",
-            "Export",
-            [CustomMessageBoxResult.All, CustomMessageBoxResult.Current, CustomMessageBoxResult.Cancel]);
+        var box = new CustomMessageBox(message, title, buttons);
         box.ShowDialog();
         return box.ResultValue;
     }

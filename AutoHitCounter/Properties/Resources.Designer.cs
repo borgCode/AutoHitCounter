@@ -935,11 +935,11 @@ namespace AutoHitCounter.Properties {
         ///48 89 44 24 50          mov    QWORD PTR [rsp+0x50],rax
         ///50                      push   rax
         ///e8 00 00 00 00          call   12 &lt;_main+0x12&gt;
-        ///0f 84 16 01 00 00       je     12e &lt;skip_count&gt;
+        ///0f 84 4b 01 00 00       je     163 &lt;skip_count&gt;
         ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 1f &lt;_main+0x1f&gt;
         ///48 8b 80 88 00 00 00    mov    rax,QWORD PTR [rax+0x88]
         ///48 39 d0                cmp    rax,rdx
-        ///0f 84 ff 00 00 00       je     12e &lt;skip_count&gt;
+        ///0f 84 34 01 00 00       je     163 &lt;skip_count&gt;
         ///48 8b 80 f8 1f 00 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SKHit {

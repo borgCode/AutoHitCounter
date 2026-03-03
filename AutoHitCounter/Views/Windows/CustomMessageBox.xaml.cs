@@ -6,7 +6,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using AutoHitCounter.Utilities;
 
-namespace TarnishedTool.Views.Windows;
+namespace AutoHitCounter.Views.Windows;
 
 public partial class CustomMessageBox : Window
 {
