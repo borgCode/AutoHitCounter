@@ -28,6 +28,7 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
         InstallJailerDrainHook();
         InstallApplyHealthDeltaHook();
         InstallKillBoxHook();
+        InstallCheckStaggerIgnore();
     }
 
     public bool HasHit()
@@ -37,10 +38,14 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
         _lastHitCount = current;
         return newHits > 0;
     }
+
     // Needed because arxan can restore any hook site
+
     public void EnsureHooksInstalled()
     {
-        nint[] hooks = [Hooks.Hit, Hooks.LethalFall, Hooks.CheckAuxAttacker, Hooks.AuxProc, Hooks.HasJailerDrain, Hooks.ApplyHealthDelta, Hooks.KillBox];
+        nint[] hooks = [Hooks.Hit, Hooks.LethalFall, Hooks.CheckAuxAttacker,
+            Hooks.AuxProc, Hooks.HasJailerDrain, Hooks.ApplyHealthDelta,
+            Hooks.KillBox, Hooks.CheckStaggerIgnore];
         if (hooks.Any(h => memoryService.Read<byte>(h) != 0xE9))
             InstallHooks();
     }
@@ -67,15 +72,17 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.DS3Hit);
         var hit = Base + Hit;
+        var staggerCheckFlag = Base + CheckStaggerFlag;
         var checkPlayerDeadFunc = Base + CheckPlayerDead;
         var code = Base + HitCode;
         
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x1, checkPlayerDeadFunc, 5, 0x1 + 1),
             (code + 0x30, hit, 6, 0x30 + 2),
-            (code + 0x3F, WorldChrMan.Base, 7, 0x3F + 3),
-            (code + 0xA5, hit, 6, 0xA5 + 2),
-            (code + 0xB7, Hooks.Hit + 8, 5, 0xB7 + 1),
+            (code + 0x42, WorldChrMan.Base, 7, 0x42 + 3),
+            (code + 0xA8, staggerCheckFlag, 7, 0xA8 + 2),
+            (code + 0xB1, hit, 6, 0xB1 + 2),
+            (code + 0xC3, Hooks.Hit + 8, 5, 0xC3 + 1),
         ]);
         
         memoryService.WriteBytes(code, bytes);
@@ -205,5 +212,23 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
         
         memoryService.WriteBytes(code, bytes);
         hookManager.InstallHook(code, Hooks.KillBox, [0x48, 0x89, 0xCB, 0x31, 0xD2]);
+    }
+
+    private void InstallCheckStaggerIgnore()
+    {
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.DS3CheckStaggerIgnore);
+        var checkStaggerFlag = Base + CheckStaggerFlag;
+        var hit = Base + Hit;
+        var code = Base + CheckStagger;
+        
+        AsmHelper.WriteRelativeOffsets(bytes, [
+            (code, checkStaggerFlag, 7, 2),
+            (code + 0xD, hit, 6, 0xD + 2),
+            (code + 0x13, checkStaggerFlag, 7, 0x13 + 2),
+            (code + 0x20, Hooks.CheckStaggerIgnore + 6, 5, 0x20 + 1)
+        ]);
+        
+        memoryService.WriteBytes(code, bytes);
+        hookManager.InstallHook(code, Hooks.CheckStaggerIgnore, [0x45, 0x0F, 0x57, 0xC0, 0x85, 0xC0]);
     }
 }

@@ -133,6 +133,27 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # 7 &lt;_main+0x7&gt;
+        ///74 11                   je     1a &lt;original&gt;
+        ///85 c0                   test   eax,eax
+        ///74 06                   je     13 &lt;exit&gt;
+        ///ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 13 &lt;exit&gt;
+        ///
+        ///000000000013 &lt;exit&gt;:
+        ///c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 1a &lt;original&gt;
+        ///
+        ///00000000001a &lt;original&gt;:
+        ///45 0f 57 c0             xorps  xmm8,xmm8
+        ///85 c0                   test   eax,eax
+        ///e9 00 00 00 00          [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string DS3CheckStaggerIgnore {
+            get {
+                return ResourceManager.GetString("DS3CheckStaggerIgnore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 50                      push   rax
         ///53                      push   rbx
         ///57                      push   rdi
@@ -203,9 +224,9 @@ namespace AutoHitCounter.Properties {
         ///   Looks up a localized string similar to 50                      push   rax
         ///e8 00 00 00 00          call   6 &lt;_main+0x6&gt;
         ///58                      pop    rax
-        ///0f 84 a2 00 00 00       je     af &lt;skip_all&gt;
+        ///0f 84 ae 00 00 00       je     bb &lt;skip_all&gt;
         ///48 85 d2                test   rdx,rdx
-        ///75 26                   jne    38 &lt;continue&gt;
+        ///75 29                   jne    3b &lt;continue&gt;
         ///41 81 78 40 c6 16 00    cmp    DWORD PTR [r8+0x40],0x16c6
         ///00 
         ///74 14                   je     30 &lt;real_hit_no_pop&gt;

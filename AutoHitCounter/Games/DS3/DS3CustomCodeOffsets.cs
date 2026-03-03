@@ -7,6 +7,7 @@ public static class DS3CustomCodeOffsets
     public static nint Base;
     
     public const int CheckAuxProcFlag = 0x0;
+    public const int CheckStaggerFlag = 0x1;
 
     public const int Hit = 0x10;
     public const int CheckPlayerDead = 0x20;
@@ -21,6 +22,7 @@ public static class DS3CustomCodeOffsets
     public const int JailerDrain = 0x710;
     public const int ApplyHealthDelta = 0x800;
     public const int KillBox = 0xA00;
+    public const int CheckStagger = 0xC00;
     
     
     public const int EventLogWriteIdx = 0x2000;

@@ -12,7 +12,7 @@ public static class DS3Offsets
 
     public static DS3Version Version => _version
                                         ?? Version1_15_0_0;
-    
+
     public static void Initialize(string fileVersion, nint moduleBase)
     {
         _version = fileVersion switch
@@ -50,14 +50,11 @@ public static class DS3Offsets
         InitializeBaseAddresses(moduleBase);
     }
 
-
-
     public static class WorldChrMan
     {
         public static nint Base;
-        
+
         public const int PlayerIns = 0x80;
-        
     }
 
     public static class GameDataMan
@@ -78,6 +75,7 @@ public static class DS3Offsets
         public static nint HasJailerDrain;
         public static nint ApplyHealthDelta;
         public static nint KillBox;
+        public static nint CheckStaggerIgnore;
         public static nint SetEvent;
     }
 
@@ -86,12 +84,8 @@ public static class DS3Offsets
         public static nint HasSpEffectId;
     }
 
-
-
-
     private static void InitializeBaseAddresses(nint moduleBase)
     {
-        
         WorldChrMan.Base = moduleBase + Version switch
         {
             Version1_3_2_0 => 0x46C4AA8,
@@ -109,7 +103,7 @@ public static class DS3Offsets
             Version1_15_1_0 or Version1_15_2_0 => 0x477FDB8,
             _ => 0
         };
-        
+
         GameDataMan.Base = moduleBase + Version switch
         {
             // WARNING: No match found for: Version1_3_2_0, Version1_4_1_0, Version1_4_2_0, Version1_4_3_0, Version1_5_0_0, Version1_5_1_0, Version1_6_0_0, Version1_7_0_0
@@ -123,8 +117,7 @@ public static class DS3Offsets
             _ => 0
         };
 
-        
-        
+
         FallDamageKillFloor = moduleBase + Version switch
         {
             Version1_3_2_0 => 0x3CF01A0,
@@ -146,8 +139,7 @@ public static class DS3Offsets
             _ => 0
         };
 
-        
-        
+
         Hooks.Hit = moduleBase + Version switch
         {
             Version1_3_2_0 => 0x99F498,
@@ -168,7 +160,7 @@ public static class DS3Offsets
             Version1_15_2_0 => 0x9C2BF8,
             _ => 0
         };
-        
+
         Hooks.LethalFall = moduleBase + Version switch
         {
             Version1_3_2_0 => 0x626746,
@@ -186,7 +178,7 @@ public static class DS3Offsets
             Version1_15_2_0 => 0x634BF6,
             _ => 0
         };
-        
+
         Hooks.CheckAuxAttacker = moduleBase + Version switch
         {
             Version1_3_2_0 => 0x96A570,
@@ -207,7 +199,7 @@ public static class DS3Offsets
             Version1_15_2_0 => 0x98D350,
             _ => 0
         };
-        
+
         Hooks.AuxProc = moduleBase + Version switch
         {
             Version1_3_2_0 => 0x9C1E15,
@@ -228,7 +220,7 @@ public static class DS3Offsets
             Version1_15_2_0 => 0x9E6EF5,
             _ => 0
         };
-        
+
         Hooks.HasJailerDrain = moduleBase + Version switch
         {
             Version1_3_2_0 => 0x9DDE3B,
@@ -249,7 +241,7 @@ public static class DS3Offsets
             Version1_15_2_0 => 0xA035EB,
             _ => 0
         };
-        
+
         Hooks.ApplyHealthDelta = moduleBase + Version switch
         {
             Version1_3_2_0 => 0x9BE7FA,
@@ -272,7 +264,7 @@ public static class DS3Offsets
             Version1_15_2_0 => 0x1B9274C,
             _ => 0
         };
-        
+
         Hooks.KillBox = moduleBase + Version switch
         {
             Version1_3_2_0 => 0x9A351A,
@@ -294,9 +286,29 @@ public static class DS3Offsets
             _ => 0
         };
 
+        Hooks.CheckStaggerIgnore = moduleBase + Version switch
+        {
+            Version1_3_2_0 => 0x99CB05,
+            Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0x99CA05,
+            Version1_5_0_0 => 0x99D4F5,
+            Version1_5_1_0 => 0x99D325,
+            Version1_6_0_0 => 0x99D8F5,
+            Version1_7_0_0 => 0x99E805,
+            Version1_8_0_0 => 0x9AAE72,
+            Version1_9_0_0 => 0x9AB432,
+            Version1_10_0_0 => 0x9AB4A2,
+            Version1_11_0_0 => 0xF8530F,
+            Version1_12_0_0 => 0xFC512F,
+            Version1_13_0_0 => 0xF4D88F,
+            Version1_14_0_0 => 0x1020D0F,
+            Version1_15_0_0 => 0xF1604F,
+            Version1_15_1_0 => 0x53D0365,
+            Version1_15_2_0 => 0x4F28E0B,
+
+            _ => 0
+        };
 
 
-        
         Hooks.SetEvent = moduleBase + Version switch
         {
             Version1_3_2_0 => 0x4BFB80,
@@ -313,7 +325,7 @@ public static class DS3Offsets
             Version1_15_2_0 => 0x4C5E20,
             _ => 0
         };
-        
+
         Functions.HasSpEffectId = moduleBase + Version switch
         {
             Version1_3_2_0 => 0x86FAF0,
@@ -335,15 +347,13 @@ public static class DS3Offsets
         };
 
 
-
-        
 #if DEBUG
-         _baseAddr = moduleBase;
+        _baseAddr = moduleBase;
         Console.WriteLine("--- Globals ---");
         PrintOffset("WorldChrMan.Base", WorldChrMan.Base);
-        
+
         PrintOffset("FallDamageKillingFloor", FallDamageKillFloor);
-            
+
         Console.WriteLine("\n--- Hooks ---");
         PrintOffset("Hooks.Hit", Hooks.Hit);
         PrintOffset("Hooks.LethalFall", Hooks.LethalFall);
@@ -354,17 +364,15 @@ public static class DS3Offsets
         PrintOffset("Hooks.KillBox", Hooks.KillBox);
         PrintOffset("Hooks.SetEvent", Hooks.SetEvent);
 
-           
-            
+
         Console.WriteLine("\n--- Functions ---");
         PrintOffset("Functions.HasSpEffectId", Functions.HasSpEffectId);
-            
+
 
         Console.WriteLine("\n====================================\n");
 #endif
-
     }
-    
+
 #if DEBUG
     private static nint _baseAddr;
     private static void PrintOffset(string name, nint value)
