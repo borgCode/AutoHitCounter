@@ -2071,5 +2071,43 @@
         }
       ]
     }
+  ],
+  "Dark Souls Remastered": [
+    {
+      "Name": "Test",
+      "GameName": "Dark Souls Remastered",
+      "Splits": [
+        {
+          "EventId": null,
+          "Name": "Test",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Test",
+          "IsAuto": false
+        }
+      ]
+    }
+  ],
+  "Dark Souls 2 Scholar": [
+    {
+      "Name": "Test",
+      "GameName": "Dark Souls 2 Scholar",
+      "Splits": [
+        {
+          "EventId": null,
+          "Name": "Test",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Test",
+          "IsAuto": false
+        }
+      ]
+    }
   ]
 }

@@ -41,10 +41,10 @@ public class DS2ScholarHitService(IMemoryService memoryService, HookManager hook
 
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code, auxCheckFlag, 7, 2),
-            (code + 0x8, GameManagerImp.Base, 7, 0x8 + 3),
-            (code + 0x22, auxCheckFlag, 7, 0x22 + 2),
-            (code + 0x30, hit, 6, 0x30 + 2),
-            (code + 0x3C, Hooks.Hit + 5, 5, 0x3C + 1)
+            (code + 0x12, GameManagerImp.Base, 7, 0x12 + 3),
+            (code + 0x2C, auxCheckFlag, 7, 0x2C + 2),
+            (code + 0x3A, hit, 6, 0x3A + 2),
+            (code + 0x46, Hooks.Hit + 5, 5, 0x46 + 1)
         ]);
 
         memoryService.WriteBytes(code, bytes);

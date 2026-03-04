@@ -511,22 +511,27 @@ e9 00 00 00 00          jmp    39 &lt;_main+0x39&gt;</value>
   </data>
   <data name="ScholarHit" xml:space="preserve">
     <value>c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 7 &lt;_main+0x7&gt;
+81 7c 24 4c e6 50 f5    cmp    DWORD PTR [rsp+0x4c],0x5f550e6
+05 
+74 30                   je     41 &lt;exit&gt;
 53                      push   rbx
-48 8b 1d 00 00 00 00    mov    rbx,QWORD PTR [rip+0x0]        # f &lt;_main+0xf&gt;
+48 8b 1d 00 00 00 00    mov    rbx,QWORD PTR [rip+0x0]        # 19 &lt;_main+0x19&gt;
 48 8b 9b d0 00 00 00    mov    rbx,QWORD PTR [rbx+0xd0]
 48 3b 59 08             cmp    rbx,QWORD PTR [rcx+0x8]
-75 1a                   jne    36 &lt;normal&gt;
+75 1a                   jne    40 &lt;normal&gt;
 49 3b 59 70             cmp    rbx,QWORD PTR [r9+0x70]
-74 14                   je     36 &lt;normal&gt;
-c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 29 &lt;_main+0x29&gt;
+74 14                   je     40 &lt;normal&gt;
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 33 &lt;_main+0x33&gt;
 41 83 78 34 00          cmp    DWORD PTR [r8+0x34],0x0
-7e 06                   jle    36 &lt;normal&gt;
-ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 36 &lt;normal&gt;
+7e 06                   jle    40 &lt;normal&gt;
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 40 &lt;normal&gt;
 
-000000000036 &lt;normal&gt;:
+000000000040 &lt;normal&gt;:
 5b                      pop    rbx
+
+000000000041 &lt;exit&gt;:
 48 89 5c 24 10          mov    QWORD PTR [rsp+0x10],rbx
-e9 00 00 00 00          jmp    41 &lt;normal+0xb&gt;</value>
+e9 00 00 00 00          jmp    4b &lt;exit+0xa&gt;</value>
   </data>
   <data name="ScholarGeneralApplyDamage" xml:space="preserve">
     <value>51                      push   rcx

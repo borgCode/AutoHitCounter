@@ -726,14 +726,15 @@ namespace AutoHitCounter.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 7 &lt;_main+0x7&gt;
+        ///81 7c 24 4c e6 50 f5    cmp    DWORD PTR [rsp+0x4c],0x5f550e6
+        ///05 
+        ///74 30                   je     41 &lt;exit&gt;
         ///53                      push   rbx
-        ///48 8b 1d 00 00 00 00    mov    rbx,QWORD PTR [rip+0x0]        # f &lt;_main+0xf&gt;
+        ///48 8b 1d 00 00 00 00    mov    rbx,QWORD PTR [rip+0x0]        # 19 &lt;_main+0x19&gt;
         ///48 8b 9b d0 00 00 00    mov    rbx,QWORD PTR [rbx+0xd0]
         ///48 3b 59 08             cmp    rbx,QWORD PTR [rcx+0x8]
-        ///75 1a                   jne    36 &lt;normal&gt;
-        ///49 3b 59 70             cmp    rbx,QWORD PTR [r9+0x70]
-        ///74 14                   je     36 &lt;normal&gt;
-        ///c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # [rest of string was truncated]&quot;;.
+        ///75 1a                   jne    40 &lt;normal&gt;
+        ///49 3b 59 70             cmp    rbx,QWORD PTR [r9+0 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ScholarHit {
             get {
