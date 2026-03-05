@@ -33,7 +33,6 @@ namespace AutoHitCounter.ViewModels
             public TimeSpan InGameTime { get; } = inGameTime;
         }
 
-
         private readonly Dictionary<string, RunSnapshot> _runSnapshots = new();
 
         public SettingsViewModel Settings { get; }
@@ -85,10 +84,10 @@ namespace AutoHitCounter.ViewModels
 
 
             Games.Add(new Game { Title = GameTitle.DarkSoulsRemastered, ProcessName = "darksoulsremastered" });
-            Games.Add(new Game { Title = GameTitle.DarkSouls2,   ProcessName = "darksoulsii" });
-            Games.Add(new Game { Title = GameTitle.DarkSouls3,          ProcessName = "darksoulsiii" });
-            Games.Add(new Game { Title = GameTitle.Sekiro,              ProcessName = "sekiro" });
-            Games.Add(new Game { Title = GameTitle.EldenRing,           ProcessName = "eldenring" });
+            Games.Add(new Game { Title = GameTitle.DarkSouls2, ProcessName = "darksoulsii" });
+            Games.Add(new Game { Title = GameTitle.DarkSouls3, ProcessName = "darksoulsiii" });
+            Games.Add(new Game { Title = GameTitle.Sekiro, ProcessName = "sekiro" });
+            Games.Add(new Game { Title = GameTitle.EldenRing, ProcessName = "eldenring" });
 
             SelectedGame = Games.FirstOrDefault(game => game.GameName == SettingsManager.Default.LastSelectedGame);
             if (_selectedGame != null)
@@ -297,8 +296,8 @@ namespace AutoHitCounter.ViewModels
         public event Action OnSettingsChanged;
 
         public bool GetFlag(string key) => _activeProfile != null
-            && _activeProfile.GameSettings.TryGetValue(key, out var val)
-            && val;
+                                           && _activeProfile.GameSettings.TryGetValue(key, out var val)
+                                           && val;
 
         public void CommitRename(SplitViewModel split)
         {
@@ -566,10 +565,12 @@ namespace AutoHitCounter.ViewModels
         {
             return title switch
             {
-                GameTitle.DarkSouls2 => EventLoader.GetEvents("DS2ScholarEvents"),
-                GameTitle.DarkSouls3        => EventLoader.GetEvents("DS3Events"),
-                GameTitle.EldenRing         => EventLoader.GetEvents("EldenRingEvents"),
-                _                           => new()
+                GameTitle.DarkSoulsRemastered => EventLoader.GetEvents("DSREvents"),
+                GameTitle.DarkSouls2 => EventLoader.GetEvents("DS2Events"),
+                GameTitle.DarkSouls3 => EventLoader.GetEvents("DS3Events"),
+                GameTitle.Sekiro => EventLoader.GetEvents("SKEvents"),
+                GameTitle.EldenRing => EventLoader.GetEvents("EldenRingEvents"),
+                _ => new()
             };
         }
 

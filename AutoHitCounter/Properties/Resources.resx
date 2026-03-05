@@ -584,7 +584,7 @@ ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 1e &lt;exit&gt;
 89 54 24 10             mov    DWORD PTR [rsp+0x10],edx
 e9 00 00 00 00          jmp    28 &lt;exit+0xa&gt;</value>
   </data>
-  <data name="ScholarEvents" xml:space="preserve">
+  <data name="DS2Events" xml:space="preserve">
     <value>BossName,DeathFlag
 The Last Giant,100971
 The Pursuer,100968
@@ -1893,5 +1893,60 @@ Seath,14
 Sif,5
 Stray Demon,11810900
 Taurus Demon,11010901</value>
+  </data>
+  <data name="SKEvents" xml:space="preserve">
+    <value>BossName,DeathFlag
+Armored Warrior,12000400
+Ashina Elite - Jinsuke Saze,11110504
+Ashina Elite - Ujinari Mizuo,11110511
+Blazing Bull,11110440
+Centipede Giraffe,11700425
+Centipede Sen-Un,12000279
+Chained Ogre (Castle),11110620
+Chained Ogre (Outskirts),11100310
+Demon of Hatred,9313
+Divine Dragon,9310
+Fake Monk,9306
+Folding Screen Monkeys,9305
+General Kuranosuke Matsumoto,20005340
+General Naomori Kawarada,11100300
+General Tenzen Yamauchi,11100301
+Genichiro Ashina (Castle),9303
+Genichiro Ashina (Reservoir),9300
+Guardian Ape,9304
+Gyoubu Oniwa,9301
+Headless (Ako),11100330
+Headless Ape,9314
+Headless (Gachiin),11500680
+Headless (Gokan),11700500
+Headless (Ungo),11110660
+Headless (Yashariku),12500550
+Isshin Ashina,9316
+Isshin the Sword Saint,9312
+Juzou the Drunkard (Hirata 1),11000300
+Juzou the Drunkard (Hirata 2),11000301
+Lady Butterfly,9302
+Leader Shigenori Yamauchi,11120390
+Lone Shadow Longswordsman,11120450
+Lone Shadow Masanaga the Spear-Bearer (Castle),11110316
+Lone Shadow Masanaga the Spear-Bearer (Hirata),11000353
+Lone Shadow Vilehand,11110305
+Mist Noble,11500200
+Okami Leader Shizu,12500406
+O'Rin of the Water,11500690
+Owl,9308
+Owl (Father),9317
+Sakura Bull of the Palace,12500570
+Seven Ashina Spears - Shikibu Toshikatsu Yamauchi,11120530
+Seven Ashina Spears - Shume Masaji Oniwa,11120521
+Shichimen Warrior (Dungeon),11300200
+Shichimen Warrior (Fountainhead),12500580
+Shichimen Warrior (Sunken Valley),11700520
+Shigekichi,11100480
+Shinobi Hunter,11000330
+Snake Eyes Shirafuji,11700200
+Snake Eyes Shirahagi,11700201
+Tokujiro the Glutton,11500490
+True Monk,9309</value>
   </data>
 </root>

@@ -60,6 +60,35 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BossName,DeathFlag
+        ///The Last Giant,100971
+        ///The Pursuer,100968
+        ///Dragonrider,100959
+        ///Old Dragonslayer,100960
+        ///Flexile Sentry,100961
+        ///Ruin Sentinels,100962
+        ///The Lost Sinner,100963
+        ///Belfry Gargoyles,101001
+        ///Executioner&apos;s Chariot,100953
+        ///Skeleton Lords,100954
+        ///Covetous Demon,100955
+        ///&quot;Mytha, the Baneful Queen&quot;,100956
+        ///Red Smelter Demon,100964
+        ///Old Iron King,100952
+        ///Scorpioness Najka,100957
+        ///Royal Rat Authority,100967
+        ///Prowling Magus &amp; Congregation,101000
+        ///The Duke&apos;s Dear Freja,100951
+        ///Royal Rat Vanguard,100965
+        ///T [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string DS2Events {
+            get {
+                return ResourceManager.GetString("DS2Events", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 50                      push   rax
         ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
         ///48 85 c0                test   rax,rax
@@ -732,35 +761,6 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BossName,DeathFlag
-        ///The Last Giant,100971
-        ///The Pursuer,100968
-        ///Dragonrider,100959
-        ///Old Dragonslayer,100960
-        ///Flexile Sentry,100961
-        ///Ruin Sentinels,100962
-        ///The Lost Sinner,100963
-        ///Belfry Gargoyles,101001
-        ///Executioner&apos;s Chariot,100953
-        ///Skeleton Lords,100954
-        ///Covetous Demon,100955
-        ///&quot;Mytha, the Baneful Queen&quot;,100956
-        ///Red Smelter Demon,100964
-        ///Old Iron King,100952
-        ///Scorpioness Najka,100957
-        ///Royal Rat Authority,100967
-        ///Prowling Magus &amp; Congregation,101000
-        ///The Duke&apos;s Dear Freja,100951
-        ///Royal Rat Vanguard,100965
-        ///T [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string ScholarEvents {
-            get {
-                return ResourceManager.GetString("ScholarEvents", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to 51                      push   rcx
         ///48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
         ///48 39 99 d0 00 00 00    cmp    QWORD PTR [rcx+0xd0],rbx
@@ -984,6 +984,32 @@ namespace AutoHitCounter.Properties {
         internal static string SKEventLog {
             get {
                 return ResourceManager.GetString("SKEventLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BossName,DeathFlag
+        ///Armored Warrior,12000400
+        ///Ashina Elite - Jinsuke Saze,11110504
+        ///Ashina Elite - Ujinari Mizuo,11110511
+        ///Blazing Bull,11110440
+        ///Centipede Giraffe,11700425
+        ///Centipede Sen-Un,12000279
+        ///Chained Ogre (Castle),11110620
+        ///Chained Ogre (Outskirts),11100310
+        ///Demon of Hatred,9313
+        ///Divine Dragon,9310
+        ///Fake Monk,9306
+        ///Folding Screen Monkeys,9305
+        ///General Kuranosuke Matsumoto,20005340
+        ///General Naomori Kawarada,11100300
+        ///General Tenzen Yamauchi,11100301
+        ///Genichiro Ashina (Castle),9303
+        ///Genichiro Ashina  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SKEvents {
+            get {
+                return ResourceManager.GetString("SKEvents", resourceCulture);
             }
         }
         
