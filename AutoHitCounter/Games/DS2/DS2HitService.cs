@@ -15,13 +15,8 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
 
     public void InstallHooks()
     {
-        WritePlayerDeadCheck();
-        
-        InstallHitHook();
-        InstallGeneralDamageHook();
-        InstallKillBoxHook();
-        InstallCountAuxHook();
-        InstallLightPoiseStaggerHook();
+        if (IsScholar) InstallScholarHooks();
+        else InstallVanillaHooks();
     }
 
     public bool HasHit()
@@ -32,7 +27,18 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         return newHits > 0;
     }
 
-    private void InstallHitHook()
+    private void InstallScholarHooks()
+    {
+        WriteScholarPlayerDeadCheck();
+
+        InstallScholarHitHook();
+        InstallScholarGeneralDamageHook();
+        InstallScholarKillBoxHook();
+        InstallScholarCountAuxHook();
+        InstallScholarLightPoiseStaggerHook();
+    }
+
+    private void InstallScholarHitHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarHit);
 
@@ -58,7 +64,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         hookManager.InstallHook(code, Hooks.Hit, [0x48, 0x89, 0x5C, 0x24, 0x10]);
     }
 
-    private void WritePlayerDeadCheck()
+    private void WriteScholarPlayerDeadCheck()
     {
         var code = Base + CheckPlayerDead;
 
@@ -69,7 +75,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
 
     //Handles fall damage and self aux kill
 
-    private void InstallGeneralDamageHook()
+    private void InstallScholarGeneralDamageHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarGeneralApplyDamage);
         var hit = Base + Hit;
@@ -84,7 +90,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         hookManager.InstallHook(code, Hooks.GeneralApplyDamage, [0x89, 0x83, 0x68, 0x01, 0x00, 0x00]);
     }
 
-    private void InstallKillBoxHook()
+    private void InstallScholarKillBoxHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarKillBox);
         var hit = Base + Hit;
@@ -99,42 +105,88 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         hookManager.InstallHook(code, Hooks.KillBox, [0x4C, 0x8B, 0x0, 0x89, 0x54, 0x24, 0x10]);
     }
 
-    private void InstallCountAuxHook()
+    private void InstallScholarCountAuxHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarCountAuxHit);
-        
+
         var hit = Base + Hit;
         var auxCheckFlag = Base + CheckAuxProcFlag;
-        
+
         var code = Base + CountAuxHit;
-        
+
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x6, auxCheckFlag, 7, 0x6 + 2),
             (code + 0xF, auxCheckFlag, 7, 0xF + 2),
             (code + 0x16, hit, 6, 0x16 + 2),
             (code + 0x1C, Hooks.CountAuxHit + 6, 5, 0x1C + 1)
         ]);
-        
+
         memoryService.WriteBytes(code, bytes);
         hookManager.InstallHook(code, Hooks.CountAuxHit, [0x4C, 0x8B, 0x01, 0x48, 0x63, 0xC2]);
     }
 
-    private void InstallLightPoiseStaggerHook()
+    private void InstallScholarLightPoiseStaggerHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarLightPoiseStagger);
         var hit = Base + Hit;
         var code = Base + LightPoiseStagger;
-        
+
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x6, GameManagerImp.Base, 7, 0x6 + 3),
             (code + 0x19, hit, 6, 0x19 + 2),
             (code + 0x26, Hooks.LightPoiseStagger + 5, 5, 0x26 + 1)
         ]);
-        
+
         memoryService.WriteBytes(code, bytes);
         hookManager.InstallHook(code, Hooks.LightPoiseStagger, [0x8B, 0x42, 0x04, 0x89, 0x02]);
     }
 
     public void SetIsShulvaSpikesIgnored(bool isEnabled) =>
         memoryService.Write(Base + ShouldIgnoreShulvaSpikesFlag, isEnabled);
+
+    private void InstallVanillaHooks()
+    {
+        WriteVanillaPlayerDeadCheck();
+
+        InstallVanillaHitHook();
+    }
+
+    private void WriteVanillaPlayerDeadCheck()
+    {
+        var code = Base + CheckPlayerDead;
+
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.VanillaCheckPlayerDead);
+        AsmHelper.WriteImmediateDword(bytes, (int)GameManagerImp.Base, 1);
+        memoryService.WriteBytes(code, bytes);
+    }
+
+    private void InstallVanillaHitHook()
+    {
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.VanillaHit);
+
+        var hit = Base + Hit;
+        var auxCheckFlag = Base + CheckAuxProcFlag;
+        var shouldIgnoreShulvaSpikesFlag = Base + ShouldIgnoreShulvaSpikesFlag;
+        var checkPlayerDeadFunc = Base + CheckPlayerDead;
+
+        var code = Base + HitCode;
+        
+        AsmHelper.WriteImmediateDwords(bytes, [
+        ((int)auxCheckFlag, 2),
+        ((int) GameManagerImp.Base, 0x1C + 2),
+        ((int) MapId, 0x36 + 2),
+        ((int)shouldIgnoreShulvaSpikesFlag, 0x42 + 2),
+        ((int) auxCheckFlag, 0x72 + 2),
+        ((int) hit, 0x83 + 2)
+        ]);
+        
+
+        AsmHelper.WriteRelativeOffsets(bytes, [
+            (code + 0x8, checkPlayerDeadFunc, 5, 0x8 + 1),
+            (code + 0x91, Hooks.Hit + 6, 5, 0x91 + 1)
+        ]);
+
+        memoryService.WriteBytes(code, bytes);
+        hookManager.InstallHook(code, Hooks.Hit, [0x55, 0x89, 0xE5, 0x83, 0xEC, 0x08]);
+    }
 }

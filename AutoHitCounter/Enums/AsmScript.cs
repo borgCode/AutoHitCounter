@@ -9,6 +9,9 @@ public enum AsmScript
     DSRKillChr,
     DSREventLog,
     
+    VanillaCheckPlayerDead,
+    VanillaHit,
+    
     ScholarHit,
     ScholarGeneralApplyDamage,
     ScholarKillBox,

@@ -147,5 +147,17 @@ namespace AutoHitCounter.Utilities
                 Array.Copy(valueBytes, 0, buffer, writeOffset, 4);
             }
         }
+        
+        /// <summary>
+        /// Writes a single 32-bit immediate value into a byte buffer.
+        /// </summary>
+        /// <param name="buffer">The byte array to write into.</param>
+        /// <param name="value">The 32-bit value to write.</param>
+        /// <param name="writeOffset">Index in the buffer to write the 4-byte value.</param>
+        public static void WriteImmediateDword(byte[] buffer, int value, int writeOffset)
+        {
+            var valueBytes = BitConverter.GetBytes(value);
+            Array.Copy(valueBytes, 0, buffer, writeOffset, 4);
+        }
     }
 }

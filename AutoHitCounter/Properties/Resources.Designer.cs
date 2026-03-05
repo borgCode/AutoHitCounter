@@ -1069,5 +1069,45 @@ namespace AutoHitCounter.Properties {
                 return ResourceManager.GetString("SKStaggerIgnoreCheck", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to a1 00 00 00 00          mov    eax,ds:0x0
+        ///85 c0                   test   eax,eax
+        ///74 0f                   je     18 &lt;dead&gt;
+        ///8b 40 74                mov    eax,DWORD PTR [eax+0x74]
+        ///85 c0                   test   eax,eax
+        ///74 08                   je     18 &lt;dead&gt;
+        ///83 b8 fc 00 00 00 00    cmp    DWORD PTR [eax+0xfc],0x0
+        ///c3                      ret
+        ///
+        ///0018 &lt;dead&gt;:
+        ///31 c0                   xor    eax,eax
+        ///c3                      ret.
+        /// </summary>
+        internal static string VanillaCheckPlayerDead {
+            get {
+                return ResourceManager.GetString("VanillaCheckPlayerDead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to c6 05 00 00 00 00 00    mov    BYTE PTR ds:0x0,0x0
+        ///50                      push   eax
+        ///e8 fc ff ff ff          call   9 &lt;_main+0x9&gt;
+        ///74 7b                   je     8a &lt;exit&gt;
+        ///81 bd f4 fd ff ff e6    cmp    DWORD PTR [ebp-0x20c],0x5f550e6
+        ///50 f5 05 
+        ///74 6f                   je     8a &lt;exit&gt;
+        ///53                      push   ebx
+        ///8b 1d 00 00 00 00       mov    ebx,DWORD PTR ds:0x0
+        ///8b 5b 74                mov    ebx,DWORD PTR [ebx+0x74]
+        ///3b 59 10                cmp    ebx,DWORD PTR [ecx+0x10]
+        ///75 5f            [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string VanillaHit {
+            get {
+                return ResourceManager.GetString("VanillaHit", resourceCulture);
+            }
+        }
     }
 }

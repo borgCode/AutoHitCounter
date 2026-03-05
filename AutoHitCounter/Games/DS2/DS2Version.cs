@@ -2,7 +2,7 @@
 
 using System.ComponentModel;
 
-namespace AutoHitCounter.Games.DS2S;
+namespace AutoHitCounter.Games.DS2;
 
 public enum DS2Version
 {

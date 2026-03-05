@@ -1,9 +1,8 @@
 ﻿// 
 
 using System;
-using AutoHitCounter.Games.DS2S;
 using AutoHitCounter.Utilities;
-using static AutoHitCounter.Games.DS2S.DS2Version;
+using static AutoHitCounter.Games.DS2.DS2Version;
 
 namespace AutoHitCounter.Games.DS2;
 
@@ -44,7 +43,15 @@ public static class DS2Offsets
     {
         public static nint Base;
 
-        public const int GameDataManager = 0xA8;
+        
+        public static int GameDataManager => Version switch
+        {
+            Vanilla1_0_11 or Vanilla1_0_12 => 0x60,
+            Scholar1_0_2 or Scholar1_0_3 => 0xA8,
+            _ => 0x0
+        };
+        
+
         public const int SaveDataManager = 0xD8;
 
         public static class SaveDataManagerOffsets
@@ -88,6 +95,8 @@ public static class DS2Offsets
         
         GameManagerImp.Base = moduleBase + Version switch
         {
+            Vanilla1_0_11 => 0x11493F4,
+            Vanilla1_0_12 => 0x1150414,
             Scholar1_0_2 => 0x160B8D0,
             Scholar1_0_3 => 0x16148F0,
             _ => 0
@@ -95,6 +104,8 @@ public static class DS2Offsets
         
         MapId = moduleBase + Version switch
         {
+            Vanilla1_0_11 => 0x10CD2D0,
+            Vanilla1_0_12 => 0x10D42D8,
             Scholar1_0_2 => 0x15641B4,
             Scholar1_0_3 => 0x156D1C4,
             _ => 0
@@ -104,6 +115,8 @@ public static class DS2Offsets
         
         Hooks.Hit = moduleBase+ Version switch
         {
+            Vanilla1_0_11 => 0x1C5500,
+            Vanilla1_0_12 => 0x1C6A70,
             Scholar1_0_2 => 0x133BB0,
             Scholar1_0_3 => 0x136220,
             _ => 0
