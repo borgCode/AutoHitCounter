@@ -1762,4 +1762,61 @@ c3                      ret
 31 c0                   xor    eax,eax
 c3                      ret</value>
   </data>
+  <data name="VanillaCountAuxHit" xml:space="preserve">
+    <value>f3 0f 10 55 0c          movss  xmm2,DWORD PTR [ebp+0xc]
+80 3d 00 00 00 00 00    cmp    BYTE PTR ds:0x0,0x0
+74 0d                   je     1b &lt;skip&gt;
+c6 05 00 00 00 00 00    mov    BYTE PTR ds:0x0,0x0
+ff 05 00 00 00 00       inc    DWORD PTR ds:0x0
+
+001b &lt;skip&gt;:
+e9 fc ff ff ff          jmp    1c &lt;skip+0x1&gt;</value>
+  </data>
+  <data name="VanillaGeneralApplyDamage" xml:space="preserve">
+    <value>50                      push   eax
+a1 00 00 00 00          mov    eax,ds:0x0
+85 c0                   test   eax,eax
+74 0f                   je     19 &lt;normal&gt;
+39 70 74                cmp    DWORD PTR [eax+0x74],esi
+75 0a                   jne    19 &lt;normal&gt;
+85 c9                   test   ecx,ecx
+79 06                   jns    19 &lt;normal&gt;
+ff 05 00 00 00 00       inc    DWORD PTR ds:0x0
+
+0019 &lt;normal&gt;:
+89 8e fc 00 00 00       mov    DWORD PTR [esi+0xfc],ecx
+58                      pop    eax
+e9 fc ff ff ff          jmp    21 &lt;normal+0x8&gt;</value>
+  </data>
+  <data name="VanillaKillBox" xml:space="preserve">
+    <value>8b 01                   mov    eax,DWORD PTR [ecx]
+8b 4d 08                mov    ecx,DWORD PTR [ebp+0x8]
+57                      push   edi
+8b 15 00 00 00 00       mov    edx,DWORD PTR ds:0x0
+85 d2                   test   edx,edx
+74 0f                   je     1f &lt;skip&gt;
+3b 42 74                cmp    eax,DWORD PTR [edx+0x74]
+75 0a                   jne    1f &lt;skip&gt;
+85 c9                   test   ecx,ecx
+75 06                   jne    1f &lt;skip&gt;
+ff 05 00 00 00 00       inc    DWORD PTR ds:0x0
+
+001f &lt;skip&gt;:
+5f                      pop    edi
+e9 fc ff ff ff          jmp    21 &lt;skip+0x2&gt;</value>
+  </data>
+  <data name="VanillaLightPoiseStagger" xml:space="preserve">
+    <value>51                      push   ecx
+8b 0d 00 00 00 00       mov    ecx,DWORD PTR ds:0x0
+85 c9                   test   ecx,ecx
+74 0b                   je     16 &lt;exit&gt;
+3b 41 74                cmp    eax,DWORD PTR [ecx+0x74]
+75 06                   jne    16 &lt;exit&gt;
+ff 05 00 00 00 00       inc    DWORD PTR ds:0x0
+
+0016 &lt;exit&gt;:
+59                      pop    ecx
+d9 80 b0 01 00 00       fld    DWORD PTR [eax+0x1b0]
+e9 fc ff ff ff          jmp    1e &lt;exit+0x8&gt;</value>
+  </data>
 </root>

@@ -11,6 +11,10 @@ public enum AsmScript
     
     VanillaCheckPlayerDead,
     VanillaHit,
+    VanillaCountAuxHit,
+    VanillaGeneralApplyDamage,
+    VanillaKillBox,
+    VanillaLightPoiseStagger,
     
     ScholarHit,
     ScholarGeneralApplyDamage,

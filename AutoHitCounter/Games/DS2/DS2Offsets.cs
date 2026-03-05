@@ -124,6 +124,8 @@ public static class DS2Offsets
         
         Hooks.GeneralApplyDamage = moduleBase + Version switch
         {
+            Vanilla1_0_11 => 0x1F33D1,
+            Vanilla1_0_12 => 0x1F5AD1,
             Scholar1_0_2 => 0x16727A,
             Scholar1_0_3 => 0x16A39A,
             _ => 0
@@ -131,6 +133,8 @@ public static class DS2Offsets
         
         Hooks.KillBox = moduleBase + Version switch
         {
+            Vanilla1_0_11 => 0x1F3073,
+            Vanilla1_0_12 => 0x1F5773,
             Scholar1_0_2 => 0x167440,
             Scholar1_0_3 => 0x16A560,
             _ => 0
@@ -138,6 +142,8 @@ public static class DS2Offsets
         
         Hooks.CountAuxHit = moduleBase + Version switch
         {
+            Vanilla1_0_11 => 0x1D5D26,
+            Vanilla1_0_12 => 0x1D72C6,
             Scholar1_0_2 => 0x143D20,
             Scholar1_0_3 => 0x146430,
             _ => 0
@@ -145,6 +151,8 @@ public static class DS2Offsets
 
         Hooks.LightPoiseStagger = moduleBase + Version switch
         {
+            Vanilla1_0_11 => 0x1D55B4,
+            Vanilla1_0_12 => 0x1D6B54,
             Scholar1_0_2 => 0x1432A7,
             Scholar1_0_3 => 0x145997,
             _ => 0
