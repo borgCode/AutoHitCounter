@@ -64,7 +64,7 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
         _hitService = new DS2HitService(_memoryService, _hookManager);
         _hitService.InstallHooks();
         _eventService = new DS2EventService(_memoryService, _hookManager, _events);
-        // _eventService.InstallHook();
+        _eventService.InstallHook();
         _igtService = new DS2IgtService(_memoryService, _hookManager);
         // _igtService.InstallHooks();
         
@@ -91,10 +91,10 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
             _lastHit = DateTime.Now;
         }
 
-        // if (_eventService.ShouldSplit())
-        // {
-        //     OnEventSet?.Invoke();
-        // }
+        if (_eventService.ShouldSplit())
+        {
+            OnEventSet?.Invoke();
+        }
         //
         // _igtService.Update();
         // OnIgtChanged?.Invoke(_igtService.ElapsedMilliseconds);

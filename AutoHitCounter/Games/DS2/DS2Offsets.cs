@@ -160,6 +160,8 @@ public static class DS2Offsets
         
         Hooks.SetEvent = moduleBase + Version switch
         {
+            Vanilla1_0_11 => 0x47884B,
+            Vanilla1_0_12 => 0x47FAEB,
             Scholar1_0_2 => 0x46DED0,
             Scholar1_0_3 => 0x4750C0,
             _ => 0

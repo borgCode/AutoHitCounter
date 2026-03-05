@@ -1108,6 +1108,26 @@ namespace AutoHitCounter.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 50                      push   eax
+        ///53                      push   ebx
+        ///57                      push   edi
+        ///8b 3d 00 00 00 00       mov    edi,DWORD PTR ds:0x0
+        ///89 f8                   mov    eax,edi
+        ///6b c0 05                imul   eax,eax,0x5
+        ///8d 1d 00 00 00 00       lea    ebx,ds:0x0
+        ///01 c3                   add    ebx,eax
+        ///89 33                   mov    DWORD PTR [ebx],esi
+        ///8a 45 0c                mov    al,BYTE PTR [ebp+0xc]
+        ///88 43 04                mov    BYTE PTR [ebx+0x4],al
+        ///47                       [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string VanillaEventLog {
+            get {
+                return ResourceManager.GetString("VanillaEventLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 50                      push   eax
         ///a1 00 00 00 00          mov    eax,ds:0x0
         ///85 c0                   test   eax,eax
         ///74 0f                   je     19 &lt;normal&gt;

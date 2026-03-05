@@ -1819,4 +1819,25 @@ ff 05 00 00 00 00       inc    DWORD PTR ds:0x0
 d9 80 b0 01 00 00       fld    DWORD PTR [eax+0x1b0]
 e9 fc ff ff ff          jmp    1e &lt;exit+0x8&gt;</value>
   </data>
+  <data name="VanillaEventLog" xml:space="preserve">
+    <value>50                      push   eax
+53                      push   ebx
+57                      push   edi
+8b 3d 00 00 00 00       mov    edi,DWORD PTR ds:0x0
+89 f8                   mov    eax,edi
+6b c0 05                imul   eax,eax,0x5
+8d 1d 00 00 00 00       lea    ebx,ds:0x0
+01 c3                   add    ebx,eax
+89 33                   mov    DWORD PTR [ebx],esi
+8a 45 0c                mov    al,BYTE PTR [ebp+0xc]
+88 43 04                mov    BYTE PTR [ebx+0x4],al
+47                      inc    edi
+81 e7 ff 01 00 00       and    edi,0x1ff
+89 3d 00 00 00 00       mov    DWORD PTR ds:0x0,edi
+5f                      pop    edi
+5b                      pop    ebx
+58                      pop    eax
+b8 59 17 b7 d1          mov    eax,0xd1b71759
+e9 fc ff ff ff          jmp    34 &lt;_main+0x34&gt;</value>
+  </data>
 </root>
