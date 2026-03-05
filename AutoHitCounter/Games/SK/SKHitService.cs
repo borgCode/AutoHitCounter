@@ -35,6 +35,9 @@ public class SKHitService(IMemoryService memoryService, HookManager hookManager)
         _lastHitCount = current;
         return newHits > 0;
     }
+    
+    public void SetRobertoStaggerCounts(bool isEnabled) =>
+        memoryService.Write(Base + ShouldCountRobertoStagger, isEnabled);
 
     private void WritePlayerDeadCheck()
     {
@@ -50,6 +53,7 @@ public class SKHitService(IMemoryService memoryService, HookManager hookManager)
         var bytes = AsmLoader.GetAsmBytes(AsmScript.SKHit);
         var pendingHitFlag = Base + PendingHitFlag;
         var staggerCheckFlag = Base + StaggerCheckFlag;
+        var shouldCountRoberto = Base + ShouldCountRobertoStagger;
         var hit = Base + Hit;
         var checkPlayerDeadFunc = Base + CheckPlayerDead;
         var code = Base + HitCode;
@@ -59,18 +63,19 @@ public class SKHitService(IMemoryService memoryService, HookManager hookManager)
             (code, pendingHitFlag, 7, 2),
             (code + 0xD, checkPlayerDeadFunc, 5, 0xD + 1),
             (code + 0x18, WorldChrMan.Base, 7, 0x18 + 3),
-            (code + 0x62, WorldChrMan.Base, 7, 0x62 + 3),
-            (code + 0x77, Functions.HasSpEffectId, 5, 0x77 + 1),
-            (code + 0xE2, WorldChrMan.Base, 7, 0xE2 + 3),
-            (code + 0xFC, Functions.HasSpEffectId, 5, 0xFC + 1),
-            (code + 0x107, staggerCheckFlag, 7, 0x107 + 2),
-            (code + 0x114, EventFlagMan.Base, 7, 0x114 + 3),
-            (code + 0x120, Functions.GetEvent, 5, 0x120 + 1),
-            (code + 0x12D, hit, 6, 0x12D + 2),
-            (code + 0x137, WorldChrMan.Base, 7, 0x137 + 3),
-            (code + 0x151, Functions.HasSpEffectId, 5, 0x151 + 1),
-            (code + 0x15C, pendingHitFlag, 7, 0x15C + 2),
-            (code + 0x164, Hooks.Hit + 5, 5, 0x164 + 1),
+            (code + 0x4D, shouldCountRoberto, 7, 0x4D + 2),
+            (code + 0x79, WorldChrMan.Base, 7, 0x79 + 3),
+            (code + 0x8E, Functions.HasSpEffectId, 5, 0x8E + 1),
+            (code + 0xF9, WorldChrMan.Base, 7, 0xF9 + 3),
+            (code + 0x113, Functions.HasSpEffectId, 5, 0x113 + 1),
+            (code + 0x11E, staggerCheckFlag, 7, 0x11E + 2),
+            (code + 0x12B, EventFlagMan.Base, 7, 0x12B + 3),
+            (code + 0x137, Functions.GetEvent, 5, 0x137 + 1),
+            (code + 0x144, hit, 6, 0x144 + 2),
+            (code + 0x14E, WorldChrMan.Base, 7, 0x14E + 3),
+            (code + 0x168, Functions.HasSpEffectId, 5, 0x168 + 1),
+            (code + 0x173, pendingHitFlag, 7, 0x173 + 2),
+            (code + 0x17B, Hooks.Hit + 5, 5, 0x17B + 1),
         ]);
         memoryService.WriteBytes(code, bytes);
         hookManager.InstallHook(code, Hooks.Hit, [0x48, 0x89, 0x44, 0x24, 0x50]);

@@ -17,7 +17,8 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
     private readonly HookManager _hookManager;
     private readonly ITickService _tickService;
     private readonly Dictionary<uint, string> _events;
-    
+    private readonly IGameSettingsProvider _settings;
+
     public string GameVersion => SKOffsets.Version.GetDescription();
     
     private DateTime? _lastHit;
@@ -31,16 +32,22 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
     public event Action OnVersionDetected;
 
     public SKModule(IMemoryService memoryService, IStateService stateService, HookManager hookManager,
-        ITickService tickService, Dictionary<uint, string> events)
+        ITickService tickService, Dictionary<uint, string> events, IGameSettingsProvider settings)
     {
         _memoryService = memoryService;
         _stateService = stateService;
         _hookManager = hookManager;
         _tickService = tickService;
         _events = events;
-        
+        _settings = settings;
+        settings.OnSettingsChanged += ApplySettings;
+
         stateService.Subscribe(State.Attached, Initialize);
         _lastHit = DateTime.Now;
+    }
+    
+    private void ApplySettings()                                                                                            {
+        _hitService?.SetRobertoStaggerCounts(_settings.GetFlag("should_count_roberto"));
     }
     
     private void Initialize()
@@ -59,6 +66,9 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
         _eventService.InstallHook();
         _hitService.InstallHooks();
         _igtPtr = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
+        
+        ApplySettings();
+        
         _tickService.RegisterGameTick(Tick);
     }
     

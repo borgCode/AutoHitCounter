@@ -9,6 +9,7 @@ public class SKCustomCodeOffsets
     public const int PendingHitFlag = 0x0;
     public const int StaggerCheckFlag = 0x1;
     public const int CheckAuxFlag = 0x2;
+    public const int ShouldCountRobertoStagger = 0x3;
 
     public const int Hit = 0x10;
     public const int CheckPlayerDead = 0x20;

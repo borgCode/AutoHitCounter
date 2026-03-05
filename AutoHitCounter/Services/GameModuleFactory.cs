@@ -28,7 +28,7 @@ public class GameModuleFactory(
             GameTitle.DarkSoulsRemastered => new DSRModule(memoryService, stateService, hookManager, tickService, events),
             GameTitle.DarkSouls2          => new DS2Module(memoryService, stateService, hookManager, tickService, events, settings),
             GameTitle.DarkSouls3          => new DS3Module(memoryService, stateService, hookManager, tickService, events),
-            GameTitle.Sekiro              => new SKModule(memoryService, stateService, hookManager, tickService, events),
+            GameTitle.Sekiro              => new SKModule(memoryService, stateService, hookManager, tickService, events, settings),
             GameTitle.EldenRing           => new EldenRingModule(memoryService, stateService, hookManager, tickService, events),
             _ => throw new NotSupportedException($"No module for {game.ProcessName}")
         };
