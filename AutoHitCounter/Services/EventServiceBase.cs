@@ -16,11 +16,17 @@ public abstract class EventServiceBase(
     : IEventService
 {
     private int _readIndex;
+    private Dictionary<uint, string> _events = events;
 
     public abstract void InstallHook();
 
     protected IMemoryService MemoryService => memoryService;
     protected HookManager HookManager => hookManager;
+    
+    public void UpdateEvents(Dictionary<uint, string> events)
+    {
+        _events = events;
+    }
 
     public bool ShouldSplit()
     {
@@ -36,11 +42,11 @@ public abstract class EventServiceBase(
             if (dataBytes[offset + 4] == 0) continue;
 
             var eventId = BitConverter.ToUInt32(dataBytes, offset);
-            if (events.ContainsKey(eventId))
+            if (_events.ContainsKey(eventId))
             {
                 _readIndex = writeIndex;
 #if DEBUG
-                Console.WriteLine($@"Event {eventId} set to true, splitting {events[eventId]}");
+                Console.WriteLine($@"Event {eventId} set to true, splitting {_events[eventId]}");
 #endif
                 return true;
             }

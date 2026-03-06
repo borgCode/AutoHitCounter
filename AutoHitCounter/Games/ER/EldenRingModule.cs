@@ -103,4 +103,9 @@ public class EldenRingModule : IGameModule, IDisposable, IVersionedGameModule
         OnEventSet = null;
         OnIgtChanged = null;
     }
+    
+    public void UpdateEvents(Dictionary<uint, string> events)
+    {
+        _eventService?.UpdateEvents(events);
+    }
 }

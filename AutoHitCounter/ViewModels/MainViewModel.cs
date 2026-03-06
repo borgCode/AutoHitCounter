@@ -252,6 +252,10 @@ namespace AutoHitCounter.ViewModels
                 }
 
                 LoadProfile(value);
+                
+                if (_activeGame == _selectedGame && _currentModule != null)
+                    _currentModule.UpdateEvents(GetActiveEvents());
+                
                 OnSettingsChanged?.Invoke();
             }
         }
@@ -524,9 +528,24 @@ namespace AutoHitCounter.ViewModels
 
             var window = new ProfileEditorWindow { DataContext = vm };
             window.ShowDialog();
+            
+            if (_activeProfile != null)
+            {
+                var key = $"{_selectedGame.GameName}|{_activeProfile.Name}";
+                _runSnapshots.Remove(key);
+            }
+
+            var updatedProfiles = _profileService.GetProfiles(_selectedGame.GameName);
+            var validKeys = new HashSet<string>(
+                updatedProfiles.Select(p => $"{_selectedGame.GameName}|{p.Name}"));
+            var staleKeys = _runSnapshots.Keys
+                .Where(k => k.StartsWith($"{_selectedGame.GameName}|") && !validKeys.Contains(k))
+                .ToList();
+            foreach (var stale in staleKeys)
+                _runSnapshots.Remove(stale);
 
             Profiles.Clear();
-            foreach (var p in _profileService.GetProfiles(_selectedGame.GameName))
+            foreach (var p in updatedProfiles)
                 Profiles.Add(p);
 
             ActiveProfile = vm.SelectedProfile;

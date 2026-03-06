@@ -40,6 +40,9 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
         _tickService = tickService;
         _events = events;
         
+        _hitService = new DS3HitService(_memoryService, _hookManager);
+        _eventService = new DS3EventService(_memoryService, _hookManager, _events);
+        
         stateService.Subscribe(State.Attached, Initialize);
         _lastHit = DateTime.Now;
     }
@@ -54,9 +57,7 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
 #if DEBUG
         Console.WriteLine($@"Code cave: 0x{(long)DS3CustomCodeOffsets.Base:X}");
 #endif
-
-        _hitService = new DS3HitService(_memoryService, _hookManager);
-        _eventService = new DS3EventService(_memoryService, _hookManager, _events);
+        
         _eventService.InstallHook();
         _hitService.InstallHooks();
         _igtPtr = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
@@ -105,6 +106,11 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
         OnHit = null;
         OnEventSet = null;
         OnIgtChanged = null;
+    }
+    
+    public void UpdateEvents(Dictionary<uint, string> events)
+    {
+        _eventService?.UpdateEvents(events);
     }
     
 }
