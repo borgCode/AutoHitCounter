@@ -161,7 +161,12 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
 
     public ObservableCollection<SplitEntry> FilteredEvents { get; } = new();
 
-    public bool IsDirty { get; private set; }
+    private bool _isDirty;
+    public bool IsDirty
+    {
+        get => _isDirty;
+        private set => SetProperty(ref _isDirty, value);
+    }
 
     public ObservableCollection<GameFlagViewModel> GameFlags { get; } = new();
 

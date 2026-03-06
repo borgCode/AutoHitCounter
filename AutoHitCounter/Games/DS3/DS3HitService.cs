@@ -78,11 +78,10 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
         
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x1, checkPlayerDeadFunc, 5, 0x1 + 1),
-            (code + 0x34, hit, 6, 0x34 + 2),
-            (code + 0x46, WorldChrMan.Base, 7, 0x46 + 3),
-            (code + 0xAC, staggerCheckFlag, 7, 0xAC + 2),
-            (code + 0xB5, hit, 6, 0xB5 + 2),
-            (code + 0xC7, Hooks.Hit + 8, 5, 0xC7 + 1),
+            (code + 0x14, WorldChrMan.Base, 7, 0x14 + 3),
+            (code + 0xB1, staggerCheckFlag, 7, 0xB1 + 2),
+            (code + 0xBA, hit, 6, 0xBA + 2),
+            (code + 0xCC, Hooks.Hit + 8, 5, 0xCC + 1),
         ]);
         
         memoryService.WriteBytes(code, bytes);

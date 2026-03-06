@@ -951,72 +951,72 @@ c3                      ret</value>
     <value>50                      push   rax
 e8 00 00 00 00          call   6 &lt;_main+0x6&gt;
 58                      pop    rax
-0f 84 b2 00 00 00       je     bf &lt;skip_all&gt;
-48 85 d2                test   rdx,rdx
-75 2d                   jne    3f &lt;continue&gt;
-41 81 78 40 c6 16 00    cmp    DWORD PTR [r8+0x40],0x16c6
-00 
-74 18                   je     34 &lt;real_hit_no_pop&gt;
-41 81 78 40 b4 14 00    cmp    DWORD PTR [r8+0x40],0x14b4
-00 
-74 0e                   je     34 &lt;real_hit_no_pop&gt;
-41 81 78 40 58 1b 00    cmp    DWORD PTR [r8+0x40],0x1b58
-00 
-0f 85 8b 00 00 00       jne    bf &lt;skip_all&gt;
-
-000000000034 &lt;real_hit_no_pop&gt;:
-ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 3a &lt;real_hit_no_pop+0x6&gt;
-e9 80 00 00 00          jmp    bf &lt;skip_all&gt;
-
-00000000003f &lt;continue&gt;:
+0f 84 b7 00 00 00       je     c4 &lt;skip_all&gt;
 50                      push   rax
 57                      push   rdi
 52                      push   rdx
 53                      push   rbx
 48 89 d7                mov    rdi,rdx
-48 8b 15 00 00 00 00    mov    rdx,QWORD PTR [rip+0x0]        # 4d &lt;continue+0xe&gt;
+48 8b 15 00 00 00 00    mov    rdx,QWORD PTR [rip+0x0]        # 1b &lt;_main+0x1b&gt;
 48 8b 82 80 00 00 00    mov    rax,QWORD PTR [rdx+0x80]
 48 39 c7                cmp    rdi,rax
-74 62                   je     bb &lt;skip_count&gt;
+0f 84 95 00 00 00       je     c0 &lt;skip_count&gt;
 48 8b 80 90 1f 00 00    mov    rax,QWORD PTR [rax+0x1f90]
 48 3b 88 98 00 00 00    cmp    rcx,QWORD PTR [rax+0x98]
-75 52                   jne    bb &lt;skip_count&gt;
+0f 85 81 00 00 00       jne    c0 &lt;skip_count&gt;
+48 85 ff                test   rdi,rdi
+75 20                   jne    64 &lt;continue&gt;
+41 81 78 40 c6 16 00    cmp    DWORD PTR [r8+0x40],0x16c6
+00 
+74 6c                   je     ba &lt;real_hit&gt;
+41 81 78 40 b4 14 00    cmp    DWORD PTR [r8+0x40],0x14b4
+00 
+74 62                   je     ba &lt;real_hit&gt;
+41 81 78 40 58 1b 00    cmp    DWORD PTR [r8+0x40],0x1b58
+00 
+74 58                   je     ba &lt;real_hit&gt;
+eb 5c                   jmp    c0 &lt;skip_count&gt;
+
+000000000064 &lt;continue&gt;:
 45 0f 57 ff             xorps  xmm15,xmm15
 45 0f 2f 38             comiss xmm15,DWORD PTR [r8]
-72 42                   jb     b5 &lt;real_hit&gt;
+72 4c                   jb     ba &lt;real_hit&gt;
+41 81 78 40 fc 9d 44    cmp    DWORD PTR [r8+0x40],0xd449dfc
+0d 
+74 48                   je     c0 &lt;skip_count&gt;
 45 0f 2f 78 04          comiss xmm15,DWORD PTR [r8+0x4]
-72 3b                   jb     b5 &lt;real_hit&gt;
+72 3b                   jb     ba &lt;real_hit&gt;
 45 0f 2f 78 08          comiss xmm15,DWORD PTR [r8+0x8]
-72 34                   jb     b5 &lt;real_hit&gt;
+72 34                   jb     ba &lt;real_hit&gt;
 45 0f 2f 78 0c          comiss xmm15,DWORD PTR [r8+0xc]
-72 2d                   jb     b5 &lt;real_hit&gt;
+72 2d                   jb     ba &lt;real_hit&gt;
 45 0f 2f 78 10          comiss xmm15,DWORD PTR [r8+0x10]
-72 26                   jb     b5 &lt;real_hit&gt;
+72 26                   jb     ba &lt;real_hit&gt;
 41 80 b8 cd 00 00 00    cmp    BYTE PTR [r8+0xcd],0x0
 00 
-75 1c                   jne    b5 &lt;real_hit&gt;
+75 1c                   jne    ba &lt;real_hit&gt;
 41 83 78 7c 00          cmp    DWORD PTR [r8+0x7c],0x0
-7d 15                   jge    b5 &lt;real_hit&gt;
+7d 15                   jge    ba &lt;real_hit&gt;
 41 0f b6 58 24          movzx  ebx,BYTE PTR [r8+0x24]
 ff cb                   dec    ebx
 83 fb 0a                cmp    ebx,0xa
-77 0f                   ja     bb &lt;skip_count&gt;
-c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # b3 &lt;continue+0x74&gt;
-eb 06                   jmp    bb &lt;skip_count&gt;
+77 0f                   ja     c0 &lt;skip_count&gt;
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # b8 &lt;continue+0x54&gt;
+eb 06                   jmp    c0 &lt;skip_count&gt;
 
-0000000000b5 &lt;real_hit&gt;:
-ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # bb &lt;skip_count&gt;
+0000000000ba &lt;real_hit&gt;:
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # c0 &lt;skip_count&gt;
 
-0000000000bb &lt;skip_count&gt;:
+0000000000c0 &lt;skip_count&gt;:
 5b                      pop    rbx
 5a                      pop    rdx
 5f                      pop    rdi
 58                      pop    rax
 
-0000000000bf &lt;skip_all&gt;:
+0000000000c4 &lt;skip_all&gt;:
 48 83 ec 50             sub    rsp,0x50
 48 8b 41 08             mov    rax,QWORD PTR [rcx+0x8]
-e9 00 00 00 00          jmp    cc &lt;skip_all+0xd&gt;</value>
+e9 00 00 00 00          jmp    d1 &lt;skip_all+0xd&gt;</value>
   </data>
   <data name="DS3LethalFall" xml:space="preserve">
     <value>50                      push   rax
