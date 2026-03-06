@@ -378,9 +378,9 @@ namespace AutoHitCounter.Properties {
         ///Bell Gargoyles,3
         ///Capra Demon,11015375
         ///Ceaseless Discharge,11410900
-        ///Centipede Demon,11410901
+        ///Centipede Demon,11415384
         ///Chaos Witch Quelaag,9
-        ///Demon Firesage,11410410
+        ///Demon Firesage,11415344
         ///Gaping Dragon,2
         ///Gwyndolin,11510900
         ///Gwyn,15
