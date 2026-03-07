@@ -14,7 +14,8 @@ namespace AutoHitCounter.Interfaces
         
         byte[] ReadBytes(nint addr, int size);
         T Read<T>(nint addr) where T : unmanaged;
-        public nint FollowPointers(nint baseAddress, int[] offsets, bool readFinalPtr, bool derefBase = true);
+        nint FollowPointers64(nint baseAddress, int[] offsets, bool readFinalPtr);
+        nint FollowPointers32(nint baseAddress, int[] offsets, bool readFinalPtr);
 
         void WriteBytes(nint addr, byte[] val);
         void Write<T>(nint addr, T value) where T : unmanaged;

@@ -15,7 +15,7 @@ public class EldenRingSettingsService(IMemoryService memoryService)
     
     public void ToggleDisableAchievements(bool isEnabled)
     {
-        var isAwardAchievementsEnabledFlag = memoryService.FollowPointers(CSTrophy.Base, [
+        var isAwardAchievementsEnabledFlag = memoryService.FollowPointers64(CSTrophy.Base, [
             CSTrophy.CSTrophyPlatformImp_forSteam,
             CSTrophy.IsAwardAchievementEnabled
         ], false);

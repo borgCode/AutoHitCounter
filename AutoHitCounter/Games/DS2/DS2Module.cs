@@ -16,10 +16,10 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
     private readonly IStateService _stateService;
     private readonly HookManager _hookManager;
     private readonly ITickService _tickService;
-    private DS2HitService _hitService;
-    private DS2EventService _eventService;
+    private readonly DS2HitService _hitService;
+    private readonly DS2EventService _eventService;
+    private readonly DS2SettingsService _settingsService;
     private DS2IgtService _igtService;
-    private readonly Dictionary<uint, string> _events;
     private readonly IHitRulesProvider _rules;
 
     public string GameVersion => DS2Offsets.Version.GetDescription();
@@ -38,9 +38,12 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
         _stateService = stateService;
         _hookManager = hookManager;
         _tickService = tickService;
-        _events = events;
         _rules = rules;
         rules.OnHitRulesChanged += ApplyRules;
+        
+        _hitService = new DS2HitService(_memoryService, hookManager);
+        _eventService = new DS2EventService(_memoryService, hookManager, events);
+        _settingsService = new DS2SettingsService(_memoryService, hookManager);
 
         stateService.Subscribe(State.Attached, Initialize);
         _lastHit = DateTime.Now;
@@ -53,24 +56,23 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
     private void Initialize()
     {
         InitializeOffsets();
-        OnVersionDetected?.Invoke();
+        
 
         DS2CustomCodeOffsets.Base = _memoryService.AllocCustomCodeMem();
 
 #if DEBUG
         Console.WriteLine($@"Code cave: 0x{(long)DS2CustomCodeOffsets.Base:X}");
 #endif
-
-        _hitService = new DS2HitService(_memoryService, _hookManager);
-        _hitService.InstallHooks();
-        _eventService = new DS2EventService(_memoryService, _hookManager, _events);
-        _eventService.InstallHook();
+        ApplySettings(onlyEnabled: true);
         _igtService = new DS2IgtService(_memoryService, _hookManager);
+        _hitService.InstallHooks();
+        _eventService.InstallHook();
         _igtService.InstallHooks();
         
         ApplyRules();
 
         _tickService.RegisterGameTick(Tick);
+        OnVersionDetected?.Invoke();
     }
 
     private void InitializeOffsets()
@@ -115,8 +117,15 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
         _eventService?.UpdateEvents(events);
     }
 
-    public void ApplySettings()
+    public void ApplySettings(bool onlyEnabled = false)
     {
-       
+        var noBabyJump = SettingsManager.Default.DS2NoBabyJump;
+        if (noBabyJump || !onlyEnabled) _settingsService.ToggleBabyJumpFix(noBabyJump);
+
+        var skipCredits = SettingsManager.Default.DS2SkipCredits;
+        if (skipCredits || !onlyEnabled) _settingsService.ToggleCreditSkip(skipCredits);
+
+        var disableDoubleClick = SettingsManager.Default.DS2DisableDoubleClick;
+        if (disableDoubleClick || !onlyEnabled) _settingsService.ToggleDoubleClick(disableDoubleClick);
     }
 }

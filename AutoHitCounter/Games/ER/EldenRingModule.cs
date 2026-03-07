@@ -52,12 +52,13 @@ public class EldenRingModule : IGameModule, IDisposable, IVersionedGameModule
     private void Initialize()
     {
         InitializeOffsets();
-        ApplySettings();
+        
 
         EldenRingCustomCodeOffsets.Base = _memoryService.AllocCustomCodeMem();
 #if DEBUG
         Console.WriteLine($@"Code cave: 0x{(long)EldenRingCustomCodeOffsets.Base:X}");
 #endif
+        ApplySettings(onlyEnabled: true);
         _eventService.InstallHook();
         _hitService.InstallHooks();
         _igtPtr = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
@@ -112,10 +113,15 @@ public class EldenRingModule : IGameModule, IDisposable, IVersionedGameModule
         _eventService?.UpdateEvents(events);
     }
 
-    public void ApplySettings()
+    public void ApplySettings(bool onlyEnabled = false)
     {
-        _settingsService.ToggleNoLogo(SettingsManager.Default.ERNoLogo);
-        _settingsService.ToggleStutterFix(SettingsManager.Default.ERStutterFix);
-        _settingsService.ToggleDisableAchievements(SettingsManager.Default.ERDisableAchievements);
+        var noLogo = SettingsManager.Default.ERNoLogo;
+        if (noLogo || !onlyEnabled) _settingsService.ToggleNoLogo(noLogo);
+
+        var stutterFix = SettingsManager.Default.ERStutterFix;
+        if (stutterFix || !onlyEnabled) _settingsService.ToggleStutterFix(stutterFix);
+
+        var disableAchievements = SettingsManager.Default.ERDisableAchievements;
+        if (disableAchievements || !onlyEnabled) _settingsService.ToggleDisableAchievements(disableAchievements);
     }
 }

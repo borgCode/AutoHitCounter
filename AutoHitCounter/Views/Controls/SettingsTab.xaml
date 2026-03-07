@@ -127,6 +127,24 @@
                             <CheckBox Content="No Tutorials" IsChecked="{Binding SKNoTutorials}" Margin="0, 0, 5, 0" />
                         </StackPanel>
                     </StackPanel>
+                    
+                    <StackPanel Margin="0,0,0,0">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedSettingsGame}" Value="{x:Static enums:GameTitle.DarkSouls2}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="No Baby Jump" IsChecked="{Binding DS2NoBabyJump}" Margin="0, 0, 5, 0" />
+                            <CheckBox Content="Skip Credits" IsChecked="{Binding DS2SkipCredits}" Margin="0, 0, 5, 0" />
+                            <CheckBox Content="Disable Double Click" IsChecked="{Binding DS2DisableDoubleClick}" Margin="0, 0, 5, 0" />
+                        </StackPanel>
+                    </StackPanel>
                 </StackPanel>
             </Border>
 

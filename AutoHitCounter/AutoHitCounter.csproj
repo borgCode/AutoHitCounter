@@ -126,6 +126,7 @@
         <Compile Include="Games\DS2\DS2IgtService.cs" />
         <Compile Include="Games\DS2\DS2Module.cs" />
         <Compile Include="Games\DS2\DS2Offsets.cs" />
+        <Compile Include="Games\DS2\DS2SettingsService.cs" />
         <Compile Include="Games\DS2\DS2Version.cs" />
         <Compile Include="Games\DS2\DS2TimerStatus.cs" />
         <Compile Include="Games\DS2\DS2CustomCodeOffsets.cs" />

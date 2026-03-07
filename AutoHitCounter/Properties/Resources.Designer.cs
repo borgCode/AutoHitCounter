@@ -705,6 +705,25 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 50                      push   rax
+        ///48 a1 00 00 00 00 00    movabs rax,ds:0x0
+        ///00 00 00
+        ///48 8b 80 d0 00 00 00    mov    rax,QWORD PTR [rax+0xd0]
+        ///48 8b 80 f8 00 00 00    mov    rax,QWORD PTR [rax+0xf8]
+        ///48 8b 80 f0 00 00 00    mov    rax,QWORD PTR [rax+0xf0]
+        ///f3 0f 10 80 98 37 00    movss  xmm0,DWORD PTR [rax+0x3798]
+        ///00
+        ///58                      pop    rax
+        ///0f 29 44 24 20          movaps XMMWORD PTR [rsp+0x20],xmm0
+        ///e9 00 00 00 00          jmp    33 &lt;_main+0x33&gt;.
+        /// </summary>
+        internal static string ScholarBabyJump {
+            get {
+                return ResourceManager.GetString("ScholarBabyJump", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 7 &lt;_main+0x7&gt;
         ///48 85 c0                test   rax,rax
         ///74 14                   je     20 &lt;dead&gt;
@@ -737,6 +756,22 @@ namespace AutoHitCounter.Properties {
         internal static string ScholarCountAuxHit {
             get {
                 return ResourceManager.GetString("ScholarCountAuxHit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 48 81 ec 20 02 00 00    sub    rsp,0x220
+        ///83 3d 00 00 00 00 00    cmp    DWORD PTR [rip+0x0],0x0        # e &lt;_main+0xe&gt;
+        ///75 11                   jne    21 &lt;skip&gt;
+        ///c7 41 28 07 00 00 00    mov    DWORD PTR [rcx+0x28],0x7
+        ///c7 05 00 00 00 00 01    mov    DWORD PTR [rip+0x0],0x1        # 21 &lt;skip&gt;
+        ///00 00 00
+        ///000000000021 &lt;skip&gt;:
+        ///e9 00 00 00 00          jmp    26 &lt;skip+0x5&gt;.
+        /// </summary>
+        internal static string ScholarCreditSkip {
+            get {
+                return ResourceManager.GetString("ScholarCreditSkip", resourceCulture);
             }
         }
         
@@ -1131,6 +1166,24 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 0f 51 c0                sqrtps xmm0,xmm0
+        ///50                      push   eax
+        ///a1 00 00 00 00          mov    eax,ds:0x0
+        ///8b 40 74                mov    eax,DWORD PTR [eax+0x74]
+        ///8b 80 94 04 00 00       mov    eax,DWORD PTR [eax+0x494]
+        ///f3 0f 10 80 e8 00 00    movss  xmm0,DWORD PTR [eax+0xe8]
+        ///00
+        ///58                      pop    eax
+        ///0f 29 45 b0             movaps XMMWORD PTR [ebp-0x50],xmm0
+        ///e9 fc ff ff ff          jmp    20 &lt;_main+0x20&gt;.
+        /// </summary>
+        internal static string VanillaBabyJump {
+            get {
+                return ResourceManager.GetString("VanillaBabyJump", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to a1 00 00 00 00          mov    eax,ds:0x0
         ///85 c0                   test   eax,eax
         ///74 0f                   je     18 &lt;dead&gt;
@@ -1163,6 +1216,22 @@ namespace AutoHitCounter.Properties {
         internal static string VanillaCountAuxHit {
             get {
                 return ResourceManager.GetString("VanillaCountAuxHit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 81 ec fc 01 00 00       sub    esp,0x1fc
+        ///83 3d 00 00 00 00 00    cmp    DWORD PTR ds:0x0,0x0
+        ///75 11                   jne    20 &lt;skip&gt;
+        ///c7 41 14 07 00 00 00    mov    DWORD PTR [ecx+0x14],0x7
+        ///c7 05 00 00 00 00 01    mov    DWORD PTR ds:0x0,0x1
+        ///00 00 00
+        ///0020 &lt;skip&gt;:
+        ///e9 fc ff ff ff          jmp    21 &lt;skip+0x1&gt;.
+        /// </summary>
+        internal static string VanillaCreditSkip {
+            get {
+                return ResourceManager.GetString("VanillaCreditSkip", resourceCulture);
             }
         }
         

@@ -19,6 +19,8 @@ public enum AsmScript
     VanillaIgtNewGame,
     VanillaIgtStop,
     VanillaIgtLoadGame,
+    VanillaBabyJump,
+    VanillaCreditSkip,
     
     ScholarHit,
     ScholarGeneralApplyDamage,
@@ -30,6 +32,8 @@ public enum AsmScript
     ScholarIgtStop,
     ScholarIgtLoadGame,
     ScholarCheckPlayerDead,
+    ScholarBabyJump,
+    ScholarCreditSkip,
     
     DS3CheckPlayerDead,
     DS3Hit,

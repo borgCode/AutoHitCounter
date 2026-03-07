@@ -27,4 +27,9 @@ public static class DS2CustomCodeOffsets
     public const int IgtNewGameCode = 0x3120;
     public const int IgtStopCode = 0x3200;
     public const int IgtLoadGameCode = 0x3260;
+
+    public const int BabyJump = 0x3600;
+
+    public const int CreditSkipFlag = 0x3700;
+    public const int CreditSkip = 0x3710;
 }

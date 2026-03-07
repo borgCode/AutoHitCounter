@@ -52,14 +52,13 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
     private void Initialize()
     {
         InitializeOffsets();
-        ApplySettings();
-        
+
         DS3CustomCodeOffsets.Base = _memoryService.AllocCustomCodeMem();
         
 #if DEBUG
         Console.WriteLine($@"Code cave: 0x{(long)DS3CustomCodeOffsets.Base:X}");
 #endif
-        
+        ApplySettings(onlyEnabled: true);
         _eventService.InstallHook();
         _hitService.InstallHooks();
         _igtPtr = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
@@ -116,9 +115,12 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
         _eventService?.UpdateEvents(events);
     }
 
-    public void ApplySettings()
+    public void ApplySettings(bool onlyEnabled = false)
     {
-        _settingsService.ToggleNoLogo(SettingsManager.Default.DS3NoLogo);
-        _settingsService.ToggleStutterFix(SettingsManager.Default.DS3StutterFix);
+        var noLogo = SettingsManager.Default.DS3NoLogo;
+        if (noLogo || !onlyEnabled) _settingsService.ToggleNoLogo(noLogo);
+
+        var stutterFix = SettingsManager.Default.DS3StutterFix;
+        if (stutterFix || !onlyEnabled) _settingsService.ToggleStutterFix(stutterFix);
     }
 }

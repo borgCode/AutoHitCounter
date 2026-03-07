@@ -299,6 +299,52 @@ public class SettingsViewModel : BaseViewModel
     }
 
     #endregion
+
+    #region Dark Souls 2
+
+    private bool _ds2NoBabyJump;
+
+    public bool DS2NoBabyJump
+    {
+        get => _ds2NoBabyJump;
+        set
+        {
+            if (!SetProperty(ref _ds2NoBabyJump, value)) return;
+            SettingsManager.Default.DS2NoBabyJump = value;
+            SettingsManager.Default.Save();
+            OnGameSettingChanged?.Invoke();
+        }
+    }
+    
+    private bool _ds2SkipCredits;
+
+    public bool DS2SkipCredits
+    {
+        get => _ds2SkipCredits;
+        set
+        {
+            if (!SetProperty(ref _ds2SkipCredits, value)) return;
+            SettingsManager.Default.DS2SkipCredits = value;
+            SettingsManager.Default.Save();
+            OnGameSettingChanged?.Invoke();
+        }
+    }
+    
+    private bool _ds2DisableDoubleClick;
+
+    public bool DS2DisableDoubleClick
+    {
+        get => _ds2DisableDoubleClick;
+        set
+        {
+            if (!SetProperty(ref _ds2DisableDoubleClick, value)) return;
+            SettingsManager.Default.DS2DisableDoubleClick = value;
+            SettingsManager.Default.Save();
+            OnGameSettingChanged?.Invoke();
+        }
+    }
+
+    #endregion
     
 
     #endregion
@@ -310,6 +356,7 @@ public class SettingsViewModel : BaseViewModel
         ApplyERSettings();
         ApplyDS3Settings();
         ApplySKSettings();
+        ApplyDS2Settings();
         
         IsAlwaysOnTopEnabled = SettingsManager.Default.AlwaysOnTop;
 
@@ -344,9 +391,6 @@ public class SettingsViewModel : BaseViewModel
         
         _ds3StutterFix = SettingsManager.Default.DS3StutterFix;
         OnPropertyChanged(nameof(DS3StutterFix));
-        
-        _ds3NoLogo = SettingsManager.Default.DS3NoLogo;
-        OnPropertyChanged(nameof(DS3NoLogo));
     }
 
     private void ApplySKSettings()
@@ -356,6 +400,18 @@ public class SettingsViewModel : BaseViewModel
         
         _skNoTutorials = SettingsManager.Default.SKNoTutorials;
         OnPropertyChanged(nameof(SKNoTutorials));
+    }
+
+    private void ApplyDS2Settings()
+    {
+        _ds2NoBabyJump = SettingsManager.Default.DS2NoBabyJump;
+        OnPropertyChanged(nameof(DS2NoBabyJump));
+        
+        _ds2SkipCredits = SettingsManager.Default.DS2SkipCredits;
+        OnPropertyChanged(nameof(DS2SkipCredits));
+        
+        _ds2DisableDoubleClick = SettingsManager.Default.DS2DisableDoubleClick;
+        OnPropertyChanged(nameof(DS2DisableDoubleClick));
     }
 
     private void LoadSplitConfig()

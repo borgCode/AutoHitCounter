@@ -56,6 +56,9 @@ public class SettingsManager
     public bool ERDisableAchievements { get; set; }
     public bool SKNoLogo { get; set; }
     public bool SKNoTutorials { get; set; }
+    public bool DS2NoBabyJump { get; set; }
+    public bool DS2SkipCredits { get; set; }
+    public bool DS2DisableDoubleClick { get; set; }
     
     public string LastImportExportPath { get; set; }
 

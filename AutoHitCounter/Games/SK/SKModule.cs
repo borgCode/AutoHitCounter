@@ -56,7 +56,7 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
     private void Initialize()
     {
         InitializeOffsets();
-        ApplySettings();
+        ApplySettings(onlyEnabled: true);
 
         SKCustomCodeOffsets.Base = _memoryService.AllocCustomCodeMem();
 
@@ -121,9 +121,12 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
         _eventService?.UpdateEvents(events);
     }
 
-    public void ApplySettings()
+    public void ApplySettings(bool onlyEnabled = false)
     {
-        _settingsService.ToggleNoLogo(SettingsManager.Default.SKNoLogo);
-        _settingsService.ToggleNoTutorials(SettingsManager.Default.SKNoTutorials);
+        var noLogo = SettingsManager.Default.SKNoLogo;
+        if (noLogo || !onlyEnabled) _settingsService.ToggleNoLogo(noLogo);
+
+        var noTutorials = SettingsManager.Default.SKNoTutorials;
+        if (noTutorials || !onlyEnabled) _settingsService.ToggleNoTutorials(noTutorials);
     }
 }

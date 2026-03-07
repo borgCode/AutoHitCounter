@@ -66,9 +66,31 @@ public static class DS2Offsets
         {
             public const int PlayTime = 0x1CC;
         }
+        
+        public static int PlayerCtrl => Version switch
+        {
+            Vanilla1_0_11 or Vanilla1_0_12 => 0x74,
+            Scholar1_0_2 or Scholar1_0_3 => 0xD0,
+            _ => 0x0
+        };
     }
 
     public static nint MapId;
+
+    public static class KatanaMainApp
+    {
+        public static IntPtr Base;
+
+        private static readonly int[] VanillaDoubleClickPtrChain = { 0x3C, 0x0, 0x4, 0x39 };
+        private static readonly int[] ScholarDoubleClickPtrChain = { 0x60, 0x0, 0x8, 0x6D };
+
+        public static int[] DoubleClickPtrChain => Version switch
+        {
+            Vanilla1_0_11 or Vanilla1_0_12 => VanillaDoubleClickPtrChain,
+            Scholar1_0_2 or Scholar1_0_3 => ScholarDoubleClickPtrChain,
+            _ => []
+        };
+    }
 
     public static class Hooks
     {
@@ -81,6 +103,8 @@ public static class DS2Offsets
         public static nint IgtNewGame;
         public static nint IgtStop;
         public static nint IgtLoadGame;
+        public static nint NoBabyJump;
+        public static nint CreditSkip;
     }
 
     public static class Functions
@@ -105,6 +129,15 @@ public static class DS2Offsets
             Vanilla1_0_12 => 0x10D42D8,
             Scholar1_0_2 => 0x15641B4,
             Scholar1_0_3 => 0x156D1C4,
+            _ => 0
+        };
+        
+        KatanaMainApp.Base = moduleBase + Version switch
+        {
+            Vanilla1_0_11 => 0x11936C4,
+            Vanilla1_0_12 => 0x119A6E4,
+            Scholar1_0_2 => 0x166C1D8,
+            Scholar1_0_3 => 0x16751F8,
             _ => 0
         };
 
@@ -189,6 +222,24 @@ public static class DS2Offsets
             Scholar1_0_3 => 0xFCE7D,
             _ => 0
         };
+        
+        Hooks.NoBabyJump = moduleBase + Version switch
+        {
+            Vanilla1_0_11 => 0x3A09C9,
+            Vanilla1_0_12 => 0x3A7369,
+            Scholar1_0_2 => 0x37B4C7,
+            Scholar1_0_3 => 0x381E27,
+            _ => 0
+        };
+        
+        Hooks.CreditSkip = moduleBase + Version switch
+        {
+            Vanilla1_0_11 => 0x11BD53,
+            Vanilla1_0_12 => 0x11BE23,
+            Scholar1_0_2 => 0x599D4,
+            Scholar1_0_3 => 0x59A64,
+            _ => 0
+        };
 
         Functions.RequestSave = moduleBase + Version switch
         {
@@ -205,6 +256,7 @@ public static class DS2Offsets
         Console.WriteLine("--- Base Pointers ---");
         PrintOffset("GameManagerImp.Base", GameManagerImp.Base);
         PrintOffset("MapId", MapId);
+        PrintOffset("KatanaMainApp", KatanaMainApp.Base);
 
         Console.WriteLine("\n--- Hooks ---");
         PrintOffset("Hit", Hooks.Hit);
@@ -216,6 +268,8 @@ public static class DS2Offsets
         PrintOffset("IgtStart", Hooks.IgtNewGame);
         PrintOffset("IgtStop", Hooks.IgtStop);
         PrintOffset("IgtLoadGame", Hooks.IgtLoadGame);
+        PrintOffset("NoBabyJump", Hooks.NoBabyJump);
+        PrintOffset("CreditSkip", Hooks.CreditSkip);
 
 
         Console.WriteLine("\n--- Functions ---");

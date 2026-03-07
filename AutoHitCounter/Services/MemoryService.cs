@@ -47,19 +47,36 @@ namespace AutoHitCounter.Services
             return MemoryMarshal.Read<T>(bytes);
         }
 
-        public nint FollowPointers(nint baseAddress, int[] offsets, bool readFinalPtr, bool derefBase = true)
+        public nint FollowPointers64(nint baseAddress, int[] offsets, bool readFinalPtr)
         {
-            nint ptr = derefBase ? Read<nint>(baseAddress) : baseAddress;
+            nint ptr = Read<nint>(baseAddress);
 
             for (int i = 0; i < offsets.Length - 1; i++)
             {
-                ptr = Read<nint>(ptr + offsets[i]);
+                ptr = Read<nint>((IntPtr)ptr + offsets[i]);
             }
 
-            nint finalAddress = ptr + offsets[offsets.Length - 1];
+            IntPtr finalAddress = (IntPtr)ptr + offsets[offsets.Length - 1];
 
             if (readFinalPtr)
                 return Read<nint>(finalAddress);
+
+            return finalAddress;
+        }
+
+        public nint FollowPointers32(nint baseAddress, int[] offsets, bool readFinalPtr)
+        {
+            uint ptr = Read<uint>(baseAddress);
+
+            for (int i = 0; i < offsets.Length - 1; i++)
+            {
+                ptr = Read<uint>((nint)ptr + offsets[i]);
+            }
+
+            nint finalAddress = (nint)ptr + offsets[offsets.Length - 1];
+
+            if (readFinalPtr)
+                return (nint)Read<uint>(finalAddress);
 
             return finalAddress;
         }
