@@ -1021,17 +1021,26 @@ e9 00 00 00 00          jmp    d1 &lt;skip_all+0xd&gt;</value>
   <data name="DS3LethalFall" xml:space="preserve">
     <value>50                      push   rax
 e8 00 00 00 00          call   6 &lt;_main+0x6&gt;
-74 16                   je     1e &lt;skip_count&gt;
+74 2f                   je     37 &lt;skip_count&gt;
 48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # f &lt;_main+0xf&gt;
 48 3b b0 80 00 00 00    cmp    rsi,QWORD PTR [rax+0x80]
-75 06                   jne    1e &lt;skip_count&gt;
-ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 1e &lt;skip_count&gt;
+75 1f                   jne    37 &lt;skip_count&gt;
+51                      push   rcx
+52                      push   rdx
+48 8b 88 80 00 00 00    mov    rcx,QWORD PTR [rax+0x80]
+ba e6 0f 00 00          mov    edx,0xfe6
+e8 00 00 00 00          call   2b &lt;_main+0x2b&gt;
+5a                      pop    rdx
+59                      pop    rcx
+84 c0                   test   al,al
+75 06                   jne    37 &lt;skip_count&gt;
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 37 &lt;skip_count&gt;
 
-00000000001e &lt;skip_count&gt;:
+000000000037 &lt;skip_count&gt;:
 58                      pop    rax
-f3 0f 10 05 00 00 00    movss  xmm0,DWORD PTR [rip+0x0]        # 27 &lt;skip_count+0x9&gt;
+f3 0f 10 05 00 00 00    movss  xmm0,DWORD PTR [rip+0x0]        # 40 &lt;skip_count+0x9&gt;
 00 
-e9 00 00 00 00          jmp    2c &lt;skip_count+0xe&gt;</value>
+e9 00 00 00 00          jmp    45 &lt;skip_count+0xe&gt;</value>
   </data>
   <data name="DS3CheckAuxAttacker" xml:space="preserve">
     <value>50                      push   rax

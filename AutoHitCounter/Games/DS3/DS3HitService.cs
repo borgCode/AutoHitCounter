@@ -98,9 +98,10 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x1, checkPlayerDeadFunc, 5, 0x1 + 1),
             (code + 0x8, WorldChrMan.Base, 7, 0x8 + 3),
-            (code + 0x18, hit, 6, 0x18 + 2),
-            (code + 0x1F, FallDamageKillFloor, 8, 0x1F + 4),
-            (code + 0x27, Hooks.LethalFall + 8, 5, 0x27 + 1)
+            (code + 0x26, Functions.HasSpEffectId, 5, 0x26 + 1),
+            (code + 0x31, hit, 6, 0x31 + 2),
+            (code + 0x38, FallDamageKillFloor, 8, 0x38 + 4),
+            (code + 0x40, Hooks.LethalFall + 8, 5, 0x40 + 1)
         ]);
         
         var originalBytes = bytes.Skip(0x1F).Take(8).ToArray();
