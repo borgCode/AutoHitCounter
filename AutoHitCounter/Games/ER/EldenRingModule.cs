@@ -41,10 +41,6 @@ public class EldenRingModule : IGameModule, IDisposable, IVersionedGameModule
         _tickService = tickService;
         _events = events;
         
-        _hitService = new EldenRingHitService(_memoryService, _hookManager);
-        _eventService = new EldenRingEventService(_memoryService, _hookManager, _events);
-        _settingsService = new EldenRingSettingsService(_memoryService);
-
         stateService.Subscribe(State.Attached, Initialize);
         _lastHit = DateTime.Now;
     }
@@ -53,16 +49,25 @@ public class EldenRingModule : IGameModule, IDisposable, IVersionedGameModule
     {
         InitializeOffsets();
         
-
         EldenRingCustomCodeOffsets.Base = _memoryService.AllocCustomCodeMem();
+        
 #if DEBUG
         Console.WriteLine($@"Code cave: 0x{(long)EldenRingCustomCodeOffsets.Base:X}");
 #endif
+        
+        _hitService = new EldenRingHitService(_memoryService, _hookManager);
+        _eventService = new EldenRingEventService(_memoryService, _hookManager, _events);
+        _settingsService = new EldenRingSettingsService(_memoryService);
+        
         ApplySettings(onlyEnabled: true);
+        
         _eventService.InstallHook();
         _hitService.InstallHooks();
+        
         _igtPtr = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
+        
         _tickService.RegisterGameTick(Tick);
+        
         OnVersionDetected?.Invoke();
     }
 

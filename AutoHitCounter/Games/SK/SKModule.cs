@@ -14,16 +14,18 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
 {
     private readonly IMemoryService _memoryService;
     private readonly IStateService _stateService;
+    private readonly HookManager _hookManager;
     private readonly ITickService _tickService;
+    private readonly Dictionary<uint, string> _events;
     private readonly IHitRulesProvider _rules;
 
     public string GameVersion => SKOffsets.Version.GetDescription();
 
     private DateTime? _lastHit;
     private nint _igtPtr;
-    private readonly SKHitService _hitService;
-    private readonly SKEventService _eventService;
-    private readonly SKSettingsService _settingsService;
+    private SKHitService _hitService;
+    private SKEventService _eventService;
+    private SKSettingsService _settingsService;
 
     public event Action<int> OnHit;
     public event Action OnEventSet;
@@ -35,12 +37,10 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
     {
         _memoryService = memoryService;
         _stateService = stateService;
+        _hookManager = hookManager;
         _tickService = tickService;
+        _events = events;
         _rules = rules;
-
-        _hitService = new SKHitService(_memoryService, hookManager);
-        _eventService = new SKEventService(_memoryService, hookManager, events);
-        _settingsService = new SKSettingsService(_memoryService);
 
         rules.OnHitRulesChanged += ApplyRules;
 
@@ -56,7 +56,7 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
     private void Initialize()
     {
         InitializeOffsets();
-        ApplySettings(onlyEnabled: true);
+
 
         SKCustomCodeOffsets.Base = _memoryService.AllocCustomCodeMem();
 
@@ -64,13 +64,21 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
         Console.WriteLine($@"Code cave: 0x{(long)SKCustomCodeOffsets.Base:X}");
 #endif
 
+        _hitService = new SKHitService(_memoryService, _hookManager);
+        _eventService = new SKEventService(_memoryService, _hookManager, _events);
+        _settingsService = new SKSettingsService(_memoryService);
+
+        ApplySettings(onlyEnabled: true);
+
         _eventService.InstallHook();
         _hitService.InstallHooks();
+
         _igtPtr = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
 
         ApplyRules();
 
         _tickService.RegisterGameTick(Tick);
+
         OnVersionDetected?.Invoke();
     }
 
