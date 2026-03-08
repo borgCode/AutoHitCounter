@@ -318,7 +318,10 @@ public static class SKOffsets
     private static nint _baseAddr;
     private static void PrintOffset(string name, nint value)
     {
-        Console.WriteLine(value - _baseAddr <= 0 ? $"  {name,-40} *** NOT SET ***" : $"  {name,-40} 0x{(long)value:X}");
+        var rel = value - _baseAddr;
+        Console.WriteLine(rel <= 0
+            ? $"  {name,-40} *** NOT SET ***"
+            : $"  {name,-40} 0x{(long)value:X}  (0x{(long)rel:X})");
     }
 #endif
 }
