@@ -275,7 +275,7 @@ namespace AutoHitCounter.ViewModels
 
                 if (_activeGame == _selectedGame && _currentModule != null)
                     _currentModule.UpdateEvents(GetActiveEvents());
-                
+
                 OnHitRulesChanged?.Invoke();
             }
         }
@@ -342,7 +342,7 @@ namespace AutoHitCounter.ViewModels
                 return new SolidColorBrush(Color.FromRgb(0x90, 0x90, 0x90));
             }
         }
-        
+
         public event Action OnHitRulesChanged;
 
         public bool GetRule(string key) => _activeProfile != null
@@ -608,28 +608,31 @@ namespace AutoHitCounter.ViewModels
                 _activeProfile);
 
             var window = new ProfileEditorWindow { DataContext = vm };
-            window.Show();
 
-            if (_activeProfile != null)
+            window.Closed += (s, e) =>
             {
-                var key = $"{_selectedGame.GameName}|{_activeProfile.Name}";
-                _runSnapshots.Remove(key);
-            }
+                if (_activeProfile != null)
+                {
+                    var key = $"{_selectedGame.GameName}|{_activeProfile.Name}";
+                    _runSnapshots.Remove(key);
+                }
 
-            var updatedProfiles = _profileService.GetProfiles(_selectedGame.GameName);
-            var validKeys = new HashSet<string>(
-                updatedProfiles.Select(p => $"{_selectedGame.GameName}|{p.Name}"));
-            var staleKeys = _runSnapshots.Keys
-                .Where(k => k.StartsWith($"{_selectedGame.GameName}|") && !validKeys.Contains(k))
-                .ToList();
-            foreach (var stale in staleKeys)
-                _runSnapshots.Remove(stale);
+                var updatedProfiles = _profileService.GetProfiles(_selectedGame.GameName);
+                var validKeys = new HashSet<string>(
+                    updatedProfiles.Select(p => $"{_selectedGame.GameName}|{p.Name}"));
+                var staleKeys = _runSnapshots.Keys
+                    .Where(k => k.StartsWith($"{_selectedGame.GameName}|") && !validKeys.Contains(k))
+                    .ToList();
+                foreach (var stale in staleKeys)
+                    _runSnapshots.Remove(stale);
 
-            Profiles.Clear();
-            foreach (var p in updatedProfiles)
-                Profiles.Add(p);
+                Profiles.Clear();
+                foreach (var p in updatedProfiles)
+                    Profiles.Add(p);
 
-            ActiveProfile = vm.SelectedProfile;
+                ActiveProfile = vm.SelectedProfile;
+            };
+            window.Show();
         }
 
         private void UpdateSplits()
