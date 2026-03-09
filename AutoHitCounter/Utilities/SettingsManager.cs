@@ -36,6 +36,8 @@ public class SettingsManager
     public bool PracticeMode { get; set; }
     [DefaultValue(true)]
     public bool ShowAttempts { get; set; }
+    [DefaultValue(true)]
+    public bool ShowProgress { get; set; }
     [DefaultValue(4)]
     public int PrevSplits { get; set; }
     [DefaultValue(8)]
@@ -48,6 +50,7 @@ public class SettingsManager
     public bool ShowIgt { get; set; }
     [DefaultValue(300)]
     public int OverlayWidth { get; set; }
+    public int OverlayHeight { get; set; }
     public bool IsUnlocked { get; set; }
     public bool DS3NoLogo { get; set; }
     public bool DS3StutterFix { get; set; }
@@ -61,6 +64,8 @@ public class SettingsManager
     public bool DS2DisableDoubleClick { get; set; }
     
     public string LastImportExportPath { get; set; }
+    
+
 
     public void Save()
     {

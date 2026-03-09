@@ -18,10 +18,22 @@
             overflow: hidden;
         }
 
+        #splits {
+
+            overflow-y: clip;
+            height: calc(100% - 60px);
+        }
+        
+         #progress {
+            color: #bbb;
+            font-size: 12px;
+        }
+         
         #overlay {
             display: inline-block;
             width: 300px;
             padding: 6px;
+            
         }
 
         .header {
@@ -181,7 +193,9 @@
             showDiff: true,
             showPb: true,
             showIgt: true,
-            overlayWidth: 300
+            overlayWidth: 300,
+            overlayHeight: 430,
+            showProgress: true
         }
 
         let config = {...DEFAULTS}
@@ -226,6 +240,13 @@
             };
         }
 
+        const ROW_HEIGHT = 29;
+
+        function getVisibleRowCount() {
+            const availableHeight = config.overlayHeight - 60;
+            return Math.floor(availableHeight / ROW_HEIGHT);
+        }
+
         function getGridColumns() {
             let cols = '3fr 0.5fr';
             if (config.showDiff) cols += ' 0.5fr';
@@ -236,32 +257,62 @@
         function applyLayout() {
             headerEl.style.gridTemplateColumns = getGridColumns();
 
-            headerEl.innerHTML = `<span>Split</span><span>Hits</span>`
+            const progressHtml = config.showProgress ? ` <span id="progress"></span>` : '';
+            headerEl.innerHTML = `<span>Split${progressHtml}</span><span>Hits</span>`
                 + (config.showDiff ? '<span>Diff</span>' : '')
                 + (config.showPb ? '<span>PB</span>' : '');
 
             igtEl.style.display = config.showIgt ? '' : 'none';
             overlay.style.width = config.overlayWidth + 'px';
+            overlay.style.height = config.overlayHeight + 'px';
         }
+
+        let lastCurrentIndex = -1;
 
         function renderState(state) {
             const cols = getGridColumns();
             let html = '';
 
             let splits = state.splits;
+            const maxRows = getVisibleRowCount();
             const currentIndex = splits.findIndex(s => s.isCurrent);
+
+            if (currentIndex >= 0) lastCurrentIndex = currentIndex;
+
+            const total = splits.length;
+
             if (currentIndex >= 0) {
-                const start = Math.max(0, currentIndex - config.prevSplits);
-                const end = Math.min(splits.length, currentIndex + config.nextSplits + 1);
+                let start = Math.max(0, currentIndex - config.prevSplits);
+                let end = Math.min(total, start + maxRows);
+
+                if (end === total) {
+                    start = Math.max(0, total - maxRows);
+                    end = total;
+                }
+
                 splits = splits.slice(start, end);
             } else {
-                splits = splits.slice(0, config.prevSplits + config.nextSplits + 1);
+                console.log('Run complete, lastCurrentIndex:', lastCurrentIndex);
+                let start = Math.max(0, lastCurrentIndex - config.prevSplits);
+                let end = Math.min(total, start + maxRows);
+                if (end === total) {
+                    start = Math.max(0, total - maxRows);
+                    end = total;
+                }
+                splits = splits.slice(start, end);
             }
 
             for (const split of splits) {
                 html += buildRow(split, cols);
             }
             splitsEl.innerHTML = html;
+
+            const progressEl = document.getElementById('progress');
+            if (progressEl && !state.isRunComplete) {
+                const current = state.splits.findIndex(s => s.isCurrent) + 1;
+                const total = state.splits.filter(s => !s.isParent).length;
+                progressEl.textContent = `(${current}/${total})`;
+            }
 
             let totalsHtml = `<span><span class="label">Hits </span><span class="value">${state.totalHits}</span></span>`;
             if (config.showPb) {
@@ -273,7 +324,7 @@
             }
 
             totalsEl.innerHTML = totalsHtml;
-            
+
             if (config.showIgt && state.inGameTime) {
                 igtEl.textContent = state.inGameTime;
             }

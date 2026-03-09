@@ -477,6 +477,7 @@ namespace AutoHitCounter.ViewModels
 
                 _profileService.SaveProfile(_activeProfile);
                 RefreshSplitValues();
+                _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
             });
 
             EditSplitPbCommand = new DelegateCommand(() =>
@@ -813,6 +814,7 @@ namespace AutoHitCounter.ViewModels
 
             split.IsEditingPb = false;
             RefreshSplitValues();
+            _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
         }
 
         private void PreviousSplit()
@@ -856,6 +858,7 @@ namespace AutoHitCounter.ViewModels
                 _activeProfile.AttemptCount = count;
                 _profileService.SaveProfile(_activeProfile);
                 OnPropertyChanged(nameof(AttemptCount));
+                _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
             }
 
             IsEditingAttempts = false;

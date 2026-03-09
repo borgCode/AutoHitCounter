@@ -106,6 +106,20 @@ public class SettingsViewModel : BaseViewModel
         }
     }
 
+    private bool _showProgress;
+
+    public bool ShowProgress
+    {
+        get => _showProgress;
+        set
+        {
+            if (!SetProperty(ref _showProgress, value)) return;
+            SettingsManager.Default.ShowProgress = value;
+            SettingsManager.Default.Save();
+            BroadcastConfigChanged();
+        }
+    }
+
     private int _prevSplits;
 
     public int PrevSplits
@@ -185,6 +199,20 @@ public class SettingsViewModel : BaseViewModel
         {
             if (!SetProperty(ref _overlayWidth, value)) return;
             SettingsManager.Default.OverlayWidth = value;
+            SettingsManager.Default.Save();
+            BroadcastConfigChanged();
+        }
+    }
+    
+    private int _overlayHeight;
+    
+    public int  OverlayHeight
+    {
+        get => _overlayHeight;
+        set
+        {
+            if (!SetProperty(ref _overlayHeight, value)) return;
+            SettingsManager.Default.OverlayHeight = value;
             SettingsManager.Default.Save();
             BroadcastConfigChanged();
         }
@@ -418,6 +446,9 @@ public class SettingsViewModel : BaseViewModel
     {
         _showAttempts = SettingsManager.Default.ShowAttempts;
         OnPropertyChanged(nameof(ShowAttempts));
+        
+        _showProgress = SettingsManager.Default.ShowProgress;
+        OnPropertyChanged(nameof(ShowProgress));
 
         _prevSplits = SettingsManager.Default.PrevSplits;
         OnPropertyChanged(nameof(PrevSplits));
@@ -436,13 +467,16 @@ public class SettingsViewModel : BaseViewModel
 
         _overlayWidth = SettingsManager.Default.OverlayWidth;
         OnPropertyChanged(nameof(OverlayWidth));
+        
+        _overlayHeight = SettingsManager.Default.OverlayHeight;
+        OnPropertyChanged(nameof(OverlayHeight));
 
         BroadcastConfigChanged();
     }
 
     private void BroadcastConfigChanged()
     {
-        var config = new OverlayConfig(ShowAttempts, PrevSplits, NextSplits, ShowDiff, ShowPb, ShowIgt, OverlayWidth);
+        var config = new OverlayConfig(ShowAttempts, PrevSplits, NextSplits, ShowDiff, ShowPb, ShowIgt, OverlayWidth, OverlayHeight, _showProgress);
         _overlayServerService.BroadcastConfig(config);
     }
 
