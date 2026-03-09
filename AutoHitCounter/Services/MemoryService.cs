@@ -12,6 +12,21 @@ namespace AutoHitCounter.Services
 {
     public class MemoryService : IMemoryService
     {
+        public void Detach()
+        {
+            lock (_attachLock)
+            {
+                if (ProcessHandle != IntPtr.Zero)
+                {
+                    Kernel32.CloseHandle(ProcessHandle);
+                    ProcessHandle = IntPtr.Zero;
+                }
+
+                TargetProcess = null;
+                IsAttached = false;
+            }
+        }
+
         public bool IsAttached { get; private set; }
         public Process? TargetProcess { get; private set; }
         public IntPtr ProcessHandle { get; private set; } = IntPtr.Zero;
@@ -121,10 +136,15 @@ namespace AutoHitCounter.Services
             return Kernel32.GetProcAddress(moduleHandle, procName);
         }
 
+        private string _currentProcessName;
+        
         public void StartAutoAttach(string processName)
         {
             _autoAttachTimer?.Stop();
             _autoAttachTimer?.Dispose();
+            
+            _currentProcessName = processName;
+            Detach();
 
             _autoAttachTimer = new Timer(AttachCheckInterval);
             _autoAttachTimer.Elapsed += (sender, e) => TryAttachToProcess(processName);
@@ -132,6 +152,8 @@ namespace AutoHitCounter.Services
 
             TryAttachToProcess(processName);
         }
+        
+        
 
         public void StopAutoAttach()
         {
@@ -142,6 +164,8 @@ namespace AutoHitCounter.Services
 
         private void TryAttachToProcess(string processName)
         {
+            if (processName != _currentProcessName) return;
+            
             lock (_attachLock)
             {
                 if (ProcessHandle != IntPtr.Zero)

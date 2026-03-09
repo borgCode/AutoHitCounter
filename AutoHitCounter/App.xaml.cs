@@ -36,7 +36,7 @@ namespace AutoHitCounter
             var hotkeysViewModel = new HotkeyTabViewModel(hotkeyManager, stateService);
 
             var mainViewModel = new MainViewModel(memoryService, hotkeyManager, gameModuleFactory, profileService, stateService,
-                settingsViewModel, hotkeysViewModel, overlayServerService);
+                settingsViewModel, hotkeysViewModel, overlayServerService, tickService);
             var mainWindow = new MainWindow
             {
                 DataContext = mainViewModel

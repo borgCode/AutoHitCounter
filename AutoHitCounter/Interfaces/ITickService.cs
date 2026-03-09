@@ -8,4 +8,5 @@ public interface ITickService
 {
     void RegisterGameTick(Action tick);
     void UnregisterGameTick();
+    void ResetAttachState();
 }

@@ -26,5 +26,6 @@ namespace AutoHitCounter.Interfaces
         
         void StartAutoAttach(string processName);
         void StopAutoAttach();
+        void Detach();
     }
 }

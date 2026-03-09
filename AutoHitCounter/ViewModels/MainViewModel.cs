@@ -19,6 +19,7 @@ namespace AutoHitCounter.ViewModels
     public class MainViewModel : BaseViewModel, IReorderHandler, IHitRulesProvider
     {
         private readonly IMemoryService _memoryService;
+        private readonly ITickService _tickService;
         private readonly HotkeyManager _hotkeyManager;
         private readonly GameModuleFactory _gameModuleFactory;
         private readonly IProfileService _profileService;
@@ -42,7 +43,7 @@ namespace AutoHitCounter.ViewModels
         public MainViewModel(IMemoryService memoryService, HotkeyManager hotkeyManager,
             GameModuleFactory gameModuleFactory,
             IProfileService profileService, IStateService stateService, SettingsViewModel settings,
-            HotkeyTabViewModel hotkeyTabViewModel, OverlayServerService overlayServerService)
+            HotkeyTabViewModel hotkeyTabViewModel, OverlayServerService overlayServerService, ITickService tickService)
         {
             Settings = settings;
             Hotkeys = hotkeyTabViewModel;
@@ -52,6 +53,7 @@ namespace AutoHitCounter.ViewModels
             _profileService = profileService;
             _overlayServerService = overlayServerService;
             _overlayServerService.Start();
+            _tickService = tickService;
 
             stateService.Subscribe(State.Attached, OnAttached);
             stateService.Subscribe(State.NotAttached, OnNotAttached);
@@ -498,6 +500,7 @@ namespace AutoHitCounter.ViewModels
 
         private void UpdateAttachedText()
         {
+            if (SelectedGame == null) return;
             var version = (_currentModule as IVersionedGameModule)?.GameVersion;
             AttachedText = string.IsNullOrEmpty(version)
                 ? $"Attached to {SelectedGame.GameName}"
@@ -529,6 +532,7 @@ namespace AutoHitCounter.ViewModels
 
             if (_activeGame == null) return;
 
+            _tickService.ResetAttachState();
             _currentModule = _gameModuleFactory.CreateModule(_activeGame, GetActiveEvents(), this);
 
             if (_currentModule is IVersionedGameModule versioned)
