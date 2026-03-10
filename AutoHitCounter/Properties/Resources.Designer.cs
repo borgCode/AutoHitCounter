@@ -650,7 +650,7 @@ namespace AutoHitCounter.Properties {
         ///50                      push   rax
         ///e8 00 00 00 00          call   19 &lt;_main+0x19&gt;
         ///58                      pop    rax
-        ///0f 84 7a 01 00 00       je     19a &lt;skip_all&gt;
+        ///0f 84 8e 01 00 00       je     1ae &lt;skip_all&gt;
         ///48 85 d2                test   rdx,rdx
         ///74 56                   je     7b &lt;null_attacker&gt;
         ///81 7a 60 00 b4 c4 04    cmp    DWORD PTR [ [rest of string was truncated]&quot;;.
