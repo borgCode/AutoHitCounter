@@ -207,8 +207,8 @@ public static class DS2Offsets
 
         Hooks.IgtStop = moduleBase + Version switch
         {
-            Vanilla1_0_11 => 0x23D4DB,
-            Vanilla1_0_12 => 0x24030B,
+            Vanilla1_0_11 => 0x23D3F8,
+            Vanilla1_0_12 => 0x240228,
             Scholar1_0_2 => 0x1BC157,
             Scholar1_0_3 => 0x1BF8C7,
             _ => 0

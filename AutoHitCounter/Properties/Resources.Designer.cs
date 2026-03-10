@@ -1398,10 +1398,16 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to e8 fc ff ff ff          call   1 &lt;_main+0x1&gt;
+        ///   Looks up a localized string similar to 3c 06                   cmp    al,0x6
+        ///75 0a                   jne    e &lt;exit&gt;
         ///c7 05 00 00 00 00 02    mov    DWORD PTR ds:0x0,0x2
         ///00 00 00 
-        ///e9 fc ff ff ff          jmp    10 &lt;_main+0x10&gt;.
+        ///
+        ///000e &lt;exit&gt;:
+        ///24 fd                   and    al,0xfd
+        ///0c 01                   or     al,0x1
+        ///88 86 f1 0d 00 00       mov    BYTE PTR [esi+0xdf1],al
+        ///e9 fc ff ff ff          jmp    19 &lt;exit+0xb&gt;.
         /// </summary>
         internal static string VanillaIgtStop {
             get {

@@ -207,13 +207,12 @@ public class DS2IgtService
         var code = Base + IgtStopCode;
         var bytes = AsmLoader.GetAsmBytes(AsmScript.VanillaIgtStop);
         var hook = Hooks.IgtStop;
-        var originalBytes = _memoryService.ReadBytes(hook, 5);
+        var originalBytes = _memoryService.ReadBytes(hook, 10);
 
-        AsmHelper.WriteImmediateDword(bytes, (int)_igtState, 0x5 + 2);
+        AsmHelper.WriteImmediateDword(bytes, (int)_igtState, 0x4 + 2);
 
         AsmHelper.WriteRelativeOffsets(bytes, [
-            (code, Functions.RequestSave, 5, 1),
-            (code + 0xF, hook + 5, 5, 0xF + 1)
+            (code + 0x18, hook + 10, 5, 0x18 + 1)
         ]);
 
         _memoryService.WriteBytes(code, bytes);
