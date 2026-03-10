@@ -57,12 +57,12 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code, auxCheckFlag, 7, 2),
             (code + 0x8, checkPlayerDeadFunc, 5, 0x8 + 1),
-            (code + 0x1A, GameManagerImp.Base, 7, 0x1A + 3),
-            (code + 0x38, MapId, 10, 0x38 + 2),
-            (code + 0x44, shouldIgnoreShulvaSpikesFlag, 7, 0x44 + 2),
-            (code + 0x6D, auxCheckFlag, 7, 0x6D + 2),
-            (code + 0x7B, hit, 6, 0x7B + 2),
-            (code + 0x88, Hooks.Hit + 5, 5, 0x88 + 1)
+            (code + 0x1E, GameManagerImp.Base, 7, 0x1E + 3),
+            (code + 0x3C, MapId, 10, 0x3C + 2),
+            (code + 0x48, shouldIgnoreShulvaSpikesFlag, 7, 0x48 + 2),
+            (code + 0x71, auxCheckFlag, 7, 0x71 + 2),
+            (code + 0x8D, hit, 6, 0x8D + 2),
+            (code + 0x9A, Hooks.Hit + 5, 5, 0x9A + 1)
         ]);
 
         memoryService.WriteBytes(code, bytes);
@@ -183,17 +183,17 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
 
         AsmHelper.WriteImmediateDwords(bytes, [
             ((int)auxCheckFlag, 2),
-            ((int)GameManagerImp.Base, 0x1C + 2),
-            ((int)MapId, 0x36 + 2),
-            ((int)shouldIgnoreShulvaSpikesFlag, 0x42 + 2),
-            ((int)auxCheckFlag, 0x72 + 2),
-            ((int)hit, 0x83 + 2)
+            ((int)GameManagerImp.Base, 0x20 + 2),
+            ((int)MapId, 0x3A + 2),
+            ((int)shouldIgnoreShulvaSpikesFlag, 0x46 + 2),
+            ((int)auxCheckFlag, 0x76 + 2),
+            ((int)hit, 0x97 + 2)
         ]);
 
 
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x8, checkPlayerDeadFunc, 5, 0x8 + 1),
-            (code + 0x91, Hooks.Hit + 6, 5, 0x91 + 1)
+            (code + 0xA5, Hooks.Hit + 6, 5, 0xA5 + 1)
         ]);
 
         memoryService.WriteBytes(code, bytes);

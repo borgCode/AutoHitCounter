@@ -521,49 +521,53 @@ e9 00 00 00 00          jmp    39 &lt;_main+0x39&gt;</value>
     <value>c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 7 &lt;_main+0x7&gt;
 50                      push   rax
 e8 00 00 00 00          call   d &lt;_main+0xd&gt;
-74 73                   je     82 &lt;exit&gt;
+0f 84 81 00 00 00       je     94 &lt;exit&gt;
 81 7c 24 54 e6 50 f5    cmp    DWORD PTR [rsp+0x54],0x5f550e6
 05 
-74 69                   je     82 &lt;exit&gt;
+74 77                   je     94 &lt;exit&gt;
 53                      push   rbx
-48 8b 1d 00 00 00 00    mov    rbx,QWORD PTR [rip+0x0]        # 21 &lt;_main+0x21&gt;
+48 8b 1d 00 00 00 00    mov    rbx,QWORD PTR [rip+0x0]        # 25 &lt;_main+0x25&gt;
 48 8b 9b d0 00 00 00    mov    rbx,QWORD PTR [rbx+0xd0]
 48 3b 59 08             cmp    rbx,QWORD PTR [rcx+0x8]
-75 53                   jne    81 &lt;normal&gt;
+75 61                   jne    93 &lt;normal&gt;
 81 7c 24 5c 42 59 f4    cmp    DWORD PTR [rsp+0x5c],0xbf45942
 0b 
-75 17                   jne    4f &lt;check_wall&gt;
-81 3d 00 00 00 00 00    cmp    DWORD PTR [rip+0x0],0x32230000        # 42 &lt;_main+0x42&gt;
+75 17                   jne    53 &lt;check_wall&gt;
+81 3d 00 00 00 00 00    cmp    DWORD PTR [rip+0x0],0x32230000        # 46 &lt;_main+0x46&gt;
 00 23 32 
-75 3d                   jne    81 &lt;normal&gt;
-80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # 4b &lt;_main+0x4b&gt;
-74 2e                   je     7b &lt;count_hit&gt;
-eb 32                   jmp    81 &lt;normal&gt;
+75 4b                   jne    93 &lt;normal&gt;
+80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # 4f &lt;_main+0x4f&gt;
+74 3c                   je     8d &lt;count_hit&gt;
+eb 40                   jmp    93 &lt;normal&gt;
 
-00000000004f &lt;check_wall&gt;:
+000000000053 &lt;check_wall&gt;:
 81 7c 24 5c 5a 55 f4    cmp    DWORD PTR [rsp+0x5c],0xbf4555a
 0b 
-74 22                   je     7b &lt;count_hit&gt;
+74 30                   je     8d &lt;count_hit&gt;
 8b 44 24 5c             mov    eax,DWORD PTR [rsp+0x5c]
 2d 30 8a f3 0b          sub    eax,0xbf38a30
 83 f8 14                cmp    eax,0x14
-76 1a                   jbe    81 &lt;normal&gt;
+76 28                   jbe    93 &lt;normal&gt;
 49 3b 59 70             cmp    rbx,QWORD PTR [r9+0x70]
-74 14                   je     81 &lt;normal&gt;
-c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 74 &lt;check_wall+0x25&gt;
+74 22                   je     93 &lt;normal&gt;
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 78 &lt;check_wall+0x25&gt;
 41 83 78 34 00          cmp    DWORD PTR [r8+0x34],0x0
-7e 06                   jle    81 &lt;normal&gt;
+7f 0e                   jg     8d &lt;count_hit&gt;
+8b 44 24 5c             mov    eax,DWORD PTR [rsp+0x5c]
+2d 2a 10 ec 0b          sub    eax,0xbec102a
+83 f8 14                cmp    eax,0x14
+77 06                   ja     93 &lt;normal&gt;
 
-00000000007b &lt;count_hit&gt;:
-ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 81 &lt;normal&gt;
+00000000008d &lt;count_hit&gt;:
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 93 &lt;normal&gt;
 
-000000000081 &lt;normal&gt;:
+000000000093 &lt;normal&gt;:
 5b                      pop    rbx
 
-000000000082 &lt;exit&gt;:
+000000000094 &lt;exit&gt;:
 58                      pop    rax
 48 89 5c 24 10          mov    QWORD PTR [rsp+0x10],rbx
-e9 00 00 00 00          jmp    8d &lt;exit+0xb&gt;</value>
+e9 00 00 00 00          jmp    9f &lt;exit+0xb&gt;</value>
   </data>
   <data name="ScholarGeneralApplyDamage" xml:space="preserve">
     <value>51                      push   rcx
@@ -1765,53 +1769,57 @@ c3                      ret</value>
     <value>c6 05 00 00 00 00 00    mov    BYTE PTR ds:0x0,0x0
 50                      push   eax
 e8 fc ff ff ff          call   9 &lt;_main+0x9&gt;
-74 7b                   je     8a &lt;exit&gt;
+0f 84 8b 00 00 00       je     9e &lt;exit&gt;
 81 bd f4 fd ff ff e6    cmp    DWORD PTR [ebp-0x20c],0x5f550e6
 50 f5 05 
-74 6f                   je     8a &lt;exit&gt;
+74 7f                   je     9e &lt;exit&gt;
 53                      push   ebx
 8b 1d 00 00 00 00       mov    ebx,DWORD PTR ds:0x0
 8b 5b 74                mov    ebx,DWORD PTR [ebx+0x74]
 3b 59 10                cmp    ebx,DWORD PTR [ecx+0x10]
-75 5f                   jne    89 &lt;normal&gt;
+75 6f                   jne    9d &lt;normal&gt;
 81 bd f4 fd ff ff 42    cmp    DWORD PTR [ebp-0x20c],0xbf45942
 59 f4 0b 
-75 17                   jne    4d &lt;check_wall&gt;
+75 17                   jne    51 &lt;check_wall&gt;
 81 3d 00 00 00 00 00    cmp    DWORD PTR ds:0x0,0x32230000
 00 23 32 
-75 47                   jne    89 &lt;normal&gt;
+75 57                   jne    9d &lt;normal&gt;
 80 3d 00 00 00 00 00    cmp    BYTE PTR ds:0x0,0x0
-74 38                   je     83 &lt;count_hit&gt;
-eb 3c                   jmp    89 &lt;normal&gt;
+74 48                   je     97 &lt;count_hit&gt;
+eb 4c                   jmp    9d &lt;normal&gt;
 
-004d &lt;check_wall&gt;:
+0051 &lt;check_wall&gt;:
 81 bd f4 fd ff ff 5a    cmp    DWORD PTR [ebp-0x20c],0xbf4555a
 55 f4 0b 
-74 2a                   je     83 &lt;count_hit&gt;
+74 3a                   je     97 &lt;count_hit&gt;
 8b 85 f4 fd ff ff       mov    eax,DWORD PTR [ebp-0x20c]
 2d 30 8a f3 0b          sub    eax,0xbf38a30
 83 f8 14                cmp    eax,0x14
-76 20                   jbe    89 &lt;normal&gt;
+76 30                   jbe    9d &lt;normal&gt;
 8b 44 24 14             mov    eax,DWORD PTR [esp+0x14]
 3b 58 60                cmp    ebx,DWORD PTR [eax+0x60]
-74 17                   je     89 &lt;normal&gt;
+74 27                   je     9d &lt;normal&gt;
 c6 05 00 00 00 00 01    mov    BYTE PTR ds:0x0,0x1
 8b 44 24 10             mov    eax,DWORD PTR [esp+0x10]
 83 78 34 00             cmp    DWORD PTR [eax+0x34],0x0
-7e 06                   jle    89 &lt;normal&gt;
+7f 10                   jg     97 &lt;count_hit&gt;
+8b 85 f4 fd ff ff       mov    eax,DWORD PTR [ebp-0x20c]
+2d 2a 10 ec 0b          sub    eax,0xbec102a
+83 f8 14                cmp    eax,0x14
+77 06                   ja     9d &lt;normal&gt;
 
-0083 &lt;count_hit&gt;:
+0097 &lt;count_hit&gt;:
 ff 05 00 00 00 00       inc    DWORD PTR ds:0x0
 
-0089 &lt;normal&gt;:
+009d &lt;normal&gt;:
 5b                      pop    ebx
 
-008a &lt;exit&gt;:
+009e &lt;exit&gt;:
 58                      pop    eax
 55                      push   ebp
 89 e5                   mov    ebp,esp
 83 ec 08                sub    esp,0x8
-e9 fc ff ff ff          jmp    92 &lt;exit+0x8&gt;</value>
+e9 fc ff ff ff          jmp    a6 &lt;exit+0x8&gt;</value>
   </data>
   <data name="VanillaCheckPlayerDead" xml:space="preserve">
     <value>a1 00 00 00 00          mov    eax,ds:0x0
