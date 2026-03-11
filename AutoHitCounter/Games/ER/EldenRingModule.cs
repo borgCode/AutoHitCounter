@@ -29,9 +29,7 @@ public class EldenRingModule : IGameModule, IDisposable, IVersionedGameModule
     public event Action OnEventSet;
     public event Action<long> OnIgtChanged;
     public event Action OnVersionDetected;
-
-    private nint _igtPtr;
-
+    
     public EldenRingModule(IMemoryService memoryService, IStateService stateService, HookManager hookManager,
         ITickService tickService, Dictionary<uint, (string Name, int Required, int Hit)> events)
     {
@@ -64,8 +62,6 @@ public class EldenRingModule : IGameModule, IDisposable, IVersionedGameModule
         _eventService.InstallHook();
         _hitService.InstallHooks();
         
-        _igtPtr = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
-        
         _tickService.RegisterGameTick(Tick);
         
         OnVersionDetected?.Invoke();
@@ -95,7 +91,8 @@ public class EldenRingModule : IGameModule, IDisposable, IVersionedGameModule
             OnEventSet?.Invoke();
         }
 
-        OnIgtChanged?.Invoke(_memoryService.Read<long>(_igtPtr));
+        var igtPtr  = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
+        OnIgtChanged?.Invoke(_memoryService.Read<long>(igtPtr));
     }
 
     private bool IsLoaded()

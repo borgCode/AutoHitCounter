@@ -22,7 +22,6 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
     public string GameVersion => SKOffsets.Version.GetDescription();
 
     private DateTime? _lastHit;
-    private nint _igtPtr;
     private SKHitService _hitService;
     private SKEventService _eventService;
     private SKSettingsService _settingsService;
@@ -72,9 +71,7 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
 
         _eventService.InstallHook();
         _hitService.InstallHooks();
-
-        _igtPtr = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
-
+        
         ApplyRules();
 
         _tickService.RegisterGameTick(Tick);
@@ -106,7 +103,8 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
             OnEventSet?.Invoke();
         }
 
-        OnIgtChanged?.Invoke(_memoryService.Read<uint>(_igtPtr));
+        var igtPtr  = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
+        OnIgtChanged?.Invoke(_memoryService.Read<uint>(igtPtr));
     }
 
     private bool IsLoaded()

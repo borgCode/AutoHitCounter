@@ -22,7 +22,6 @@ public class DSRModule : IGameModule, IDisposable, IVersionedGameModule
     public string GameVersion => DSROffsets.Version.GetDescription();
 
     private DateTime? _lastHit;
-    private nint _igtPtr;
     private DSRHitService _hitService;
     private DSREventService _eventService;
     
@@ -60,8 +59,6 @@ public class DSRModule : IGameModule, IDisposable, IVersionedGameModule
          _eventService.InstallHook();
          _hitService.InstallHooks();
          
-         _igtPtr = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
-         
          _tickService.RegisterGameTick(Tick);
          
          OnVersionDetected?.Invoke();
@@ -94,7 +91,8 @@ public class DSRModule : IGameModule, IDisposable, IVersionedGameModule
             OnEventSet?.Invoke();
         }
         
-        OnIgtChanged?.Invoke(_memoryService.Read<uint>(_igtPtr));
+        var igtPtr  = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
+        OnIgtChanged?.Invoke(_memoryService.Read<uint>(igtPtr));
     }
 
     private bool IsLoaded()
