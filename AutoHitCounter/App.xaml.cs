@@ -15,6 +15,7 @@ namespace AutoHitCounter
     public partial class App
     {
         private static Mutex _mutex;
+        MainViewModel _mainViewModel;
         
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -48,15 +49,22 @@ namespace AutoHitCounter
             var settingsViewModel = new SettingsViewModel(stateService, overlayServerService);
             var hotkeysViewModel = new HotkeyTabViewModel(hotkeyManager, stateService);
 
-            var mainViewModel = new MainViewModel(memoryService, hotkeyManager, gameModuleFactory, profileService, stateService,
+            
+            _mainViewModel = new MainViewModel(memoryService, hotkeyManager, gameModuleFactory, profileService, stateService,
                 settingsViewModel, hotkeysViewModel, overlayServerService);
             var mainWindow = new MainWindow
             {
-                DataContext = mainViewModel
+                DataContext = _mainViewModel
             };
             mainWindow.Show();
             
             stateService.Publish(State.AppStart);
+        }
+        
+        protected override void OnExit(ExitEventArgs e)
+        {
+            _mainViewModel?.FlushRunState();
+            base.OnExit(e);
         }
     }
 }
