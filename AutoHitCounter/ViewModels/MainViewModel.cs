@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using AutoHitCounter.Core;
 using AutoHitCounter.Enums;
@@ -362,6 +363,50 @@ namespace AutoHitCounter.ViewModels
 
             _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
         }
+        
+        public bool HasSplits => TotalSplitCount > 0;
+
+        private bool _isSplitListScrollbarVisible;
+        
+        public bool IsSplitListScrollbarVisible
+        {
+            get => _isSplitListScrollbarVisible;
+            set
+            {
+                _isSplitListScrollbarVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isEditingAttempts;
+
+        public bool IsEditingAttempts
+        {
+            get => _isEditingAttempts;
+            set => SetProperty(ref _isEditingAttempts, value);
+        }
+        
+        private bool _isUnlocked = true;
+
+        public bool IsUnlocked
+        {
+            get => _isUnlocked;
+            set => SetProperty(ref _isUnlocked, value);
+        }
+        
+        public int AttemptCount => _activeProfile?.AttemptCount ?? 0;
+
+        public int CurrentSplitNumber
+        {
+            get
+            {
+                if (CurrentSplit == null) return 0;
+                var children = Splits.Where(s => s.Type == SplitType.Child).ToList();
+                return children.IndexOf(CurrentSplit) + 1;
+            }
+        }
+
+        public int TotalSplitCount => Splits.Count(s => s.Type == SplitType.Child);
 
         #endregion
 
@@ -421,27 +466,19 @@ namespace AutoHitCounter.ViewModels
             _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
         }
 
-        private bool _isUnlocked = true;
-
-        public bool IsUnlocked
+        
+        public void CommitAttemptsEdit(string value)
         {
-            get => _isUnlocked;
-            set => SetProperty(ref _isUnlocked, value);
-        }
-
-        public int AttemptCount => _activeProfile?.AttemptCount ?? 0;
-
-        public int CurrentSplitNumber
-        {
-            get
+            if (int.TryParse(value, out var count) && count >= 0)
             {
-                if (CurrentSplit == null) return 0;
-                var children = Splits.Where(s => s.Type == SplitType.Child).ToList();
-                return children.IndexOf(CurrentSplit) + 1;
+                _activeProfile.AttemptCount = count;
+                _profileService.SaveProfile(_activeProfile);
+                OnPropertyChanged(nameof(AttemptCount));
+                _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
             }
-        }
 
-        public int TotalSplitCount => Splits.Count(s => s.Type == SplitType.Child);
+            IsEditingAttempts = false;
+        }
 
         #endregion
 
@@ -486,7 +523,6 @@ namespace AutoHitCounter.ViewModels
                     SelectedSplit.IsEditingPb = true;
             });
         }
-
 
         private void RegisterHotkeys()
         {
@@ -541,6 +577,7 @@ namespace AutoHitCounter.ViewModels
                 if (IsRunComplete || CurrentSplit == null) return;
                 if (_selectedGame != _activeGame) return;
                 CurrentSplit.NumOfHits += count;
+                SaveRunState();
                 _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
             };
             _currentModule.OnEventSet += AutoAdvanceSplit;
@@ -585,6 +622,7 @@ namespace AutoHitCounter.ViewModels
                 CurrentSplit = next;
             }
 
+            SaveRunState();
             _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
         }
 
@@ -738,6 +776,8 @@ namespace AutoHitCounter.ViewModels
             var key = $"{_selectedGame?.GameName}|{profile?.Name}";
             if (profile != null && _runSnapshots.TryGetValue(key, out var snapshot))
                 RestoreSnapshot(snapshot);
+            else if (profile?.SavedRun != null)
+                RestoreFromSavedRun(profile.SavedRun);
             else
                 InitFreshRun();
 
@@ -775,6 +815,7 @@ namespace AutoHitCounter.ViewModels
             if (_activeProfile != null)
             {
                 _activeProfile.AttemptCount++;
+                _activeProfile.SavedRun = null;
                 _profileService.SaveProfile(_activeProfile);
                 OnPropertyChanged(nameof(AttemptCount));
             }
@@ -834,6 +875,7 @@ namespace AutoHitCounter.ViewModels
         {
             if (IsRunComplete || CurrentSplit == null) return;
             CurrentSplit.NumOfHits++;
+            SaveRunState();
             _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
         }
 
@@ -841,43 +883,43 @@ namespace AutoHitCounter.ViewModels
         {
             if (IsRunComplete || CurrentSplit == null || CurrentSplit.NumOfHits <= 0) return;
             CurrentSplit.NumOfHits--;
+            SaveRunState();
             _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
         }
-
-        private bool _isEditingAttempts;
-
-        public bool IsEditingAttempts
+        
+        private void SaveRunState()
         {
-            get => _isEditingAttempts;
-            set => SetProperty(ref _isEditingAttempts, value);
-        }
+            if (_activeProfile == null) return;
 
-        public void CommitAttemptsEdit(string value)
-        {
-            if (int.TryParse(value, out var count) && count >= 0)
+            var children = Splits.Where(s => s.Type == SplitType.Child).ToList();
+            _activeProfile.SavedRun = new RunState
             {
-                _activeProfile.AttemptCount = count;
-                _profileService.SaveProfile(_activeProfile);
-                OnPropertyChanged(nameof(AttemptCount));
-                _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
-            }
-
-            IsEditingAttempts = false;
+                CurrentSplitIndex = CurrentSplit != null ? Splits.IndexOf(CurrentSplit) : -1,
+                HitCounts = children.Select(s => s.NumOfHits).ToArray(),
+                IsRunComplete = IsRunComplete,
+                IgtMilliseconds = (long)InGameTime.TotalMilliseconds
+            };
+            Task.Run(() => _profileService.SaveProfile(_activeProfile));
         }
-
-        public bool HasSplits => TotalSplitCount > 0;
-
-        public bool IsSplitListScrollbarVisible
+        
+        private void RestoreFromSavedRun(RunState state)
         {
-            get => _isSplitListScrollbarVisible;
-            set
+            IsRunComplete = state.IsRunComplete;
+            InGameTime = TimeSpan.FromMilliseconds(state.IgtMilliseconds);
+
+            var children = Splits.Where(s => s.Type == SplitType.Child).ToList();
+            for (int i = 0; i < children.Count && i < state.HitCounts.Length; i++)
+                children[i].NumOfHits = state.HitCounts[i];
+
+            if (!IsRunComplete)
             {
-                _isSplitListScrollbarVisible = value;
-                OnPropertyChanged();
+                var toRestore = state.CurrentSplitIndex >= 0 && state.CurrentSplitIndex < Splits.Count
+                    ? Splits[state.CurrentSplitIndex]
+                    : Splits.FirstOrDefault(s => s.Type == SplitType.Child);
+                CurrentSplit = toRestore;
+                if (CurrentSplit != null) CurrentSplit.IsCurrent = true;
             }
         }
-
-        private bool _isSplitListScrollbarVisible;
 
         #endregion
     }

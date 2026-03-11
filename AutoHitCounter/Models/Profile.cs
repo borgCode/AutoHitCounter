@@ -28,4 +28,5 @@ public class Profile : INotifyPropertyChanged
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     
     public int AttemptCount { get; set; }
+    public RunState SavedRun { get; set; }
 }

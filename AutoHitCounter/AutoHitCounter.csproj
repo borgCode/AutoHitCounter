@@ -178,6 +178,7 @@
         <Compile Include="Models\OverlayConfig.cs" />
         <Compile Include="Models\OverlayState.cs" />
         <Compile Include="Models\Profile.cs" />
+        <Compile Include="Models\RunState.cs" />
         <Compile Include="Models\SplitEntry.cs" />
         <Compile Include="Services\EventServiceBase.cs" />
         <Compile Include="Services\GameFlagRegistry.cs" />

@@ -163,8 +163,7 @@ public class HotkeyTabViewModel : BaseViewModel
     }
 
     #endregion
-
-
+    
     #region Private Methods
 
     private void OnAppStart()
