@@ -101,7 +101,7 @@ public class SplitViewModel : BaseViewModel
 
     public Brush HitsBrush => NumOfHits > 0
         ? new SolidColorBrush(Color.FromRgb(0xc8, 0x84, 0x3a))
-        : new SolidColorBrush(Color.FromRgb(0x70, 0x70, 0x70));
+        : new SolidColorBrush(Color.FromRgb(0x99, 0x99, 0x99));
 
     public Brush DiffBrush
     {
@@ -109,7 +109,7 @@ public class SplitViewModel : BaseViewModel
         {
             if (Diff > 0) return new SolidColorBrush(Color.FromRgb(0xb8, 0x55, 0x55));
             if (Diff < 0) return new SolidColorBrush(Color.FromRgb(0x5a, 0x90, 0x68));
-            return new SolidColorBrush(Color.FromRgb(0x90, 0x90, 0x90));
+            return new SolidColorBrush(Color.FromRgb(0xAA, 0xAA, 0xAA));
         }
     }
 

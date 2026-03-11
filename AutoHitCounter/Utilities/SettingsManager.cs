@@ -122,7 +122,7 @@ public class SettingsManager
     
     [DefaultValue(16)] public int IgtFontSize { get; set; }
     
-    [DefaultValue("rgba(255,255,255,0.05)")] public string AlternatingRows { get; set; }
+    [DefaultValue("rgba(255, 255, 255, 0.05)")] public string AlternatingRows { get; set; }
 
 
     public void Save()

@@ -167,6 +167,11 @@ public static class TemplatesDragDropBehavior
 
         if (listBox.DataContext is not ProfileEditorViewModel vm) return;
 
+        if (!vm.AllowDuplicates)
+            items = items.Where(i => vm.Splits.All(s => s.EventId != i.EventId)).ToList();
+        
+        if (!items.Any()) return;
+
         var targetItem = VisualTreeHelpers.FindAncestor<ListBoxItem>((DependencyObject)e.OriginalSource);
         int dropIndex;
 

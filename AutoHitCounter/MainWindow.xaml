@@ -589,8 +589,9 @@
                                                          TextWrapping="Wrap"
                                                          AcceptsReturn="True"
                                                          FontSize="11"
-                                                         Foreground="#999"
-                                                         Padding="2">
+                                                         Foreground="#AAA"
+                                                         Padding="2"
+                                                         LostFocus="NotesBox_LostFocus">
                                                     <TextBox.Style>
                                                         <Style TargetType="TextBox">
                                                             <Setter Property="Background" Value="Transparent" />
@@ -608,7 +609,7 @@
                                                 </TextBox>
                                                 <TextBlock Text="Add notes..."
                                                            FontSize="11" FontStyle="Italic"
-                                                           Foreground="#555"
+                                                           Foreground="#AAA"
                                                            Margin="4,2,0,0"
                                                            IsHitTestVisible="False">
                                                     <TextBlock.Style>

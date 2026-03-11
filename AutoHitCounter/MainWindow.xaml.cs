@@ -259,5 +259,11 @@ namespace AutoHitCounter
         {
             new HelpWindow { Owner = this }.Show();
         }
+
+        private void NotesBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainViewModel vm)
+                vm.SaveNotesCommand.Execute(null);
+        }
     }
 }

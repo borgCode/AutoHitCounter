@@ -17,6 +17,10 @@
         <converters:ExpanderArrowConverter x:Key="ExpanderArrowConverter" />
         <converters:ParentChildMarginMultiConverter x:Key="ParentChildMarginMultiConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+        <Style x:Key="Separator" TargetType="Separator">
+            <Setter Property="Background" Value="#4a2d52" />
+            <Setter Property="Margin" Value="0,8,0,4" />
+        </Style>
     </Window.Resources>
 
     <Grid>
@@ -25,11 +29,10 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <controls:TitleBar Grid.Row="0" Title="Profile Editor" />
-        
+
         <!-- Focus outline -->
         <Border Grid.Row="0" Grid.RowSpan="4"
                 BorderThickness="1" IsHitTestVisible="False" Panel.ZIndex="99"
@@ -138,63 +141,70 @@
                     </Grid>
                     <Border Grid.Row="1" BorderBrush="#B37c4d85" BorderThickness="0,0,0,1"
                             Padding="8,0,8,8">
-                        <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
-                            <TextBox.Template>
-                                <ControlTemplate TargetType="TextBox">
-                                    <Border x:Name="border"
-                                            Background="{TemplateBinding Background}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                            CornerRadius="3">
-                                        <Grid>
-                                            <ScrollViewer x:Name="PART_ContentHost"
-                                                          Focusable="false"
-                                                          HorizontalScrollBarVisibility="Hidden"
-                                                          VerticalScrollBarVisibility="Hidden"
-                                                          VerticalAlignment="Center"
-                                                          Margin="5,0,0,0" />
+                        <DockPanel>
+                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal"
+                                        VerticalAlignment="Center" Margin="8,0,0,0">
+                                <CheckBox Content="Hide Added" IsChecked="{Binding HideAdded}" Margin="0,0,10,0" />
+                                <CheckBox Content="Allow Duplicates" IsChecked="{Binding AllowDuplicates}" />
+                            </StackPanel>
+                            <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
+                                <TextBox.Template>
+                                    <ControlTemplate TargetType="TextBox">
+                                        <Border x:Name="border"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="3">
+                                            <Grid>
+                                                <ScrollViewer x:Name="PART_ContentHost"
+                                                              Focusable="false"
+                                                              HorizontalScrollBarVisibility="Hidden"
+                                                              VerticalScrollBarVisibility="Hidden"
+                                                              VerticalAlignment="Center"
+                                                              Margin="5,0,0,0" />
 
-                                            <TextBlock Text="Search For Boss..."
-                                                       VerticalAlignment="Center"
-                                                       HorizontalAlignment="Left"
-                                                       Margin="5,0,0,0"
-                                                       Foreground="Gray"
-                                                       IsHitTestVisible="False">
-                                                <TextBlock.Style>
-                                                    <Style TargetType="TextBlock">
-                                                        <Setter Property="Visibility" Value="Collapsed" />
-                                                        <Style.Triggers>
-                                                            <MultiDataTrigger>
-                                                                <MultiDataTrigger.Conditions>
-                                                                    <Condition
-                                                                        Binding="{Binding Path=Text, RelativeSource={RelativeSource AncestorType=TextBox}}"
-                                                                        Value="" />
-                                                                    <Condition
-                                                                        Binding="{Binding Path=IsKeyboardFocused, RelativeSource={RelativeSource AncestorType=TextBox}}"
-                                                                        Value="False" />
-                                                                </MultiDataTrigger.Conditions>
-                                                                <Setter Property="Visibility" Value="Visible" />
-                                                            </MultiDataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                        </Grid>
-                                    </Border>
+                                                <TextBlock Text="Search For Boss..."
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Left"
+                                                           Margin="5,0,0,0"
+                                                           Foreground="Gray"
+                                                           IsHitTestVisible="False">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                            <Style.Triggers>
+                                                                <MultiDataTrigger>
+                                                                    <MultiDataTrigger.Conditions>
+                                                                        <Condition
+                                                                            Binding="{Binding Path=Text, RelativeSource={RelativeSource AncestorType=TextBox}}"
+                                                                            Value="" />
+                                                                        <Condition
+                                                                            Binding="{Binding Path=IsKeyboardFocused, RelativeSource={RelativeSource AncestorType=TextBox}}"
+                                                                            Value="False" />
+                                                                    </MultiDataTrigger.Conditions>
+                                                                    <Setter Property="Visibility" Value="Visible" />
+                                                                </MultiDataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Grid>
+                                        </Border>
 
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsKeyboardFocused" Value="True">
-                                            <Setter TargetName="border"
-                                                    Property="BorderBrush"
-                                                    Value="{StaticResource AccentBrush}" />
-                                            <Setter TargetName="border"
-                                                    Property="BorderThickness"
-                                                    Value="1.5" />
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </TextBox.Template>
-                        </TextBox>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                                <Setter TargetName="border"
+                                                        Property="BorderBrush"
+                                                        Value="{StaticResource AccentBrush}" />
+                                                <Setter TargetName="border"
+                                                        Property="BorderThickness"
+                                                        Value="1.5" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </TextBox.Template>
+                            </TextBox>
+                        </DockPanel>
                     </Border>
 
                     <ListBox Grid.Row="2"

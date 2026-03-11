@@ -38,7 +38,8 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
         foreach (var kvp in allEvents)
             AllEvents.Add(new SplitEntry { EventId = kvp.Key, Name = kvp.Value });
 
-        AddCommand = new DelegateCommand<SplitEntry>(Add, e => Splits.All(s => s.EventId != e.EventId));
+        AddCommand =
+            new DelegateCommand<SplitEntry>(Add, e => AllowDuplicates || Splits.All(s => s.EventId != e.EventId));
         RemoveCommand = new DelegateCommand<SplitEntry>(Remove);
         MoveUpCommand = new DelegateCommand<SplitEntry>(MoveUp, e => CanMoveUp());
         MoveDownCommand = new DelegateCommand<SplitEntry>(MoveDown, e => CanMoveDown());
@@ -154,14 +155,13 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
             Profiles[Profiles.IndexOf(existing)] = profile;
         else
             Profiles.Add(profile);
-        
     }
 
-    
 
     public ObservableCollection<SplitEntry> FilteredEvents { get; } = new();
 
     private bool _isDirty;
+
     public bool IsDirty
     {
         get => _isDirty;
@@ -384,7 +384,11 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
     private void AddSelected()
     {
         foreach (var item in SelectedTemplates.ToList())
+        {
+            if (!AllowDuplicates && Splits.Any(s => s.EventId == item.EventId))
+                continue;
             Add(item);
+        }
     }
 
     private void RemoveSelected()
@@ -546,6 +550,34 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
         return lastIndex;
     }
 
+    private bool _hideAdded;
+
+    public bool HideAdded
+    {
+        get => _hideAdded;
+        set
+        {
+            if (SetProperty(ref _hideAdded, value))
+                FilterEvents();
+        }
+    }
+
+    private bool _allowDuplicates;
+
+    public bool AllowDuplicates
+    {
+        get => _allowDuplicates;
+        set
+        {
+            if (SetProperty(ref _allowDuplicates, value))
+            {
+                AddCommand.RaiseCanExecuteChange();
+                FilterEvents();
+            }
+        }
+    }
+
+
     private void EditSplitEvent()
     {
         if (SelectedSplit == null || SelectedSplit.Type != SplitType.Child) return;
@@ -570,6 +602,9 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
         {
             if (!string.IsNullOrEmpty(_searchText) &&
                 !entry.Name.ToLower().Contains(_searchText.ToLower()))
+                continue;
+
+            if (HideAdded && !AllowDuplicates && Splits.Any(s => s.EventId == entry.EventId))
                 continue;
 
             FilteredEvents.Add(entry);
@@ -626,7 +661,7 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
     private void Save()
     {
         if (_selectedProfile == null) return;
-        
+
         RebuildGroupAssignments();
 
         _selectedProfile.Splits = Splits.ToList();

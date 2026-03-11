@@ -800,6 +800,9 @@ public class OverlaySettingsViewModel : BaseViewModel
         CurrentSplitHitColor = "rgba(255, 76, 76, 0.06)";
         CurrentSplitHitBorderColor = "#ff4c4c";
         RunCompleteBannerColor = "#00cc66";
+        IgtFontFamily = "Consolas";
+        IgtFontSize = 16;
+        AlternatingRows = "rgba(255,255,255,0.05)";
 
         {
             IsDirty = true;
