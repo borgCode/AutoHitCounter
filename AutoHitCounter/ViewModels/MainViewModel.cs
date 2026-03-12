@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Windows.Threading;
 using AutoHitCounter.Core;
 using AutoHitCounter.Enums;
 using AutoHitCounter.Interfaces;
@@ -27,6 +28,7 @@ namespace AutoHitCounter.ViewModels
         private readonly OverlayServerService _overlayServerService;
         private IGameModule _currentModule;
         private string _lastIgt;
+        private readonly DispatcherTimer _saveDebounce;
 
         private class RunSnapshot(int currentSplitIndex, int[] hitCounts, bool isRunComplete, TimeSpan inGameTime)
         {
@@ -94,6 +96,14 @@ namespace AutoHitCounter.ViewModels
 
             ResetCommand = new DelegateCommand(ResetSplits);
             SetPbCommand = new DelegateCommand(SetPb);
+            
+            _saveDebounce = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(300) };
+            _saveDebounce.Tick += (_, _) =>
+            {
+                _saveDebounce.Stop();
+                if (_activeProfile?.SavedRun != null)
+                    Task.Run(() => _profileService.SaveProfile(_activeProfile));
+            };
 
 
             _isUnlocked = SettingsManager.Default.IsUnlocked;
@@ -799,6 +809,7 @@ namespace AutoHitCounter.ViewModels
 
         private void LoadProfile(Profile profile)
         {
+            _saveDebounce.Stop();
             IsRunComplete = false;
             UpdateSplits();
             var key = $"{_selectedGame?.GameName}|{profile?.Name}";
@@ -848,6 +859,8 @@ namespace AutoHitCounter.ViewModels
 
         private void ResetSplits()
         {
+            _saveDebounce.Stop();
+            
             if (_activeProfile != null)
             {
                 _activeProfile.AttemptCount++;
@@ -925,7 +938,16 @@ namespace AutoHitCounter.ViewModels
                 IsRunComplete = IsRunComplete,
                 IgtMilliseconds = (long)InGameTime.TotalMilliseconds
             };
-            Task.Run(() => _profileService.SaveProfile(_activeProfile));
+
+            _saveDebounce.Stop();
+            _saveDebounce.Start();
+        }
+        
+        public void FlushRunState()
+        {
+            _saveDebounce.Stop();
+            if (_activeProfile?.SavedRun != null)
+                _profileService.SaveProfile(_activeProfile);
         }
 
         #endregion

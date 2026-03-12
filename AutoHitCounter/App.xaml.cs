@@ -64,5 +64,11 @@ namespace AutoHitCounter
             
             stateService.Publish(State.AppStart);
         }
+        
+        protected override void OnExit(ExitEventArgs e)
+        {
+            _mainViewModel?.FlushRunState();
+            base.OnExit(e);
+        }
     }
 }
