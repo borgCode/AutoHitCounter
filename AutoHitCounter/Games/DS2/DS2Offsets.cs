@@ -99,6 +99,7 @@ public static class DS2Offsets
         public static nint KillBox;
         public static nint CountAuxHit;
         public static nint LightPoiseStagger;
+        public static nint ClearWetPoisonBit;
         public static nint SetEvent;
         public static nint IgtNewGame;
         public static nint IgtStop;
@@ -106,12 +107,7 @@ public static class DS2Offsets
         public static nint NoBabyJump;
         public static nint CreditSkip;
     }
-
-    public static class Functions
-    {
-        public static nint RequestSave;
-    }
-
+    
     private static void InitializeBaseAddresses(nint moduleBase)
     {
         GameManagerImp.Base = moduleBase + Version switch
@@ -186,6 +182,14 @@ public static class DS2Offsets
             Scholar1_0_3 => 0x145997,
             _ => 0
         };
+        
+        Hooks.ClearWetPoisonBit = moduleBase + Version switch
+        {
+            Scholar1_0_2 => 0x21F540,
+            Scholar1_0_3 => 0x223050,
+            _ => 0
+        };
+
 
         Hooks.SetEvent = moduleBase + Version switch
         {
@@ -241,16 +245,7 @@ public static class DS2Offsets
             _ => 0
         };
 
-        Functions.RequestSave = moduleBase + Version switch
-        {
-            Vanilla1_0_11 => 0x3148E0,
-            Vanilla1_0_12 => 0x31AA60,
-            Scholar1_0_2 => 0x2E1080,
-            Scholar1_0_3 => 0x2E7410,
-            _ => 0
-        };
-
-
+        
 #if DEBUG
         _baseAddr = moduleBase;
         Console.WriteLine("--- Base Pointers ---");
@@ -264,6 +259,7 @@ public static class DS2Offsets
         PrintOffset("KillBox", Hooks.KillBox);
         PrintOffset("CountAuxHit", Hooks.CountAuxHit);
         PrintOffset("LightPoiseStagger", Hooks.LightPoiseStagger);
+        PrintOffset("ClearWetPoisonBit", Hooks.ClearWetPoisonBit);
         PrintOffset("SetEvent", Hooks.SetEvent);
         PrintOffset("IgtStart", Hooks.IgtNewGame);
         PrintOffset("IgtStop", Hooks.IgtStop);

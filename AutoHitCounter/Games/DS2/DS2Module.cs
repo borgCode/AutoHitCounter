@@ -7,6 +7,7 @@ using AutoHitCounter.Enums;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
 using AutoHitCounter.Utilities;
+using static AutoHitCounter.Games.DS2.DS2Offsets;
 
 namespace AutoHitCounter.Games.DS2;
 
@@ -93,6 +94,8 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
 
     private void Tick()
     {
+        if (!IsLoaded()) _hitService.ResetFlags();
+        
         if (_hitService.HasHit() && (_lastHit == null || (DateTime.Now - _lastHit.Value).TotalSeconds > 3))
         {
             OnHit?.Invoke(1);
@@ -108,6 +111,20 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
         OnIgtChanged?.Invoke(_igtService.ElapsedMilliseconds);
     }
 
+    private bool IsLoaded()
+    {
+        if (IsScholar)
+        {
+            var gameMan = _memoryService.Read<nint>(GameManagerImp.Base);
+            return _memoryService.Read<nint>(gameMan + GameManagerImp.PlayerCtrl) != IntPtr.Zero;
+        }
+        else
+        {
+            var gameMan = _memoryService.Read<int>(GameManagerImp.Base);
+            return (nint)_memoryService.Read<int>(gameMan + GameManagerImp.PlayerCtrl) != IntPtr.Zero;
+        }
+    }
+    
     public void Dispose()
     {
         _rules.OnHitRulesChanged -= ApplyRules;

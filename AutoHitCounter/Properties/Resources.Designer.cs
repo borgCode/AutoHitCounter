@@ -779,14 +779,34 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 20 84 2a 20 01 00 00    and    BYTE PTR [rdx+rbp*1+0x120],al
+        ///80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # e &lt;_main+0xe&gt;
+        ///74 33                   je     43 &lt;early_exit&gt;
+        ///50                      push   rax
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 18 &lt;_main+0x18&gt;
+        ///48 85 c0                test   rax,rax
+        ///74 25                   je     42 &lt;exit&gt;
+        ///48 8b 80 d0 00 00 00    mov    rax,QWORD PTR [rax+0xd0]
+        ///48 85 c0                test   rax,rax
+        ///74 19                   je   [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ScholarClearWetPoisonBit {
+            get {
+                return ResourceManager.GetString("ScholarClearWetPoisonBit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 4c 8b 01                mov    r8,QWORD PTR [rcx]
         ///48 63 c2                movsxd rax,edx
         ///80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # d &lt;_main+0xd&gt;
-        ///74 0d                   je     1c &lt;skip&gt;
+        ///74 0f                   je     1e &lt;check_wet&gt;
         ///c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 16 &lt;_main+0x16&gt;
-        ///ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 1c &lt;skip&gt;
-        ///00000000001c &lt;skip&gt;:
-        ///e9 00 00 00 00          jmp    21 &lt;skip+0x5&gt;.
+        ///ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 1c &lt;_main+0x1c&gt;
+        ///eb 1b                   jmp    39 &lt;skip&gt;
+        ///
+        ///00000000001e &lt;check_wet&gt;:
+        ///80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # 25 &lt;c [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ScholarCountAuxHit {
             get {
@@ -852,12 +872,12 @@ namespace AutoHitCounter.Properties {
         ///   Looks up a localized string similar to c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 7 &lt;_main+0x7&gt;
         ///50                      push   rax
         ///e8 00 00 00 00          call   d &lt;_main+0xd&gt;
-        ///0f 84 81 00 00 00       je     94 &lt;exit&gt;
+        ///0f 84 98 00 00 00       je     ab &lt;exit&gt;
         ///81 7c 24 54 e6 50 f5    cmp    DWORD PTR [rsp+0x54],0x5f550e6
         ///05 
-        ///74 77                   je     94 &lt;exit&gt;
+        ///0f 84 8a 00 00 00       je     ab &lt;exit&gt;
         ///53                      push   rbx
-        ///48 8b 1d 00 00 00 00    mov    rbx,QWORD PTR [rip+0x0]        # 25 &lt;_main+0x25&gt;
+        ///48 8b 1d 00 00 00 00    mov    rbx,QWORD PTR [rip+0x0]        # 29 &lt;_main+0x29&gt;
         ///48 8b 9b d0 00 00 00    mov    rbx,QWORD PTR [rbx+0xd0]
         ///48 3b 59 08             cm [rest of string was truncated]&quot;;.
         /// </summary>

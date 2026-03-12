@@ -29,6 +29,11 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
 
     public void SetIsShulvaSpikesIgnored(bool isEnabled) =>
         memoryService.Write(Base + ShouldIgnoreShulvaSpikesFlag, isEnabled);
+    
+    public void ResetFlags()
+    {
+        memoryService.Write(Base + WetPoisonFlag, false);
+    }
 
     #region Scholar
 
@@ -41,6 +46,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         InstallScholarKillBoxHook();
         InstallScholarCountAuxHook();
         InstallScholarLightPoiseStaggerHook();
+        InstallClearWetPoisonBitHook();
     }
 
     private void InstallScholarHitHook()
@@ -50,6 +56,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         var hit = Base + Hit;
         var auxCheckFlag = Base + CheckAuxProcFlag;
         var shouldIgnoreShulvaSpikesFlag = Base + ShouldIgnoreShulvaSpikesFlag;
+        var wetPoisonFlag = Base + WetPoisonFlag;
         var checkPlayerDeadFunc = Base + CheckPlayerDead;
 
         var code = Base + HitCode;
@@ -57,12 +64,13 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code, auxCheckFlag, 7, 2),
             (code + 0x8, checkPlayerDeadFunc, 5, 0x8 + 1),
-            (code + 0x1E, GameManagerImp.Base, 7, 0x1E + 3),
-            (code + 0x3C, MapId, 10, 0x3C + 2),
-            (code + 0x48, shouldIgnoreShulvaSpikesFlag, 7, 0x48 + 2),
-            (code + 0x71, auxCheckFlag, 7, 0x71 + 2),
-            (code + 0x8D, hit, 6, 0x8D + 2),
-            (code + 0x9A, Hooks.Hit + 5, 5, 0x9A + 1)
+            (code + 0x22, GameManagerImp.Base, 7, 0x22 + 3),
+            (code + 0x40, MapId, 10, 0x40 + 2),
+            (code + 0x4C, shouldIgnoreShulvaSpikesFlag, 7, 0x4C + 2),
+            (code + 0x7F, wetPoisonFlag, 7, 0x7F + 2),
+            (code + 0x88, auxCheckFlag, 7, 0x88 + 2),
+            (code + 0xA4, hit, 6, 0xA4 + 2),
+            (code + 0xB1, Hooks.Hit + 5, 5, 0xB1 + 1)
         ]);
 
         memoryService.WriteBytes(code, bytes);
@@ -115,6 +123,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarCountAuxHit);
 
         var hit = Base + Hit;
+        var wetPoisonFlag = Base + WetPoisonFlag;
         var auxCheckFlag = Base + CheckAuxProcFlag;
 
         var code = Base + CountAuxHit;
@@ -122,8 +131,10 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x6, auxCheckFlag, 7, 0x6 + 2),
             (code + 0xF, auxCheckFlag, 7, 0xF + 2),
-            (code + 0x16, hit, 6, 0x16 + 2),
-            (code + 0x1C, Hooks.CountAuxHit + 6, 5, 0x1C + 1)
+            (code + 0x1E, wetPoisonFlag, 7, 0x1E + 2),
+            (code + 0x2C, wetPoisonFlag, 7, 0x2C + 2),
+            (code + 0x33, hit, 6, 0x33 + 2),
+            (code + 0x39, Hooks.CountAuxHit + 6, 5, 0x39 + 1)
         ]);
 
         memoryService.WriteBytes(code, bytes);
@@ -144,6 +155,23 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
 
         memoryService.WriteBytes(code, bytes);
         hookManager.InstallHook(code, Hooks.LightPoiseStagger, [0x8B, 0x42, 0x04, 0x89, 0x02]);
+    }
+
+    private void InstallClearWetPoisonBitHook()
+    {
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarClearWetPoisonBit);
+        var wetPoisonFlag = Base + WetPoisonFlag;
+        var code = Base + ClearWetPoisonBit;
+
+        AsmHelper.WriteRelativeOffsets(bytes, [
+            (code + 0x7, wetPoisonFlag, 7, 0x7 + 2),
+            (code + 0x11, GameManagerImp.Base, 7, 0x11 + 3),
+            (code + 0x3B, wetPoisonFlag, 7, 0x3B + 2),
+            (code + 0x43, Hooks.ClearWetPoisonBit + 7, 5, 0x43 + 1)
+        ]);
+
+        memoryService.WriteBytes(code, bytes);
+        hookManager.InstallHook(code, Hooks.ClearWetPoisonBit, [0x20, 0x84, 0x2A, 0x20, 0x01, 0x00, 0x00]);
     }
 
     #endregion
@@ -274,4 +302,6 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
     }
 
     #endregion
+
+    
 }

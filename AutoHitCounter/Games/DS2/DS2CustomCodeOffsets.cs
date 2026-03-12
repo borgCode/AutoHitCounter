@@ -8,6 +8,7 @@ public static class DS2CustomCodeOffsets
 
     public const int CheckAuxProcFlag = 0x0;
     public const int ShouldIgnoreShulvaSpikesFlag = 0x1;
+    public const int WetPoisonFlag = 0x2;
     
     public const int Hit = 0x10;
 
@@ -18,6 +19,8 @@ public static class DS2CustomCodeOffsets
     public const int LightPoiseStagger = 0x560;
 
     public const int CheckPlayerDead = 0x700;
+
+    public const int ClearWetPoisonBit = 0x800;
     
     public const int EventLogWriteIdx = 0x2000;
     public const int EventLogCode = 0x2020;

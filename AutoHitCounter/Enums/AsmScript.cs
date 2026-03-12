@@ -29,6 +29,7 @@ public enum AsmScript
     ScholarKillBox,
     ScholarCountAuxHit,
     ScholarLightPoiseStagger,
+    ScholarClearWetPoisonBit,
     ScholarEventLog,
     ScholarIgtNewGame,
     ScholarIgtStop,

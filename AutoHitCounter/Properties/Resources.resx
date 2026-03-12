@@ -521,53 +521,60 @@ e9 00 00 00 00          jmp    39 &lt;_main+0x39&gt;</value>
     <value>c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 7 &lt;_main+0x7&gt;
 50                      push   rax
 e8 00 00 00 00          call   d &lt;_main+0xd&gt;
-0f 84 81 00 00 00       je     94 &lt;exit&gt;
+0f 84 98 00 00 00       je     ab &lt;exit&gt;
 81 7c 24 54 e6 50 f5    cmp    DWORD PTR [rsp+0x54],0x5f550e6
 05 
-74 77                   je     94 &lt;exit&gt;
+0f 84 8a 00 00 00       je     ab &lt;exit&gt;
 53                      push   rbx
-48 8b 1d 00 00 00 00    mov    rbx,QWORD PTR [rip+0x0]        # 25 &lt;_main+0x25&gt;
+48 8b 1d 00 00 00 00    mov    rbx,QWORD PTR [rip+0x0]        # 29 &lt;_main+0x29&gt;
 48 8b 9b d0 00 00 00    mov    rbx,QWORD PTR [rbx+0xd0]
 48 3b 59 08             cmp    rbx,QWORD PTR [rcx+0x8]
-75 61                   jne    93 &lt;normal&gt;
+75 74                   jne    aa &lt;normal&gt;
 81 7c 24 5c 42 59 f4    cmp    DWORD PTR [rsp+0x5c],0xbf45942
 0b 
-75 17                   jne    53 &lt;check_wall&gt;
-81 3d 00 00 00 00 00    cmp    DWORD PTR [rip+0x0],0x32230000        # 46 &lt;_main+0x46&gt;
+75 17                   jne    57 &lt;check_wall&gt;
+81 3d 00 00 00 00 00    cmp    DWORD PTR [rip+0x0],0x32230000        # 4a &lt;_main+0x4a&gt;
 00 23 32 
-75 4b                   jne    93 &lt;normal&gt;
-80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # 4f &lt;_main+0x4f&gt;
-74 3c                   je     8d &lt;count_hit&gt;
-eb 40                   jmp    93 &lt;normal&gt;
+75 5e                   jne    aa &lt;normal&gt;
+80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # 53 &lt;_main+0x53&gt;
+74 4f                   je     a4 &lt;count_hit&gt;
+eb 53                   jmp    aa &lt;normal&gt;
 
-000000000053 &lt;check_wall&gt;:
+000000000057 &lt;check_wall&gt;:
 81 7c 24 5c 5a 55 f4    cmp    DWORD PTR [rsp+0x5c],0xbf4555a
 0b 
-74 30                   je     8d &lt;count_hit&gt;
+74 43                   je     a4 &lt;count_hit&gt;
 8b 44 24 5c             mov    eax,DWORD PTR [rsp+0x5c]
 2d 30 8a f3 0b          sub    eax,0xbf38a30
 83 f8 14                cmp    eax,0x14
-76 28                   jbe    93 &lt;normal&gt;
+76 3b                   jbe    aa &lt;normal&gt;
 49 3b 59 70             cmp    rbx,QWORD PTR [r9+0x70]
-74 22                   je     93 &lt;normal&gt;
-c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 78 &lt;check_wall+0x25&gt;
+74 35                   je     aa &lt;normal&gt;
+81 7c 24 5c 2a b2 f5    cmp    DWORD PTR [rsp+0x5c],0x5f5b22a
+05 
+75 09                   jne    88 &lt;not_wet_poison&gt;
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 86 &lt;check_wall+0x2f&gt;
+eb 22                   jmp    aa &lt;normal&gt;
+
+000000000088 &lt;not_wet_poison&gt;:
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 8f &lt;not_wet_poison+0x7&gt;
 41 83 78 34 00          cmp    DWORD PTR [r8+0x34],0x0
-7f 0e                   jg     8d &lt;count_hit&gt;
+7f 0e                   jg     a4 &lt;count_hit&gt;
 8b 44 24 5c             mov    eax,DWORD PTR [rsp+0x5c]
 2d 2a 10 ec 0b          sub    eax,0xbec102a
 83 f8 14                cmp    eax,0x14
-77 06                   ja     93 &lt;normal&gt;
+77 06                   ja     aa &lt;normal&gt;
 
-00000000008d &lt;count_hit&gt;:
-ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 93 &lt;normal&gt;
+0000000000a4 &lt;count_hit&gt;:
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # aa &lt;normal&gt;
 
-000000000093 &lt;normal&gt;:
+0000000000aa &lt;normal&gt;:
 5b                      pop    rbx
 
-000000000094 &lt;exit&gt;:
+0000000000ab &lt;exit&gt;:
 58                      pop    rax
 48 89 5c 24 10          mov    QWORD PTR [rsp+0x10],rbx
-e9 00 00 00 00          jmp    9f &lt;exit+0xb&gt;</value>
+e9 00 00 00 00          jmp    b6 &lt;exit+0xb&gt;</value>
   </data>
   <data name="ScholarGeneralApplyDamage" xml:space="preserve">
     <value>51                      push   rcx
@@ -888,11 +895,21 @@ e9 00 00 00 00          jmp    37 &lt;done+0x5&gt;</value>
     <value>4c 8b 01                mov    r8,QWORD PTR [rcx]
 48 63 c2                movsxd rax,edx
 80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # d &lt;_main+0xd&gt;
-74 0d                   je     1c &lt;skip&gt;
+74 0f                   je     1e &lt;check_wet&gt;
 c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 16 &lt;_main+0x16&gt;
-ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 1c &lt;skip&gt;
-00000000001c &lt;skip&gt;:
-e9 00 00 00 00          jmp    21 &lt;skip+0x5&gt;</value>
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 1c &lt;_main+0x1c&gt;
+eb 1b                   jmp    39 &lt;skip&gt;
+
+00000000001e &lt;check_wet&gt;:
+80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # 25 &lt;check_wet+0x7&gt;
+74 12                   je     39 &lt;skip&gt;
+83 fa 00                cmp    edx,0x0
+75 0d                   jne    39 &lt;skip&gt;
+c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 33 &lt;check_wet+0x15&gt;
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 39 &lt;skip&gt;
+
+000000000039 &lt;skip&gt;:
+e9 00 00 00 00          jmp    3e &lt;skip+0x5&gt;</value>
   </data>
   <data name="ScholarLightPoiseStagger" xml:space="preserve">
     <value>53                      push   rbx
@@ -2140,5 +2157,31 @@ ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 3a &lt;exit&gt;
 
 00000000003b &lt;early_exit&gt;:
 e9 00 00 00 00          jmp    40 &lt;early_exit+0x5&gt;</value>
+  </data>
+  <data name="ScholarClearWetPoisonBit" xml:space="preserve">
+    <value>20 84 2a 20 01 00 00    and    BYTE PTR [rdx+rbp*1+0x120],al
+80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # e &lt;_main+0xe&gt;
+74 33                   je     43 &lt;early_exit&gt;
+50                      push   rax
+48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 18 &lt;_main+0x18&gt;
+48 85 c0                test   rax,rax
+74 25                   je     42 &lt;exit&gt;
+48 8b 80 d0 00 00 00    mov    rax,QWORD PTR [rax+0xd0]
+48 85 c0                test   rax,rax
+74 19                   je     42 &lt;exit&gt;
+80 7f 50 0b             cmp    BYTE PTR [rdi+0x50],0xb
+75 13                   jne    42 &lt;exit&gt;
+57                      push   rdi
+48 8b 7f 60             mov    rdi,QWORD PTR [rdi+0x60]
+48 3b 47 08             cmp    rax,QWORD PTR [rdi+0x8]
+5f                      pop    rdi
+75 07                   jne    42 &lt;exit&gt;
+c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 42 &lt;exit&gt;
+
+000000000042 &lt;exit&gt;:
+58                      pop    rax
+
+000000000043 &lt;early_exit&gt;:
+e9 00 00 00 00          jmp    48 &lt;early_exit+0x5&gt;</value>
   </data>
 </root>
