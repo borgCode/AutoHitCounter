@@ -54,11 +54,11 @@
         <!-- Tool Attachment Info -->
         <Grid Grid.Row="1" Margin="5,3,8,3">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <TextBlock Text="{Binding AppVer}" Foreground="#666" FontSize="11" VerticalAlignment="Center" />
-                <Button x:Name="CheckUpdateButton" Content="Check for Updates"
+                <TextBlock Text="{Binding AppVer}" Foreground="White" FontSize="11" VerticalAlignment="Center" />
+                <Button Command="{Binding CheckUpdateCommand}" Content="Check for Updates"
                         Margin="8,0,0,0" Height="20" FontSize="11"
                         VerticalAlignment="Center" />
-                <!-- Return this later → Click="CheckUpdateButton_Click" -->
+          
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Ellipse Width="8" Height="8" VerticalAlignment="Center" Margin="0,0,6,0">

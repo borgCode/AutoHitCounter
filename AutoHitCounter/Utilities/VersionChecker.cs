@@ -171,12 +171,11 @@ public static class VersionChecker
         updateWindow.ShowDialog();
     }
 
-    public static void UpdateVersionText(TextBlock appVersion)
+    public static string GetVersionText()
     {
         var currentVersion = Assembly.GetEntryAssembly()?.GetName().Version;
-        if (currentVersion != null)
-        {
-            appVersion.Text = $"v{currentVersion.Major}.{currentVersion.Minor}.{currentVersion.Build}";
-        }
+        return currentVersion != null
+            ? $"v{currentVersion.Major}.{currentVersion.Minor}.{currentVersion.Build}"
+            : "unknown";
     }
 }

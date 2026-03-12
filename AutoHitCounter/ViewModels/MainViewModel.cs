@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 using AutoHitCounter.Core;
@@ -58,6 +60,7 @@ namespace AutoHitCounter.ViewModels
             _overlayServerService = overlayServerService;
             _overlayServerService.Start();
 
+            stateService.Subscribe(State.AppStart, OnAppStart);
             stateService.Subscribe(State.Attached, OnAttached);
             stateService.Subscribe(State.NotAttached, OnNotAttached);
 
@@ -112,6 +115,8 @@ namespace AutoHitCounter.ViewModels
 
             EditAttemptsCommand = new DelegateCommand(() => IsEditingAttempts = true);
 
+            CheckUpdateCommand = new DelegateCommand(CheckUpdate);
+
             InitialiseCommands();
 
 
@@ -128,6 +133,7 @@ namespace AutoHitCounter.ViewModels
 
         #region Commands
 
+        public DelegateCommand CheckUpdateCommand { get; }
         public DelegateCommand OpenProfileEditorCommand { get; }
 
         public DelegateCommand TrackGameCommand { get; }
@@ -514,6 +520,15 @@ namespace AutoHitCounter.ViewModels
         #endregion
 
         #region Private Methods
+        
+        private void OnAppStart()
+        {
+            AppVer = VersionChecker.GetVersionText();
+            VersionChecker.CheckForUpdates(Application.Current.MainWindow);
+        }
+        
+        private void CheckUpdate() => 
+            VersionChecker.CheckForUpdates(Application.Current.MainWindow, true);
 
         private void InitialiseCommands()
         {

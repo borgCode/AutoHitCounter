@@ -13,7 +13,6 @@ public partial class HelpWindow
     private readonly StackPanel[] _pages;
     private readonly Button[] _tabs;
     private int _currentPage;
-    
 
     public HelpWindow()
     {
@@ -25,7 +24,6 @@ public partial class HelpWindow
             (StackPanel)FindName("PageProfileEditor"),
             (StackPanel)FindName("PageHotkeys"),
             (StackPanel)FindName("PageSettingsAndOverlay")
-            
         ];
         _tabs =
         [
@@ -34,15 +32,9 @@ public partial class HelpWindow
             (Button)FindName("TabProfileEditor"),
             (Button)FindName("TabHotkeys"),
             (Button)FindName("TabSettingsAndOverlay")
-            
         ];
         ShowPage(0);
     }
-    
-
-    
-    
-    
 
     private void ShowPage(int index)
     {
@@ -99,5 +91,4 @@ public partial class HelpWindow
         var selected = (ExampleGame.SelectedItem as ComboBoxItem)?.Content?.ToString();
         TrackingText.Text = $"Currently Tracking: {selected}";
     }
-    
 }
