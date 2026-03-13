@@ -18,8 +18,9 @@ public class SettingsManager
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         "AutoHitCounter",
         "settings.txt");
-    
+
     [DefaultValue(true)] public bool EnableUpdateChecks { get; set; }
+
     [DefaultValue("Dark Souls Remastered")]
     public string LastSelectedGame { get; set; }
 
@@ -63,23 +64,23 @@ public class SettingsManager
     // Typography
     [DefaultValue("Segoe UI")] public string FontFamily { get; set; }
     [DefaultValue(15)] public int FontSize { get; set; }
-    
+
     [DefaultValue(false)] public bool FontBold { get; set; }
-    
+
     [DefaultValue(false)] public bool FontItalic { get; set; }
-    
+
     [DefaultValue(false)] public bool FontUnderline { get; set; }
-    
+
     [DefaultValue("#e0e0e0")] public string SplitNameColor { get; set; }
-    
+
     [DefaultValue("#e0e0e0")] public string SplitNameOnHitColor { get; set; }
-    
+
     [DefaultValue("#e0e0e0")] public string SplitNameOnHitlessColor { get; set; }
-    
+
     [DefaultValue("#999999")] public string GroupNameColor { get; set; }
-    
+
     [DefaultValue("#bbbbbb")] public string PbColor { get; set; }
-    
+
     [DefaultValue(29)] public int RowHeight { get; set; }
 
 // Background
@@ -87,7 +88,9 @@ public class SettingsManager
     [DefaultValue(false)] public bool TableMode { get; set; }
 
 // Hit column
-    [DefaultValue("#888888")] public string HitsZeroColor { get; set; }
+    
+    [DefaultValue("#888888")] public string HitsCurrentColor { get; set; }
+    [DefaultValue("#00cc66")] public string HitsClearedColor { get; set; }
     [DefaultValue("#c8843a")] public string HitsActiveColor { get; set; }
 
 // Colours
@@ -122,14 +125,18 @@ public class SettingsManager
 // Footer
     [DefaultValue("#c47fd4")] public string IgtColor { get; set; }
     [DefaultValue("#00cc66")] public string RunCompleteBannerColor { get; set; }
-    
+
     [DefaultValue(true)] public bool ShowFooterTotals { get; set; }
-    
+
     [DefaultValue("Consolas")] public string IgtFontFamily { get; set; }
-    
+
     [DefaultValue(16)] public int IgtFontSize { get; set; }
+
+    [DefaultValue("rgba(255, 255, 255, 0.05)")]
+    public string AlternatingRows { get; set; }
     
-    [DefaultValue("rgba(255, 255, 255, 0.05)")] public string AlternatingRows { get; set; }
+    [DefaultValue("Segoe UI")] public string HeaderFontFamily { get; set; }
+    [DefaultValue(11)] public int HeaderFontSize { get; set; }
 
 
     public void Save()

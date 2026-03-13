@@ -111,7 +111,7 @@
             }
         }
 
-        
+
         /* Parent category row styling */
         .split-row.parent {
             font-weight: 700;
@@ -244,7 +244,8 @@
             rowHeight: 29,
             backgroundOpacity: 0,
             tableMode: false,
-            hitsZeroColor: '#888888',
+            hitsCurrentColor: '#888888',
+            hitsClearedColor: '#00cc66',
             hitsActiveColor: '#c8843a',
             rowHitColor: 'rgba(255, 76, 76, 0.17)',
             rowClearedColor: 'rgba(0, 204, 102, 0.17)',
@@ -260,14 +261,16 @@
             fontItalic: false,
             fontUnderline: false,
             splitNameColor: '#e0e0e0',
-            SplitNameOnHitColor: '#e0e0e0',
-            SplitNameOnHitlessColor: '#e0e0e0',
+            splitNameOnHitColor: '#e0e0e0',
+            splitNameOnHitlessColor: '#e0e0e0',
             groupNameColor: '#999999',
             pbColor: '#bbbbbb',
             showFooterTotals: true,
             igtFontFamily: 'Consolas',
             igtFontSize: 16,
-            alternatingRows: 'rgba(255, 255, 255, 0.05)'
+            alternatingRows: 'rgba(255, 255, 255, 0.05)',
+            headerFontFamily: 'Segoe UI',
+            headerFontSize: 11,
         };
 
         let config = {...DEFAULTS};
@@ -353,8 +356,7 @@
             border-top-color: ${config.runCompleteBannerColor}; 
                 background: ${config.runCompleteBannerColor}14; 
             }
-            .header { color: ${config.headerTextColor}; }
-            .header span:not(:first-child) { color: ${config.headerTextColor}; }
+            
             @keyframes highlight-red {
                 from { background: transparent; border-left-color: transparent; }
                 to { background: ${config.currentSplitHitColor}; border-left-color: ${config.currentSplitHitBorderColor}; }
@@ -367,6 +369,10 @@
             .split-row.hit .col-name { color: ${config.splitNameOnHitColor}; }
             .split-row.cleared .col-name { color: ${config.splitNameOnHitlessColor}; }
             .split-row.parent { color: ${config.groupNameColor}; }
+            .split-row .col-hits { color: ${config.hitsCurrentColor}; }
+            .split-row.cleared .col-hits { color: ${config.hitsClearedColor}; }
+            .split-row.hit .col-hits { color: ${config.hitsActiveColor}; }
+            .split-row.current.hit .col-hits { color: ${config.hitsActiveColor}; }
             .split-row .col-pb { color: ${config.pbColor}; }
             .footer .col-pb { color: ${config.pbColor}; }
             #overlay, .split-row, .footer, .header { 
@@ -375,6 +381,10 @@
                 text-decoration: ${config.fontUnderline ? 'underline' : 'none'};
                 font-family: ${config.fontFamily};
             }
+            .header { color: ${config.headerTextColor}; font-family: ${config.headerFontFamily}; font-size: ${config.headerFontSize}px; }
+            #progress { font-size: ${config.headerFontSize + 1}px; }
+            #attempts { font-size: ${config.headerFontSize + 2}px; }
+            .header span:not(:first-child) { color: ${config.headerTextColor}; }
             .igt { color: ${config.igtColor}; font-family: ${config.igtFontFamily || 'Consolas, monospace'}; font-size: ${config.igtFontSize || 16}px; }
             `;
         }
@@ -455,11 +465,16 @@
                 : `<span id="igt"></span>`;
             const diffClass = state.totalDiff > 0 ? 'diff-pos' : state.totalDiff < 0 ? 'diff-neg' : 'diff-zero';
             const diffText = state.totalDiff > 0 ? `+${state.totalDiff}` : `${state.totalDiff}`;
+            const totalHitsColor = state.isRunComplete && state.totalHits === 0
+                ? config.hitsClearedColor
+                : state.totalHits > 0
+                    ? config.hitsActiveColor
+                    : config.hitsCurrentColor;
 
             footerEl.innerHTML =
                 `<span class="col-name">${igtHtml}</span>
         ${config.showFooterTotals ? `
-            <span class="col-hits" style="color:${state.totalHits > 0 ? config.hitsActiveColor : config.hitsZeroColor}">${state.totalHits}</span>
+            <span class="col-hits" style="color:${totalHitsColor}">${state.totalHits}</span>
             ${config.showDiff ? `<span class="col-diff ${diffClass}">${diffText}</span>` : ''}
             ${config.showPb ? `<span class="col-pb">${state.totalPb}</span>` : ''}
         ` : ''}`;
@@ -481,11 +496,10 @@
             const isPast = currentIndex === -1 ? true : index < currentIndex;
             const cleared = isPast && !s.isParent && s.hits === 0 ? ' cleared' : '';
             const hit = (isPast && !s.isParent && s.hits > 0) || (s.isCurrent && s.hits > 0) ? ' hit' : '';
-            const hitsColor = s.hits > 0 ? config.hitsActiveColor : config.hitsZeroColor;
 
             return `<div class="split-row${parent}${current}${cleared}${hit}" style="grid-template-columns: ${cols}">
                 <span class="col-name">${escapeHtml(s.name)}</span>
-                <span class="col-hits" style="color:${hitsColor}">${s.hits}</span>
+                <span class="col-hits">${s.hits}</span>
                 ${config.showDiff ? `<span class="col-diff ${diffClass}">${diffText}</span>` : ''}
                 ${config.showPb ? `<span class="col-pb">${s.pb}</span>` : ''}
             </div>`;
@@ -493,7 +507,8 @@
 
         applyLayout();
         connect();
-    })();
+    })
+    ();
 </script>
 </body>
 </html>

@@ -79,7 +79,6 @@ public class OverlaySettingsViewModel : BaseViewModel
     public string SplitNameOnHitColor           { get => Get<string>(); set => Set(value); }
     public string SplitNameOnHitlessColor           { get => Get<string>(); set => Set(value); }
     public string GroupNameColor           { get => Get<string>(); set => Set(value); }
-    public string HitsZeroColor            { get => Get<string>(); set => Set(value); }
     public string HitsActiveColor          { get => Get<string>(); set => Set(value); }
     public string PbColor                  { get => Get<string>(); set => Set(value); }
     public string DiffPosColor             { get => Get<string>(); set => Set(value); }
@@ -94,6 +93,12 @@ public class OverlaySettingsViewModel : BaseViewModel
     public string CurrentSplitHitBorderColor { get => Get<string>(); set => Set(value); }
     public string RunCompleteBannerColor   { get => Get<string>(); set => Set(value); }
     public string AlternatingRows          { get => Get<string>(); set => Set(value); }
+    public string HitsCurrentColor          { get => Get<string>(); set => Set(value); }
+    public string HitsClearedColor          { get => Get<string>(); set => Set(value); }
+    public string HeaderFontFamily          { get => Get<string>(); set => Set(value); }
+    public int HeaderFontSize          { get => Get<int>(); set => Set(value); }
+    
+    
 
     #endregion
     
@@ -130,7 +135,6 @@ public class OverlaySettingsViewModel : BaseViewModel
         _values[nameof(SplitNameOnHitColor)]    = s.SplitNameOnHitColor;
         _values[nameof(SplitNameOnHitlessColor)]    = s.SplitNameOnHitlessColor;
         _values[nameof(GroupNameColor)]    = s.GroupNameColor;
-        _values[nameof(HitsZeroColor)]     = s.HitsZeroColor;
         _values[nameof(HitsActiveColor)]   = s.HitsActiveColor;
         _values[nameof(PbColor)]           = s.PbColor;
         _values[nameof(DiffPosColor)]      = s.DiffPosColor;
@@ -145,6 +149,10 @@ public class OverlaySettingsViewModel : BaseViewModel
         _values[nameof(CurrentSplitHitBorderColor)] = s.CurrentSplitHitBorderColor;
         _values[nameof(RunCompleteBannerColor)] = s.RunCompleteBannerColor;
         _values[nameof(AlternatingRows)]   = s.AlternatingRows;
+        _values[nameof(HitsCurrentColor)]   = s.HitsCurrentColor;
+        _values[nameof(HitsClearedColor)]   = s.HitsClearedColor;
+        _values[nameof(HeaderFontFamily)]   = s.HeaderFontFamily;
+        _values[nameof(HeaderFontSize)]     = s.HeaderFontSize;
     }
     
     private void Save()
@@ -178,7 +186,6 @@ public class OverlaySettingsViewModel : BaseViewModel
         s.SplitNameOnHitColor    = SplitNameOnHitColor;
         s.SplitNameOnHitlessColor    = SplitNameOnHitlessColor;
         s.GroupNameColor    = GroupNameColor;
-        s.HitsZeroColor     = HitsZeroColor;
         s.HitsActiveColor   = HitsActiveColor;
         s.PbColor           = PbColor;
         s.DiffPosColor      = DiffPosColor;
@@ -193,6 +200,10 @@ public class OverlaySettingsViewModel : BaseViewModel
         s.CurrentSplitHitBorderColor = CurrentSplitHitBorderColor;
         s.RunCompleteBannerColor = RunCompleteBannerColor;
         s.AlternatingRows   = AlternatingRows;
+        s.HitsCurrentColor   = HitsCurrentColor;
+        s.HitsClearedColor   = HitsClearedColor;
+        s.HeaderFontFamily   = HeaderFontFamily;
+        s.HeaderFontSize    = HeaderFontSize;
 
         s.Save();
         BroadcastCurrentConfig();
@@ -217,7 +228,6 @@ public class OverlaySettingsViewModel : BaseViewModel
             RowHeight = RowHeight,
             BackgroundOpacity = BackgroundOpacity,
             TableMode = TableMode,
-            HitsZeroColor = HitsZeroColor,
             HitsActiveColor = HitsActiveColor,
             RowHitColor = RowHitColor,
             RowClearedColor = RowClearedColor,
@@ -245,6 +255,10 @@ public class OverlaySettingsViewModel : BaseViewModel
             IgtFontFamily = IgtFontFamily,
             IgtFontSize = IgtFontSize,
             AlternatingRows = AlternatingRows,
+            HitsCurrentColor = HitsCurrentColor,
+            HitsClearedColor = HitsClearedColor,
+            HeaderFontFamily = HeaderFontFamily,
+            HeaderFontSize = HeaderFontSize,
         };
         _overlayServerService.BroadcastConfig(config);
     }
@@ -265,6 +279,9 @@ public class OverlaySettingsViewModel : BaseViewModel
         FontUnderline = false;
         IgtFontFamily = "Consolas";
         IgtFontSize   = 16;
+        HeaderFontFamily    = "Segoe UI";
+        HeaderFontSize    = 11;
+        
         
         ShowAttempts     = true;
         ShowProgress     = true;
@@ -273,7 +290,7 @@ public class OverlaySettingsViewModel : BaseViewModel
         ShowIgt          = true;
         ShowFooterTotals = true;
         PrevSplits       = 4;
-        NextSplits       = 8;
+        NextSplits       = 13;
         OverlayWidth     = 300;
         OverlayHeight    = 420;
         BackgroundOpacity = 0;
@@ -287,7 +304,8 @@ public class OverlaySettingsViewModel : BaseViewModel
         SplitNameOnHitColor           = "#e0e0e0";
         SplitNameOnHitlessColor           = "#e0e0e0";
         GroupNameColor           = "#999999";
-        HitsZeroColor            = "#888888";
+        HitsCurrentColor         = "#888888";
+        HitsClearedColor         = "#00cc66";
         HitsActiveColor          = "#c8843a";
         PbColor                  = "#bbbbbb";
         DiffPosColor             = "#ff4c4c";
@@ -304,6 +322,7 @@ public class OverlaySettingsViewModel : BaseViewModel
         IgtFontFamily = "Consolas";
         IgtFontSize = 16;
         AlternatingRows = "rgba(255,255,255,0.05)";
+        
 
         {
             IsDirty = true;

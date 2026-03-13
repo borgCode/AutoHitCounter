@@ -199,7 +199,7 @@
                         </StackPanel>
                         
                         <StackPanel Style="{StaticResource ColorRow}">
-                            <TextBlock Text="Split Name" Style="{StaticResource FieldLabel}" />
+                            <TextBlock Text="Split Name (Current)" Style="{StaticResource FieldLabel}" />
                             <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
                                 <Rectangle
                                     Fill="{Binding SplitNameColor, Converter={StaticResource StringToBrushConverter}}" />
@@ -208,7 +208,7 @@
                         </StackPanel>
                         
                         <StackPanel Style="{StaticResource ColorRow}">
-                            <TextBlock Text="Split Name (Hit)" Style="{StaticResource FieldLabel}" />
+                            <TextBlock Text="Split Name (Not Cleared)" Style="{StaticResource FieldLabel}" />
                             <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
                                 <Rectangle
                                     Fill="{Binding SplitNameOnHitColor, Converter={StaticResource StringToBrushConverter}}" />
@@ -217,7 +217,7 @@
                         </StackPanel>
                         
                         <StackPanel Style="{StaticResource ColorRow}">
-                            <TextBlock Text="Split Name (Hitless)" Style="{StaticResource FieldLabel}" />
+                            <TextBlock Text="Split Name (Cleared)" Style="{StaticResource FieldLabel}" />
                             <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
                                 <Rectangle
                                     Fill="{Binding SplitNameOnHitlessColor, Converter={StaticResource StringToBrushConverter}}" />
@@ -226,15 +226,15 @@
                         </StackPanel>
                         
                         <StackPanel Style="{StaticResource ColorRow}">
-                            <TextBlock Text="Hits (When Zero)" Style="{StaticResource FieldLabel}" />
+                            <TextBlock Text="Hits (Current)" Style="{StaticResource FieldLabel}" />
                             <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
                                 <Rectangle
-                                    Fill="{Binding HitsZeroColor, Converter={StaticResource StringToBrushConverter}}" />
+                                    Fill="{Binding HitsCurrentColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
-                            <TextBox Text="{Binding HitsZeroColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                            <TextBox Text="{Binding HitsCurrentColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
-                            <TextBlock Text="Hits (When Above Zero)" Style="{StaticResource FieldLabel}" />
+                            <TextBlock Text="Hits (Not Cleared)" Style="{StaticResource FieldLabel}" />
                             <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
                                 <Rectangle
                                     Fill="{Binding HitsActiveColor, Converter={StaticResource StringToBrushConverter}}" />
@@ -242,11 +242,12 @@
                             <TextBox Text="{Binding HitsActiveColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
-                            <TextBlock Text="PB Column" Style="{StaticResource FieldLabel}" />
+                            <TextBlock Text="Hits (Cleared)" Style="{StaticResource FieldLabel}" />
                             <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
-                                <Rectangle Fill="{Binding PbColor, Converter={StaticResource StringToBrushConverter}}" />
+                                <Rectangle
+                                    Fill="{Binding HitsClearedColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
-                            <TextBox Text="{Binding PbColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                            <TextBox Text="{Binding HitsClearedColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Diff (More than PB)" Style="{StaticResource FieldLabel}" />
@@ -273,7 +274,14 @@
                             <TextBox Text="{Binding DiffZeroColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
-                            <TextBlock Text="Row (Got Hit)" Style="{StaticResource FieldLabel}" />
+                            <TextBlock Text="PB Column" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle Fill="{Binding PbColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding PbColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Row (Not Cleared)" Style="{StaticResource FieldLabel}" />
                             <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
                                 <Rectangle
                                     Fill="{Binding RowHitColor, Converter={StaticResource StringToBrushConverter}}" />
@@ -289,7 +297,7 @@
                             <TextBox Text="{Binding RowClearedColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
-                            <TextBlock Text="Current Split Row" Style="{StaticResource FieldLabel}" />
+                            <TextBlock Text="Current Split" Style="{StaticResource FieldLabel}" />
                             <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
                                 <Rectangle
                                     Fill="{Binding CurrentSplitColor, Converter={StaticResource StringToBrushConverter}}" />
@@ -306,7 +314,7 @@
                                      Width="150" />
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
-                            <TextBlock Text="Current Split Row (Hit)" Style="{StaticResource FieldLabel}" />
+                            <TextBlock Text="Current Split (Hit)" Style="{StaticResource FieldLabel}" />
                             <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
                                 <Rectangle
                                     Fill="{Binding CurrentSplitHitColor, Converter={StaticResource StringToBrushConverter}}" />
@@ -324,7 +332,7 @@
                                      Width="150" />
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
-                            <TextBlock Text="Alternating Split Colour" Style="{StaticResource FieldLabel}" />
+                            <TextBlock Text="Alternating Split Color" Style="{StaticResource FieldLabel}" />
                             <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
                                 <Rectangle
                                     Fill="{Binding AlternatingRows, Converter={StaticResource StringToBrushConverter}}" />
@@ -363,7 +371,29 @@
             <Border Grid.Column="2" Style="{StaticResource PanelBorder}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
-                        <TextBlock Text="GENERAL TEXT" Style="{StaticResource PanelHeader}" />
+                        <TextBlock Text="HEADER TEXT" Style="{StaticResource PanelHeader}" />
+
+                        <TextBlock Text="FONT FAMILY" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
+                        <ComboBox ItemsSource="{Binding AvailableFonts}"
+                                  SelectedItem="{Binding HeaderFontFamily}"
+                                  Margin="0,0,0,8"
+                                  FontSize="11">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" FontFamily="{Binding}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Text="SIZE" Style="{StaticResource SectionLabel}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                            <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="90" />
+                            <xctk:IntegerUpDown Value="{Binding HeaderFontSize}" Minimum="2" Maximum="64" Width="55" />
+                        </StackPanel>
+                        
+                        <Separator Style="{StaticResource Separator}" />
+                        
+                        <TextBlock Text="SPLITS TEXT" Style="{StaticResource PanelHeader}" />
 
                         <TextBlock Text="FONT FAMILY" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
@@ -407,7 +437,7 @@
 
                         <Separator Style="{StaticResource Separator}" />
                         <TextBlock Text="STYLE" Style="{StaticResource SectionLabel}" />
-                        <TextBlock Text="Applies to both" FontSize="9.5" FontStyle="Italic" Foreground="#878686" Margin="0,-4,0,4" />
+                        <TextBlock Text="Applies to all" FontSize="9.5" FontStyle="Italic" Foreground="#878686" Margin="0,-4,0,4" />
                         <CheckBox Content="Bold" IsChecked="{Binding FontBold}" Margin="0,3,0,3" />
                         <CheckBox Content="Italic" IsChecked="{Binding FontItalic}" Margin="0,3,0,3" />
                         <CheckBox Content="Underline" IsChecked="{Binding FontUnderline}" Margin="0,3,0,3" />
