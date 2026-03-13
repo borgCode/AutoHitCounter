@@ -24,14 +24,19 @@ public partial class OverlaySettingsWindow : Window
                 "You have unsaved changes. Would you like to save before closing?",
                 "Unsaved Changes");
 
+            
             if (result == null)
             {
                 e.Cancel = true;
+                return;
             }
-            else if (result == true)
+
+            if (result == true)
             {
                 vm.SaveCommand.Execute(null);
             }
+            else
+                vm.ReloadFromSettings();
         }
 
         base.OnClosing(e);
