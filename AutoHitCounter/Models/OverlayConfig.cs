@@ -34,7 +34,7 @@ public class OverlayConfig
     public string AttemptsActiveColor { get; set; }
     public string SplitNameColor { get; set; }
     public string GroupNameColor { get; set; }
-    public string HitsZeroColor { get; set; }
+    
     public string HitsActiveColor { get; set; }
     public string PbColor { get; set; }
     public string DiffPosColor { get; set; }
@@ -51,4 +51,8 @@ public class OverlayConfig
     public string RunCompleteBannerColor { get; set; }
     public string SplitNameOnHitColor { get; set; }
     public string SplitNameOnHitlessColor { get; set; }
+    public string HitsCurrentColor { get; set; }
+    public string HitsClearedColor { get; set; }
+    public string HeaderFontFamily { get; set; }
+    public int HeaderFontSize { get; set; }
 }
