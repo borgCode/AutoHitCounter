@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -166,7 +165,6 @@ public class OverlaySettingsViewModel : BaseViewModel
     
     private void Save()
     {
-        System.Diagnostics.Debug.WriteLine("Save called from: " + Environment.StackTrace);
         var s = SettingsManager.Default;
 
         s.ShowAttempts      = ShowAttempts;
