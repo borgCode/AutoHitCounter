@@ -100,6 +100,7 @@ public static class DS2Offsets
         public static nint CountAuxHit;
         public static nint LightPoiseStagger;
         public static nint ClearWetPoisonBit;
+        public static nint StaggerCheck;
         public static nint SetEvent;
         public static nint IgtNewGame;
         public static nint IgtStop;
@@ -191,8 +192,13 @@ public static class DS2Offsets
             Scholar1_0_3 => 0x223050,
             _ => 0
         };
-
-
+        
+        Hooks.StaggerCheck = moduleBase + Version switch
+        {
+            Scholar1_0_2 => 0x1327BD,
+            Scholar1_0_3 => 0x134E2D,
+            _ => 0
+        };
         Hooks.SetEvent = moduleBase + Version switch
         {
             Vanilla1_0_11 => 0x47884B,

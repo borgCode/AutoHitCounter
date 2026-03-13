@@ -968,6 +968,25 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 41 88 4e 17             mov    BYTE PTR [r14+0x17],cl
+        ///48 8b 47 08             mov    rax,QWORD PTR [rdi+0x8]
+        ///80 f9 02                cmp    cl,0x2
+        ///75 2d                   jne    3a &lt;early_exit&gt;
+        ///50                      push   rax
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 15 &lt;_main+0x15&gt;
+        ///48 85 c0                test   rax,rax
+        ///74 1f                   je     39 &lt;exit&gt;
+        ///48 8b 80 d0 00 00 00    mov    rax,QWORD PTR [rax+0xd0]
+        ///48 85 c0                test   rax,rax
+        ///74 13              [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ScholarStaggerCheck {
+            get {
+                return ResourceManager.GetString("ScholarStaggerCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 7 &lt;_main+0x7&gt;
         ///50                      push   rax
         ///53                      push   rbx

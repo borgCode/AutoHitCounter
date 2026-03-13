@@ -105,6 +105,8 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
     {
         if (!IsLoaded()) _hitService.ResetFlags();
         
+        _hitService.EnsureHooksInstalled();
+        
         if (_hitService.HasHit() && (_lastHit == null || (DateTime.Now - _lastHit.Value).TotalSeconds > 3))
         {
             OnHit?.Invoke(1);

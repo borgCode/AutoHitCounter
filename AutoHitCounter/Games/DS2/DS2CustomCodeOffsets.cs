@@ -21,6 +21,8 @@ public static class DS2CustomCodeOffsets
     public const int CheckPlayerDead = 0x700;
 
     public const int ClearWetPoisonBit = 0x800;
+
+    public const int StaggerCheck = 0xA00;
     
     public const int EventLogWriteIdx = 0x2000;
     public const int EventLogCode = 0x2020;

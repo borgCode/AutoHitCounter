@@ -1,5 +1,7 @@
 ﻿// 
 
+using System.Collections.Generic;
+using System.Linq;
 using AutoHitCounter.Enums;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
@@ -12,6 +14,8 @@ namespace AutoHitCounter.Games.DS2;
 public class DS2HitService(IMemoryService memoryService, HookManager hookManager) : IHitService
 {
     private int _lastHitCount;
+    
+    private readonly List<nint> _hooks = [];
 
     public void InstallHooks()
     {
@@ -34,6 +38,19 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
     {
         memoryService.Write(Base + WetPoisonFlag, false);
     }
+    
+    public void EnsureHooksInstalled()
+    {
+        if (_hooks.Any(h => memoryService.Read<byte>(h) != 0xE9))
+            InstallHooks();
+    }
+    
+    private void InstallHook(nint code, nint hookAddr, byte[] originalBytes)
+    {
+        hookManager.InstallHook(code, hookAddr, originalBytes);
+        if (!_hooks.Contains(hookAddr))
+            _hooks.Add(hookAddr);
+    }
 
     #region Scholar
 
@@ -47,6 +64,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         InstallScholarCountAuxHook();
         InstallScholarLightPoiseStaggerHook();
         InstallClearWetPoisonBitHook();
+        InstallStaggerCheckHook();
     }
 
     private void InstallScholarHitHook()
@@ -74,7 +92,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         ]);
 
         memoryService.WriteBytes(code, bytes);
-        hookManager.InstallHook(code, Hooks.Hit, [0x48, 0x89, 0x5C, 0x24, 0x10]);
+        InstallHook(code, Hooks.Hit, [0x48, 0x89, 0x5C, 0x24, 0x10]);
     }
 
     private void WriteScholarPlayerDeadCheck()
@@ -100,7 +118,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         ]);
 
         memoryService.WriteBytes(code, bytes);
-        hookManager.InstallHook(code, Hooks.GeneralApplyDamage, [0x89, 0x83, 0x68, 0x01, 0x00, 0x00]);
+        InstallHook(code, Hooks.GeneralApplyDamage, [0x89, 0x83, 0x68, 0x01, 0x00, 0x00]);
     }
 
     private void InstallScholarKillBoxHook()
@@ -115,7 +133,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         ]);
 
         memoryService.WriteBytes(code, bytes);
-        hookManager.InstallHook(code, Hooks.KillBox, [0x4C, 0x8B, 0x0, 0x89, 0x54, 0x24, 0x10]);
+        InstallHook(code, Hooks.KillBox, [0x4C, 0x8B, 0x0, 0x89, 0x54, 0x24, 0x10]);
     }
 
     private void InstallScholarCountAuxHook()
@@ -139,7 +157,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         ]);
 
         memoryService.WriteBytes(code, bytes);
-        hookManager.InstallHook(code, Hooks.CountAuxHit, [0x4C, 0x8B, 0x01, 0x48, 0x63, 0xC2]);
+        InstallHook(code, Hooks.CountAuxHit, [0x4C, 0x8B, 0x01, 0x48, 0x63, 0xC2]);
     }
 
     private void InstallScholarLightPoiseStaggerHook()
@@ -155,7 +173,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         ]);
 
         memoryService.WriteBytes(code, bytes);
-        hookManager.InstallHook(code, Hooks.LightPoiseStagger, [0x8B, 0x42, 0x04, 0x89, 0x02]);
+        InstallHook(code, Hooks.LightPoiseStagger, [0x8B, 0x42, 0x04, 0x89, 0x02]);
     }
 
     private void InstallClearWetPoisonBitHook()
@@ -172,7 +190,23 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         ]);
 
         memoryService.WriteBytes(code, bytes);
-        hookManager.InstallHook(code, Hooks.ClearWetPoisonBit, [0x20, 0x84, 0x2A, 0x20, 0x01, 0x00, 0x00]);
+        InstallHook(code, Hooks.ClearWetPoisonBit, [0x20, 0x84, 0x2A, 0x20, 0x01, 0x00, 0x00]);
+    }
+
+    private void InstallStaggerCheckHook()
+    {
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarStaggerCheck);
+        var hit = Base + Hit;
+        var code = Base + StaggerCheck;
+
+        AsmHelper.WriteRelativeOffsets(bytes, [
+            (code + 0xE, GameManagerImp.Base, 7, 0xE + 3),
+            (code + 0x33, hit, 6, 0x33 + 2),
+            (code + 0x3A, Hooks.StaggerCheck + 8, 5, 0x3A + 1)
+        ]);
+
+        memoryService.WriteBytes(code, bytes);
+        InstallHook(code, Hooks.StaggerCheck, [0x41, 0x88, 0x4E, 0x17, 0x48, 0x8B, 0x47, 0x08]);
     }
 
     #endregion
@@ -229,7 +263,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         ]);
 
         memoryService.WriteBytes(code, bytes);
-        hookManager.InstallHook(code, Hooks.Hit, [0x55, 0x89, 0xE5, 0x83, 0xEC, 0x08]);
+        InstallHook(code, Hooks.Hit, [0x55, 0x89, 0xE5, 0x83, 0xEC, 0x08]);
     }
 
     private void InstallVanillaCountAuxHook()
@@ -253,7 +287,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         AsmHelper.WriteRelativeOffset(bytes, code + 0x38, Hooks.CountAuxHit + 5, 5, 0x38 + 1);
 
         memoryService.WriteBytes(code, bytes);
-        hookManager.InstallHook(code, Hooks.CountAuxHit, [0xF3, 0x0F, 0x10, 0x55, 0x0C]);
+        InstallHook(code, Hooks.CountAuxHit, [0xF3, 0x0F, 0x10, 0x55, 0x0C]);
     }
 
     private void InstallVanillaGeneralDamageHook()
@@ -270,7 +304,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         AsmHelper.WriteRelativeOffset(bytes, code + 0x20, Hooks.GeneralApplyDamage + 6, 5, 0x20 + 1);
         
         memoryService.WriteBytes(code, bytes);
-        hookManager.InstallHook(code, Hooks.GeneralApplyDamage, [0x89, 0x8E, 0xFC, 0x00, 0x00, 0x00]);
+        InstallHook(code, Hooks.GeneralApplyDamage, [0x89, 0x8E, 0xFC, 0x00, 0x00, 0x00]);
     }
 
     private void InstallVanillaKillBoxHook()
@@ -287,7 +321,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         AsmHelper.WriteRelativeOffset(bytes, code + 0x20, Hooks.KillBox + 5, 5, 0x20 + 1);
 
         memoryService.WriteBytes(code, bytes);
-        hookManager.InstallHook(code, Hooks.KillBox, [0x8B, 0x01, 0x8B, 0x4D, 0x08]);
+        InstallHook(code, Hooks.KillBox, [0x8B, 0x01, 0x8B, 0x4D, 0x08]);
     }
 
     private void InstallVanillaLightPoiseStaggerHook()
@@ -305,7 +339,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
 
 
         memoryService.WriteBytes(code, bytes);
-        hookManager.InstallHook(code, Hooks.LightPoiseStagger, [0xD9, 0x80, 0xB0, 0x01, 0x00, 0x00]);
+        InstallHook(code, Hooks.LightPoiseStagger, [0xD9, 0x80, 0xB0, 0x01, 0x00, 0x00]);
     }
 
     private void InstallVanillaClearWetPoisonHook()
@@ -323,7 +357,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         AsmHelper.WriteRelativeOffset(bytes, code + 0x38, Hooks.ClearWetPoisonBit + 7, 5, 0x38 + 1);
 
         memoryService.WriteBytes(code, bytes);
-        hookManager.InstallHook(code, Hooks.ClearWetPoisonBit, [0x8D, 0x94, 0x1A, 0x10, 0x01, 0x00, 0x00]);
+        InstallHook(code, Hooks.ClearWetPoisonBit, [0x8D, 0x94, 0x1A, 0x10, 0x01, 0x00, 0x00]);
     }
 
     #endregion
