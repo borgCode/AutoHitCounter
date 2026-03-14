@@ -1142,19 +1142,18 @@ namespace AutoHitCounter.Properties {
         ///Ashina Elite - Jinsuke Saze,11110504
         ///Ashina Elite - Ujinari Mizuo,11110511
         ///Blazing Bull,11110440
-        ///Centipede Giraffe,11700425
-        ///Centipede Sen-Un,12000279
         ///Chained Ogre (Castle),11110620
         ///Chained Ogre (Outskirts),11100310
+        ///Corrupted Monk (Fountainhead),9309
+        ///Corrupted Monk (Mibu),9306
         ///Demon of Hatred,9313
         ///Divine Dragon,9310
-        ///Fake Monk,9306
         ///Folding Screen Monkeys,9305
         ///General Kuranosuke Matsumoto,11110410
         ///General Naomori Kawarada,11100300
         ///General Tenzen Yamauchi,11100301
         ///Genichiro Ashina (Castle),9303
-        ///Genichiro Ashina  [rest of string was truncated]&quot;;.
+        ///Genichiro Ashina (Reserv [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SKEvents {
             get {
