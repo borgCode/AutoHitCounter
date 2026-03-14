@@ -22,7 +22,6 @@
         /* Container that holds all split rows */
         #splits {
             overflow-y: clip;
-            height: calc(100% - 60px);
         }
 
         /* Progress indicator formatting */
@@ -39,10 +38,8 @@
 
         /* Main overlay container */
         #overlay {
-            display: inline-block;
-            width: 300px;
-            padding: 6px;
-            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Title bar above header */
@@ -197,14 +194,6 @@
             border-left-width: 1px;
         }
 
-        .table-mode .split-row.current {
-            border-left: 3px solid #00cc66;
-        }
-
-        .table-mode .split-row.current.hit {
-            border-left: 3px solid #ff4c4c;
-        }
-
         /* Run complete banner */
         .run-complete {
             text-align: center;
@@ -286,6 +275,14 @@
             titleColor: '#e0e0e0',
             titleFontFamily: 'Segoe UI',
             titleFontSize: 18,
+            showRunComplete: true,
+            runCompleteText: '✓ Run Complete',
+            pbMatchesHit: false,
+            footerFontSize: 15,
+            footerFontFamily: 'Segoe UI',
+            footerHitFontColor: '#c8843a',
+            footerHitsCurrentColor: '#888888',
+            footerPbFontColor: '#bbbbbb',
         };
 
         let config = {...DEFAULTS};
@@ -324,7 +321,7 @@
                     renderState(msg.data);
                 } else if (msg.type === 'igt') {
                     const igtEl = document.getElementById('igt');
-                    if (igtEl) igtEl.textContent = msg.data;
+                    if (igtEl) igtEl.textContent = formatIgt(msg.data);
                 } else if (msg.type === 'config') {
                     Object.assign(config, msg.data);
                     localStorage.setItem('overlayConfig', JSON.stringify(config));
@@ -347,6 +344,11 @@
             return cols;
         }
 
+        function formatIgt(igt) {
+            if (!igt) return '';
+            return igt.replace(/^0(\d:)/, '$1')
+        }
+
         // Injects a dynamic <style> block for properties that can't be set inline
         let dynamicStyleEl = null;
 
@@ -360,12 +362,14 @@
             .diff-neg { color: ${config.diffNegColor}; }
             .diff-zero { color: ${config.diffZeroColor}; }
             .split-row:nth-child(even) { background: ${config.alternatingRows || 'transparent'}; }
+            .table-mode .split-row.current { border-left: 3px solid ${config.currentSplitBorderColor}; }
             .split-row.current { background: ${config.currentSplitColor}; border-left-color: ${config.currentSplitBorderColor}; }
             .split-row.hit { background: ${config.rowHitColor}; }
             .split-row.cleared { background: ${config.rowClearedColor}; }
+            .table-mode .split-row.current.hit { border-left: 3px solid ${config.currentSplitHitBorderColor}; }
             .split-row.current.hit { background: ${config.currentSplitHitColor}; border-left-color: ${config.currentSplitHitBorderColor}; }
             .split-row { height: ${config.rowHeight}px; font-size: ${config.fontSize}px; }
-            .footer { font-size: ${config.fontSize}px; }
+            .footer { font-family: ${config.footerFontFamily}; font-size: ${config.footerFontSize}px; }
             .run-complete { 
                 color: ${config.runCompleteBannerColor}; 
             border-top-color: ${config.runCompleteBannerColor}; 
@@ -389,14 +393,25 @@
             .split-row.hit .col-hits { color: ${config.hitsActiveColor}; }
             .split-row.current.hit .col-hits { color: ${config.hitsActiveColor}; }
             .split-row .col-pb { color: ${config.pbColor}; }
-            .footer .col-pb { color: ${config.pbColor}; }
-            #overlay, .split-row, .footer, .header { 
+            .split-row.hit .col-pb { color: ${config.pbMatchesHit ? config.hitsActiveColor : config.pbColor}; }
+            .split-row.cleared .col-pb { color: ${config.pbMatchesHit ? config.hitsClearedColor : config.pbColor}; }
+            .split-row.current.hit .col-pb { color: ${config.pbMatchesHit ? config.hitsActiveColor : config.pbColor}; }
+            .footer .col-hits { color: ${config.footerHitFontColor}; }
+            .footer .col-pb { color: ${config.footerPbFontColor}; }
+            #overlay, .split-row, .footer { 
                 font-weight: ${config.fontBold ? 'bold' : 'normal'};
                 font-style: ${config.fontItalic ? 'italic' : 'normal'};
                 text-decoration: ${config.fontUnderline ? 'underline' : 'none'};
                 font-family: ${config.fontFamily};
             }
-            .header { color: ${config.headerTextColor}; font-family: ${config.headerFontFamily}; font-size: ${config.headerFontSize}px; }
+            .header { 
+                color: ${config.headerTextColor}; 
+                font-family: ${config.headerFontFamily}; 
+                font-size: ${config.headerFontSize}px; 
+                font-weight: ${config.fontBold ? 'bold' : 'normal'};
+                font-style: ${config.fontItalic ? 'italic' : 'normal'};
+                text-decoration: ${config.fontUnderline ? 'underline' : 'none'};
+            }
             #progress { font-size: ${config.headerFontSize + 1}px; }
             #attempts { font-size: ${config.headerFontSize + 2}px; }
             .header span:not(:first-child) { color: ${config.headerTextColor}; }
@@ -410,7 +425,6 @@
             headerEl.style.gridTemplateColumns = cols;
             document.getElementById('footer').style.gridTemplateColumns = cols;
 
-
             overlay.style.background = config.backgroundOpacity > 0
                 ? `rgba(0, 0, 0, ${config.backgroundOpacity})`
                 : 'transparent';
@@ -418,7 +432,9 @@
             overlay.classList.toggle('table-mode', config.tableMode);
 
             overlay.style.width = config.overlayWidth + 'px';
-            overlay.style.height = config.overlayHeight + 'px';
+            overlay.style.height = 'auto';
+            overlay.style.maxHeight = config.overlayHeight + 'px';
+            overlay.style.overflow = 'visible';
 
             applyDynamicStyles();
 
@@ -479,6 +495,7 @@
             }
             splitsEl.innerHTML = html;
 
+            const footerEl = document.getElementById('footer');
             const progressEl = document.getElementById('progress');
             if (progressEl && !state.isRunComplete) {
                 const current = state.splits.findIndex(s => s.isCurrent) + 1;
@@ -494,17 +511,15 @@
                     : config.attemptsZeroColor;
             }
 
-            const footerEl = document.getElementById('footer');
+
             const igtHtml = config.showIgt
-                ? `<span class="igt" id="igt">${state.inGameTime ?? ''}</span>`
+                ? `<span class="igt" id="igt">${formatIgt(state.inGameTime ?? '')}</span>`
                 : `<span id="igt"></span>`;
             const diffClass = state.totalDiff > 0 ? 'diff-pos' : state.totalDiff < 0 ? 'diff-neg' : 'diff-zero';
             const diffText = state.totalDiff > 0 ? `+${state.totalDiff}` : `${state.totalDiff}`;
-            const totalHitsColor = state.isRunComplete && state.totalHits === 0
-                ? config.hitsClearedColor
-                : state.totalHits > 0
-                    ? config.hitsActiveColor
-                    : config.hitsCurrentColor;
+            const totalHitsColor = state.totalHits > 0
+                ? config.footerHitFontColor
+                : config.footerHitsCurrentColor;
 
             footerEl.innerHTML =
                 `<span class="col-name">${igtHtml}</span>
@@ -514,7 +529,8 @@
             ${config.showPb ? `<span class="col-pb">${state.totalPb}</span>` : ''}
         ` : ''}`;
 
-            runCompleteEl.style.display = state.isRunComplete ? 'block' : 'none';
+            runCompleteEl.style.display = (state.isRunComplete && config.showRunComplete) ? 'block' : 'none';
+            runCompleteEl.textContent = config.runCompleteText || '✓ Run Complete';
         }
 
         function escapeHtml(text) {

@@ -105,7 +105,9 @@
                         <CheckBox Content="Show Attempts" IsChecked="{Binding ShowAttempts}" Margin="0,2,0,2" />
                         <CheckBox Content="Show Progress" IsChecked="{Binding ShowProgress}" Margin="0,2,0,2" />
                         <CheckBox Content="Show Footer Totals" IsChecked="{Binding ShowFooterTotals}" Margin="0,2,0,2" />
+                        <CheckBox Content="Show Run Complete" IsChecked="{Binding ShowRunComplete}" Margin="0,2,0,2" />
                         <CheckBox Content="Table Mode" IsChecked="{Binding TableMode}" Margin="0,2,0,2" />
+                        <CheckBox Content="PB Color Matches Hit" IsChecked="{Binding PbMatchesHit}" Margin="0,2,0,2" />
 
                         <Separator Style="{StaticResource Separator}" />
                         <TextBlock Text="SPLITS" Style="{StaticResource SectionLabel}" />
@@ -127,7 +129,7 @@
                             <xctk:IntegerUpDown Value="{Binding OverlayWidth}" Minimum="100" Maximum="5000" Width="55" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock Text="Height" Style="{StaticResource FieldLabel}" Width="80" />
+                            <TextBlock Text="Max Height" Style="{StaticResource FieldLabel}" Width="80" />
                             <xctk:IntegerUpDown Value="{Binding OverlayHeight}" Minimum="100" Maximum="5000" Width="55" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
@@ -156,7 +158,19 @@
                         <TextBlock Text="Adjust colours here to your liking, boxes accept RGB, RGBA and Hex values. You can use #00000000 or rgba(0, 0, 0, 0.00) if you want to make anything invisible."
                                    TextWrapping="Wrap" FontSize="10.5" FontStyle="Italic" Foreground="#878686" Margin="0,-5,0,4"/>
 
-                        <TextBlock Text="HEADER" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
+                        <TextBlock Text="TITLE" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Title Text" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding TitleColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding TitleColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                        </StackPanel>
+
+                        <Separator Style="{StaticResource Separator}" Margin="0,0,10,0"/>
+                        
+                        <TextBlock Text="HEADER" Style="{StaticResource SectionLabel}" />
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Header Text" Style="{StaticResource FieldLabel}" />
                             <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
@@ -167,6 +181,7 @@
                         </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" Margin="0,0,10,0"/>
+                        
                         <TextBlock Text="ATTEMPTS COUNTER" Style="{StaticResource SectionLabel}" />
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="When Zero" Style="{StaticResource FieldLabel}" />
@@ -186,7 +201,7 @@
                                      Width="150" />
                         </StackPanel>
 
-                        <Separator Style="{StaticResource Separator}" />
+                        <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
                         
                         <TextBlock Text="SPLITS" Style="{StaticResource SectionLabel}" />
                         
@@ -341,8 +356,30 @@
                             <TextBox Text="{Binding AlternatingRows, UpdateSourceTrigger=PropertyChanged}"
                                      Width="150" />
                         </StackPanel>
+                        
+                        <Separator Style="{StaticResource Separator}" Margin="0,0,10,0"/>
+                        
+                        <TextBlock Text="FOOTER" Style="{StaticResource SectionLabel}" />
+                        
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Hits (When Zero)" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle Fill="{Binding FooterHitsCurrentColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding FooterHitsCurrentColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                        </StackPanel>
+                        
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Hits (When Not Zero)" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle Fill="{Binding FooterHitFontColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding FooterHitFontColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                        </StackPanel>
+                        
+                        
 
-                        <Separator Style="{StaticResource Separator}" />
+                        <Separator Style="{StaticResource Separator}" Margin="0,0,10,0"/>
                         <TextBlock Text="IN-GAME TIME" Style="{StaticResource SectionLabel}" />
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="In-Game Time" Style="{StaticResource FieldLabel}" />
@@ -352,7 +389,7 @@
                             <TextBox Text="{Binding IgtColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
                         </StackPanel>
 
-                        <Separator Style="{StaticResource Separator}" />
+                        <Separator Style="{StaticResource Separator}" Margin="0,0,10,0"/>
                         <TextBlock Text="RUN COMPLETE" Style="{StaticResource SectionLabel}" />
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Completion Banner" Style="{StaticResource FieldLabel}" />
@@ -376,13 +413,13 @@
 
                         <TextBlock Text="TEXT" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
                         <TextBox Text="{Binding TitleText, UpdateSourceTrigger=PropertyChanged, Delay=400}"
-                                 Margin="0,0,0,8" />
+                                 Margin="0,0,0,8" Width="230" HorizontalAlignment="Left"/>
 
                         <TextBlock Text="FONT FAMILY" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding TitleFontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11">
+                                  FontSize="11" Width="230" HorizontalAlignment="Left">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -395,17 +432,7 @@
                             <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="90" />
                             <xctk:IntegerUpDown Value="{Binding TitleFontSize}" Minimum="2" Maximum="64" Width="55" />
                         </StackPanel>
-
-                        <TextBlock Text="COLOR" Style="{StaticResource SectionLabel}" />
-                        <StackPanel Style="{StaticResource ColorRow}">
-                            <TextBlock Text="Title Color" Style="{StaticResource FieldLabel}" />
-                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
-                                <Rectangle
-                                    Fill="{Binding TitleColor, Converter={StaticResource StringToBrushConverter}}" />
-                            </Border>
-                            <TextBox Text="{Binding TitleColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
-                        </StackPanel>
-
+                        
                         <Separator Style="{StaticResource Separator}" />
 
                         <TextBlock Text="HEADER TEXT" Style="{StaticResource PanelHeader}" />
@@ -414,7 +441,7 @@
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding HeaderFontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11">
+                                  FontSize="11" Width="230" HorizontalAlignment="Left">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -436,7 +463,7 @@
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding FontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11">
+                                  FontSize="11" Width="230" HorizontalAlignment="Left">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -452,13 +479,34 @@
                         
                         <Separator Style="{StaticResource Separator}" />
                         
+                        <TextBlock Text="FOOTER TEXT" Style="{StaticResource PanelHeader}" />
+
+                        <TextBlock Text="FONT FAMILY" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
+                        <ComboBox ItemsSource="{Binding AvailableFonts}"
+                                  SelectedItem="{Binding FooterFontFamily}"
+                                  Margin="0,0,0,8"
+                                  FontSize="11" Width="230" HorizontalAlignment="Left">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" FontFamily="{Binding}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBlock Text="SIZE" Style="{StaticResource SectionLabel}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                            <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="90" />
+                            <xctk:IntegerUpDown Value="{Binding FooterFontSize}" Minimum="2" Maximum="64" Width="55" />
+                        </StackPanel>
+                        
+                        <Separator Style="{StaticResource Separator}" />
+                        
                         <TextBlock Text="IN GAME TIME" Style="{StaticResource PanelHeader}" />
 
                         <TextBlock Text="FONT FAMILY" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding IgtFontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11">
+                                  FontSize="11" Width="230" HorizontalAlignment="Left">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -471,13 +519,25 @@
                             <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="90" />
                             <xctk:IntegerUpDown Value="{Binding IgtFontSize}" Minimum="2" Maximum="64" Width="55" />
                         </StackPanel>
+                        
+                        <TextBlock Text="RUN COMPLETION" Style="{StaticResource PanelHeader}" />
 
+                        <TextBlock Text="RUN COMPLETION MESSAGE" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
+                        <TextBox Text="{Binding RunCompleteText, UpdateSourceTrigger=PropertyChanged, Delay=400}"
+                                 Margin="0,0,0,8" Width="230" HorizontalAlignment="Left"/>
+
+                        
                         <Separator Style="{StaticResource Separator}" />
+                        
                         <TextBlock Text="STYLE" Style="{StaticResource SectionLabel}" />
-                        <TextBlock Text="Applies to all" FontSize="9.5" FontStyle="Italic" Foreground="#878686" Margin="0,-4,0,4" />
+                        <TextBlock Text="Applies to all but title and run completion." FontSize="10" FontStyle="Italic" Foreground="#878686" Margin="0,-4,0,4" />
                         <CheckBox Content="Bold" IsChecked="{Binding FontBold}" Margin="0,3,0,3" />
                         <CheckBox Content="Italic" IsChecked="{Binding FontItalic}" Margin="0,3,0,3" />
                         <CheckBox Content="Underline" IsChecked="{Binding FontUnderline}" Margin="0,3,0,3" />
+                        
+                        
+                        
+                        
                         
                     </StackPanel>
                 </ScrollViewer>

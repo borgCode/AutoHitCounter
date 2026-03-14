@@ -61,7 +61,9 @@ public class OverlaySettingsViewModel : BaseViewModel
     public int  OverlayHeight     { get => Get<int>();    set => Set(value); }
     public double BackgroundOpacity { get => Get<double>(); set => Set(value); }
     public bool TableMode         { get => Get<bool>();   set => Set(value); }
-
+    public bool ShowRunComplete          { get => Get<bool>(); set => Set(value); }
+    public string RunCompleteText          { get => Get<string>(); set => Set(value); }
+    
     #endregion
 
     #region Font
@@ -75,6 +77,8 @@ public class OverlaySettingsViewModel : BaseViewModel
     public bool   FontUnderline   { get => Get<bool>();   set => Set(value); }
     public string IgtFontFamily   { get => Get<string>(); set => Set(value); }
     public int    IgtFontSize     { get => Get<int>();    set => Set(value); }
+    public string FooterFontFamily   { get => Get<string>(); set => Set(value); }
+    public int  FooterFontSize     { get => Get<int>();    set => Set(value); }
 
     #endregion
 
@@ -105,6 +109,11 @@ public class OverlaySettingsViewModel : BaseViewModel
     public string HitsClearedColor          { get => Get<string>(); set => Set(value); }
     public string HeaderFontFamily          { get => Get<string>(); set => Set(value); }
     public int HeaderFontSize          { get => Get<int>(); set => Set(value); }
+    public bool PbMatchesHit { get => Get<bool>(); set => Set(value); }
+    public string FooterHitFontColor          { get => Get<string>(); set => Set(value); }
+    public string FooterHitsCurrentColor          { get => Get<string>(); set => Set(value); }
+    public string FooterPbFontColor          { get => Get<string>(); set => Set(value); }
+    
 
     #endregion
 
@@ -174,6 +183,14 @@ public class OverlaySettingsViewModel : BaseViewModel
         _values[nameof(TitleColor)]         = s.TitleColor;
         _values[nameof(TitleFontFamily)]    = s.TitleFontFamily;
         _values[nameof(TitleFontSize)]      = s.TitleFontSize;
+        _values[nameof(FooterHitFontColor)]         = s.FooterHitFontColor;
+        _values[nameof(FooterHitsCurrentColor)]         = s.FooterHitsCurrentColor;
+        _values[nameof(FooterPbFontColor)]         = s.FooterPbFontColor;
+        _values[nameof(FooterFontFamily)]         = s.FooterFontFamily;
+        _values[nameof(FooterFontSize)]         = s.FooterFontSize;
+        _values[nameof(ShowRunComplete)]         = s.ShowRunComplete;
+        _values[nameof(RunCompleteText)]         = s.RunCompleteText;
+        _values[nameof(PbMatchesHit)]         = s.PbMatchesHit;
     }
     
     private void Save()
@@ -230,6 +247,14 @@ public class OverlaySettingsViewModel : BaseViewModel
         s.TitleColor         = TitleColor;
         s.TitleFontFamily    = TitleFontFamily;
         s.TitleFontSize      = TitleFontSize;
+        s.FooterHitFontColor      = FooterHitFontColor;
+        s.FooterHitsCurrentColor      = FooterHitsCurrentColor;
+        s.FooterPbFontColor      = FooterPbFontColor;
+        s.FooterFontFamily      = FooterFontFamily;
+        s.FooterFontSize      = FooterFontSize;
+        s.ShowRunComplete      = ShowRunComplete;
+        s.RunCompleteText      = RunCompleteText;
+        s.PbMatchesHit      = PbMatchesHit;
 
         s.Save();
         BroadcastCurrentConfig();
@@ -290,6 +315,14 @@ public class OverlaySettingsViewModel : BaseViewModel
             TitleColor = TitleColor,
             TitleFontFamily = TitleFontFamily,
             TitleFontSize = TitleFontSize,
+            FooterHitFontColor = FooterHitFontColor,
+            FooterHitsCurrentColor = FooterHitsCurrentColor,
+            FooterPbFontColor = FooterPbFontColor,
+            FooterFontFamily = FooterFontFamily,
+            FooterFontSize = FooterFontSize,
+            ShowRunComplete = ShowRunComplete,
+            RunCompleteText = RunCompleteText,
+            PbMatchesHit = PbMatchesHit,
         };
         _overlayServerService.BroadcastConfig(config);
     }
@@ -359,6 +392,15 @@ public class OverlaySettingsViewModel : BaseViewModel
         TitleColor = "#e0e0e0";
         TitleFontFamily = "Segoe UI";
         TitleFontSize = 18;
+        
+        ShowRunComplete = true;
+        RunCompleteText = "✓ Run Complete";
+        PbMatchesHit = false;
+        FooterFontSize = 15;
+        FooterFontFamily = "Segoe UI";
+        FooterHitFontColor = "#ff4c4c";
+        FooterHitsCurrentColor ="#888888";
+        FooterPbFontColor = "#bbbbbb";
 
         {
             IsDirty = true;
