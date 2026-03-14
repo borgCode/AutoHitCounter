@@ -140,6 +140,7 @@
                                     Command="{Binding ToggleLockCommand}"
                                     Width="30" Height="22.1"
                                     FontSize="13" Padding="0,0,0,0"
+                                    FontFamily="Segoe MDL2 Assets"
                                     Margin="4,0,0,0"
                                     ToolTip="{Binding IsUnlocked, Converter={StaticResource LockTooltipConverter}}" />
                         </StackPanel>

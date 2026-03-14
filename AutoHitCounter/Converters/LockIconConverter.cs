@@ -10,7 +10,7 @@ namespace AutoHitCounter.Converters
     public class LockIconConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-            => value is true ? "🔓" : "🔒";
+            => value is true ? "\uE785" : "\uE72E";
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
             => throw new NotImplementedException();
@@ -18,20 +18,33 @@ namespace AutoHitCounter.Converters
 
     public class LockTooltipConverter : IValueConverter
     {
+        private static readonly FontFamily Mdl2 = new FontFamily("Segoe MDL2 Assets");
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        // Prettier tooltip
+            // Prettier tooltip
         {
             var isUnlocked = value is true;
 
-            var title = new TextBlock
+            var icon = new TextBlock
             {
-                Text = isUnlocked ? "🔓 Unlocked Splits" : "🔒 Locked Splits",
-                FontWeight = FontWeights.SemiBold,
+                Text = isUnlocked ? "\uE785" : "\uE72E",
+                FontFamily = Mdl2,
+                FontSize = 13,
                 Foreground = new SolidColorBrush(isUnlocked
                     ? Color.FromRgb(0x9D, 0x61, 0xA8)
                     : Color.FromRgb(0x99, 0x99, 0x99)),
-                Margin = new Thickness(0, 0, 0, 4)
             };
+
+            var label = new TextBlock
+            {
+                Text = isUnlocked ? " Unlocked Splits" : " Locked Splits",
+                FontWeight = FontWeights.SemiBold,
+                Foreground = icon.Foreground,
+            };
+
+            var header = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 0, 4) };
+            header.Children.Add(icon);
+            header.Children.Add(label);
+
 
             var body = new TextBlock
             {
@@ -45,7 +58,7 @@ namespace AutoHitCounter.Converters
             };
 
             var panel = new StackPanel();
-            panel.Children.Add(title);
+            panel.Children.Add(header);
             panel.Children.Add(body);
 
             return new ToolTip { Content = panel };
