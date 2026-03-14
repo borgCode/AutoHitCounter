@@ -85,11 +85,8 @@ namespace AutoHitCounter.ViewModels
             InitialiseCommands();
 
 
-            Games.Add(new Game { Title = GameTitle.DarkSoulsRemastered, ProcessName = "darksoulsremastered", IsEventLogSupported = true });
-            Games.Add(new Game { Title = GameTitle.DarkSouls2, ProcessName = "darksoulsii", IsEventLogSupported = true });
-            Games.Add(new Game { Title = GameTitle.DarkSouls3, ProcessName = "darksoulsiii", IsEventLogSupported = true });
-            Games.Add(new Game { Title = GameTitle.Sekiro, ProcessName = "sekiro", IsEventLogSupported = true });
-            Games.Add(new Game { Title = GameTitle.EldenRing, ProcessName = "eldenring", IsEventLogSupported = true });
+            foreach (var game in _gameModuleFactory.GetRegisteredGames())
+                Games.Add(game);
 
             SelectedGame = Games.FirstOrDefault(game => game.GameName == SettingsManager.Default.LastSelectedGame);
             if (_selectedGame != null)
@@ -807,18 +804,8 @@ namespace AutoHitCounter.ViewModels
                     g => (Name: g.First().Label, Required: g.Count(), Hit: 0));
         }
 
-        private Dictionary<uint, string> GetAllEventsForGame(GameTitle title)
-        {
-            return title switch
-            {
-                GameTitle.DarkSoulsRemastered => EventLoader.GetEvents("DSREvents"),
-                GameTitle.DarkSouls2 => EventLoader.GetEvents("DS2Events"),
-                GameTitle.DarkSouls3 => EventLoader.GetEvents("DS3Events"),
-                GameTitle.Sekiro => EventLoader.GetEvents("SKEvents"),
-                GameTitle.EldenRing => EventLoader.GetEvents("EldenRingEvents"),
-                _ => new()
-            };
-        }
+        private Dictionary<uint, string> GetAllEventsForGame(GameTitle title) =>
+            _gameModuleFactory.GetEventsForGame(title);
 
         private void SaveNotes()
         {
