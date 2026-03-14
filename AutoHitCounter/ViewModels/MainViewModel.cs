@@ -942,6 +942,10 @@ namespace AutoHitCounter.ViewModels
             _runSnapshots.Remove(key);
             UpdateSplits();
             _splitNav.InitFresh();
+
+            if (_activeGame == _selectedGame && _currentModule != null)
+                _currentModule.UpdateEvents(GetActiveEvents());
+
             OnPropertyChanged(nameof(IsRunComplete));
             OnPropertyChanged(nameof(CurrentSplit));
             OnPropertyChanged(nameof(CurrentSplitNumber));

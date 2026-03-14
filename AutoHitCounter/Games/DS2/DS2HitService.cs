@@ -51,6 +51,8 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         if (!_hooks.Contains(hookAddr))
             _hooks.Add(hookAddr);
     }
+    
+    public void ClearHooks() => _hooks.Clear();
 
     #region Scholar
 
@@ -380,4 +382,6 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
     }
 
     #endregion
+
+    
 }
