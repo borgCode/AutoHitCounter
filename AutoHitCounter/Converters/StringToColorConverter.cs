@@ -16,6 +16,23 @@ public class StringToColorConverter : IValueConverter
         // hex
         if (str.StartsWith("#"))
         {
+            // fixing RRGGBBAA preview
+            if (str.Length == 9)
+            {
+                try
+                {
+                    var r = System.Convert.ToByte(str.Substring(1, 2), 16);
+                    var g = System.Convert.ToByte(str.Substring(3, 2), 16);
+                    var b = System.Convert.ToByte(str.Substring(5, 2), 16);
+                    var a = System.Convert.ToByte(str.Substring(7, 2), 16);
+                    return Color.FromArgb(a, r, g, b);
+                }
+                catch
+                {
+                    return Colors.Transparent;
+                }
+            }
+
             try
             {
                 var result = ColorConverter.ConvertFromString(str);
@@ -67,6 +84,6 @@ public class StringToColorConverter : IValueConverter
         if (color.A == 255)
             return $"#{color.R:X2}{color.G:X2}{color.B:X2}";
 
-        return $"rgba({color.R}, {color.G}, {color.B}, {color.A / 255.0:F2})";
+        return $"#{color.R:X2}{color.G:X2}{color.B:X2}{color.A:X2}";
     }
 }
