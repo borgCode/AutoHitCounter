@@ -270,6 +270,25 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to e8 00 00 00 00          call   5 &lt;_main+0x5&gt;
+        ///50                      push   rax
+        ///53                      push   rbx
+        ///48 8b 1d 00 00 00 00    mov    rbx,QWORD PTR [rip+0x0]        # e &lt;_main+0xe&gt;
+        ///48 85 db                test   rbx,rbx
+        ///0f 84 af 00 00 00       je     c6 &lt;exit&gt;
+        ///48 8b 9b 80 00 00 00    mov    rbx,QWORD PTR [rbx+0x80]
+        ///48 85 db                test   rbx,rbx
+        ///0f 84 9f 00 00 00       je     c6 &lt;exit&gt;
+        ///48 3b 5e 08             cmp    rbx,QWORD PTR [rsi+0x8]
+        ///0f 85 95 00 00 00       jne    c6 &lt;exi [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string DS3IsFallDamageDisabled {
+            get {
+                return ResourceManager.GetString("DS3IsFallDamageDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 0f 86 00 00 00 00       jbe    6 &lt;_main+0x6&gt;
         ///f3 0f 59 f0             mulss  xmm6,xmm0
         ///81 7b 60 83 2e 00 00    cmp    DWORD PTR [rbx+0x60],0x2e83
@@ -311,20 +330,21 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0f 2f 35 00 00 00 00    comiss xmm6,DWORD PTR [rip+0x0]        # 7 &lt;_main+0x7&gt;
-        ///76 6f                   jbe    78 &lt;early_out&gt;
-        ///50                      push   rax
-        ///e8 00 00 00 00          call   f &lt;_main+0xf&gt;
-        ///74 66                   je     77 &lt;skip_count&gt;
-        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 18 &lt;_main+0x18&gt;
+        ///   Looks up a localized string similar to 50                      push   rax
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
+        ///48 85 c0                test   rax,rax
+        ///74 29                   je     36 &lt;skip&gt;
         ///48 8b 80 80 00 00 00    mov    rax,QWORD PTR [rax+0x80]
+        ///48 85 c0                test   rax,rax
+        ///74 1d                   je     36 &lt;skip&gt;
         ///48 39 07                cmp    QWORD PTR [rdi],rax
-        ///75 53                   jne    77 &lt;skip_count&gt;
-        ///53                [rest of string was truncated]&quot;;.
+        ///75 18                   jne    36 &lt;skip&gt;
+        ///f3 0f 11 35 00 00 00    movss  DWORD PTR [rip+0x0],xmm6        # 26 &lt;_main+0x26&gt;
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string DS3LethalFall {
+        internal static string DS3StoreFallHeight {
             get {
-                return ResourceManager.GetString("DS3LethalFall", resourceCulture);
+                return ResourceManager.GetString("DS3StoreFallHeight", resourceCulture);
             }
         }
         

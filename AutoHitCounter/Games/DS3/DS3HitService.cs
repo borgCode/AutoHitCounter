@@ -25,14 +25,15 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
         WriteGetPlayerSpEffect();
 
         InstallHitHook();
-        InstallLethalFallHook();
         InstallAuxHitHooks();
         InstallJailerDrainHook();
         InstallApplyHealthDeltaHook();
         InstallKillBoxHook();
         InstallCheckStaggerIgnore();
+        InstallStoreFallHeightHook();
+        InstallFallDamageDisabledHook();
     }
-
+    
     public bool HasHit()
     {
         var current = memoryService.Read<int>(Base + Hit);
@@ -48,7 +49,7 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
         if (_hooks.Any(h => memoryService.Read<byte>(h) != 0xE9))
             InstallHooks();
     }
-    
+
     private void InstallHook(nint code, nint hookAddr, byte[] originalBytes)
     {
         hookManager.InstallHook(code, hookAddr, originalBytes);
@@ -81,7 +82,7 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
         var staggerCheckFlag = Base + CheckStaggerFlag;
         var checkPlayerDeadFunc = Base + CheckPlayerDead;
         var code = Base + HitCode;
-        
+
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x1, checkPlayerDeadFunc, 5, 0x1 + 1),
             (code + 0x14, WorldChrMan.Base, 7, 0x14 + 3),
@@ -89,39 +90,11 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
             (code + 0xC8, hit, 6, 0xC8 + 2),
             (code + 0xDA, Hooks.Hit + 8, 5, 0xDA + 1),
         ]);
-        
+
         memoryService.WriteBytes(code, bytes);
         InstallHook(code, Hooks.Hit, [0x48, 0x83, 0xEC, 0x50, 0x48, 0x8B, 0x41, 0x08]);
     }
-
-    private void InstallLethalFallHook()
-    {
-        var bytes = AsmLoader.GetAsmBytes(AsmScript.DS3LethalFall);
-        var hit = Base + Hit;
-        var checkPlayerDeadFunc = Base + CheckPlayerDead;
-        var code = Base + LethalFall;
-
-        AsmHelper.WriteRelativeOffsets(bytes, [
-            (code, Float20, 7, 3),
-            (code + 0xA, checkPlayerDeadFunc, 5, 0xA + 1),
-            (code + 0x11, WorldChrMan.Base, 7, 0x11 + 3),
-            (code + 0x32, Functions.HasSpEffectId, 5, 0x32 + 1),
-            (code + 0x43, Functions.HasSpEffectId, 5, 0x43 + 1),
-            (code + 0x54, Functions.HasSpEffectId, 5, 0x54 + 1),
-            (code + 0x65, Functions.HasSpEffectId, 5, 0x65 + 1),
-            (code + 0x6E, hit, 6, 0x6E + 2),
-            (code + 0x78, Float100, 8, 0x78 + 4),
-            (code + 0x80, Hooks.FallHeight + 8, 5, 0x80 + 1)
-        ]);
-        
-        var originalBytes = bytes.Skip(0x78).Take(8).ToArray();
-        
-        memoryService.WriteBytes(code, bytes);
-        
-        InstallHook(code, Hooks.FallHeight, originalBytes);
-        
-    }
-
+    
     private void InstallAuxHitHooks()
     {
         var auxCheckFlag = Base + CheckAuxProcFlag;
@@ -134,7 +107,7 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
         var bytes = AsmLoader.GetAsmBytes(AsmScript.DS3CheckAuxAttacker);
         var checkPlayerDeadFunc = Base + CheckPlayerDead;
         var code = Base + CheckAuxAttacker;
-        
+
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x1, checkPlayerDeadFunc, 5, 0x1 + 1),
             (code + 0x8, WorldChrMan.Base, 7, 0x8 + 3),
@@ -142,7 +115,7 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
             (code + 0x38, auxCheckFlag, 7, 0x38 + 2),
             (code + 0x47, Hooks.CheckAuxAttacker + 7, 5, 0x47 + 1)
         ]);
-        
+
         memoryService.WriteBytes(code, bytes);
         InstallHook(code, Hooks.CheckAuxAttacker, [0x49, 0x89, 0xE3, 0x49, 0x89, 0x4B, 0x08]);
     }
@@ -152,16 +125,15 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
         var bytes = AsmLoader.GetAsmBytes(AsmScript.DS3AuxProc);
         var hit = Base + Hit;
         var code = Base + AuxProc;
-        
+
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x9, auxCheckFlag, 7, 0x9 + 2),
             (code + 0x12, hit, 6, 0x12 + 2),
             (code + 0x18, Hooks.AuxProc + 9, 5, 0x18 + 1)
         ]);
-        
+
         memoryService.WriteBytes(code, bytes);
         InstallHook(code, Hooks.AuxProc, [0x41, 0x09, 0x42, 0x4C, 0x43, 0x8B, 0x4C, 0x9A, 0x24]);
-        
     }
 
     private void InstallJailerDrainHook()
@@ -172,7 +144,7 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
         var lastHitCountTime = Base + LastJailerCountTime;
         var hit = Base + Hit;
         var code = Base + JailerDrain;
-        
+
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code, Hooks.HasJailerDrain + 6, 6, 2),
             (code + 0x16, getPlayerSpEffect, 5, 0x16 + 1),
@@ -181,9 +153,9 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
             (code + 0x4A, hit, 6, 0x4A + 2),
             (code + 0x53, Hooks.HasJailerDrain + 6, 5, 0x53 + 1)
         ]);
-        
+
         AsmHelper.WriteAbsoluteAddress(bytes, getTickCount, 0x22 + 2);
-        
+
         memoryService.WriteBytes(code, bytes);
         InstallHook(code, Hooks.HasJailerDrain, [0x76, 0x04, 0xf3, 0x0f, 0x59, 0xf0]);
     }
@@ -193,7 +165,7 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
         var bytes = AsmLoader.GetAsmBytes(AsmScript.DS3ApplyHealthDelta);
         var hit = Base + Hit;
         var code = Base + ApplyHealthDelta;
-        
+
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x1, WorldChrMan.Base, 7, 0x1 + 3),
             (code + 0x42, WorldChrMan.Base, 7, 0x42 + 3),
@@ -201,7 +173,7 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
             (code + 0x5B, hit, 6, 0x5B + 2),
             (code + 0x6A, Hooks.ApplyHealthDelta + 8, 5, 0x6A + 1)
         ]);
-        
+
         memoryService.WriteBytes(code, bytes);
         InstallHook(code, Hooks.ApplyHealthDelta, [0x48, 0x8B, 0x49, 0x08, 0x41, 0x0F, 0xB6, 0xD0]);
     }
@@ -212,14 +184,14 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
         var checkPlayerDeadFunc = Base + CheckPlayerDead;
         var hit = Base + Hit;
         var code = Base + KillBox;
-        
+
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x6, checkPlayerDeadFunc, 5, 0x6 + 1),
             (code + 0xF, WorldChrMan.Base, 7, 0xF + 3),
             (code + 0x20, hit, 6, 0x20 + 2),
             (code + 0x26, Hooks.KillBox + 5, 5, 0x26 + 1)
         ]);
-        
+
         memoryService.WriteBytes(code, bytes);
         InstallHook(code, Hooks.KillBox, [0x48, 0x89, 0xCB, 0x31, 0xD2]);
     }
@@ -230,15 +202,71 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
         var checkStaggerFlag = Base + CheckStaggerFlag;
         var hit = Base + Hit;
         var code = Base + CheckStagger;
-        
+
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code, checkStaggerFlag, 7, 2),
             (code + 0xD, hit, 6, 0xD + 2),
             (code + 0x13, checkStaggerFlag, 7, 0x13 + 2),
             (code + 0x20, Hooks.CheckStaggerIgnore + 6, 5, 0x20 + 1)
         ]);
-        
+
         memoryService.WriteBytes(code, bytes);
         InstallHook(code, Hooks.CheckStaggerIgnore, [0x45, 0x0F, 0x57, 0xC0, 0x85, 0xC0]);
+    }
+    
+    private void InstallStoreFallHeightHook()
+    {
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.DS3StoreFallHeight);
+        var storedHeight = Base + StoredFallHeight;
+        var fallHitCountedFlag = Base + FallHitCountedFlag;
+        var code = Base + StoreFallHeight;
+        
+        AsmHelper.WriteRelativeOffsets(bytes, [
+            (code + 0x1, WorldChrMan.Base, 7, 0x1 + 3),
+            (code + 0x1E, storedHeight, 8, 0x1E + 4),
+            (code + 0x26, Float20, 7, 0x26 + 3),
+            (code + 0x2F, fallHitCountedFlag, 7, 0x2F + 2),
+            (code + 0x37, Float100, 8, 0x37 + 4),
+            (code + 0x3F, Hooks.FallHeight + 8, 5, 0x3F + 1)
+        ]);
+        
+        var originalBytes = bytes.Skip(0x37).Take(8).ToArray();
+        
+        memoryService.WriteBytes(code, bytes);
+        
+        InstallHook(code, Hooks.FallHeight, originalBytes);
+    }
+
+    private void InstallFallDamageDisabledHook()
+    {
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.DS3IsFallDamageDisabled);
+        var storedHeight = Base + StoredFallHeight;
+        var fallHitCountedFlag = Base + FallHitCountedFlag;
+        var hit = Base + Hit;
+        var code = Base + LethalFallCheck;
+        AsmHelper.WriteRelativeOffsets(bytes, [
+            (code, Functions.IsFallDamageDisabled, 5, 1),
+            (code + 0x7, WorldChrMan.Base, 7, 0x7 + 3),
+            (code + 0x35, fallHitCountedFlag, 7, 0x35 + 2),
+            (code + 0x42, storedHeight, 9, 0x42 + 5),
+            (code + 0x4B, Float20, 8,  0x4B + 4),
+            (code + 0x5F, Functions.HasSpEffectId, 5, 0x5F + 1),
+            (code + 0x70, Functions.HasSpEffectId, 5, 0x70 + 1),
+            (code + 0x81, Functions.HasSpEffectId, 5, 0x81 + 1),
+            (code + 0x92, Functions.HasSpEffectId, 5, 0x92 + 1),
+            (code + 0x9B, fallHitCountedFlag, 7, 0x9B + 2),
+            (code + 0xA2, hit, 6, 0xA2 + 2),
+            (code + 0xAC, storedHeight, 9, 0xAC + 5),
+            (code + 0xB5, Float20, 8,  0xB5 + 4),
+            (code + 0xBF, fallHitCountedFlag, 7, 0xBF + 2),
+            (code + 0xC8, Hooks.IsFallDmgDisabledHook + 5, 5, 0xC8 + 1),
+            
+        ]);
+
+
+        var originalBytes = memoryService.ReadBytes(Hooks.IsFallDmgDisabledHook, 5);
+
+        memoryService.WriteBytes(code, bytes);
+        InstallHook(code, Hooks.IsFallDmgDisabledHook, originalBytes);
     }
 }

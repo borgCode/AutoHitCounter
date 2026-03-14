@@ -84,6 +84,7 @@ public static class DS3Offsets
         public static nint ApplyHealthDelta;
         public static nint KillBox;
         public static nint CheckStaggerIgnore;
+        public static nint IsFallDmgDisabledHook;
         public static nint SetEvent;
     }
 
@@ -91,6 +92,7 @@ public static class DS3Offsets
     {
         public static nint HasSpEffectId;
         public static nint OriginalLogoFunc;
+        public static nint IsFallDamageDisabled;
     }
 
     public static class Patches
@@ -382,6 +384,18 @@ public static class DS3Offsets
 
             _ => 0
         };
+        
+        Hooks.IsFallDmgDisabledHook = moduleBase + Version switch
+        {
+            // WARNING: No match found for: Version1_3_2_0, Version1_4_1_0, Version1_4_2_0, Version1_4_3_0, Version1_5_0_0, Version1_5_1_0, Version1_6_0_0, Version1_7_0_0, Version1_8_0_0, Version1_9_0_0, Version1_10_0_0, Version1_11_0_0, Version1_12_0_0
+            Version1_13_0_0 => 0x9BD858,
+            Version1_14_0_0 => 0x9BDB28,
+            Version1_15_0_0 => 0x9BDC28,
+            Version1_15_1_0 => 0x9C7D18,
+            Version1_15_2_0 => 0x9C7E48,
+            _ => 0
+        };
+
 
 
         Hooks.SetEvent = moduleBase + Version switch
@@ -420,6 +434,18 @@ public static class DS3Offsets
             Version1_15_2_0 => 0x88BC00,
             _ => 0
         };
+        
+        Functions.IsFallDamageDisabled = moduleBase + Version switch
+        {
+            // WARNING: No match found for: Version1_3_2_0, Version1_4_1_0, Version1_4_2_0, Version1_4_3_0, Version1_5_0_0, Version1_5_1_0, Version1_6_0_0, Version1_7_0_0, Version1_8_0_0, Version1_9_0_0, Version1_10_0_0, Version1_11_0_0, Version1_12_0_0
+            Version1_13_0_0 => 0x9CC420,
+            Version1_14_0_0 => 0x9CC6F0,
+            Version1_15_0_0 => 0x9CC7F0,
+            Version1_15_1_0 => 0x9D68E0,
+            Version1_15_2_0 => 0x9D6A10,
+            _ => 0
+        };
+
 
         Patches.NoLogo = moduleBase + Version switch
         {
@@ -453,17 +479,21 @@ public static class DS3Offsets
 
         Console.WriteLine("\n--- Hooks ---");
         PrintOffset("Hit", Hooks.Hit);
+        PrintOffset("FallHeight", Hooks.FallHeight);
         PrintOffset("CheckAuxAttacker", Hooks.CheckAuxAttacker);
         PrintOffset("AuxProc", Hooks.AuxProc);
         PrintOffset("HasJailerDrain", Hooks.HasJailerDrain);
         PrintOffset("ApplyHealthDelta", Hooks.ApplyHealthDelta);
         PrintOffset("KillBox", Hooks.KillBox);
+        PrintOffset("CheckStaggerIgnore", Hooks.CheckStaggerIgnore);
+        PrintOffset("IsFallDmgDisabledHook", Hooks.IsFallDmgDisabledHook);
         PrintOffset("SetEvent", Hooks.SetEvent);
 
 
         Console.WriteLine("\n--- Functions ---");
         PrintOffset("HasSpEffectId", Functions.HasSpEffectId);
         PrintOffset("OriginalLogoFunc", Functions.OriginalLogoFunc);
+        PrintOffset("IsFallDamageDisabled", Functions.IsFallDamageDisabled);
 
         Console.WriteLine("\n--- Patches ---");
         PrintOffset("NoLogo", Patches.NoLogo);
