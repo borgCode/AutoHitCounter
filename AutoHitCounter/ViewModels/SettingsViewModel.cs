@@ -68,15 +68,17 @@ public class SettingsViewModel : BaseViewModel
         }
     }
 
-    private bool _isShowNotesEnabled;
+    public IReadOnlyList<NotesDisplayMode> NotesDisplayModes { get; } = EnumExtensions.GetValues<NotesDisplayMode>().ToList();
 
-    public bool IsShowNotesEnabled
+    private NotesDisplayMode _notesDisplayMode;
+
+    public NotesDisplayMode NotesDisplayMode
     {
-        get => _isShowNotesEnabled;
+        get => _notesDisplayMode;
         set
         {
-            if (!SetProperty(ref _isShowNotesEnabled, value)) return;
-            SettingsManager.Default.ShowNotesSection = value;
+            if (!SetProperty(ref _notesDisplayMode, value)) return;
+            SettingsManager.Default.NotesDisplayMode = (int)value;
             SettingsManager.Default.Save();
         }
     }
@@ -264,8 +266,8 @@ public class SettingsViewModel : BaseViewModel
 
         IsAlwaysOnTopEnabled = SettingsManager.Default.AlwaysOnTop;
 
-        _isShowNotesEnabled = SettingsManager.Default.ShowNotesSection;
-        OnPropertyChanged(nameof(IsShowNotesEnabled));
+        _notesDisplayMode = (NotesDisplayMode)SettingsManager.Default.NotesDisplayMode;
+        OnPropertyChanged(nameof(NotesDisplayMode));
         
         _isPracticeMode = SettingsManager.Default.PracticeMode;
         OnPropertyChanged(nameof(IsPracticeMode));

@@ -20,9 +20,16 @@
                     <CheckBox Content="Always On Top"
                               IsChecked="{Binding IsAlwaysOnTopEnabled}"
                               Margin="0,0,10,0" />
-                    <CheckBox Content="Show notes"
-                              IsChecked="{Binding IsShowNotesEnabled}"
-                              Margin="0,0,10,0" />
+                    <TextBlock Text="Notes:" VerticalAlignment="Center" Margin="0,0,5,0" />
+                    <ComboBox ItemsSource="{Binding NotesDisplayModes}"
+                              SelectedItem="{Binding NotesDisplayMode}"
+                              Width="120">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                     <CheckBox Content="Practice Mode"

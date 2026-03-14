@@ -7,6 +7,7 @@
         xmlns:converters="clr-namespace:AutoHitCounter.Converters"
         xmlns:controls="clr-namespace:AutoHitCounter.Views.Controls"
         xmlns:behaviors="clr-namespace:AutoHitCounter.Behaviors"
+        xmlns:enums="clr-namespace:AutoHitCounter.Enums"
         Icon="pack://application:,,,/Assets/icon.ico"
         mc:Ignorable="d"
         Style="{StaticResource DefaultWindowStyle}"
@@ -607,10 +608,21 @@
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>
                                                             <Condition
-                                                                Binding="{Binding DataContext.Settings.IsShowNotesEnabled,
+                                                                Binding="{Binding DataContext.Settings.NotesDisplayMode,
                             RelativeSource={RelativeSource AncestorType=Window}}"
-                                                                Value="True" />
+                                                                Value="{x:Static enums:NotesDisplayMode.AllSplits}" />
                                                             <Condition Binding="{Binding IsParent}" Value="False" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </MultiDataTrigger>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition
+                                                                Binding="{Binding DataContext.Settings.NotesDisplayMode,
+                            RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                Value="{x:Static enums:NotesDisplayMode.CurrentSplit}" />
+                                                            <Condition Binding="{Binding IsParent}" Value="False" />
+                                                            <Condition Binding="{Binding IsCurrent}" Value="True" />
                                                         </MultiDataTrigger.Conditions>
                                                         <Setter Property="Visibility" Value="Visible" />
                                                     </MultiDataTrigger>
