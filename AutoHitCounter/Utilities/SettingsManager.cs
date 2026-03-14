@@ -88,7 +88,7 @@ public class SettingsManager
     [DefaultValue(false)] public bool TableMode { get; set; }
 
 // Hit column
-    
+
     [DefaultValue("#888888")] public string HitsCurrentColor { get; set; }
     [DefaultValue("#00cc66")] public string HitsClearedColor { get; set; }
     [DefaultValue("#c8843a")] public string HitsActiveColor { get; set; }
@@ -134,7 +134,7 @@ public class SettingsManager
 
     [DefaultValue("rgba(255, 255, 255, 0.05)")]
     public string AlternatingRows { get; set; }
-    
+
     [DefaultValue("Segoe UI")] public string HeaderFontFamily { get; set; }
     [DefaultValue(11)] public int HeaderFontSize { get; set; }
 
@@ -144,6 +144,15 @@ public class SettingsManager
     [DefaultValue("#e0e0e0")] public string TitleColor { get; set; }
     [DefaultValue("Segoe UI")] public string TitleFontFamily { get; set; }
     [DefaultValue(18)] public int TitleFontSize { get; set; }
+
+    [DefaultValue(false)] public bool ShowRunComplete { get; set; }
+    [DefaultValue("✓ Run Complete")] public string RunCompleteText { get; set; }
+    [DefaultValue(false)] public bool PbMatchesHit { get; set; }
+    [DefaultValue("#c8843a")] public string FooterHitFontColor { get; set; }
+    [DefaultValue("#888888")] public string FooterHitsCurrentColor { get; set; }
+    [DefaultValue("#bbbbbb")] public string FooterPbFontColor { get; set; }
+    [DefaultValue("Segoe UI")] public string FooterFontFamily { get; set; }
+    [DefaultValue(15)] public int FooterFontSize { get; set; }
 
 
     public void Save()
