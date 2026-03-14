@@ -223,6 +223,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         InstallVanillaKillBoxHook();
         InstallVanillaLightPoiseStaggerHook();
         InstallVanillaClearWetPoisonHook();
+        InstallVanillaStaggerCheckHook();
     }
 
     private void WriteVanillaPlayerDeadCheck()
@@ -358,6 +359,24 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
 
         memoryService.WriteBytes(code, bytes);
         InstallHook(code, Hooks.ClearWetPoisonBit, [0x8D, 0x94, 0x1A, 0x10, 0x01, 0x00, 0x00]);
+    }
+
+    private void InstallVanillaStaggerCheckHook()
+    {
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.VanillaStaggerCheck);
+        var hit = Base + Hit;
+        var code = Base + StaggerCheck;
+
+        AsmHelper.WriteImmediateDwords(bytes, [
+            ((int)GameManagerImp.Base, 0xC + 1),
+            ((int)hit, 0x2A + 2),
+        ]);
+
+        AsmHelper.WriteRelativeOffset(bytes, code + 0x31, Hooks.StaggerCheck + 6, 5, 0x31 + 1);
+
+
+        memoryService.WriteBytes(code, bytes);
+        InstallHook(code, Hooks.StaggerCheck, [0x88, 0x4F, 0x17, 0x8B, 0x56, 0x10]);
     }
 
     #endregion

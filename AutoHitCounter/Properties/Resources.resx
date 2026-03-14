@@ -2253,4 +2253,28 @@ ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 39 &lt;exit&gt;
 00000000003a &lt;early_exit&gt;:
 e9 00 00 00 00          jmp    3f &lt;early_exit+0x5&gt;</value>
   </data>
+  <data name="VanillaStaggerCheck" xml:space="preserve">
+    <value>88 4f 17                mov    BYTE PTR [edi+0x17],cl
+8b 56 10                mov    edx,DWORD PTR [esi+0x10]
+80 f9 02                cmp    cl,0x2
+75 26                   jne    31 &lt;early_exit&gt;
+50                      push   eax
+a1 00 00 00 00          mov    eax,ds:0x0
+85 c0                   test   eax,eax
+74 1b                   je     30 &lt;exit&gt;
+8b 40 74                mov    eax,DWORD PTR [eax+0x74]
+85 c0                   test   eax,eax
+74 14                   je     30 &lt;exit&gt;
+3b 46 10                cmp    eax,DWORD PTR [esi+0x10]
+75 0f                   jne    30 &lt;exit&gt;
+83 bd 80 fe ff ff 00    cmp    DWORD PTR [ebp-0x180],0x0
+74 06                   je     30 &lt;exit&gt;
+ff 05 00 00 00 00       inc    DWORD PTR ds:0x0
+
+0030 &lt;exit&gt;:
+58                      pop    eax
+
+0031 &lt;early_exit&gt;:
+e9 fc ff ff ff          jmp    32 &lt;early_exit+0x1&gt;</value>
+  </data>
 </root>

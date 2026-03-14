@@ -195,6 +195,8 @@ public static class DS2Offsets
         
         Hooks.StaggerCheck = moduleBase + Version switch
         {
+            Vanilla1_0_11 => 0x1CA788,
+            Vanilla1_0_12 => 0x1CBCF8,
             Scholar1_0_2 => 0x1327BD,
             Scholar1_0_3 => 0x134E2D,
             _ => 0

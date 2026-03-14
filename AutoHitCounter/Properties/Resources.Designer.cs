@@ -1519,5 +1519,25 @@ namespace AutoHitCounter.Properties {
                 return ResourceManager.GetString("VanillaLightPoiseStagger", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 88 4f 17                mov    BYTE PTR [edi+0x17],cl
+        ///8b 56 10                mov    edx,DWORD PTR [esi+0x10]
+        ///80 f9 02                cmp    cl,0x2
+        ///75 26                   jne    31 &lt;early_exit&gt;
+        ///50                      push   eax
+        ///a1 00 00 00 00          mov    eax,ds:0x0
+        ///85 c0                   test   eax,eax
+        ///74 1b                   je     30 &lt;exit&gt;
+        ///8b 40 74                mov    eax,DWORD PTR [eax+0x74]
+        ///85 c0                   test   eax,eax
+        ///74 14                   je     30 &lt;exit&gt;
+        ///3b 46 10      [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string VanillaStaggerCheck {
+            get {
+                return ResourceManager.GetString("VanillaStaggerCheck", resourceCulture);
+            }
+        }
     }
 }
