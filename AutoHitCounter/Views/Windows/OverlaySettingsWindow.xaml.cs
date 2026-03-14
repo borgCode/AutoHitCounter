@@ -36,7 +36,7 @@ public partial class OverlaySettingsWindow : Window
                 vm.SaveCommand.Execute(null);
             }
             else
-                vm.ReloadFromSettings();
+                vm.ReloadFromProfile();
         }
 
         base.OnClosing(e);

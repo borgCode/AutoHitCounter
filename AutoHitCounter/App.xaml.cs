@@ -47,7 +47,10 @@ namespace AutoHitCounter
             GameModuleFactory gameModuleFactory =
                 new GameModuleFactory(memoryService, stateService, hookManager, tickService);
 
-            var overlaySettingsViewModel = new OverlaySettingsViewModel(overlayServerService);
+            OverlayProfileManager.MigrateFromSettingsIfNeeded();
+            var overlayProfileManager = new OverlayProfileManager();
+
+            var overlaySettingsViewModel = new OverlaySettingsViewModel(overlayServerService, overlayProfileManager);
             
             var settingsViewModel = new SettingsViewModel(stateService, overlaySettingsViewModel, hotkeyManager);
             

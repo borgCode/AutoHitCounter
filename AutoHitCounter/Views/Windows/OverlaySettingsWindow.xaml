@@ -61,14 +61,30 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <controls:TitleBar Grid.Row="0" Title="Overlay Settings" />
 
+        <!-- Profile Bar -->
+        <Border Grid.Row="1" BorderBrush="#2a2a2a" BorderThickness="0,0,0,1" Padding="8,5">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Profile:" Foreground="#999999" VerticalAlignment="Center" Margin="0,0,6,0" FontSize="11" />
+                <ComboBox ItemsSource="{Binding ProfileNames}"
+                          SelectedItem="{Binding SelectedProfileName}"
+                          Width="160" FontSize="11" Margin="0,0,8,0" />
+                <Button Content="New" Command="{Binding NewProfileCommand}" FontSize="11" Padding="8,2" Margin="0,0,4,0" />
+                <Button Content="Rename" Command="{Binding RenameProfileCommand}" FontSize="11" Padding="8,2" Margin="0,0,4,0" />
+                <Button Content="Delete" Command="{Binding DeleteProfileCommand}" FontSize="11" Padding="8,2" Margin="0,0,4,0" />
+                <Button Content="Import" Command="{Binding ImportProfileCommand}" FontSize="11" Padding="8,2" Margin="0,0,4,0" />
+                <Button Content="Export" Command="{Binding ExportProfileCommand}" FontSize="11" Padding="8,2" />
+            </StackPanel>
+        </Border>
+
         <!-- Focus outline -->
-        <Border Grid.Row="0" Grid.RowSpan="3"
+        <Border Grid.Row="0" Grid.RowSpan="4"
                 BorderThickness="1" IsHitTestVisible="False" Panel.ZIndex="99"
                 CornerRadius="4">
             <Border.Style>
@@ -85,7 +101,7 @@
         </Border>
 
         <!-- Main content -->
-        <Grid Grid.Row="1" Margin="8,6,8,6">
+        <Grid Grid.Row="2" Margin="8,6,8,6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="*" />
@@ -545,7 +561,7 @@
         </Grid>
 
         <!-- Bottom Bar -->
-        <Border Grid.Row="2" BorderBrush="#2a2a2a" BorderThickness="0,1,0,0" Padding="8,6">
+        <Border Grid.Row="3" BorderBrush="#2a2a2a" BorderThickness="0,1,0,0" Padding="8,6">
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <Button Content="Reset to Defaults" Command="{Binding ResetToDefaultsCommand}" />
