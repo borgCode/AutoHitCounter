@@ -81,5 +81,7 @@ public enum AsmScript
     EldenRingCheckStateInfo,
     EldenRingDeflectTear,
     EldenRingKillChr,
+    EldenRingSetThrowState,
+    EldenRingClearThrowState,
     EldenRingEventLog
 }

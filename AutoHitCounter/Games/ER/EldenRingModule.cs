@@ -87,7 +87,13 @@ public class EldenRingModule : IGameModule, IDisposable, IVersionedGameModule
 
     private void Tick()
     {
-        if (!IsLoaded()) return;
+        if (!IsLoaded())
+        {
+            _hitService.ResetFlags();
+            return;
+        }
+        
+        _hitService.EnsureHooksInstalled();
 
         if (_hitService.HasHit() && (_lastHit == null || (DateTime.Now - _lastHit.Value).TotalSeconds > 3))
         {
