@@ -403,6 +403,13 @@
                             <TextBox Text="{Binding FooterHitFontColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
                         </StackPanel>
                         
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="PB Column" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle Fill="{Binding FooterPbFontColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding FooterPbFontColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                        </StackPanel>
                         
 
                         <Separator Style="{StaticResource Separator}" Margin="0,0,10,0"/>

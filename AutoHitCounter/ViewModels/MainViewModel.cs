@@ -528,7 +528,8 @@ namespace AutoHitCounter.ViewModels
         private void OnAppStart()
         {
             AppVer = VersionChecker.GetVersionText();
-            VersionChecker.CheckForUpdates(Application.Current.MainWindow);
+            if (SettingsManager.Default.EnableUpdateChecks)
+                VersionChecker.CheckForUpdates(Application.Current.MainWindow);
         }
 
         private void CheckUpdate() =>
@@ -949,7 +950,7 @@ namespace AutoHitCounter.ViewModels
         private void ResetSplits()
         {
             _saveDebounce.Stop();
-             TryAdvanceDistancePb();
+            TryAdvanceDistancePb();
 
             if (_activeProfile != null)
             {

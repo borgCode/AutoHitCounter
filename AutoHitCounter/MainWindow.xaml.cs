@@ -52,11 +52,7 @@ namespace AutoHitCounter
             SettingsManager.Default.MainWindowTop = Top;
             SettingsManager.Default.Save();
         }
-
-
-        private void CheckUpdateButton_Click(object sender, RoutedEventArgs e)
-        {
-        }
+        
 
         private void SplitItem_DoubleClick(object sender, MouseButtonEventArgs e)
         {
