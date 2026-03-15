@@ -34,6 +34,7 @@
                     <CheckBox Content="Enable Global Hotkeys"
                               IsEnabled="{Binding IsEnableHotkeysEnabled}"
                               IsChecked="{Binding IsGlobalHotkeysEnabled}"
+                              ToolTip="When disabled, hotkeys only work while the game window is focused. Custom games always have global hotkeys enabled."
                               Margin="0,0,0,0" />
                     <CheckBox Content="Block Game Actions"
                               IsEnabled="{Binding IsEnableHotkeysEnabled}"
@@ -41,9 +42,11 @@
                               Margin="10,0,0,0" />
                     
                 </StackPanel>
-
+                <TextBlock Text="Hotkeys are always active when a custom game is selected."
+                           FontSize="10" FontStyle="Italic" Foreground="#777"
+                           Margin="0,2,0,0" />
             </StackPanel>
-            
+
             <ScrollViewer MaxHeight="350" VerticalScrollBarVisibility="Auto">
                 <ItemsControl ItemsSource="{Binding HotkeyBindings}"
                               Padding="5"

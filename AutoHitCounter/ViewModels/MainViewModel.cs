@@ -105,6 +105,7 @@ namespace AutoHitCounter.ViewModels
         public DelegateCommand TrackGameCommand { get; set; }
         public DelegateCommand CreateCustomGameCommand { get; set; }
         public DelegateCommand DeleteCustomGameCommand { get; set; }
+        public DelegateCommand RenameCustomGameCommand { get; set; }
 
         public DelegateCommand ManualSplitCommand { get; set; }
         public DelegateCommand AdvanceSplitCommand { get; set; }
@@ -553,6 +554,7 @@ namespace AutoHitCounter.ViewModels
             TrackGameCommand = new DelegateCommand(StartTrackingGame);
             CreateCustomGameCommand = new DelegateCommand(CreateCustomGame);
             DeleteCustomGameCommand = new DelegateCommand(DeleteCustomGame);
+            RenameCustomGameCommand = new DelegateCommand(RenameCustomGame);
             OpenProfileEditorCommand = new DelegateCommand(OpenProfileEditor);
             OpenEventLogCommand = new DelegateCommand(OpenEventLog);
             ManualSplitCommand = new DelegateCommand(ManualAdvanceSplit);
@@ -697,6 +699,7 @@ namespace AutoHitCounter.ViewModels
             if (_activeGame == null) return;
 
             _currentModule = _gameModuleFactory.CreateModule(_activeGame, GetActiveEvents(), this);
+            _hotkeyManager.SetManualGameActive(_activeGame.IsManual);
 
             if (_activeGame.IsManual)
             {
@@ -962,14 +965,19 @@ namespace AutoHitCounter.ViewModels
         {
             if (_selectedGame == null || !_selectedGame.IsManual) return;
 
+            var name = _selectedGame.GameName;
+            var profiles = _profileService.GetProfiles(name);
+            var count = profiles.Count;
+            var profileMsg = count > 0
+                ? $"\n\nThis will delete {count} profile{(count == 1 ? "" : "s")} and all splits associated with this game."
+                : "";
+
             if (!MsgBox.ShowYesNo(
-                $"Are you sure you want to delete \"{_selectedGame.GameName}\"?\n\nThis will delete all profiles and splits associated with this game.",
+                $"Are you sure you want to delete \"{name}\"?{profileMsg}",
                 "Delete Custom Game"))
                 return;
 
-            var name = _selectedGame.GameName;
-
-            foreach (var profile in _profileService.GetProfiles(name).ToList())
+            foreach (var profile in profiles.ToList())
                 _profileService.DeleteProfile(name, profile.Name);
 
             (_currentModule as IDisposable)?.Dispose();
@@ -987,6 +995,53 @@ namespace AutoHitCounter.ViewModels
                 .Where(n => n != name);
             SettingsManager.Default.CustomGames = string.Join(",", names);
             SettingsManager.Default.Save();
+        }
+
+        private void RenameCustomGame()
+        {
+            if (_selectedGame == null || !_selectedGame.IsManual) return;
+
+            var oldName = _selectedGame.GameName;
+            var newName = MsgBox.ShowInput("Rename Game", oldName, "Rename Custom Game");
+            if (string.IsNullOrWhiteSpace(newName) || newName == oldName) return;
+
+            if (Games.Any(g => g.GameName == newName))
+            {
+                MsgBox.Show("A game with that name already exists.", "Rename Custom Game");
+                return;
+            }
+
+            _profileService.RenameGame(oldName, newName);
+
+            var game = _selectedGame;
+            game.GameName = newName;
+
+            // Refresh the combo box display by re-inserting the item
+            var index = Games.IndexOf(game);
+            Games.RemoveAt(index);
+            Games.Insert(index, game);
+            _selectedGame = null;
+            SelectedGame = game;
+
+            var customNames = (SettingsManager.Default.CustomGames ?? "")
+                .Split(',')
+                .Select(n => n.Trim())
+                .Select(n => n == oldName ? newName : n);
+            SettingsManager.Default.CustomGames = string.Join(",", customNames);
+            SettingsManager.Default.LastSelectedGame = newName;
+            SettingsManager.Default.Save();
+
+            if (_activeGame == game)
+                AttachedText = $"Custom Game: {newName}";
+
+            // Re-key any cached run snapshots
+            var staleKeys = _runSnapshots.Keys.Where(k => k.StartsWith($"{oldName}|")).ToList();
+            foreach (var key in staleKeys)
+            {
+                var snapshot = _runSnapshots[key];
+                _runSnapshots.Remove(key);
+                _runSnapshots[key.Replace($"{oldName}|", $"{newName}|")] = snapshot;
+            }
         }
 
         private void SaveNotes()

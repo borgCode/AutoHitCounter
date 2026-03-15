@@ -270,6 +270,7 @@ public static class DS2Offsets
         PrintOffset("CountAuxHit", Hooks.CountAuxHit);
         PrintOffset("LightPoiseStagger", Hooks.LightPoiseStagger);
         PrintOffset("ClearWetPoisonBit", Hooks.ClearWetPoisonBit);
+        PrintOffset("StaggerCheck", Hooks.StaggerCheck);
         PrintOffset("SetEvent", Hooks.SetEvent);
         PrintOffset("IgtStart", Hooks.IgtNewGame);
         PrintOffset("IgtStop", Hooks.IgtStop);

@@ -10,4 +10,5 @@ public interface IProfileService
     List<Profile> GetProfiles(string gameName);
     void SaveProfile(Profile profile);
     void DeleteProfile(string gameName, string profileName);
+    void RenameGame(string oldGameName, string newGameName);
 }

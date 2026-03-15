@@ -178,6 +178,21 @@
                                 Command="{Binding CreateCustomGameCommand}"
                                 Height="23" FontSize="11"
                                 Padding="8,0" Margin="0,0,4,0" />
+                        <Button Content="Rename Game"
+                                Command="{Binding RenameCustomGameCommand}"
+                                Height="23" FontSize="11"
+                                Padding="8,0" Margin="0,0,4,0">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedGame.IsManual}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
                         <Button Content="Delete Game"
                                 Command="{Binding DeleteCustomGameCommand}"
                                 Height="23" FontSize="11"

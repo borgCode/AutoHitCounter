@@ -57,6 +57,18 @@ public class ProfileService : IProfileService
         WriteUserProfiles();
     }
 
+    public void RenameGame(string oldGameName, string newGameName)
+    {
+        if (!_profiles.TryGetValue(oldGameName, out var list)) return;
+
+        _profiles.Remove(oldGameName);
+        foreach (var profile in list)
+            profile.GameName = newGameName;
+        _profiles[newGameName] = list;
+
+        WriteUserProfiles();
+    }
+
     private Dictionary<string, List<Profile>> LoadMergedProfiles()
     {
         var defaults = LoadFromDisk(DefaultProfilesPath);
