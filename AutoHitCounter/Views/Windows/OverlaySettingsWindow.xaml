@@ -120,6 +120,7 @@
                         <CheckBox Content="Show IGT" IsChecked="{Binding ShowIgt}" Margin="0,2,0,2" />
                         <CheckBox Content="Show Attempts" IsChecked="{Binding ShowAttempts}" Margin="0,2,0,2" />
                         <CheckBox Content="Show Progress" IsChecked="{Binding ShowProgress}" Margin="0,2,0,2" />
+                        <CheckBox Content="Show Distance PB" IsChecked="{Binding ShowDpbHighlight}" Margin="0,2,0,2" />
                         <CheckBox Content="Show Footer Totals" IsChecked="{Binding ShowFooterTotals}" Margin="0,2,0,2" />
                         <CheckBox Content="Show Run Complete" IsChecked="{Binding ShowRunComplete}" Margin="0,2,0,2" />
                         <CheckBox Content="Table Mode" IsChecked="{Binding TableMode}" Margin="0,2,0,2" />
@@ -361,6 +362,15 @@
                                     Fill="{Binding CurrentSplitHitBorderColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding CurrentSplitHitBorderColor, UpdateSourceTrigger=PropertyChanged}"
+                                     Width="150" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Distance PB Banner" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding DpbHighlightColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding DpbHighlightColor, UpdateSourceTrigger=PropertyChanged}"
                                      Width="150" />
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">

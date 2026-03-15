@@ -171,6 +171,8 @@ public class OverlaySettingsViewModel : BaseViewModel
     public string FooterHitFontColor          { get => Get<string>(); set => Set(value); }
     public string FooterHitsCurrentColor          { get => Get<string>(); set => Set(value); }
     public string FooterPbFontColor          { get => Get<string>(); set => Set(value); }
+    public bool ShowDpbHighlight         { get => Get<bool>();   set => Set(value); }
+    public string DpbHighlightColor          { get => Get<string>(); set => Set(value); }
 
 
     #endregion

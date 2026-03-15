@@ -14,6 +14,7 @@ public class OverlayState
     public string InGameTime { get; set; }
     public bool IsRunComplete { get; set; }
     public int AttemptCount { get; set; }
+    public int DistancePb { get; set; } = -1;
 }
 
 public class OverlaySplit

@@ -17,7 +17,6 @@ public class OverlayConfig
     public bool ShowFooterTotals { get; set; }
     public bool TableMode { get; set; }
     public double BackgroundOpacity { get; set; }
-    
 
 
     // Title Section //
@@ -66,6 +65,12 @@ public class OverlayConfig
     //  Current Row Borders (Flashing Indicators)
     public string CurrentSplitBorderColor { get; set; }
     public string CurrentSplitHitBorderColor { get; set; }
+
+    // PB Highlight (below text)
+
+    public bool ShowDpbHighlight { get; set; }
+    public string DpbHighlightColor { get; set; }
+
 
     // Previous Rows
     public string RowClearedColor { get; set; }

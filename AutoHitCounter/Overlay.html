@@ -231,15 +231,15 @@
         const DEFAULTS = {
             showAttempts: true,
             prevSplits: 4,
-            nextSplits: 13,
+            nextSplits: 10,
             showDiff: true,
             showPb: true,
             showIgt: true,
-            overlayWidth: 300,
-            overlayHeight: 420,
+            overlayWidth: 380,
+            overlayHeight: 500,
             showProgress: true,
             fontFamily: 'Segoe UI',
-            fontSize: 15,
+            fontSize: 16,
             rowHeight: 29,
             backgroundOpacity: 0,
             tableMode: false,
@@ -266,23 +266,25 @@
             pbColor: '#bbbbbb',
             showFooterTotals: true,
             igtFontFamily: 'Consolas',
-            igtFontSize: 16,
+            igtFontSize: 17,
             alternatingRows: 'rgba(255, 255, 255, 0.05)',
             headerFontFamily: 'Segoe UI',
-            headerFontSize: 11,
+            headerFontSize: 13,
             showTitle: false,
             titleText: '',
             titleColor: '#e0e0e0',
             titleFontFamily: 'Segoe UI',
-            titleFontSize: 18,
+            titleFontSize: 20,
             showRunComplete: true,
             runCompleteText: '✓ Run Complete',
             pbMatchesHit: false,
-            footerFontSize: 15,
+            footerFontSize: 16,
             footerFontFamily: 'Segoe UI',
             footerHitFontColor: '#c8843a',
             footerHitsCurrentColor: '#888888',
             footerPbFontColor: '#bbbbbb',
+            dpbHighlightColor: '#ffe766',
+            showDpbHighlight: true,
         };
 
         let config = {...DEFAULTS};
@@ -320,8 +322,10 @@
                     lastState = msg.data;
                     renderState(msg.data);
                 } else if (msg.type === 'igt') {
-                    const igtEl = document.getElementById('igt');
-                    if (igtEl) igtEl.textContent = formatIgt(msg.data);
+                    if (config.showIgt) {
+                        const igtEl = document.getElementById('igt');
+                        if (igtEl) igtEl.textContent = formatIgt(msg.data);
+                    }
                 } else if (msg.type === 'config') {
                     Object.assign(config, msg.data);
                     localStorage.setItem('overlayConfig', JSON.stringify(config));
@@ -358,66 +362,71 @@
                 document.head.appendChild(dynamicStyleEl);
             }
             dynamicStyleEl.textContent = `
-            .diff-pos { color: ${config.diffPosColor}; }
-            .diff-neg { color: ${config.diffNegColor}; }
-            .diff-zero { color: ${config.diffZeroColor}; }
-            .split-row:nth-child(even) { background: ${config.alternatingRows || 'transparent'}; }
-            .table-mode .split-row.current { border-left: 3px solid ${config.currentSplitBorderColor}; }
-            .split-row.current { background: ${config.currentSplitColor}; border-left-color: ${config.currentSplitBorderColor}; }
-            .split-row.hit { background: ${config.rowHitColor}; }
-            .split-row.cleared { background: ${config.rowClearedColor}; }
-            .table-mode .split-row.current.hit { border-left: 3px solid ${config.currentSplitHitBorderColor}; }
-            .split-row.current.hit { background: ${config.currentSplitHitColor}; border-left-color: ${config.currentSplitHitBorderColor}; }
-            .split-row { height: ${config.rowHeight}px; font-size: ${config.fontSize}px; }
-            .footer { font-family: ${config.footerFontFamily}; font-size: ${config.footerFontSize}px; }
-            .run-complete { 
-                color: ${config.runCompleteBannerColor}; 
-            border-top-color: ${config.runCompleteBannerColor}; 
-                background: ${config.runCompleteBannerColor}14; 
-            }
-            
-            @keyframes highlight-red {
-                from { background: transparent; border-left-color: transparent; }
-                to { background: ${config.currentSplitHitColor}; border-left-color: ${config.currentSplitHitBorderColor}; }
-            }
-            @keyframes highlight-green {
-                from { background: transparent; border-left-color: transparent; }
-                to { background: ${config.currentSplitColor}; border-left-color: ${config.currentSplitBorderColor}; }
-            }
-            .split-row .col-name { color: ${config.splitNameColor}; }
-            .split-row.hit .col-name { color: ${config.splitNameOnHitColor}; }
-            .split-row.cleared .col-name { color: ${config.splitNameOnHitlessColor}; }
-            .split-row.parent { color: ${config.groupNameColor}; }
-            .split-row .col-hits { color: ${config.hitsCurrentColor}; }
-            .split-row.cleared .col-hits { color: ${config.hitsClearedColor}; }
-            .split-row.hit .col-hits { color: ${config.hitsActiveColor}; }
-            .split-row.current.hit .col-hits { color: ${config.hitsActiveColor}; }
-            .split-row .col-pb { color: ${config.pbColor}; }
-            .split-row.hit .col-pb { color: ${config.pbMatchesHit ? config.hitsActiveColor : config.pbColor}; }
-            .split-row.cleared .col-pb { color: ${config.pbMatchesHit ? config.hitsClearedColor : config.pbColor}; }
-            .split-row.current.hit .col-pb { color: ${config.pbMatchesHit ? config.hitsActiveColor : config.pbColor}; }
-            .footer .col-hits { color: ${config.footerHitFontColor}; }
-            .footer .col-pb { color: ${config.footerPbFontColor}; }
-            #overlay, .split-row, .footer { 
-                font-weight: ${config.fontBold ? 'bold' : 'normal'};
-                font-style: ${config.fontItalic ? 'italic' : 'normal'};
-                text-decoration: ${config.fontUnderline ? 'underline' : 'none'};
-                font-family: ${config.fontFamily};
-            }
-            .header { 
-                color: ${config.headerTextColor}; 
-                font-family: ${config.headerFontFamily}; 
-                font-size: ${config.headerFontSize}px; 
-                font-weight: ${config.fontBold ? 'bold' : 'normal'};
-                font-style: ${config.fontItalic ? 'italic' : 'normal'};
-                text-decoration: ${config.fontUnderline ? 'underline' : 'none'};
-            }
-            #progress { font-size: ${config.headerFontSize + 1}px; }
-            #attempts { font-size: ${config.headerFontSize + 2}px; }
-            .header span:not(:first-child) { color: ${config.headerTextColor}; }
-            .igt { color: ${config.igtColor}; font-family: ${config.igtFontFamily || 'Consolas, monospace'}; font-size: ${config.igtFontSize || 16}px; }
-            #title { color: ${config.titleColor}; font-family: ${config.titleFontFamily || 'Segoe UI'}; font-size: ${config.titleFontSize || 18}px; }
-            `;
+                .diff-pos { color: ${config.diffPosColor}; }
+                .diff-neg { color: ${config.diffNegColor}; }
+                .diff-zero { color: ${config.diffZeroColor}; }
+                .split-row:nth-child(even) { background: ${config.alternatingRows || 'transparent'}; }
+                .split-row.pb-dpbhighlight { border-left-color: ${config.dpbHighlightColor}; }
+                .table-mode .split-row.current { border-left: 3px solid ${config.currentSplitBorderColor}; }
+                .split-row.current { background: ${config.currentSplitColor}; border-left-color: ${config.currentSplitBorderColor}; }
+                .split-row.hit { background: ${config.rowHitColor}; }
+                .split-row.cleared { background: ${config.rowClearedColor}; }
+                .table-mode .split-row.current.hit { border-left: 3px solid ${config.currentSplitHitBorderColor}; }
+                .split-row.current.hit { background: ${config.currentSplitHitColor}; border-left-color: ${config.currentSplitHitBorderColor}; }
+                .split-row { height: ${config.rowHeight}px; font-size: ${config.fontSize}px; }
+                .footer { font-family: ${config.footerFontFamily};
+                        font-size: ${config.footerFontSize}px;
+                        background: ${config.backgroundOpacity > 0 ? `rgba(0, 0, 0, ${config.backgroundOpacity})` : 'transparent'}; 
+                        }
+                .run-complete { 
+                    color: ${config.runCompleteBannerColor}; 
+                    border-top-color: ${config.runCompleteBannerColor}; 
+                    background: ${config.backgroundOpacity > 0
+                ? `linear-gradient(${config.runCompleteBannerColor}14, ${config.runCompleteBannerColor}14), rgba(0, 0, 0, ${config.backgroundOpacity})`
+                : `${config.runCompleteBannerColor}14`}; 
+                }
+                @keyframes highlight-red {
+                    from { background: transparent; border-left-color: transparent; }
+                    to { background: ${config.currentSplitHitColor}; border-left-color: ${config.currentSplitHitBorderColor}; }
+                }
+                @keyframes highlight-green {
+                    from { background: transparent; border-left-color: transparent; }
+                    to { background: ${config.currentSplitColor}; border-left-color: ${config.currentSplitBorderColor}; }
+                }
+                .split-row .col-name { color: ${config.splitNameColor}; }
+                .split-row.hit .col-name { color: ${config.splitNameOnHitColor}; }
+                .split-row.cleared .col-name { color: ${config.splitNameOnHitlessColor}; }
+                .split-row.parent { color: ${config.groupNameColor}; }
+                .split-row .col-hits { color: ${config.hitsCurrentColor}; }
+                .split-row.cleared .col-hits { color: ${config.hitsClearedColor}; }
+                .split-row.hit .col-hits { color: ${config.hitsActiveColor}; }
+                .split-row.current.hit .col-hits { color: ${config.hitsActiveColor}; }
+                .split-row .col-pb { color: ${config.pbColor}; }
+                .split-row.hit .col-pb { color: ${config.pbMatchesHit ? config.hitsActiveColor : config.pbColor}; }
+                .split-row.cleared .col-pb { color: ${config.pbMatchesHit ? config.hitsClearedColor : config.pbColor}; }
+                .split-row.current.hit .col-pb { color: ${config.pbMatchesHit ? config.hitsActiveColor : config.pbColor}; }
+                .footer .col-hits { color: ${config.footerHitFontColor}; }
+                .footer .col-pb { color: ${config.footerPbFontColor}; }
+                #overlay, .split-row, .footer { 
+                    font-weight: ${config.fontBold ? 'bold' : 'normal'};
+                    font-style: ${config.fontItalic ? 'italic' : 'normal'};
+                    text-decoration: ${config.fontUnderline ? 'underline' : 'none'};
+                    font-family: ${config.fontFamily};
+                }
+                .header { 
+                    color: ${config.headerTextColor}; 
+                    font-family: ${config.headerFontFamily}; 
+                    font-size: ${config.headerFontSize}px; 
+                    font-weight: ${config.fontBold ? 'bold' : 'normal'};
+                    font-style: ${config.fontItalic ? 'italic' : 'normal'};
+                    text-decoration: ${config.fontUnderline ? 'underline' : 'none'};
+                }
+                #progress { font-size: ${config.headerFontSize + 1}px; }
+                #attempts { font-size: ${config.headerFontSize + 2}px; }
+                .header span:not(:first-child) { color: ${config.headerTextColor}; }
+                .igt { color: ${config.igtColor}; font-family: ${config.igtFontFamily || 'Consolas, monospace'}; font-size: ${config.igtFontSize || 16}px; }
+                #title { color: ${config.titleColor}; font-family: ${config.titleFontFamily || 'Segoe UI'}; font-size: ${config.titleFontSize || 18}px; }
+                `;
         }
 
         function applyLayout() {
@@ -433,7 +442,7 @@
 
             overlay.style.width = config.overlayWidth + 'px';
             overlay.style.height = 'auto';
-            overlay.style.maxHeight = config.overlayHeight + 'px';
+            overlay.style.maxHeight = 'none';
             overlay.style.overflow = 'visible';
 
             applyDynamicStyles();
@@ -453,9 +462,11 @@
                 + (config.showPb ? '<span>PB</span>' : '');
         }
 
+
         function renderState(state) {
             const cols = getGridColumns();
             let html = '';
+
 
             let splits = state.splits;
             const currentIndex = splits.findIndex(s => s.isCurrent);
@@ -490,8 +501,15 @@
 
             splits = splits.slice(start, end);
 
+            // Distance PB
+            const dpbIndex = state.distancePb ?? -1;
+            const isBeatingDpb = currentIndex >= 0 && currentIndex > dpbIndex && state.totalHits === 0;
+            const dpbHighlightIndex = (dpbIndex < 0 || !config.showDpbHighlight || state.isRunComplete || isBeatingDpb)
+                ? -1
+                : dpbIndex;
+
             for (let i = 0; i < splits.length; i++) {
-                html += buildRow(splits[i], cols, start + i, currentIndex);
+                html += buildRow(splits[i], cols, start + i, currentIndex, dpbHighlightIndex);
             }
             splitsEl.innerHTML = html;
 
@@ -511,7 +529,6 @@
                     : config.attemptsZeroColor;
             }
 
-
             const igtHtml = config.showIgt
                 ? `<span class="igt" id="igt">${formatIgt(state.inGameTime ?? '')}</span>`
                 : `<span id="igt"></span>`;
@@ -523,14 +540,14 @@
 
             footerEl.innerHTML =
                 `<span class="col-name">${igtHtml}</span>
-        ${config.showFooterTotals ? `
-            <span class="col-hits" style="color:${totalHitsColor}">${state.totalHits}</span>
-            ${config.showDiff ? `<span class="col-diff ${diffClass}">${diffText}</span>` : ''}
-            ${config.showPb ? `<span class="col-pb">${state.totalPb}</span>` : ''}
-        ` : ''}`;
+    ${config.showFooterTotals ? `
+        <span class="col-hits" style="color:${totalHitsColor}">${state.totalHits}</span>
+        ${config.showDiff ? `<span class="col-diff ${diffClass}">${diffText}</span>` : ''}
+        ${config.showPb ? `<span class="col-pb">${state.totalPb}</span>` : ''}
+    ` : ''}`;
 
             runCompleteEl.style.display = (state.isRunComplete && config.showRunComplete) ? 'block' : 'none';
-            runCompleteEl.textContent = config.runCompleteText || '✓ Run Complete';
+            runCompleteEl.textContent = config.runCompleteText?.trim() || '✓ Run Complete';
         }
 
         function escapeHtml(text) {
@@ -539,7 +556,7 @@
             return div.innerHTML;
         }
 
-        function buildRow(s, cols, index, currentIndex) {
+        function buildRow(s, cols, index, currentIndex, dpbHighlightIndex) {
             const current = s.isCurrent ? ' current' : '';
             const parent = s.isParent ? ' parent' : '';
             const diffClass = s.diff > 0 ? 'diff-pos' : s.diff < 0 ? 'diff-neg' : 'diff-zero';
@@ -547,8 +564,9 @@
             const isPast = currentIndex === -1 ? true : index < currentIndex;
             const cleared = isPast && !s.isParent && s.hits === 0 ? ' cleared' : '';
             const hit = (isPast && !s.isParent && s.hits > 0) || (s.isCurrent && s.hits > 0) ? ' hit' : '';
+            const dpbhighlight = index === dpbHighlightIndex ? ' pb-dpbhighlight' : '';
 
-            return `<div class="split-row${parent}${current}${cleared}${hit}" style="grid-template-columns: ${cols}">
+            return `<div class="split-row${parent}${current}${cleared}${hit}${dpbhighlight}" style="grid-template-columns: ${cols}">
                 <span class="col-name">${escapeHtml(s.name)}</span>
                 <span class="col-hits">${s.hits}</span>
                 ${config.showDiff ? `<span class="col-diff ${diffClass}">${diffText}</span>` : ''}

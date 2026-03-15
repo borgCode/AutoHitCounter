@@ -70,7 +70,7 @@ namespace AutoHitCounter.ViewModels
             _splitNav.StateChanged += OnSplitStateChanged;
 
             RegisterHotkeys();
-            
+
             _saveDebounce = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(300) };
             _saveDebounce.Tick += (_, _) =>
             {
@@ -588,6 +588,9 @@ namespace AutoHitCounter.ViewModels
                         _activeProfile.Splits[index].PersonalBest = 0;
                 }
 
+                if (_activeProfile != null)
+                    _activeProfile.DistancePb = -1;
+
                 _profileService.SaveProfile(_activeProfile);
                 RefreshSplitValues();
                 _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
@@ -598,7 +601,7 @@ namespace AutoHitCounter.ViewModels
                 if (SelectedSplit != null)
                     SelectedSplit.IsEditingPb = true;
             });
-            
+
             ToggleLockCommand = new DelegateCommand(() =>
             {
                 IsUnlocked = !IsUnlocked;
@@ -625,6 +628,7 @@ namespace AutoHitCounter.ViewModels
 
         private void OnSplitStateChanged()
         {
+            UpdateDistancePb();
             OnPropertyChanged(nameof(CurrentSplit));
             OnPropertyChanged(nameof(CurrentSplitNumber));
             OnPropertyChanged(nameof(IsRunComplete));
@@ -824,6 +828,22 @@ namespace AutoHitCounter.ViewModels
             }
         }
 
+        private void UpdateDistancePb()
+        {
+            if (_activeProfile == null || CurrentSplit == null) return;
+            if (TotalHits == 0) TryAdvanceDistancePb();
+        }
+
+        private void TryAdvanceDistancePb()
+        {
+            var currentIdx = Splits.IndexOf(CurrentSplit);
+            if (currentIdx > _activeProfile.DistancePb)
+            {
+                _activeProfile.DistancePb = currentIdx;
+                _profileService.SaveProfile(_activeProfile);
+            }
+        }
+
         private void RefreshSplitValues()
         {
             var hits = Splits.Select(s => s.NumOfHits).ToArray();
@@ -929,6 +949,7 @@ namespace AutoHitCounter.ViewModels
         private void ResetSplits()
         {
             _saveDebounce.Stop();
+             TryAdvanceDistancePb();
 
             if (_activeProfile != null)
             {

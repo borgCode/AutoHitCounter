@@ -28,5 +28,6 @@ public class Profile : INotifyPropertyChanged
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     
     public int AttemptCount { get; set; }
+    public int DistancePb { get; set; } = -1;
     public RunState SavedRun { get; set; }
 }

@@ -17,6 +17,7 @@ public static class OverlayMapper
             TotalDiff = vm.TotalDiff,
             TotalPb = vm.TotalPb,
             AttemptCount = vm.AttemptCount,
+            DistancePb = vm.ActiveProfile?.DistancePb ?? -1,
             InGameTime = vm.InGameTime.ToString(@"hh\:mm\:ss"),
             Splits = vm.Splits.Select(s => new OverlaySplit
             {
