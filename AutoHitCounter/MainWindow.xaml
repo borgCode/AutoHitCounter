@@ -108,13 +108,33 @@
                                         Command="{Binding TrackGameCommand}"
                                         Height="22"
                                         Margin="4,0,0,0"
-                                        ToolTip="{Binding TrackingText}" />
+                                        ToolTip="{Binding TrackingText}">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedGame.IsManual}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
                                 <ComboBox ItemsSource="{Binding Games}"
                                           SelectedItem="{Binding SelectedGame}"
                                           DisplayMemberPath="GameName" />
                             </DockPanel>
                             <TextBlock Text="Track hits for the currently selected game."
-                                       FontSize="9" Foreground="#555555" Margin="2,1,0,0" />
+                                       FontSize="9" Foreground="#555555" Margin="2,1,0,0">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedGame.IsManual}" Value="True">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                             </StackPanel>
 
                         <StackPanel Grid.Column="1" Margin="0,0,4,0">
@@ -147,13 +167,33 @@
                         </StackPanel>
                     </Grid>
                     
-                    <Button Grid.Row="1" Content="Event Logger"
-                                    Command="{Binding OpenEventLogCommand}"
-                                    Height="23" FontSize="11"
-                                    Margin="8,-5,0,0"
-                                    HorizontalAlignment="Left"
-                                    Padding="8,0"
-                                    Visibility="{Binding SelectedGame.IsEventLogSupported, Converter={StaticResource BoolToVisConverter}}" />
+                    <StackPanel Grid.Row="1" Orientation="Horizontal"
+                                HorizontalAlignment="Left" Margin="8,-5,0,0">
+                        <Button Content="Event Logger"
+                                Command="{Binding OpenEventLogCommand}"
+                                Height="23" FontSize="11"
+                                Padding="8,0" Margin="0,0,4,0"
+                                Visibility="{Binding SelectedGame.IsEventLogSupported, Converter={StaticResource BoolToVisConverter}}" />
+                        <Button Content="Create New Game"
+                                Command="{Binding CreateCustomGameCommand}"
+                                Height="23" FontSize="11"
+                                Padding="8,0" Margin="0,0,4,0" />
+                        <Button Content="Delete Game"
+                                Command="{Binding DeleteCustomGameCommand}"
+                                Height="23" FontSize="11"
+                                Padding="8,0">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedGame.IsManual}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
 
                     <StackPanel Grid.Row="1" Orientation="Horizontal"
                                 HorizontalAlignment="Right" Margin="0,-5,8,0">
@@ -790,7 +830,7 @@
                                     VerticalAlignment="Bottom"
                                     Orientation="Horizontal"
                                     Margin="0,0,5,5">
-                            <TextBlock Text="IGT"
+                            <TextBlock Text="{Binding TimerLabel}"
                                        FontSize="12"
                                        Foreground="#888"
                                        VerticalAlignment="Center"

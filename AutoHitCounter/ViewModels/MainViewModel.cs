@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using AutoHitCounter.Core;
 using AutoHitCounter.Enums;
+using AutoHitCounter.Games.Manual;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Mappers;
 using AutoHitCounter.Models;
@@ -88,6 +89,8 @@ namespace AutoHitCounter.ViewModels
             foreach (var game in _gameModuleFactory.GetRegisteredGames())
                 Games.Add(game);
 
+            LoadCustomGames();
+
             SelectedGame = Games.FirstOrDefault(game => game.GameName == SettingsManager.Default.LastSelectedGame);
             if (_selectedGame != null)
                 StartTrackingGame();
@@ -100,6 +103,8 @@ namespace AutoHitCounter.ViewModels
         public DelegateCommand OpenEventLogCommand { get; set; }
 
         public DelegateCommand TrackGameCommand { get; set; }
+        public DelegateCommand CreateCustomGameCommand { get; set; }
+        public DelegateCommand DeleteCustomGameCommand { get; set; }
 
         public DelegateCommand ManualSplitCommand { get; set; }
         public DelegateCommand AdvanceSplitCommand { get; set; }
@@ -185,6 +190,10 @@ namespace AutoHitCounter.ViewModels
 
                 ActiveProfile = Profiles.FirstOrDefault(p => p.Name == SettingsManager.Default.LastSelectedProfile)
                                 ?? Profiles.FirstOrDefault();
+
+                if (_selectedGame?.IsManual == true)
+                    StartTrackingGame();
+
                 if (!Profiles.Any())
                 {
                     _activeProfile = null;
@@ -213,6 +222,7 @@ namespace AutoHitCounter.ViewModels
                 {
                     SwapModule();
                     OnPropertyChanged(nameof(TrackingText));
+                    OnPropertyChanged(nameof(TimerLabel));
                 }
             }
         }
@@ -220,6 +230,8 @@ namespace AutoHitCounter.ViewModels
         public string TrackingText => _activeGame != null
             ? $"Track hits for the currently selected game.\nCurrently Tracking: {_activeGame.GameName}"
             : "Not tracking";
+
+        public string TimerLabel => _activeGame?.IsManual == true ? "RTA" : "IGT";
 
         public ObservableCollection<SplitViewModel> Splits { get; } = new();
 
@@ -539,6 +551,8 @@ namespace AutoHitCounter.ViewModels
         {
             CheckUpdateCommand = new DelegateCommand(CheckUpdate);
             TrackGameCommand = new DelegateCommand(StartTrackingGame);
+            CreateCustomGameCommand = new DelegateCommand(CreateCustomGame);
+            DeleteCustomGameCommand = new DelegateCommand(DeleteCustomGame);
             OpenProfileEditorCommand = new DelegateCommand(OpenProfileEditor);
             OpenEventLogCommand = new DelegateCommand(OpenEventLog);
             ManualSplitCommand = new DelegateCommand(ManualAdvanceSplit);
@@ -625,6 +639,14 @@ namespace AutoHitCounter.ViewModels
             _hotkeyManager.RegisterAction(HotkeyActions.Reset, ResetSplits);
             _hotkeyManager.RegisterAction(HotkeyActions.IncrementHit, IncrementHit);
             _hotkeyManager.RegisterAction(HotkeyActions.DecrementHit, DecrementHit);
+            _hotkeyManager.RegisterAction(HotkeyActions.StartTimer, () =>
+            {
+                if (_currentModule is ManualGameModule manual) manual.StartTimer();
+            });
+            _hotkeyManager.RegisterAction(HotkeyActions.PauseTimer, () =>
+            {
+                if (_currentModule is ManualGameModule manual) manual.StopTimer();
+            });
         }
 
         private void OnSplitStateChanged()
@@ -656,6 +678,7 @@ namespace AutoHitCounter.ViewModels
 
         private void OnNotAttached()
         {
+            if (_activeGame?.IsManual == true) return;
             IsAttached = false;
             AttachedText = _activeGame != null ? $"Waiting for {_activeGame.GameName}..." : "Not attached";
             OnPropertyChanged(nameof(TrackingText));
@@ -675,10 +698,19 @@ namespace AutoHitCounter.ViewModels
 
             _currentModule = _gameModuleFactory.CreateModule(_activeGame, GetActiveEvents(), this);
 
-            if (_currentModule is IVersionedGameModule versioned)
-                versioned.OnVersionDetected += UpdateAttachedText;
+            if (_activeGame.IsManual)
+            {
+                IsAttached = true;
+                AttachedText = $"Custom Game: {_activeGame.GameName}";
+            }
+            else
+            {
+                if (_currentModule is IVersionedGameModule versioned)
+                    versioned.OnVersionDetected += UpdateAttachedText;
 
-            _memoryService.StartAutoAttach(_activeGame.ProcessName);
+                _memoryService.StartAutoAttach(_activeGame.ProcessName);
+            }
+
             _currentModule.OnHit += count =>
             {
                 if (IsRunComplete || CurrentSplit == null || Settings.IsPracticeMode) return;
@@ -689,7 +721,7 @@ namespace AutoHitCounter.ViewModels
             };
             _currentModule.OnEventSet += AutoAdvanceSplit;
             _currentModule.OnEventLogEntriesReceived += entries => _eventLogViewModel?.RefreshEventLogs(entries);
-            _currentModule.OnIgtChanged += UpdateInGameTime;
+            _currentModule.OnTimeChanged += UpdateInGameTime;
 
             if (_eventLogWindow != null)
                 _currentModule.SetEventLogEnabled(true);
@@ -761,12 +793,14 @@ namespace AutoHitCounter.ViewModels
                 return;
             }
 
+            var events = _selectedGame.IsManual ? new Dictionary<uint, string>() : GetAllEventsForGame(_selectedGame.Title);
             var vm = new ProfileEditorViewModel(
-                GetAllEventsForGame(_selectedGame.Title),
+                events,
                 _profileService,
                 _selectedGame.GameName,
                 _selectedGame.Title,
-                _activeProfile);
+                _activeProfile,
+                _selectedGame.IsManual);
 
             _profileEditorWindow = new ProfileEditorWindow { DataContext = vm };
 
@@ -877,6 +911,84 @@ namespace AutoHitCounter.ViewModels
         private Dictionary<uint, string> GetAllEventsForGame(GameTitle title) =>
             _gameModuleFactory.GetEventsForGame(title);
 
+        private void LoadCustomGames()
+        {
+            var raw = SettingsManager.Default.CustomGames;
+            if (string.IsNullOrWhiteSpace(raw)) return;
+
+            foreach (var name in raw.Split(','))
+            {
+                var trimmed = name.Trim();
+                if (string.IsNullOrEmpty(trimmed)) continue;
+                Games.Add(new Game
+                {
+                    Title = GameTitle.Manual,
+                    GameName = trimmed,
+                    ProcessName = null,
+                    IsManual = true
+                });
+            }
+        }
+
+        private void CreateCustomGame()
+        {
+            var name = MsgBox.ShowInput("Create a game to add profiles and splits to.\nAuto hit counting and auto splitting are not supported,\nbut you can use a timer and track hits manually.", "", "New Custom Game");
+            if (string.IsNullOrWhiteSpace(name)) return;
+
+            if (Games.Any(g => g.GameName == name))
+            {
+                MsgBox.Show("A game with that name already exists.", "New Custom Game");
+                return;
+            }
+
+            var game = new Game
+            {
+                Title = GameTitle.Manual,
+                GameName = name,
+                ProcessName = null,
+                IsManual = true
+            };
+            Games.Add(game);
+
+            var existing = SettingsManager.Default.CustomGames;
+            SettingsManager.Default.CustomGames = string.IsNullOrEmpty(existing) ? name : $"{existing},{name}";
+            SettingsManager.Default.Save();
+
+            SelectedGame = game;
+            StartTrackingGame();
+        }
+
+        private void DeleteCustomGame()
+        {
+            if (_selectedGame == null || !_selectedGame.IsManual) return;
+
+            if (!MsgBox.ShowYesNo(
+                $"Are you sure you want to delete \"{_selectedGame.GameName}\"?\n\nThis will delete all profiles and splits associated with this game.",
+                "Delete Custom Game"))
+                return;
+
+            var name = _selectedGame.GameName;
+
+            foreach (var profile in _profileService.GetProfiles(name).ToList())
+                _profileService.DeleteProfile(name, profile.Name);
+
+            (_currentModule as IDisposable)?.Dispose();
+            _currentModule = null;
+            ActiveGame = null;
+            IsAttached = false;
+            AttachedText = "Not attached";
+
+            Games.Remove(_selectedGame);
+            SelectedGame = Games.FirstOrDefault();
+
+            var names = (SettingsManager.Default.CustomGames ?? "")
+                .Split(',')
+                .Select(n => n.Trim())
+                .Where(n => n != name);
+            SettingsManager.Default.CustomGames = string.Join(",", names);
+            SettingsManager.Default.Save();
+        }
+
         private void SaveNotes()
         {
             if (ActiveProfile == null) return;
@@ -964,6 +1076,13 @@ namespace AutoHitCounter.ViewModels
             _runSnapshots.Remove(key);
             UpdateSplits();
             _splitNav.InitFresh();
+
+            if (_currentModule is ManualGameModule manualModule)
+            {
+                manualModule.ResetTimer();
+                InGameTime = TimeSpan.Zero;
+                InGameTimeFormatted = "0:00:00";
+            }
 
             if (_activeGame == _selectedGame && _currentModule != null)
                 _currentModule.UpdateEvents(GetActiveEvents());

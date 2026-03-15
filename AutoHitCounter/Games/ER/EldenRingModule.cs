@@ -32,7 +32,7 @@ public class EldenRingModule : IGameModule, IDisposable, IVersionedGameModule
 
     public event Action OnEventSet;
     public event Action<List<EventLogEntry>> OnEventLogEntriesReceived;
-    public event Action<long> OnIgtChanged;
+    public event Action<long> OnTimeChanged;
     public event Action OnVersionDetected;
     
     public EldenRingModule(IMemoryService memoryService, IStateService stateService, HookManager hookManager,
@@ -103,7 +103,7 @@ public class EldenRingModule : IGameModule, IDisposable, IVersionedGameModule
         _eventLogReader.Poll();
 
         var igtPtr  = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
-        OnIgtChanged?.Invoke(_memoryService.Read<long>(igtPtr));
+        OnTimeChanged?.Invoke(_memoryService.Read<long>(igtPtr));
     }
 
     private bool IsLoaded()
@@ -119,7 +119,7 @@ public class EldenRingModule : IGameModule, IDisposable, IVersionedGameModule
         OnHit = null;
         OnEventSet = null;
         OnEventLogEntriesReceived = null;
-        OnIgtChanged = null;
+        OnTimeChanged = null;
     }
     
     public void UpdateEvents(Dictionary<uint, (string Name, int Required, int Hit)> events)

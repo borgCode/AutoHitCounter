@@ -41,6 +41,8 @@ public class HotkeyTabViewModel : BaseViewModel
             new("Increment Hit", HotkeyActions.IncrementHit),
             new("Decrement Hit", HotkeyActions.DecrementHit),
             new ("Toggle Practice Mode", HotkeyActions.TogglePracticeMode),
+            new ("Start RTA Timer", HotkeyActions.StartTimer),
+            new ("Pause RTA Timer", HotkeyActions.PauseTimer),
         ];
 
         _hotkeyLookup = HotkeyBindings.ToDictionary(h => h.ActionId);

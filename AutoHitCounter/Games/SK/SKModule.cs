@@ -33,7 +33,7 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
     public event Action<int> OnHit;
     public event Action OnEventSet;
     public event Action<List<EventLogEntry>> OnEventLogEntriesReceived;
-    public event Action<long> OnIgtChanged;
+    public event Action<long> OnTimeChanged;
     public event Action OnVersionDetected;
 
     public SKModule(IMemoryService memoryService, IStateService stateService, HookManager hookManager,
@@ -115,7 +115,7 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
         _eventLogReader.Poll();
 
         var igtPtr  = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
-        OnIgtChanged?.Invoke(_memoryService.Read<uint>(igtPtr));
+        OnTimeChanged?.Invoke(_memoryService.Read<uint>(igtPtr));
     }
 
     private bool IsLoaded()
@@ -131,7 +131,7 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
         OnHit = null;
         OnEventSet = null;
         OnEventLogEntriesReceived = null;
-        OnIgtChanged = null;
+        OnTimeChanged = null;
     }
 
     public void UpdateEvents(Dictionary<uint, (string Name, int Required, int Hit)> events)

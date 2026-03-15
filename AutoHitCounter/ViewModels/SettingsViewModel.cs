@@ -22,7 +22,7 @@ public class SettingsViewModel : BaseViewModel
     public event Action OnGameSettingChanged;
 
     public IReadOnlyList<GameTitle> GameTitles { get; } = EnumExtensions.GetValues<GameTitle>()
-        .Where(title => title != GameTitle.DarkSoulsRemastered).ToList();
+        .Where(title => title != GameTitle.DarkSoulsRemastered && title != GameTitle.Manual).ToList();
 
     private GameTitle _selectedSettingsGame;
     private OverlaySettingsWindow _overlaySettingsWindow;

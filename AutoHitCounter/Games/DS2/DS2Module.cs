@@ -35,7 +35,7 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
     public event Action<int> OnHit;
     public event Action OnEventSet;
     public event Action<List<EventLogEntry>> OnEventLogEntriesReceived;
-    public event Action<long> OnIgtChanged;
+    public event Action<long> OnTimeChanged;
     public event Action OnVersionDetected;
 
     public DS2Module(IMemoryService memoryService, IStateService stateService, HookManager hookManager,
@@ -122,7 +122,7 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
         _eventLogReader.Poll();
 
         _igtService.Update();
-        OnIgtChanged?.Invoke(_igtService.ElapsedMilliseconds);
+        OnTimeChanged?.Invoke(_igtService.ElapsedMilliseconds);
     }
 
     private bool IsLoaded()
@@ -147,7 +147,7 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
         OnHit = null;
         OnEventSet = null;
         OnEventLogEntriesReceived = null;
-        OnIgtChanged = null;
+        OnTimeChanged = null;
     }
 
     public void UpdateEvents(Dictionary<uint, (string Name, int Required, int Hit)> events)

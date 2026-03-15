@@ -8,6 +8,7 @@ using AutoHitCounter.Games.DS2;
 using AutoHitCounter.Games.DS3;
 using AutoHitCounter.Games.DSR;
 using AutoHitCounter.Games.ER;
+using AutoHitCounter.Games.Manual;
 using AutoHitCounter.Games.SK;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
@@ -42,17 +43,22 @@ public class GameModuleFactory(
         Registrations.Select(r => new Game
         {
             Title = r.Key,
+            GameName = r.Key.GetDescription(),
             ProcessName = r.Value.ProcessName,
             IsEventLogSupported = r.Value.IsEventLogSupported
         }).ToList();
 
     public Dictionary<uint, string> GetEventsForGame(GameTitle title) =>
-        Registrations.TryGetValue(title, out var reg) && reg.EventResource != null
+        title == GameTitle.Manual ? new()
+        : Registrations.TryGetValue(title, out var reg) && reg.EventResource != null
             ? EventLoader.GetEvents(reg.EventResource)
             : new();
 
     public IGameModule CreateModule(Game game, Dictionary<uint, (string Name, int Required, int Hit)> events, IHitRulesProvider rules)
     {
+        if (game.IsManual)
+            return new ManualGameModule();
+
         return game.Title switch
         {
             GameTitle.DarkSoulsRemastered => new DSRModule(memoryService, stateService, hookManager, tickService, events),

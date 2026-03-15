@@ -54,6 +54,8 @@ public class SettingsManager
 
     [DefaultValue("Default")] public string SelectedOverlayProfile { get; set; }
 
+    public string CustomGames { get; set; } = "";
+
     public void Save()
     {
         try

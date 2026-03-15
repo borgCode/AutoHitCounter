@@ -161,6 +161,7 @@
         <Compile Include="Games\SK\SKCustomCodeOffsets.cs" />
         <Compile Include="Games\SK\SKEventService.cs" />
         <Compile Include="Games\SK\SKHitService.cs" />
+        <Compile Include="Games\Manual\ManualGameModule.cs" />
         <Compile Include="Games\SK\SKModule.cs" />
         <Compile Include="Games\SK\SKOffsets.cs" />
         <Compile Include="Games\SK\SKOriginalBytes.cs" />

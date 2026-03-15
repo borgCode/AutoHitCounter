@@ -21,13 +21,17 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
     private readonly string _gameName;
     private readonly GameTitle _gameTitle;
 
+    public bool IsManualGame { get; }
+
     public ProfileEditorViewModel(
         Dictionary<uint, string> allEvents,
         IProfileService profileService,
         string gameName,
         GameTitle gameTitle,
-        Profile activeProfile)
+        Profile activeProfile,
+        bool isManualGame = false)
     {
+        IsManualGame = isManualGame;
         _allEvents = allEvents;
         _profileService = profileService;
         _gameName = gameName;

@@ -10,4 +10,6 @@ public enum HotkeyActions
     IncrementHit,
     DecrementHit,
     TogglePracticeMode,
+    StartTimer,
+    PauseTimer,
 }
