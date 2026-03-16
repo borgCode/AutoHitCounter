@@ -832,12 +832,12 @@ namespace AutoHitCounter.ViewModels
         private void UpdateDistancePb()
         {
             if (_activeProfile == null || CurrentSplit == null) return;
-            if (TotalHits == 0) TryAdvanceDistancePb();
+            if (TotalHits == 0)
+                TryAdvanceDistancePb();
         }
 
         private void TryAdvanceDistancePb()
         {
-            if (_activeProfile == null || CurrentSplit == null) return;
             var currentIdx = Splits.IndexOf(CurrentSplit);
             if (currentIdx > _activeProfile.DistancePb)
             {
@@ -951,7 +951,7 @@ namespace AutoHitCounter.ViewModels
         private void ResetSplits()
         {
             _saveDebounce.Stop();
-            TryAdvanceDistancePb();
+            UpdateDistancePb();
 
             if (_activeProfile != null)
             {
