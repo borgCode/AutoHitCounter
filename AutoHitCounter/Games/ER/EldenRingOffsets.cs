@@ -60,7 +60,7 @@ public static class EldenRingOffsets
     public static class WorldChrMan
     {
         public static nint Base;
-        
+
         public static int PlayerIns => Version switch
         {
             Version1_2_0 or Version1_2_1 or Version1_2_2 or Version1_2_3 or Version1_3_0 or Version1_3_1
@@ -76,14 +76,14 @@ public static class EldenRingOffsets
 
         public const int Igt = 0xA0;
     }
-    
+
     public static class UserInputManager
     {
         public static nint Base;
 
         public const int SteamInputEnum = 0x88B;
     }
-    
+
     public static class CSTrophy
     {
         public static IntPtr Base;
@@ -105,6 +105,8 @@ public static class EldenRingOffsets
         public static nint CheckStateInfo;
         public static nint CheckDeflectTear;
         public static nint KillChr;
+        public static nint SetThrowState;
+        public static nint ClearThrowState;
         public static nint SetEvent;
     }
 
@@ -139,7 +141,7 @@ public static class EldenRingOffsets
             Version2_2_3 or Version2_3_0 => 0x3D65FA8,
             _ => 0
         };
-        
+
         GameDataMan.Base = moduleBase + Version switch
         {
             Version1_2_0 => 0x3C481B8,
@@ -159,7 +161,7 @@ public static class EldenRingOffsets
                 or Version2_6_1 => 0x3D5DF38,
             _ => 0
         };
-        
+
         UserInputManager.Base = moduleBase + Version switch
         {
             Version1_2_0 => 0x45255C8,
@@ -180,7 +182,7 @@ public static class EldenRingOffsets
                 or Version2_6_1 => 0x485DC18,
             _ => 0
         };
-        
+
         CSTrophy.Base = moduleBase + Version switch
         {
             Version1_2_0 => 0x4472AD8,
@@ -222,7 +224,7 @@ public static class EldenRingOffsets
             Version2_6_0 or Version2_6_1 => 0x4498E0,
             _ => 0
         };
-        
+
         Hooks.FallDamage = moduleBase + Version switch
         {
             Version1_2_0 => 0x444DB6,
@@ -243,7 +245,7 @@ public static class EldenRingOffsets
             Version2_6_0 or Version2_6_1 => 0x44E386,
             _ => 0
         };
-        
+
         Hooks.KillBox = moduleBase + Version switch
         {
             Version1_2_0 => 0x3F46FB,
@@ -263,7 +265,7 @@ public static class EldenRingOffsets
             Version2_6_0 or Version2_6_1 => 0x44DC5D,
             _ => 0
         };
-        
+
         Hooks.AuxDamageAttacker = moduleBase + Version switch
         {
             // WARNING: No match found for: Version1_2_0, Version1_2_1, Version1_2_2, Version1_2_3, Version1_3_0, Version1_3_1, Version1_3_2, Version1_4_0, Version1_4_1, Version1_5_0, Version1_6_0, Version1_7_0
@@ -275,7 +277,7 @@ public static class EldenRingOffsets
             Version2_4_0 or Version2_5_0 => 0x3FAFC2,
             _ => 0
         };
-        
+
         Hooks.AuxProc = moduleBase + Version switch
         {
             Version1_2_0 => 0x434994,
@@ -317,7 +319,7 @@ public static class EldenRingOffsets
             Version2_6_0 or Version2_6_1 => 0x4410C8,
             _ => 0
         };
-        
+
         Hooks.EndureStagger = moduleBase + Version switch
         {
             Version1_2_0 => 0x43D743,
@@ -370,7 +372,7 @@ public static class EldenRingOffsets
             Version2_6_0 or Version2_6_1 => 0x448E1C,
             _ => 0
         };
-        
+
         Hooks.CheckDeflectTear = moduleBase + Version switch
         {
             // WARNING: No match found for: Version1_2_0, Version1_2_1, Version1_2_2, Version1_2_3, Version1_3_0, Version1_3_1, Version1_3_2, Version1_4_0, Version1_4_1, Version1_5_0, Version1_6_0
@@ -384,7 +386,7 @@ public static class EldenRingOffsets
             Version2_6_0 or Version2_6_1 => 0x447C0C,
             _ => 0
         };
-        
+
         Hooks.KillChr = moduleBase + Version switch
         {
             // WARNING: No match found for: Version1_2_0, Version1_2_1, Version1_2_2, Version1_2_3, Version1_3_0, Version1_3_1, Version1_3_2, Version1_4_0, Version1_4_1, Version1_5_0, Version1_6_0, Version1_7_0
@@ -397,9 +399,49 @@ public static class EldenRingOffsets
             _ => 0
         };
 
+        Hooks.SetThrowState = moduleBase + Version switch
+        {
+            Version1_2_0 => 0x44037E,
+            Version1_2_1 or Version1_2_2 => 0x4403EE,
+            Version1_2_3 => 0x44050E,
+            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x44116E,
+            Version1_4_0 => 0x44398E,
+            Version1_4_1 => 0x44389E,
+            Version1_5_0 => 0x443CDE,
+            Version1_6_0 => 0x444D3E,
+            Version1_7_0 => 0x444E8E,
+            Version1_8_0 or Version1_8_1 => 0x44681E,
+            Version1_9_0 or Version1_9_1 => 0x44695E,
+            Version2_0_0 or Version2_0_1 => 0x446AFE,
+            Version2_2_0 or Version2_2_3 => 0x4498EE,
+            Version2_3_0 => 0x4499FE,
+            Version2_4_0 or Version2_5_0 => 0x449A3E,
+            Version2_6_0 or Version2_6_1 => 0x449A0E,
+            _ => 0
+        };
+
+        Hooks.ClearThrowState = moduleBase + Version switch
+        {
+            Version1_2_0 => 0x4780B0,
+            Version1_2_1 or Version1_2_2 => 0x478120,
+            Version1_2_3 => 0x478240,
+            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x478EE0,
+            Version1_4_0 => 0x47B710,
+            Version1_4_1 => 0x47B620,
+            Version1_5_0 => 0x47B9A0,
+            Version1_6_0 => 0x47CA00,
+            Version1_7_0 => 0x47C920,
+            Version1_8_0 or Version1_8_1 => 0x47E2B0,
+            Version1_9_0 or Version1_9_1 => 0x47E3F0,
+            Version2_0_0 or Version2_0_1 => 0x47E590,
+            Version2_2_0 or Version2_2_3 => 0x481470,
+            Version2_3_0 => 0x481580,
+            Version2_4_0 or Version2_5_0 => 0x4815C0,
+            Version2_6_0 or Version2_6_1 => 0x481590,
+            _ => 0
+        };
 
 
-        
         Hooks.SetEvent = moduleBase + Version switch
         {
             Version1_2_0 => 0x5D9E40,
@@ -444,7 +486,7 @@ public static class EldenRingOffsets
             Version2_6_0 or Version2_6_1 => 0x507D50,
             _ => 0
         };
-        
+
         Functions.HasSpEffectId = moduleBase + Version switch
         {
             Version1_2_0 => 0x4E99C0,
@@ -466,7 +508,7 @@ public static class EldenRingOffsets
             Version2_6_0 or Version2_6_1 => 0x4F9A10,
             _ => 0
         };
-        
+
         Patches.NoLogo = moduleBase + Version switch
         {
             Version1_2_0 => 0xAAAD4A,
@@ -492,48 +534,46 @@ public static class EldenRingOffsets
             Version2_6_1 => 0xB0C44D,
             _ => 0
         };
-        
-        
-        
-        
-        
-        #if DEBUG
+
+
+#if DEBUG
         _baseAddr = moduleBase;
-            Console.WriteLine("--- Base Pointers ---");
-            PrintOffset("WorldChrMan", WorldChrMan.Base);
-            PrintOffset("GameDataMan", GameDataMan.Base);
-            PrintOffset("UserInputManager", UserInputManager.Base);
-            PrintOffset("CSTrophy", CSTrophy.Base);
-            
-            Console.WriteLine("\n--- Hooks ---");
-            PrintOffset("Hit", Hooks.Hit);
-            PrintOffset("FallDamage", Hooks.FallDamage);
-            PrintOffset("KillBox", Hooks.KillBox);
-            PrintOffset("AuxDamageAttacker", Hooks.AuxDamageAttacker);
-            PrintOffset("AuxProc", Hooks.AuxProc);
-            PrintOffset("SpEffectTickDamage", Hooks.SpEffectTickDamage);
-            PrintOffset("EndureStagger", Hooks.EndureStagger);
-            PrintOffset("EnvKilling", Hooks.EnvKilling);
-            PrintOffset("CheckStateInfo", Hooks.CheckStateInfo);
-            PrintOffset("CheckDeflectTear", Hooks.CheckDeflectTear);
-            PrintOffset("KillChr", Hooks.KillChr);
-            PrintOffset("SetEvent", Hooks.SetEvent);
-           
-            
-            Console.WriteLine("\n--- Functions ---");
-            PrintOffset("ChrInsByHandle", Functions.ChrInsByHandle);
-            PrintOffset("HasSpEffectId", Functions.HasSpEffectId);
-            
-            
-            Console.WriteLine("\n--- Patches ---");
-            PrintOffset("NoLogo", Patches.NoLogo);
-            
+        Console.WriteLine("--- Base Pointers ---");
+        PrintOffset("WorldChrMan", WorldChrMan.Base);
+        PrintOffset("GameDataMan", GameDataMan.Base);
+        PrintOffset("UserInputManager", UserInputManager.Base);
+        PrintOffset("CSTrophy", CSTrophy.Base);
 
-            Console.WriteLine("\n====================================\n");
+        Console.WriteLine("\n--- Hooks ---");
+        PrintOffset("Hit", Hooks.Hit);
+        PrintOffset("FallDamage", Hooks.FallDamage);
+        PrintOffset("KillBox", Hooks.KillBox);
+        PrintOffset("AuxDamageAttacker", Hooks.AuxDamageAttacker);
+        PrintOffset("AuxProc", Hooks.AuxProc);
+        PrintOffset("SpEffectTickDamage", Hooks.SpEffectTickDamage);
+        PrintOffset("EndureStagger", Hooks.EndureStagger);
+        PrintOffset("EnvKilling", Hooks.EnvKilling);
+        PrintOffset("CheckStateInfo", Hooks.CheckStateInfo);
+        PrintOffset("CheckDeflectTear", Hooks.CheckDeflectTear);
+        PrintOffset("KillChr", Hooks.KillChr);
+        PrintOffset("SetThrowState", Hooks.SetThrowState);
+        PrintOffset("ClearThrowState", Hooks.ClearThrowState);
+        PrintOffset("SetEvent", Hooks.SetEvent);
+
+
+        Console.WriteLine("\n--- Functions ---");
+        PrintOffset("ChrInsByHandle", Functions.ChrInsByHandle);
+        PrintOffset("HasSpEffectId", Functions.HasSpEffectId);
+
+
+        Console.WriteLine("\n--- Patches ---");
+        PrintOffset("NoLogo", Patches.NoLogo);
+
+
+        Console.WriteLine("\n====================================\n");
 #endif
-
     }
-    
+
 #if DEBUG
     private static nint _baseAddr;
     private static void PrintOffset(string name, nint value)

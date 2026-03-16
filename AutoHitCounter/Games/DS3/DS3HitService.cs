@@ -256,10 +256,11 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
             (code + 0x92, Functions.HasSpEffectId, 5, 0x92 + 1),
             (code + 0x9B, fallHitCountedFlag, 7, 0x9B + 2),
             (code + 0xA2, hit, 6, 0xA2 + 2),
-            (code + 0xAC, storedHeight, 9, 0xAC + 5),
-            (code + 0xB5, Float20, 8,  0xB5 + 4),
-            (code + 0xBF, fallHitCountedFlag, 7, 0xBF + 2),
-            (code + 0xC8, Hooks.IsFallDmgDisabledHook + 5, 5, 0xC8 + 1),
+            (code + 0xA8, fallHitCountedFlag, 7, 0xA8 + 2),
+            (code + 0xB3, storedHeight, 9, 0xB3 + 5),
+            (code + 0xBC, Float20, 8,  0xBC + 4),
+            (code + 0xC6, fallHitCountedFlag, 7, 0xC6 + 2),
+            (code + 0xCF, Hooks.IsFallDmgDisabledHook + 5, 5, 0xCF + 1),
             
         ]);
 
