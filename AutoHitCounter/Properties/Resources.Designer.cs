@@ -625,13 +625,13 @@ namespace AutoHitCounter.Properties {
         /// <summary>
         ///   Looks up a localized string similar to f3 0f 10 6d a0          movss  xmm5,DWORD PTR [rbp-0x60]
         ///80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # c &lt;_main+0xc&gt;
-        ///74 2d                   je     3b &lt;done&gt;
-        ///80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # 15 &lt;_main+0x15&gt;
-        ///74 24                   je     3b &lt;done&gt;
-        ///c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 1e &lt;_main+0x1e&gt;
-        ///45 0f 57 ff             xorps  xmm15,xmm15
-        ///44 0f 2f 7d 20          comiss xmm15,DWORD PTR [rbp+0x20]
-        ///72 0c                   jb    [rest of string was truncated]&quot;;.
+        ///74 36                   je     44 &lt;done&gt;
+        ///80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # 15 &lt;_main+0x15&gt;
+        ///74 2d                   je     44 &lt;done&gt;
+        ///80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # 1e &lt;_main+0x1e&gt;
+        ///74 24                   je     44 &lt;done&gt;
+        ///c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 27 &lt;_main+0x27&gt;
+        ///45 0f 57 f [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string EldenRingDeflectTear {
             get {
@@ -722,14 +722,13 @@ namespace AutoHitCounter.Properties {
         /// <summary>
         ///   Looks up a localized string similar to c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 7 &lt;_main+0x7&gt;
         ///c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # e &lt;_main+0xe&gt;
+        ///c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 15 &lt;_main+0x15&gt;
         ///48 89 5c 24 08          mov    QWORD PTR [rsp+0x8],rbx
-        ///80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # 1a &lt;_main+0x1a&gt;
-        ///0f 84 af 01 00 00       je     1cf &lt;skip_all&gt;
+        ///80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # 21 &lt;_main+0x21&gt;
+        ///0f 84 e0 01 00 00       je     207 &lt;skip_all&gt;
         ///50                      push   rax
-        ///e8 00 00 00 00          call   26 &lt;_main+0x26&gt;
-        ///58                      pop    rax
-        ///0f 84 a2 01 00 00       je     1cf &lt;skip_all&gt;
-        ///48 85  [rest of string was truncated]&quot;;.
+        ///e8 00 00 00 00          call   2d &lt;_main+0x2d&gt;
+        ///58        [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string EldenRingHit {
             get {

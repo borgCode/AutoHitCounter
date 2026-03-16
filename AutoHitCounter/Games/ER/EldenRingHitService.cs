@@ -77,22 +77,27 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         var stateInfoCheckFlag = Base + StateInfoCheckFlag;
         var throwStateFlag = Base + InThrowFlag;
         var deflectTearCheckFlag = Base + DeflectTearCheckFlag;
+        var raptorFlag = Base + HasRaptorFlag;
         var checkPlayerDeadFunc = Base + CheckPlayerDead;
         var code = Base + HitCode;
 
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code, stateInfoCheckFlag, 7, 2),
             (code + 0x7, deflectTearCheckFlag, 7, 0x7 + 2),
-            (code + 0x13, throwStateFlag, 7, 0x13 + 2),
-            (code + 0x21, checkPlayerDeadFunc, 5, 0x21 + 1),
-            (code + 0x8F, WorldChrMan.Base, 7, 0x8F + 3),
-            (code + 0xDB, Functions.ChrInsByHandle, 5, 0xDB + 1),
-            (code + 0x155, deflectTearCheckFlag, 7, 0x155 + 2),
-            (code + 0x17B, staggerCheckFlag, 7, 0x17B + 2),
-            (code + 0x18C, stateInfoCheckFlag, 7, 0x18C + 2),
-            (code + 0x1A6, GameDataMan.Base, 7, 0x1A6 + 3),
-            (code + 0x1C5, hit, 6, 0x1C5 + 2),
-            (code + 0x1CF, Hooks.Hit + 5, 5, 0x1CF + 1),
+            (code + 0xE, raptorFlag, 7, 0xE + 2),
+            (code + 0x1A, throwStateFlag, 7, 0x1A + 2),
+            (code + 0x28, checkPlayerDeadFunc, 5, 0x28 + 1),
+            (code + 0x96, WorldChrMan.Base, 7, 0x96 + 3),
+            (code + 0xE2, Functions.ChrInsByHandle, 5, 0xE2 + 1),
+            (code + 0x105, WorldChrMan.Base, 7, 0x105 + 3),
+            (code + 0x11F, Functions.HasSpEffectId, 5, 0x11F + 1),
+            (code + 0x129, raptorFlag, 7, 0x129 + 2),
+            (code + 0x18D, deflectTearCheckFlag, 7, 0x18D + 2),
+            (code + 0x1B3, staggerCheckFlag, 7, 0x1B3 + 2),
+            (code + 0x1C4, stateInfoCheckFlag, 7, 0x1C4 + 2),
+            (code + 0x1DE, GameDataMan.Base, 7, 0x1DE + 3),
+            (code + 0x1FD, hit, 6, 0x1FD + 2),
+            (code + 0x207, Hooks.Hit + 5, 5, 0x207 + 1),
         ]);
 
         memoryService.WriteBytes(code, bytes);
@@ -246,15 +251,17 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingDeflectTear);
         var hit = Base + Hit;
         var throwStateFlag = Base + InThrowFlag;
+        var raptorFlag = Base + HasRaptorFlag;
         var deflectTearCheckFlag = Base + DeflectTearCheckFlag;
         var code = Base + DeflectTearCheck;
 
         AsmHelper.WriteRelativeOffsets(bytes, [
-            (code + 0x5, throwStateFlag, 7, 0x5 + 2),
-            (code + 0xE, deflectTearCheckFlag, 7, 0xE + 2),
+            (code + 0x5, raptorFlag, 7, 0x5 + 2),
+            (code + 0xE, throwStateFlag, 7, 0xE + 2),
             (code + 0x17, deflectTearCheckFlag, 7, 0x17 + 2),
-            (code + 0x35, hit, 6, 0x35 + 2),
-            (code + 0x3B, Hooks.CheckDeflectTear + 5, 5, 0x3B + 1),
+            (code + 0x20, deflectTearCheckFlag, 7, 0x20 + 2),
+            (code + 0x3E, hit, 6, 0x3E + 2),
+            (code + 0x44, Hooks.CheckDeflectTear + 5, 5, 0x44 + 1),
         ]);
 
         memoryService.WriteBytes(code, bytes);
