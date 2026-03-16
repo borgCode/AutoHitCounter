@@ -18,7 +18,7 @@ This tool offers plenty of features such as:
 * Default Profiles for every game.
 * OBS Overlay with a settings window to make editing/importing and exporting the overlay easier.
 * Event Logging.
-* Game-Specific Quality of Life Settings such as "Disable Double Click" and "Skip Credits" in Dark Souls 2.
+* Game-Specific Quality of Life Settings such as No Logo and Stutter fixes as well as  "Disable Double Click" and "Skip Credits" in Dark Souls 2.
 
 ## Tool Preview
 
