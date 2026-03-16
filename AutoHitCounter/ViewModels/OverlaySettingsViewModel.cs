@@ -121,6 +121,7 @@ public class OverlaySettingsViewModel : BaseViewModel
     public bool TableMode         { get => Get<bool>();   set => Set(value); }
     public bool ShowRunComplete          { get => Get<bool>(); set => Set(value); }
     public string RunCompleteText          { get => Get<string>(); set => Set(value); }
+    public string CustomCss { get => Get<string>(); set => Set(value); }
 
     #endregion
 

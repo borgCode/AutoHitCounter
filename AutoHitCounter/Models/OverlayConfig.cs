@@ -17,6 +17,7 @@ public class OverlayConfig
     public bool ShowFooterTotals { get; set; }
     public bool TableMode { get; set; }
     public double BackgroundOpacity { get; set; }
+    public string CustomCss { get; set; }
 
 
     // Title Section //

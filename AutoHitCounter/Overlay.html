@@ -285,6 +285,7 @@
             footerPbFontColor: '#bbbbbb',
             dpbHighlightColor: '#ffe766',
             showDpbHighlight: true,
+            customCss: '',
         };
 
         let config = {...DEFAULTS};
@@ -429,6 +430,26 @@
                 `;
         }
 
+        let customCssElement = null;
+
+        function applyCustomCss() {
+            const customCss = config.customCss.trim();
+            if (!customCss) {
+                if (customCssElement && customCssElement.parentNode) {
+                    customCssElement.parentNode.removeChild(customCssElement);
+                }
+                customCssElement = null;
+                return;
+            }
+
+            if (!customCssElement) {
+                customCssElement = document.createElement('style');
+                document.head.appendChild(customCssElement);
+            }
+
+            customCssElement.textContent = customCss;
+        }
+
         function applyLayout() {
             const cols = getGridColumns();
             headerEl.style.gridTemplateColumns = cols;
@@ -446,6 +467,7 @@
             overlay.style.overflow = 'visible';
 
             applyDynamicStyles();
+            applyCustomCss();
 
             const titleEl = document.getElementById('title');
             if (config.showTitle && config.titleText) {

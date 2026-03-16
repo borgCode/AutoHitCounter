@@ -163,6 +163,18 @@
                                        Foreground="#888888" FontSize="11" Margin="6,0,0,0"
                                        VerticalAlignment="Center" />
                         </StackPanel>
+
+                        <Separator Style="{StaticResource Separator}" />
+                        <TextBlock Text="CUSTOM CSS" Style="{StaticResource SectionLabel}" />
+                        <TextBlock Text="Overrides all other overlay settings" FontSize="10" FontStyle="Italic" Foreground="#878686" Margin="0,-4,0,4" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBox Text="{Binding CustomCss, UpdateSourceTrigger=PropertyChanged}"
+                                Height="250"
+                                Width="150"
+                                AcceptsTab="True"
+                                AcceptsReturn="True"
+                                VerticalScrollBarVisibility="Auto" />         
+                        </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
             </Border>

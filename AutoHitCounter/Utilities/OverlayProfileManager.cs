@@ -233,6 +233,8 @@ public class OverlayProfileManager
             ShowRunComplete = true,
             RunCompleteText = "✓ Run Complete",
             RunCompleteBannerColor = "#00cc66",
+
+            CustomCss = "",
         };
     }
 
