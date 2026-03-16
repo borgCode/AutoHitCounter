@@ -724,11 +724,11 @@ namespace AutoHitCounter.Properties {
         ///c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # e &lt;_main+0xe&gt;
         ///48 89 5c 24 08          mov    QWORD PTR [rsp+0x8],rbx
         ///80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # 1a &lt;_main+0x1a&gt;
-        ///0f 84 9b 01 00 00       je     1bb &lt;skip_all&gt;
+        ///0f 84 af 01 00 00       je     1cf &lt;skip_all&gt;
         ///50                      push   rax
         ///e8 00 00 00 00          call   26 &lt;_main+0x26&gt;
         ///58                      pop    rax
-        ///0f 84 8e 01 00 00       je     1bb &lt;skip_all&gt;
+        ///0f 84 a2 01 00 00       je     1cf &lt;skip_all&gt;
         ///48 85  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string EldenRingHit {
@@ -781,13 +781,13 @@ namespace AutoHitCounter.Properties {
         ///10 
         ///50                      push   rax
         ///e8 00 00 00 00          call   e &lt;_main+0xe&gt;
-        ///74 34                   je     44 &lt;exit&gt;
+        ///74 44                   je     54 &lt;exit&gt;
         ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 17 &lt;_main+0x17&gt;
         ///48 85 c0                test   rax,rax
-        ///74 28                   je     44 &lt;exit&gt;
+        ///74 38                   je     54 &lt;exit&gt;
         ///48 8b 80 08 e5 01 00    mov    rax,QWORD PTR [rax+0x1e508]
         ///48 85 c0                test   rax,rax
-        ///74 1c                   je     44 &lt;exit&gt;
+        ///74 2c                   je     54 &lt;exit&gt;
         ///48 8b 80 90 01 00 00 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string EldenRingSetThrowState {

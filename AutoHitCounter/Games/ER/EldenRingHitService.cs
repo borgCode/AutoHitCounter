@@ -87,12 +87,12 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
             (code + 0x21, checkPlayerDeadFunc, 5, 0x21 + 1),
             (code + 0x8F, WorldChrMan.Base, 7, 0x8F + 3),
             (code + 0xDB, Functions.ChrInsByHandle, 5, 0xDB + 1),
-            (code + 0x14D, deflectTearCheckFlag, 7, 0x14D + 2),
-            (code + 0x173, staggerCheckFlag, 7, 0x173 + 2),
-            (code + 0x184, stateInfoCheckFlag, 7, 0x184 + 2),
-            (code + 0x192, GameDataMan.Base, 7, 0x192 + 3),
-            (code + 0x1B1, hit, 6, 0x1B1 + 2),
-            (code + 0x1BB, Hooks.Hit + 5, 5, 0x1BB + 1),
+            (code + 0x155, deflectTearCheckFlag, 7, 0x155 + 2),
+            (code + 0x17B, staggerCheckFlag, 7, 0x17B + 2),
+            (code + 0x18C, stateInfoCheckFlag, 7, 0x18C + 2),
+            (code + 0x1A6, GameDataMan.Base, 7, 0x1A6 + 3),
+            (code + 0x1C5, hit, 6, 0x1C5 + 2),
+            (code + 0x1CF, Hooks.Hit + 5, 5, 0x1CF + 1),
         ]);
 
         memoryService.WriteBytes(code, bytes);
@@ -283,6 +283,7 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingSetThrowState);
         var throwStateFlag = Base + InThrowFlag;
+        var hit = Base + Hit;
         var checkPlayerDeadFunc = Base + CheckPlayerDead;
         var code = Base + SetThrowState;
         
@@ -290,7 +291,8 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
             (code + 0x9, checkPlayerDeadFunc, 5, 0x9 + 1),
             (code + 0x10, WorldChrMan.Base, 7, 0x10 + 3),
             (code + 0x3D, throwStateFlag, 7, 0x3D + 2),
-            (code + 0x45, Hooks.SetThrowState + 8, 5, 0x45 + 1),
+            (code + 0x4E, hit, 6, 0x4E + 2),
+            (code + 0x55, Hooks.SetThrowState + 8, 5, 0x55 + 1),
         ]);
 
         memoryService.WriteBytes(code, bytes);
