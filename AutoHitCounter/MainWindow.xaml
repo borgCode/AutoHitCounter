@@ -339,6 +339,9 @@
                                 <MenuItem Header="Reset Split Hits"
                                           Command="{Binding PlacementTarget.DataContext.ResetSelectedSplitHitsCommand,
                             RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+                                <MenuItem Header="Mark split as Distance PB"
+                                          Command="{Binding PlacementTarget.DataContext.SetDistancePbCommand,
+                            RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
                                 <MenuItem Header="Edit PB"
                                           Command="{Binding PlacementTarget.DataContext.EditSplitPbCommand,
                             RelativeSource={RelativeSource AncestorType=ContextMenu}}" />

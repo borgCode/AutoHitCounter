@@ -59,6 +59,7 @@ namespace AutoHitCounter.ViewModels
             _overlayServerService = overlayServerService;
             _overlayServerService.Start();
 
+
             stateService.Subscribe(State.AppStart, OnAppStart);
             stateService.Subscribe(State.Attached, OnAttached);
             stateService.Subscribe(State.NotAttached, OnNotAttached);
@@ -130,6 +131,8 @@ namespace AutoHitCounter.ViewModels
 
         public DelegateCommand MoveSplitUpCommand { get; set; }
         public DelegateCommand MoveSplitDownCommand { get; set; }
+
+        public DelegateCommand SetDistancePbCommand { get; set; }
 
         #endregion
 
@@ -237,6 +240,7 @@ namespace AutoHitCounter.ViewModels
                 {
                     MoveSplitUpCommand?.RaiseCanExecuteChanged();
                     MoveSplitDownCommand?.RaiseCanExecuteChanged();
+                    SetDistancePbCommand?.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -548,6 +552,7 @@ namespace AutoHitCounter.ViewModels
             DecrementHitCommand = new DelegateCommand(DecrementHit);
             ResetCommand = new DelegateCommand(ResetSplits);
             SetPbCommand = new DelegateCommand(SetPb);
+            SetDistancePbCommand = new DelegateCommand(SetDistancePb, CanSetDistancePb);
 
             ClearAllNotesCommand = new DelegateCommand(() =>
             {
@@ -835,6 +840,21 @@ namespace AutoHitCounter.ViewModels
             if (TotalHits == 0)
                 TryAdvanceDistancePb();
         }
+
+        private void SetDistancePb()
+        {
+            if (_activeProfile == null || SelectedSplit == null || SelectedSplit.IsParent) return;
+
+            var index = Splits.IndexOf(SelectedSplit);
+            if (index < 0) return;
+
+            _activeProfile.DistancePb = index;
+            _profileService.SaveProfile(_activeProfile);
+            _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
+        }
+
+        private bool CanSetDistancePb() =>
+            _activeProfile != null && SelectedSplit != null && !SelectedSplit.IsParent;
 
         private void TryAdvanceDistancePb()
         {
