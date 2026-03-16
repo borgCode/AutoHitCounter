@@ -36,6 +36,7 @@ public class ProfileService : IProfileService
 
     public void SaveProfile(Profile profile)
     {
+        if (profile?.GameName == null) return;
         if (!_profiles.ContainsKey(profile.GameName))
             _profiles[profile.GameName] = [];
 

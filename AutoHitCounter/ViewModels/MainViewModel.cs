@@ -837,6 +837,7 @@ namespace AutoHitCounter.ViewModels
 
         private void TryAdvanceDistancePb()
         {
+            if (_activeProfile == null || CurrentSplit == null) return;
             var currentIdx = Splits.IndexOf(CurrentSplit);
             if (currentIdx > _activeProfile.DistancePb)
             {
