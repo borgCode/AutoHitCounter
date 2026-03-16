@@ -27,37 +27,37 @@ This tool offers plenty of features such as:
 <details>
   <summary>Splits Tab</summary>
   <br>
-<p><img width="600" height="720" alt="Player Tab" src="" /></p>
-<p>Event Logger<br><img width="600" height="720" alt="Event Logger" src="" /></p>
+<p><img width="525" height="800" alt="Splits Tab" src="https://github.com/user-attachments/assets/cdcccfef-1eab-4324-843e-34dcf16b1f5f" /></p>
+<p>Event Logger<br><img width="600" height="450" alt="Event Logger" src="https://github.com/user-attachments/assets/56213676-753a-46d2-821d-f351501e41d8" /></p>
 </details>
 
 <details>
   <summary>Help Window</summary>
   <br>
-<p><img width="600" height="720" alt="Help Window" src="" /></p>
+<p><img width="600" height="600" alt="Help Window" src="https://github.com/user-attachments/assets/cc369278-8835-49eb-b9d8-189695234cb3" /></p>
 </details> 
 
 <details>
   <summary>Profile Editor</summary>
   <br>
-<p><img width="600" height="720" alt="Profile Editor" src="" /></p>
+<p><img width="850" height="800" alt="Profile Editor" src="https://github.com/user-attachments/assets/483fe0c5-1c9d-4fa3-be98-23ed06c982a3" /></p>
 
-<p>Event Editing Window<br><img width="900" height="500" alt="Event Editing" src="" />
+<p>Event Editing Window<br><img width="380" height="440" alt="Event Editing" src="https://github.com/user-attachments/assets/782c6cbb-dd08-43bd-9bf9-72c1c7b1ccd8" />
 </p>
 </details> 
 
 <details>
   <summary>Hotkeys Tab</summary>
   <br>
-<p><img width="600" height="720" alt="Hotkeys Tab" src="" /></p>
+<p><img width="525" height="800" alt="Hotkeys Tab" src="https://github.com/user-attachments/assets/ff4ce7e8-ddba-4b4d-b272-af80cefb0116" /></p>
 </details>
 
 <details>
   <summary>Settings Tab</summary>
   <br>
-<p>General Enemey Settings<br><img width="600" height="720" alt="General Enemey Settings" src="" /></p>
+<p>General Settings<br><img width="525" height="800" alt="General Settings" src="https://github.com/user-attachments/assets/0637c8b3-6d37-4324-be21-82bd9aa8235f" /></p>
 
-<p>Overlay Editor<br><img width="600" height="720" alt="Overlay Editor" src="" /></p>
+<p>Overlay Editor<br><img width="920" height="700" alt="Overlay Editor" src="https://github.com/user-attachments/assets/6166fdc8-6938-4e10-a97f-6410dacfdc67" /></p>
 </details>
 
 
