@@ -6,7 +6,7 @@
 <p>Auto Hit Counter is a tool that tracks hits in all From Software Titles available on PC (Dark Souls Remastered, Dark Souls 2, Dark Souls 3, Sekiro, and Elden Ring). This tool both increments hits and advances splits once an event is triggered (defeating a boss for example) automatically. The tool counts all hits within three seconds as one to avoid racking hits on big attacks when the player is unable to move or when the attack hits multiple times such as Waterfowl Dance.</p>
 
 [![Latest Release](https://img.shields.io/github/v/release/borgCode/AutoHitCounter.svg)](https://github.com/borgCode/AutoHitCounter/releases/latest)
-[![All Releases](https://img.shields.io/github/downloads/borgCode/AutoHitCounter/total.svg)](https://github.com/borgCode/AutoHitCounter/releases/download/v1.0.3/AutoHitCounter.exe)
+[![All Releases](https://img.shields.io/github/downloads/borgCode/AutoHitCounter/total.svg)](https://github.com/borgCode/AutoHitCounter/releases/download/v1.0.4/AutoHitCounter.exe)
 [![Report Issues](https://img.shields.io/github/issues/borgCode/AutoHitCounter.svg)](https://github.com/borgCode/AutoHitCounter/issues)
 
 ## Features
