@@ -163,12 +163,13 @@ public class DSRHitService(IMemoryService memoryService, HookManager hookManager
         var throwFlag = Base + InThrowFlag;
         
         AsmHelper.WriteRelativeOffsets(bytes, [
-            (code + 0x9, WorldChrMan.Base, 7, 0x9 + 3),
-            (code + 0x24, throwFlag, 7, 0x24 + 2),
+            (code + 0xD, WorldChrMan.Base, 7, 0xD + 3),
+            (code + 0x25, throwFlag, 7, 0x25 + 2),
+            (code + 0x2D, Hooks.ClearThrowState + 7, 5, 0x2D + 1)
         ]);
         
         memoryService.WriteBytes(code, bytes);
-        InstallHook(code, Hooks.ClearThrowState, [0x88, 0x51, 0x20, 0xC3, 0xCC]);
+        InstallHook(code, Hooks.ClearThrowState, [ 0x48, 0x8B, 0x8B, 0x48, 0x04, 0x00, 0x00]);
     }
 
     private void InstallSetThrowStateHook()

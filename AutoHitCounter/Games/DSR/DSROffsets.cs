@@ -180,11 +180,9 @@ public static class DSROffsets
 
         Hooks.ClearThrowState = moduleBase + Version switch
         {
-            Version1_0_1_0 => 0x3A37C0,
-            Version1_0_1_1 => 0x3A34C0,
-            Version1_0_1_2 => 0x3A69F0,
-            Version1_0_3_0 => 0x3ACEF0,
-            Version1_0_3_1 => 0x3AC500,
+            
+            Version1_0_3_0 => 0x275be3e,
+            Version1_0_3_1 => 0x46a3ab,
             _ => 0
         };
 

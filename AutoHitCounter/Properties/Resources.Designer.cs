@@ -443,17 +443,17 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 88 51 20                mov    BYTE PTR [rcx+0x20],dl
-        ///80 fa 00                cmp    dl,0x0
-        ///75 24                   jne    2c &lt;early_exit&gt;
+        ///   Looks up a localized string similar to 48 8b 8b 48 04 00 00    mov    rcx,QWORD PTR [rbx+0x448]
+        ///48 85 c9                test   rcx,rcx
+        ///74 21                   je     2d &lt;exit&gt;
         ///50                      push   rax
-        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 10 &lt;_main+0x10&gt;
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 14 &lt;_main+0x14&gt;
         ///48 85 c0                test   rax,rax
-        ///74 16                   je     2b &lt;exit&gt;
-        ///48 8b 40 68             mov    rax,QWORD PTR [rax+0x68]
-        ///48 85 c0                test   rax,rax
-        ///74 0d                   je     2b &lt;exit&gt;
-        ///48 3b 41 08             cmp    r [rest of string was truncated]&quot;;.
+        ///74 13                   je     2c &lt;pop_exit&gt;
+        ///48 3b 58 68             cmp    rbx,QWORD PTR [rax+0x68]
+        ///75 0d                   jne    2c &lt;pop_exit&gt;
+        ///80 79 20 06             cmp    BYTE PTR [rcx+0x20],0x6
+        ///74 07      [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string DSRClearThrowState {
             get {
@@ -1083,25 +1083,6 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 53                      push   rbx
-        ///51                      push   rcx
-        ///48 8b 49 08             mov    rcx,QWORD PTR [rcx+0x8]
-        ///48 8b 1d 00 00 00 00    mov    rbx,QWORD PTR [rip+0x0]        # d &lt;_main+0xd&gt;
-        ///48 8b 9b d0 00 00 00    mov    rbx,QWORD PTR [rbx+0xd0]
-        ///48 3b 19                cmp    rbx,QWORD PTR [rcx]
-        ///75 06                   jne    1f &lt;exit&gt;
-        ///ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 1f &lt;exit&gt;
-        ///00000000001f &lt;exit&gt;:
-        ///59                      pop    rcx
-        ///5b                      p [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string ScholarLightPoiseStagger {
-            get {
-                return ResourceManager.GetString("ScholarLightPoiseStagger", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to 41 88 4e 17             mov    BYTE PTR [r14+0x17],cl
         ///48 8b 47 08             mov    rax,QWORD PTR [rdi+0x8]
         ///80 f9 02                cmp    cl,0x2
@@ -1630,26 +1611,6 @@ namespace AutoHitCounter.Properties {
         internal static string VanillaKillBox {
             get {
                 return ResourceManager.GetString("VanillaKillBox", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 51                      push   ecx
-        ///8b 0d 00 00 00 00       mov    ecx,DWORD PTR ds:0x0
-        ///85 c9                   test   ecx,ecx
-        ///74 0b                   je     16 &lt;exit&gt;
-        ///3b 41 74                cmp    eax,DWORD PTR [ecx+0x74]
-        ///75 06                   jne    16 &lt;exit&gt;
-        ///ff 05 00 00 00 00       inc    DWORD PTR ds:0x0
-        ///
-        ///0016 &lt;exit&gt;:
-        ///59                      pop    ecx
-        ///d9 80 b0 01 00 00       fld    DWORD PTR [eax+0x1b0]
-        ///e9 fc ff ff ff          jmp    1e &lt;exit+0x8&gt;.
-        /// </summary>
-        internal static string VanillaLightPoiseStagger {
-            get {
-                return ResourceManager.GetString("VanillaLightPoiseStagger", resourceCulture);
             }
         }
         
