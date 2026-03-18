@@ -16,19 +16,18 @@ namespace AutoHitCounter
     {
         private static Mutex _mutex;
         MainViewModel _mainViewModel;
-        
+
         protected override void OnStartup(StartupEventArgs e)
         {
-            
             const string appName = "AutoHitCounter";
-            
+
             _mutex = new Mutex(true, appName, out var createdNew);
 
             if (!createdNew)
             {
                 Current.Shutdown();
             }
-            
+
             base.OnStartup(e);
 
             IMemoryService memoryService = new MemoryService();
@@ -36,12 +35,12 @@ namespace AutoHitCounter
             IProfileService profileService = new ProfileService();
 
             ITickService tickService = new TickService(memoryService, stateService);
-            
+
             OverlayServerService overlayServerService = new OverlayServerService();
             SplitNavigationService splitNavigationService = new SplitNavigationService();
 
             HookManager hookManager = new HookManager(memoryService);
-            
+
             var hotkeyManager = new HotkeyManager(memoryService);
 
             GameModuleFactory gameModuleFactory =
@@ -51,23 +50,35 @@ namespace AutoHitCounter
             var overlayProfileManager = new OverlayProfileManager();
 
             var overlaySettingsViewModel = new OverlaySettingsViewModel(overlayServerService, overlayProfileManager);
-            
+
             var settingsViewModel = new SettingsViewModel(stateService, overlaySettingsViewModel, hotkeyManager);
-            
+
             var hotkeysViewModel = new HotkeyTabViewModel(hotkeyManager, stateService);
 
-            
-            _mainViewModel = new MainViewModel(memoryService, hotkeyManager, gameModuleFactory, profileService, stateService,
+
+            _mainViewModel = new MainViewModel(memoryService, hotkeyManager, gameModuleFactory, profileService,
+                stateService,
                 settingsViewModel, hotkeysViewModel, overlayServerService, splitNavigationService);
             var mainWindow = new MainWindow
             {
                 DataContext = _mainViewModel
             };
             mainWindow.Show();
-            
+
             stateService.Publish(State.AppStart);
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                try
+                {
+                    var parser = new AngleSharp.Css.Parser.CssParser();
+                    parser.ParseStyleSheet("*{color:red}");
+                }
+                catch
+                {
+                }
+            });
         }
-        
+
         protected override void OnExit(ExitEventArgs e)
         {
             _mainViewModel?.FlushRunState();

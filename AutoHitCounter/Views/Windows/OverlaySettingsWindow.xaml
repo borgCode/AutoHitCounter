@@ -244,7 +244,7 @@
                         </StackPanel>
                         
                         <StackPanel Style="{StaticResource ColorRow}">
-                            <TextBlock Text="Split Name (Current)" Style="{StaticResource FieldLabel}" />
+                            <TextBlock Text="Split Name" Style="{StaticResource FieldLabel}" />
                             <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
                                 <Rectangle
                                     Fill="{Binding SplitNameColor, Converter={StaticResource StringToBrushConverter}}" />
