@@ -16,7 +16,7 @@ public static class DS2CustomCodeOffsets
     public const int GeneralApplyDamage = 0x200;
     public const int KillBox = 0x400;
     public const int CountAuxHit = 0x500;
-    public const int LightPoiseStagger = 0x560;
+    public const int HasIframes = 0x560;
 
     public const int CheckPlayerDead = 0x700;
 

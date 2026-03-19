@@ -58,7 +58,8 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
 
     private void InstallScholarHooks()
     {
-        WriteScholarPlayerDeadCheck();
+        WriteHelpers();
+        
 
         InstallScholarHitHook();
         InstallScholarGeneralDamageHook();
@@ -66,6 +67,27 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         InstallScholarCountAuxHook();
         InstallClearWetPoisonBitHook();
         InstallStaggerCheckHook();
+    }
+
+    private void WriteHelpers()
+    {
+        WriteScholarPlayerDeadCheck();
+        WriteScholarHasIframesCheck();
+    }
+
+    private void WriteScholarPlayerDeadCheck()
+    {
+        var code = Base + CheckPlayerDead;
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarCheckPlayerDead);
+        AsmHelper.WriteRelativeOffset(bytes, code, GameManagerImp.Base, 7, 3);
+        memoryService.WriteBytes(code, bytes);
+    }
+
+    private void WriteScholarHasIframesCheck()
+    {
+        var code = Base + HasIframes;
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarHasIframes);
+        memoryService.WriteBytes(code, bytes);
     }
 
     private void InstallScholarHitHook()
@@ -77,6 +99,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         var shouldIgnoreShulvaSpikesFlag = Base + ShouldIgnoreShulvaSpikesFlag;
         var wetPoisonFlag = Base + WetPoisonFlag;
         var checkPlayerDeadFunc = Base + CheckPlayerDead;
+        var hasIframesFunc = Base + HasIframes;
 
         var code = Base + HitCode;
 
@@ -84,27 +107,19 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
             (code, auxCheckFlag, 7, 2),
             (code + 0x8, checkPlayerDeadFunc, 5, 0x8 + 1),
             (code + 0x22, GameManagerImp.Base, 7, 0x22 + 3),
-            (code + 0x40, MapId, 10, 0x40 + 2),
-            (code + 0x4C, shouldIgnoreShulvaSpikesFlag, 7, 0x4C + 2),
-            (code + 0x7F, wetPoisonFlag, 7, 0x7F + 2),
-            (code + 0x88, auxCheckFlag, 7, 0x88 + 2),
-            (code + 0xA4, hit, 6, 0xA4 + 2),
-            (code + 0xB1, Hooks.Hit + 5, 5, 0xB1 + 1)
+            (code + 0x48, hasIframesFunc, 5, 0x48 + 1),
+            (code + 0x5E, MapId, 10, 0x5E + 2),
+            (code + 0x6A, shouldIgnoreShulvaSpikesFlag, 7, 0x6A + 2),
+            (code + 0x9D, wetPoisonFlag, 7, 0x9D + 2),
+            (code + 0xA6, auxCheckFlag, 7, 0xA6 + 2),
+            (code + 0xC2, hit, 6, 0xC2 + 2),
+            (code + 0xCF, Hooks.Hit + 5, 5, 0xCF + 1)
         ]);
 
         memoryService.WriteBytes(code, bytes);
         InstallHook(code, Hooks.Hit, [0x48, 0x89, 0x5C, 0x24, 0x10]);
     }
-
-    private void WriteScholarPlayerDeadCheck()
-    {
-        var code = Base + CheckPlayerDead;
-
-        var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarCheckPlayerDead);
-        AsmHelper.WriteRelativeOffset(bytes, code, GameManagerImp.Base, 7, 3);
-        memoryService.WriteBytes(code, bytes);
-    }
-
+    
     //Handles fall damage and self aux kill
 
     private void InstallScholarGeneralDamageHook()

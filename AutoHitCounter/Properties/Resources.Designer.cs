@@ -1003,13 +1003,32 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 48 8b 81 b8 00 00 00    mov    rax,QWORD PTR [rcx+0xb8]
+        ///83 b8 f0 05 00 00 00    cmp    DWORD PTR [rax+0x5f0],0x0
+        ///75 21                   jne    31 &lt;yes&gt;
+        ///83 b8 f8 05 00 00 00    cmp    DWORD PTR [rax+0x5f8],0x0
+        ///75 18                   jne    31 &lt;yes&gt;
+        ///83 b8 fc 05 00 00 00    cmp    DWORD PTR [rax+0x5fc],0x0
+        ///75 0f                   jne    31 &lt;yes&gt;
+        ///48 8b 81 d0 00 00 00    mov    rax,QWORD PTR [rcx+0xd0]
+        ///f6 00 02                test   BYTE PTR [rax],0x2
+        ///75 03                   jne    31 &lt;yes&gt;
+        ///30 c0     [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ScholarHasIframes {
+            get {
+                return ResourceManager.GetString("ScholarHasIframes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 7 &lt;_main+0x7&gt;
         ///50                      push   rax
         ///e8 00 00 00 00          call   d &lt;_main+0xd&gt;
-        ///0f 84 98 00 00 00       je     ab &lt;exit&gt;
+        ///0f 84 b6 00 00 00       je     c9 &lt;exit&gt;
         ///81 7c 24 54 e6 50 f5    cmp    DWORD PTR [rsp+0x54],0x5f550e6
         ///05 
-        ///0f 84 8a 00 00 00       je     ab &lt;exit&gt;
+        ///0f 84 a8 00 00 00       je     c9 &lt;exit&gt;
         ///53                      push   rbx
         ///48 8b 1d 00 00 00 00    mov    rbx,QWORD PTR [rip+0x0]        # 29 &lt;_main+0x29&gt;
         ///48 8b 9b d0 00 00 00    mov    rbx,QWORD PTR [rbx+0xd0]

@@ -32,7 +32,7 @@ public enum AsmScript
     ScholarGeneralApplyDamage,
     ScholarKillBox,
     ScholarCountAuxHit,
-    ScholarLightPoiseStagger,
+    ScholarHasIframes,
     ScholarClearWetPoisonBit,
     ScholarStaggerCheck,
     ScholarEventLog,
