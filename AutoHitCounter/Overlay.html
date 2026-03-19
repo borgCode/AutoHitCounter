@@ -521,13 +521,6 @@
                 end = Math.min(total, start + maxRows);
             }
 
-            if (end === total) {
-                const newStart = Math.max(0, total - maxRows);
-                if (anchor >= newStart) {
-                    start = newStart;
-                }
-            }
-
             splits = splits.slice(start, end);
 
             // Distance PB
