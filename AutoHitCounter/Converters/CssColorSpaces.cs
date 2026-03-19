@@ -3,6 +3,7 @@ using System.Windows.Media;
 
 namespace AutoHitCounter.Converters;
 
+
 internal static class CssColorSpaces
 {
     // HSL
@@ -11,7 +12,7 @@ internal static class CssColorSpaces
         var max = Math.Max(r, Math.Max(g, b));
         var min = Math.Min(r, Math.Min(g, b));
         var l = (max + min) / 2.0;
-        if (max == min) return (0, 0, l);
+        if (max - min < 1e-10) return (0, 0, l);
         var d = max - min;
         var s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
         double h;
@@ -91,6 +92,7 @@ internal static class CssColorSpaces
     }
 
     // Oklab / Oklch
+
     internal static (double l, double a, double b) RgbToOklab(double r, double g, double b)
     {
         r = SrgbToLinear(r); g = SrgbToLinear(g); b = SrgbToLinear(b);
@@ -274,7 +276,6 @@ internal static class CssColorSpaces
     private static double LinearToSrgb(double v)
         => v <= 0.0031308 ? 12.92 * v : 1.055 * Math.Pow(v, 1.0 / 2.4) - 0.055;
 
-    // Hue interpolation
 
     internal static double InterpolateHue(double h1, double h2, double w1, double w2)
     {
@@ -283,7 +284,6 @@ internal static class CssColorSpaces
         if (diff < -180) diff += 360;
         return ((h1 + diff * w2) % 360 + 360) % 360;
     }
-    
 
     internal static byte ClampToByte(double v)
         => (byte)Math.Max(0, Math.Min(255, (int)Math.Round(v)));

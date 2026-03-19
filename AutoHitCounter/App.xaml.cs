@@ -66,17 +66,6 @@ namespace AutoHitCounter
             mainWindow.Show();
 
             stateService.Publish(State.AppStart);
-            ThreadPool.QueueUserWorkItem(_ =>
-            {
-                try
-                {
-                    var parser = new AngleSharp.Css.Parser.CssParser();
-                    parser.ParseStyleSheet("*{color:red}");
-                }
-                catch
-                {
-                }
-            });
         }
 
         protected override void OnExit(ExitEventArgs e)
