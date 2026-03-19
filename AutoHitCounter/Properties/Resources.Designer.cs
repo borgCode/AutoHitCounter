@@ -90,15 +90,16 @@ namespace AutoHitCounter.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # 7 &lt;_main+0x7&gt;
-        ///74 62                   je     6b &lt;skip_all&gt;
+        ///74 69                   je     72 &lt;skip_all&gt;
         ///50                      push   rax
-        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 11 &lt;_main+0x11&gt;
+        ///e8 00 00 00 00          call   f &lt;_main+0xf&gt;
+        ///74 60                   je     71 &lt;skip&gt;
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 18 &lt;_main+0x18&gt;
         ///48 85 c0                test   rax,rax
-        ///74 54                   je     6a &lt;skip&gt;
+        ///74 54                   je     71 &lt;skip&gt;
         ///48 8b 80 80 00 00 00    mov    rax,QWORD PTR [rax+0x80]
         ///48 85 c0                test   rax,rax
-        ///74 48                   je     6a &lt;skip&gt;
-        ///48 8b 80 90 1f 00 00    mov    rax,QWORD PTR [rax+ [rest of string was truncated]&quot;;.
+        ///74 4 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string DS3ApplyHealthDelta {
             get {

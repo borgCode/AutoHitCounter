@@ -1240,43 +1240,45 @@ Yhorm the Giant,13900800</value>
   </data>
   <data name="DS3ApplyHealthDelta" xml:space="preserve">
     <value>80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # 7 &lt;_main+0x7&gt;
-74 62                   je     6b &lt;skip_all&gt;
+74 69                   je     72 &lt;skip_all&gt;
 50                      push   rax
-48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 11 &lt;_main+0x11&gt;
+e8 00 00 00 00          call   f &lt;_main+0xf&gt;
+74 60                   je     71 &lt;skip&gt;
+48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 18 &lt;_main+0x18&gt;
 48 85 c0                test   rax,rax
-74 54                   je     6a &lt;skip&gt;
+74 54                   je     71 &lt;skip&gt;
 48 8b 80 80 00 00 00    mov    rax,QWORD PTR [rax+0x80]
 48 85 c0                test   rax,rax
-74 48                   je     6a &lt;skip&gt;
+74 48                   je     71 &lt;skip&gt;
 48 8b 80 90 1f 00 00    mov    rax,QWORD PTR [rax+0x1f90]
 48 85 c0                test   rax,rax
-74 3c                   je     6a &lt;skip&gt;
+74 3c                   je     71 &lt;skip&gt;
 48 3b 48 18             cmp    rcx,QWORD PTR [rax+0x18]
-75 36                   jne    6a &lt;skip&gt;
+75 36                   jne    71 &lt;skip&gt;
 48 8b 40 18             mov    rax,QWORD PTR [rax+0x18]
 8b 80 d8 00 00 00       mov    eax,DWORD PTR [rax+0xd8]
 01 d0                   add    eax,edx
 85 c0                   test   eax,eax
-7f 26                   jg     6a &lt;skip&gt;
+7f 26                   jg     71 &lt;skip&gt;
 51                      push   rcx
 52                      push   rdx
 ba 00 97 2b 06          mov    edx,0x62b9700
-48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 52 &lt;_main+0x52&gt;
+48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 59 &lt;_main+0x59&gt;
 48 8b 89 80 00 00 00    mov    rcx,QWORD PTR [rcx+0x80]
-e8 00 00 00 00          call   5e &lt;_main+0x5e&gt;
+e8 00 00 00 00          call   65 &lt;_main+0x65&gt;
 5a                      pop    rdx
 59                      pop    rcx
 84 c0                   test   al,al
-75 06                   jne    6a &lt;skip&gt;
-ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 6a &lt;skip&gt;
+75 06                   jne    71 &lt;skip&gt;
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 71 &lt;skip&gt;
 
-00000000006a &lt;skip&gt;:
+000000000071 &lt;skip&gt;:
 58                      pop    rax
 
-00000000006b &lt;skip_all&gt;:
+000000000072 &lt;skip_all&gt;:
 48 8b 49 08             mov    rcx,QWORD PTR [rcx+0x8]
 41 0f b6 d0             movzx  edx,r8b
-e9 00 00 00 00          jmp    78 &lt;skip_all+0xd&gt;</value>
+e9 00 00 00 00          jmp    7f &lt;skip_all+0xd&gt;</value>
   </data>
   <data name="DS3KillBox" xml:space="preserve">
     <value>48 89 cb                mov    rbx,rcx

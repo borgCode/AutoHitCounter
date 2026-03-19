@@ -174,15 +174,17 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
         var bytes = AsmLoader.GetAsmBytes(AsmScript.DS3ApplyHealthDelta);
         var hit = Base + Hit;
         var throwStateFlag = Base + InThrowFlag;
+        var checkPlayerDeadFunc = Base + CheckPlayerDead;
         var code = Base + ApplyHealthDelta;
 
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code, throwStateFlag, 7,  2),
-            (code + 0xA, WorldChrMan.Base, 7, 0xA + 3),
-            (code + 0x4B, WorldChrMan.Base, 7, 0x4B + 3),
-            (code + 0x59, Functions.HasSpEffectId, 5, 0x59 + 1),
-            (code + 0x64, hit, 6, 0x64 + 2),
-            (code + 0x73, Hooks.ApplyHealthDelta + 8, 5, 0x73 + 1)
+            (code + 0xA, checkPlayerDeadFunc, 5, 0xA + 1),
+            (code + 0x11, WorldChrMan.Base, 7, 0x11 + 3),
+            (code + 0x52, WorldChrMan.Base, 7, 0x52 + 3),
+            (code + 0x60, Functions.HasSpEffectId, 5, 0x60 + 1),
+            (code + 0x6B, hit, 6, 0x6B + 2),
+            (code + 0x7A, Hooks.ApplyHealthDelta + 8, 5, 0x7A + 1)
         ]);
 
         memoryService.WriteBytes(code, bytes);
