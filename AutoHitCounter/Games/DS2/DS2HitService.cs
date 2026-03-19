@@ -216,6 +216,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
     private void InstallVanillaHooks()
     {
         WriteVanillaPlayerDeadCheck();
+        WriteVanillaHasIframesCheck();
 
         InstallVanillaHitHook();
         InstallVanillaCountAuxHook();
@@ -234,6 +235,13 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         memoryService.WriteBytes(code, bytes);
     }
 
+    private void WriteVanillaHasIframesCheck()
+    {
+        var code = Base + HasIframes;
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.VanillaHasIframes);
+        memoryService.WriteBytes(code, bytes);
+    }
+
     private void InstallVanillaHitHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.VanillaHit);
@@ -243,23 +251,25 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         var wetPoisonFlag = Base + WetPoisonFlag;
         var shouldIgnoreShulvaSpikesFlag = Base + ShouldIgnoreShulvaSpikesFlag;
         var checkPlayerDeadFunc = Base + CheckPlayerDead;
-
+        var hasIframesFunc = Base + HasIframes;
+        
         var code = Base + HitCode;
 
         AsmHelper.WriteImmediateDwords(bytes, [
             ((int)auxCheckFlag, 2),
             ((int)GameManagerImp.Base, 0x24 + 2),
-            ((int)MapId, 0x42 + 2),
-            ((int)shouldIgnoreShulvaSpikesFlag, 0x4E + 2),
-            ((int)wetPoisonFlag, 0x8A + 2),
-            ((int)auxCheckFlag, 0x93 + 2),
-            ((int)hit, 0xB4 + 2)
+            ((int)MapId, 0x61 + 2),
+            ((int)shouldIgnoreShulvaSpikesFlag, 0x6D + 2),
+            ((int)wetPoisonFlag, 0xA9 + 2),
+            ((int)auxCheckFlag, 0xB2 + 2),
+            ((int)hit, 0xD3 + 2)
         ]);
 
 
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x8, checkPlayerDeadFunc, 5, 0x8 + 1),
-            (code + 0xC2, Hooks.Hit + 6, 5, 0xC2 + 1)
+            (code + 0x45, hasIframesFunc, 5, 0x45 + 1),
+            (code + 0xE1, Hooks.Hit + 6, 5, 0xE1 + 1)
         ]);
 
         memoryService.WriteBytes(code, bytes);

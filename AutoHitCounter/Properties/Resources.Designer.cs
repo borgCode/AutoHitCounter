@@ -1551,18 +1551,37 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 8b 81 94 00 00 00       mov    eax,DWORD PTR [ecx+0x94]
+        ///83 b8 f0 05 00 00 00    cmp    DWORD PTR [eax+0x5f0],0x0
+        ///75 20                   jne    2f &lt;yes&gt;
+        ///83 b8 f8 05 00 00 00    cmp    DWORD PTR [eax+0x5f8],0x0
+        ///75 17                   jne    2f &lt;yes&gt;
+        ///83 b8 fc 05 00 00 00    cmp    DWORD PTR [eax+0x5fc],0x0
+        ///75 0e                   jne    2f &lt;yes&gt;
+        ///8b 81 a0 00 00 00       mov    eax,DWORD PTR [ecx+0xa0]
+        ///f6 00 02                test   BYTE PTR [eax],0x2
+        ///75 03                   jne    2f &lt;yes&gt;
+        ///30 c0     [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string VanillaHasIframes {
+            get {
+                return ResourceManager.GetString("VanillaHasIframes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to c6 05 00 00 00 00 00    mov    BYTE PTR ds:0x0,0x0
         ///50                      push   eax
         ///e8 fc ff ff ff          call   9 &lt;_main+0x9&gt;
-        ///0f 84 a8 00 00 00       je     bb &lt;exit&gt;
+        ///0f 84 c7 00 00 00       je     da &lt;exit&gt;
         ///81 bd f4 fd ff ff e6    cmp    DWORD PTR [ebp-0x20c],0x5f550e6
         ///50 f5 05 
-        ///0f 84 98 00 00 00       je     bb &lt;exit&gt;
+        ///0f 84 b7 00 00 00       je     da &lt;exit&gt;
         ///53                      push   ebx
         ///8b 1d 00 00 00 00       mov    ebx,DWORD PTR ds:0x0
         ///8b 5b 74                mov    ebx,DWORD PTR [ebx+0x74]
         ///3b 59 10                cmp    ebx,DWORD PTR [ecx+0x10]
-        ///0f 85 84 00 00 0 [rest of string was truncated]&quot;;.
+        ///0f 85 a3 00 00 0 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string VanillaHit {
             get {
