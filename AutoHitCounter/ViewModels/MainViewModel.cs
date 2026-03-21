@@ -311,6 +311,19 @@ namespace AutoHitCounter.ViewModels
             set => SetProperty(ref _inGameTime, value);
         }
 
+        private bool _isPracticeMode;
+
+        public bool IsPracticeMode
+        {
+            get => _isPracticeMode;
+            set
+            {
+                if (!SetProperty(ref _isPracticeMode, value)) return;
+                SettingsManager.Default.PracticeMode = value;
+                SettingsManager.Default.Save();
+            }
+        }
+
         private bool _showNotes;
 
         public bool ShowNotes
@@ -547,6 +560,8 @@ namespace AutoHitCounter.ViewModels
             AppVer = VersionChecker.GetVersionText();
             if (SettingsManager.Default.EnableUpdateChecks)
                 VersionChecker.CheckForUpdates(Application.Current.MainWindow);
+            _isPracticeMode = SettingsManager.Default.PracticeMode;
+            OnPropertyChanged(nameof(IsPracticeMode));
         }
 
         private void CheckUpdate() =>
@@ -654,6 +669,7 @@ namespace AutoHitCounter.ViewModels
             {
                 if (_currentModule is ManualGameModule manual) manual.StopTimer();
             });
+            _hotkeyManager.RegisterAction(HotkeyActions.TogglePracticeMode, () => { IsPracticeMode = !IsPracticeMode; });
         }
 
         private void OnSplitStateChanged()
@@ -724,7 +740,7 @@ namespace AutoHitCounter.ViewModels
 
             _currentModule.OnHit += count =>
             {
-                if (IsRunComplete || CurrentSplit == null || Settings.IsPracticeMode) return;
+                if (IsRunComplete || CurrentSplit == null || IsPracticeMode) return;
                 if (_selectedGame != _activeGame) return;
                 CurrentSplit.NumOfHits += count;
                 SaveRunState();
@@ -744,7 +760,7 @@ namespace AutoHitCounter.ViewModels
         private void AutoAdvanceSplit()
         {
             if (_selectedGame != _activeGame) return;
-            if (Settings.IsPracticeMode) return;
+            if (IsPracticeMode) return;
             if (CurrentSplit == null) return;
             _splitNav.Advance();
         }
@@ -804,7 +820,9 @@ namespace AutoHitCounter.ViewModels
                 return;
             }
 
-            var events = _selectedGame.IsManual ? new Dictionary<uint, string>() : GetAllEventsForGame(_selectedGame.Title);
+            var events = _selectedGame.IsManual
+                ? new Dictionary<uint, string>()
+                : GetAllEventsForGame(_selectedGame.Title);
             var vm = new ProfileEditorViewModel(
                 events,
                 _profileService,
@@ -959,7 +977,9 @@ namespace AutoHitCounter.ViewModels
 
         private void CreateCustomGame()
         {
-            var name = MsgBox.ShowInput("Create a game to add profiles and splits to.\nAuto hit counting and auto splitting are not supported,\nbut you can use a timer and track hits manually.", "", "New Custom Game");
+            var name = MsgBox.ShowInput(
+                "Create a game to add profiles and splits to.\nAuto hit counting and auto splitting are not supported,\nbut you can use a timer and track hits manually.",
+                "", "New Custom Game");
             if (string.IsNullOrWhiteSpace(name)) return;
 
             if (Games.Any(g => g.GameName == name))
@@ -997,8 +1017,8 @@ namespace AutoHitCounter.ViewModels
                 : "";
 
             if (!MsgBox.ShowYesNo(
-                $"Are you sure you want to delete \"{name}\"?{profileMsg}",
-                "Delete Custom Game"))
+                    $"Are you sure you want to delete \"{name}\"?{profileMsg}",
+                    "Delete Custom Game"))
                 return;
 
             foreach (var profile in profiles.ToList())
@@ -1205,7 +1225,7 @@ namespace AutoHitCounter.ViewModels
 
         private void IncrementHit()
         {
-            if (IsRunComplete || CurrentSplit == null || Settings.IsPracticeMode) return;
+            if (IsRunComplete || CurrentSplit == null || IsPracticeMode) return;
             CurrentSplit.NumOfHits++;
             SaveRunState();
             _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));

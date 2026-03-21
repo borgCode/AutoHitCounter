@@ -17,7 +17,6 @@ namespace AutoHitCounter.ViewModels;
 public class SettingsViewModel : BaseViewModel
 {
     private readonly OverlaySettingsViewModel _overlaySettingsViewModel;
-    private readonly HotkeyManager _hotkeyManager;
 
     public event Action OnGameSettingChanged;
 
@@ -37,11 +36,9 @@ public class SettingsViewModel : BaseViewModel
         HotkeyManager hotkeyManager)
     {
         _overlaySettingsViewModel = overlaySettingsViewModel;
-        _hotkeyManager = hotkeyManager;
         SelectedSettingsGame = GameTitle.DarkSouls2;
         stateService.Subscribe(State.AppStart, OnAppStart);
         OpenOverlaySettingsCommand = new DelegateCommand(OpenOverlaySettings);
-        RegisterHotkeys();
     }
 
     
@@ -83,18 +80,7 @@ public class SettingsViewModel : BaseViewModel
         }
     }
     
-    private bool _isPracticeMode;
-
-    public bool IsPracticeMode
-    {
-        get => _isPracticeMode;
-        set
-        {
-            if (!SetProperty(ref _isPracticeMode, value)) return;
-            SettingsManager.Default.PracticeMode = value;
-            SettingsManager.Default.Save();
-        }
-    }
+    
 
 
     #region Elden Ring
@@ -268,16 +254,10 @@ public class SettingsViewModel : BaseViewModel
 
         _notesDisplayMode = (NotesDisplayMode)SettingsManager.Default.NotesDisplayMode;
         OnPropertyChanged(nameof(NotesDisplayMode));
-        
-        _isPracticeMode = SettingsManager.Default.PracticeMode;
-        OnPropertyChanged(nameof(IsPracticeMode));
     }
     
     
-    private void RegisterHotkeys()
-    {
-        _hotkeyManager.RegisterAction(HotkeyActions.TogglePracticeMode, () => { IsPracticeMode = !IsPracticeMode; });
-    }
+    
     
     private void OpenOverlaySettings()
     {
