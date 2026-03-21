@@ -214,7 +214,7 @@
 
                     <StackPanel Grid.Row="1" Orientation="Horizontal"
                                 HorizontalAlignment="Left" Margin="9,-5,0,0">
-                        <ToggleButton Content="Practice Mode"
+                        <ToggleButton Content="Toggle Practice Mode"
                                       Margin="0,0,4,0"
                                       IsChecked="{Binding IsPracticeMode}"
                                       Height="23" FontSize="11"
