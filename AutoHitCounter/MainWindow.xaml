@@ -218,9 +218,9 @@
                                     ToolTip="Stops auto split / auto hit counting"
                                     ToolTipService.InitialShowDelay="100"
                                     Visibility="{Binding SelectedGame.IsEventLogSupported, Converter={StaticResource BoolToVisConverter}}">
-                            <TextBlock Text="Practice Mode" FontSize="11"
+                            <TextBlock Text="Practice"
                                        Foreground="{StaticResource TextBrush}"
-                                       VerticalAlignment="Center" Margin="0,0,6,0" />
+                                       VerticalAlignment="Center" Margin="0,0,4,0" />
                             <CheckBox IsChecked="{Binding IsPracticeMode}"
                                       VerticalAlignment="Center">
                                 <CheckBox.Style>
@@ -229,8 +229,8 @@
                                             <Setter.Value>
                                                 <ControlTemplate TargetType="CheckBox">
                                                     <Border x:Name="Track"
-                                                            Width="36" Height="18"
-                                                            CornerRadius="9"
+                                                            Width="35" Height="18"
+                                                            CornerRadius="7"
                                                             Background="#444444"
                                                             BorderBrush="#555555"
                                                             BorderThickness="1"

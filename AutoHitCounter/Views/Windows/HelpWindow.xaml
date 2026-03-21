@@ -108,21 +108,6 @@
                                            FontSize="9" Foreground="#555555" Margin="2,1,0,0" />
                             </StackPanel>
 
-                            <!-- Practice Mode -->
-                            <TextBlock FontSize="15" FontWeight="SemiBold"
-                                       Margin="0,0,0,10">
-                                <LineBreak />
-                                Practice Mode
-                            </TextBlock>
-                            
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,0,0" LineHeight="22">
-                                Enabling Practice Mode makes it so hits don't count and doesn't automatically split in case you kill a boss, simple as that!
-                                <LineBreak />
-                                The colours of the box will change to reflect if it's active or not.
-                                <LineBreak />Lit up = Active
-                                <LineBreak />Dimmed Down = Inactive
-                                </TextBlock>
-                            
                             <!-- Profile Editor -->
                             <TextBlock FontSize="15" FontWeight="SemiBold"
                                        Margin="0,0,0,10">
@@ -156,6 +141,43 @@
                                 Double clicking any split will also open up a Split Rename box in the same place as the split.
                                 <LineBreak />When 🔒 Locked: the splits cannot be moved, and double clicking a split advances the current split to the selected one.
                                 Basic options provided through the context menu are still available when Locked; see below.
+                            </TextBlock>
+                            
+                            <!-- Practice Mode -->
+                            <TextBlock FontSize="15" FontWeight="SemiBold"
+                                       Margin="0,0,0,10">
+                                <LineBreak />
+                                Practice Mode
+                            </TextBlock>
+
+                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,0,0" LineHeight="22">
+                                Enabling Practice Mode makes it so hits don't count and doesn't automatically split in case you kill a boss, simple as that!
+                                <LineBreak />
+                                The colours of the switch will change to reflect if it's active or not as seen below.
+                                <LineBreak />
+                                
+                                <!-- Off state -->
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Border Width="35" Height="18" CornerRadius="7"
+                                            Background="#444444" BorderBrush="#555555" BorderThickness="1">
+                                        <Border Width="14" Height="14" CornerRadius="7"
+                                                Background="#AAAAAA" HorizontalAlignment="Left" Margin="1,0,0,0" />
+                                    </Border>
+                                    <TextBlock Text=" Inactive" Foreground="#CCC" VerticalAlignment="Center"
+                                               FontSize="11" />
+                                </StackPanel>
+                                <LineBreak />
+                                
+                                <!-- On state -->
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,6,0,0">
+                                    <Border Width="35" Height="18" CornerRadius="7"
+                                            Background="#9D61A8" BorderBrush="#B070BD" BorderThickness="1">
+                                        <Border Width="14" Height="14" CornerRadius="7"
+                                                Background="#FFFFFF" HorizontalAlignment="Right" Margin="0,0,1,0" />
+                                    </Border>
+                                    <TextBlock Text=" Active" Foreground="#CCC" VerticalAlignment="Center"
+                                               FontSize="11" />
+                                </StackPanel>
                             </TextBlock>
 
                             <!-- Splits Header Elements -->
@@ -418,14 +440,14 @@
                         <!-- Settings And Overlay -->
                         <StackPanel x:Name="PageSettingsAndOverlay">
                             <TextBlock Text="Settings" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10" />
-                            
+
                             <!-- General Settings -->
                             <TextBlock FontSize="15" FontWeight="SemiBold"
                                        Margin="0,0,0,10">
                                 <LineBreak />
                                 General Settings
                             </TextBlock>
-                            
+
                             <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
                                 In the General Settings you can find options that work for pretty much any game.
                                 <LineBreak />
@@ -436,29 +458,29 @@
                                 Allow manually splitting auto splits essentially enables the ability to go to the next split even if the current split requires an event to progress.
                                 <LineBreak />
                             </TextBlock>
-                            
-                            
+
+
                             <!-- Game Specific Settings -->
                             <TextBlock FontSize="15" FontWeight="SemiBold"
                                        Margin="0,0,0,10">
                                 <LineBreak />
                                 Game Specific Settings
                             </TextBlock>
-                            
+
                             <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
                                 Game Specific Settings are just Quality of Life options depending on the game you're playing for example "No Logo" or "No Stutter" in Elden Ring.
                                 <LineBreak />
                             </TextBlock>
-                            
-                            
+
+
                             <!-- Adding Overlay -->
                             <TextBlock FontSize="15" FontWeight="SemiBold"
                                        Margin="0,0,0,10">
                                 <LineBreak />
                                 Adding The Overlay to your OBS Scene
                             </TextBlock>
-                            
-                            
+
+
                             <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
                                 To add the Overlay to your OBS Scene simply open the OBS Application and look for the "Sources" panel.
                                 <LineBreak />
@@ -486,7 +508,7 @@
                                 <LineBreak />
                                 That's pretty much it! Now you can move it around and put it in the placement you prefer.
                             </TextBlock>
-                            
+
 
                             <!-- Editing Overlay -->
                             <TextBlock FontSize="15" FontWeight="SemiBold"
@@ -507,7 +529,7 @@
                                 <LineBreak />
                                 For more advanced editing it can all be done by editing the Overlay.html file to your liking :)
                             </TextBlock>
-                            
+
                         </StackPanel>
 
                     </Grid>
