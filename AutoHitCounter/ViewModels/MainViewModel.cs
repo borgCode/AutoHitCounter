@@ -391,11 +391,14 @@ namespace AutoHitCounter.ViewModels
             var index = Splits.IndexOf(split);
             if (index >= 0 && index < ActiveProfile.Splits.Count)
             {
-                ActiveProfile.Splits[index].DisplayName = split.Name;
+                ActiveProfile.Splits[index].Name = split.Name;
+                if (!split.IsParent)
+                    ActiveProfile.Splits[index].DisplayName = split.Name;
                 _profileService.SaveProfile(ActiveProfile);
             }
 
             _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
+            NotifyProfileSplitsChanged();
         }
 
         public bool HasSplits => TotalSplitCount > 0;
@@ -498,6 +501,7 @@ namespace AutoHitCounter.ViewModels
             }
 
             _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
+            NotifyProfileSplitsChanged();
         }
 
         private void MoveSplitUp()
@@ -509,6 +513,7 @@ namespace AutoHitCounter.ViewModels
             SelectedSplit = split;
             MoveSplitUpCommand.RaiseCanExecuteChanged();
             MoveSplitDownCommand.RaiseCanExecuteChanged();
+            NotifyProfileSplitsChanged();
         }
 
         private void MoveSplitDown()
@@ -520,6 +525,7 @@ namespace AutoHitCounter.ViewModels
             SelectedSplit = split;
             MoveSplitUpCommand.RaiseCanExecuteChanged();
             MoveSplitDownCommand.RaiseCanExecuteChanged();
+            NotifyProfileSplitsChanged();
         }
 
         private bool CanMoveSplitUp()
@@ -601,7 +607,7 @@ namespace AutoHitCounter.ViewModels
 
             RenameSelectedSplitCommand = new DelegateCommand(() =>
             {
-                if (SelectedSplit == null || SelectedSplit.IsParent) return;
+                if (SelectedSplit == null) return;
                 SelectedSplit.IsEditing = true;
             });
 
@@ -669,7 +675,8 @@ namespace AutoHitCounter.ViewModels
             {
                 if (_currentModule is ManualGameModule manual) manual.StopTimer();
             });
-            _hotkeyManager.RegisterAction(HotkeyActions.TogglePracticeMode, () => { IsPracticeMode = !IsPracticeMode; });
+            _hotkeyManager.RegisterAction(HotkeyActions.TogglePracticeMode,
+                () => { IsPracticeMode = !IsPracticeMode; });
         }
 
         private void OnSplitStateChanged()
@@ -687,10 +694,15 @@ namespace AutoHitCounter.ViewModels
 
         private void UpdateAttachedText()
         {
-            var version = (_currentModule as IVersionedGameModule)?.GameVersion;
-            AttachedText = string.IsNullOrEmpty(version)
-                ? $"Attached to {SelectedGame.GameName}"
-                : $"Attached to {SelectedGame.GameName} ({version})";
+            var moduleGame = _activeGame;
+            if (_currentModule is IVersionedGameModule versioned)
+                versioned.OnVersionDetected += () =>
+                {
+                    var version = versioned.GameVersion;
+                    AttachedText = string.IsNullOrEmpty(version)
+                        ? $"Attached to {moduleGame.GameName}"
+                        : $"Attached to {moduleGame.GameName} ({version})";
+                };
         }
 
         private void OnAttached()
@@ -810,6 +822,11 @@ namespace AutoHitCounter.ViewModels
             _eventLogWindow.Show();
         }
 
+        private event Action ActiveProfileSplitsChanged;
+
+        private void NotifyProfileSplitsChanged()
+            => ActiveProfileSplitsChanged?.Invoke();
+
         private void OpenProfileEditor()
         {
             if (_selectedGame == null) return;
@@ -833,6 +850,19 @@ namespace AutoHitCounter.ViewModels
 
             _profileEditorWindow = new ProfileEditorWindow { DataContext = vm };
 
+            ActiveProfileSplitsChanged += vm.RefreshSplits;
+
+            Action onSaved = () =>
+            {
+                var updatedProfiles = _profileService.GetProfiles(_selectedGame.GameName);
+                Profiles.Clear();
+                foreach (var p in updatedProfiles)
+                    Profiles.Add(p);
+
+                ActiveProfile = Profiles.FirstOrDefault(p => p.Name == vm.SelectedProfile?.Name);
+            };
+            vm.OnSaved += onSaved;
+
             _profileEditorWindow.Closed += (s, e) =>
             {
                 _profileEditorWindow = null;
@@ -843,20 +873,14 @@ namespace AutoHitCounter.ViewModels
                     _runSnapshots.Remove(key);
                 }
 
-                var updatedProfiles = _profileService.GetProfiles(_selectedGame.GameName);
                 var validKeys = new HashSet<string>(
-                    updatedProfiles.Select(p => $"{_selectedGame.GameName}|{p.Name}"));
+                    _profileService.GetProfiles(_selectedGame.GameName)
+                        .Select(p => $"{_selectedGame.GameName}|{p.Name}"));
                 var staleKeys = _runSnapshots.Keys
                     .Where(k => k.StartsWith($"{_selectedGame.GameName}|") && !validKeys.Contains(k))
                     .ToList();
                 foreach (var stale in staleKeys)
                     _runSnapshots.Remove(stale);
-
-                Profiles.Clear();
-                foreach (var p in updatedProfiles)
-                    Profiles.Add(p);
-
-                ActiveProfile = vm.SelectedProfile;
             };
 
             _profileEditorWindow.Show();

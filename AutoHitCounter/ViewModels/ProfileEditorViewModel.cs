@@ -78,7 +78,7 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
         EditSplitEventCommand = new DelegateCommand(EditSplitEvent,
             () => SelectedSplit?.Type == SplitType.Child);
     }
-    
+
     #region Commands
 
     public DelegateCommand<SplitEntry> AddCommand { get; }
@@ -96,9 +96,8 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
 
     public DelegateCommand AddSelectedCommand { get; private set; }
     public DelegateCommand RemoveSelectedCommand { get; private set; }
-    
+
     public DelegateCommand ClearAutoSplitEventsCommand { get; private set; }
-    
 
     #endregion
 
@@ -416,19 +415,14 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
 
     private void RenameSplit(SplitEntry entry)
     {
+        entry ??= SelectedSplit;
         if (entry == null) return;
 
         var newName = MsgBox.ShowInput("Rename Split", entry.Label, "Rename");
         if (string.IsNullOrWhiteSpace(newName)) return;
 
-        if (entry.IsAuto)
-        {
-            entry.DisplayName = newName;
-        }
-        else
-        {
-            entry.Name = newName;
-        }
+        entry.DisplayName = newName;
+        entry.Name = newName;
 
         IsDirty = true;
     }
@@ -552,6 +546,28 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
                Splits.IndexOf(SelectedSplit) < Splits.Count - 1;
     }
 
+    public void RefreshSplits()
+    {
+        var selectedName = SelectedSplit?.Name;
+        Splits.Clear();
+        if (_selectedProfile == null) return;
+        foreach (var split in _selectedProfile.Splits)
+            Splits.Add(new SplitEntry
+            {
+                EventId = split.EventId,
+                Name = split.Name,
+                DisplayName = split.DisplayName,
+                PersonalBest = split.PersonalBest,
+                Type = split.Type,
+                GroupId = split.GroupId,
+                Notes = split.Notes
+            });
+        if (selectedName != null)
+            SelectedSplit = Splits.FirstOrDefault(s => s.Name == selectedName);
+
+        FilterEvents();
+    }
+
     private int FindLastChildIndex(int parentIndex)
     {
         var lastIndex = parentIndex;
@@ -658,6 +674,7 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
         _profileService.SaveProfile(profile);
         Profiles.Add(profile);
         SelectedProfile = profile;
+        OnSaved?.Invoke();
     }
 
     private void RenameProfile()
@@ -671,9 +688,12 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
         _profileService.DeleteProfile(_gameName, _selectedProfile.Name);
         _selectedProfile.Name = newName;
         _profileService.SaveProfile(_selectedProfile);
+        OnSaved?.Invoke();
 
         IsDirty = false;
     }
+
+    public event Action OnSaved;
 
     private void Save()
     {
@@ -684,6 +704,7 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
         _selectedProfile.Splits = Splits.ToList();
         _profileService.SaveProfile(_selectedProfile);
         IsDirty = false;
+        OnSaved?.Invoke();
     }
 
     private void Delete()
@@ -693,6 +714,7 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
         _profileService.DeleteProfile(_gameName, _selectedProfile.Name);
         Profiles.Remove(_selectedProfile);
         SelectedProfile = Profiles.FirstOrDefault();
+        OnSaved?.Invoke();
     }
 
     private void AssignGroupFromPosition(SplitEntry entry, int index)
@@ -711,14 +733,14 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
 
         entry.GroupId = groupId;
     }
-    
+
     private void ClearEventIds()
     {
         bool shouldClearEvents = MsgBox.ShowYesNo(
             "Are you sure you want to clear all the autosplit events for this profile?",
             "Clear Events"
         );
-        
+
         if (shouldClearEvents)
         {
             foreach (var split in Splits)

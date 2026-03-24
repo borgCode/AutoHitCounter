@@ -57,7 +57,6 @@ namespace AutoHitCounter
         private void SplitItem_DoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (sender is not ListBoxItem { DataContext: SplitViewModel split }) return;
-            if (split.IsParent) return;
 
             var vm = (MainViewModel)DataContext;
 

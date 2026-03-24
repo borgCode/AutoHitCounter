@@ -339,8 +339,7 @@
                         <Button Content="+ Custom Split" Margin="0,0,4,0"
                                 Command="{Binding AddManualSplitCommand}" />
                         <Button Content="Rename" Margin="0,0,4,0"
-                                Command="{Binding RenameSplitCommand}"
-                                CommandParameter="{Binding SelectedSplit}" />
+                                Command="{Binding RenameSplitCommand}"/>
                         <Button Content="Edit Event" Margin="0,0,4,0"
                                 Command="{Binding EditSplitEventCommand}">
                             <Button.Style>
