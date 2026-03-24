@@ -100,6 +100,7 @@ public static class ProfileMigrator
                 {9303, 11110800},             //Geni Castle
                 {11500200, 9380},            // Mist noble
                 {9313, 11110800},             //Demon of Hatred
+                {9312, 11125877}              //Isshin
             },
             ["Elden Ring"] = new()
             {
