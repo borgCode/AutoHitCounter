@@ -142,7 +142,7 @@
                                 <LineBreak />When 🔒 Locked: the splits cannot be moved, and double clicking a split advances the current split to the selected one.
                                 Basic options provided through the context menu are still available when Locked; see below.
                             </TextBlock>
-                            
+
                             <!-- Practice Mode -->
                             <TextBlock FontSize="15" FontWeight="SemiBold"
                                        Margin="0,0,0,10">
@@ -155,7 +155,7 @@
                                 <LineBreak />
                                 The colours of the switch will change to reflect if it's active or not as seen below.
                                 <LineBreak />
-                                
+
                                 <!-- Off state -->
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                     <Border Width="35" Height="18" CornerRadius="7"
@@ -167,7 +167,7 @@
                                                FontSize="11" />
                                 </StackPanel>
                                 <LineBreak />
-                                
+
                                 <!-- On state -->
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,6,0,0">
                                     <Border Width="35" Height="18" CornerRadius="7"
@@ -410,6 +410,39 @@
 
                             <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
                                 7. Depending on your game of choice you might have extra options just below the profile name such as counting Roberto's stagger in Sekiro as a hit or ignoring Shulva's Spikes for melee players in Dark Souls 2.
+                            </TextBlock>
+
+                            <!-- Editing Events -->
+                            <TextBlock FontSize="15" FontWeight="SemiBold"
+                                       Margin="0,0,0,10">
+                                <LineBreak />
+                                Editing Events
+                            </TextBlock>
+
+                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                                Editing events can be a little bit daunting when you don't know what to look for.
+                                <LineBreak />
+                                <Hyperlink NavigateUri="https://youtu.be/RZxS9cjQvUg"
+                                           RequestNavigate="Hyperlink_RequestNavigate">
+                                    <Hyperlink.Style>
+                                        <Style TargetType="Hyperlink">
+                                            <Setter Property="TextDecorations" Value="None" />
+                                            <Setter Property="Foreground" Value="#c47fd4" />
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                            <Setter Property="FontSize" Value="14" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="#e0a0f0" />
+                                                    <Setter Property="TextDecorations" Value="Underline" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Foreground" Value="#666666" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Hyperlink.Style>
+                                    This video will try to briefly explain the process to you and how to use event logger.
+                                </Hyperlink>
                             </TextBlock>
                         </StackPanel>
 
