@@ -538,8 +538,9 @@
             const footerEl = document.getElementById('footer');
             const progressEl = document.getElementById('progress');
             if (progressEl && !state.isRunComplete) {
-                const current = state.splits.findIndex(s => s.isCurrent) + 1;
-                const total = state.splits.filter(s => !s.isParent).length;
+                const children = state.splits.filter(s => !s.isParent);
+                const current = children.findIndex(s => s.isCurrent) + 1;
+                const total = children.length;
                 progressEl.textContent = `(${current}/${total})`;
             }
 
