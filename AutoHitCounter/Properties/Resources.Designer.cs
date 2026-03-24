@@ -1259,16 +1259,18 @@ namespace AutoHitCounter.Properties {
         ///Blazing Bull,11110440
         ///Chained Ogre (Castle),11110620
         ///Chained Ogre (Outskirts),11100310
-        ///Corrupted Monk (Fountainhead),9309
-        ///Corrupted Monk (Mibu),9306
-        ///Demon of Hatred,9313
+        ///Demon of Hatred (Gauntlet),11100900
+        ///Demon of Hatred,11100900
         ///Divine Dragon,9310
+        ///Emma,9315
+        ///Emma (Gauntlet),9715 
+        ///Fake Monk,9306
+        ///Fake Monk (Gauntlet),9706
         ///Folding Screen Monkeys,9305
         ///General Kuranosuke Matsumoto,11110410
         ///General Naomori Kawarada,11100300
         ///General Tenzen Yamauchi,11100301
-        ///Genichiro Ashina (Castle),9303
-        ///Genichiro Ashina (Reserv [rest of string was truncated]&quot;;.
+        ///Ge [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SKEvents {
             get {
