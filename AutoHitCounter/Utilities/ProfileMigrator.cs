@@ -8,7 +8,7 @@ namespace AutoHitCounter.Utilities;
 
 public static class ProfileMigrator
 {
-    private const int CurrentMigrationVersion = 1;
+    private const int CurrentMigrationVersion = 2;
 
     private static readonly string UserProfilesPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
