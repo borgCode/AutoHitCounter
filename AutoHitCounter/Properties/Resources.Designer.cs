@@ -1147,12 +1147,12 @@ namespace AutoHitCounter.Properties {
         ///52                      push   rdx
         ///48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # a &lt;_main+0xa&gt;
         ///48 85 c9                test   rcx,rcx
-        ///74 31                   je     40 &lt;exit&gt;
+        ///74 7a                   je     89 &lt;exit&gt;
         ///48 8b 89 88 00 00 00    mov    rcx,QWORD PTR [rcx+0x88]
         ///48 85 c9                test   rcx,rcx
-        ///74 25                   je     40 &lt;exit&gt;
+        ///74 6e                   je     89 &lt;exit&gt;
         ///48 39 c1                cmp    rcx,rax
-        ///75 20                   jne    40 &lt;exit&gt;
+        ///75 69                   jne    89 &lt;exit&gt;
         ///48 8b 89 d0 11 00 00   [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SKApplySpEffectDamage {

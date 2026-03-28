@@ -270,9 +270,13 @@ public class SKHitService(IMemoryService memoryService, HookManager hookManager)
         
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x3, WorldChrMan.Base, 7, 0x3 + 3),
-            (code + 0x31, Functions.HasSpEffectId, 5, 0x31 + 1),
-            (code + 0x3A, hit, 6, 0x3A + 2),
-            (code + 0x4A, Hooks.ApplySpEffectDamage + 7, 5, 0x4A + 1),
+            (code + 0x35, Functions.HasSpEffectId, 5, 0x35 + 1),
+            (code + 0x46, Functions.HasSpEffectId, 5, 0x46 + 1),
+            (code + 0x57, Functions.HasSpEffectId, 5, 0x57 + 1),
+            (code + 0x68, Functions.HasSpEffectId, 5, 0x68 + 1),
+            (code + 0x79, Functions.HasSpEffectId, 5, 0x79 + 1),
+            (code + 0x82, hit, 6, 0x82 + 2),
+            (code + 0x93, Hooks.ApplySpEffectDamage + 7, 5, 0x93 + 1),
         ]);
         
         memoryService.WriteBytes(code, bytes);
