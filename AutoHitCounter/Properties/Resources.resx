@@ -628,17 +628,20 @@ ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # c8 &lt;normal&gt;
 e9 00 00 00 00          jmp    d4 &lt;exit+0xb&gt;</value>
   </data>
   <data name="ScholarGeneralApplyDamage" xml:space="preserve">
-    <value>51                      push   rcx
-48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
-48 39 99 d0 00 00 00    cmp    QWORD PTR [rcx+0xd0],rbx
-75 0a                   jne    1b &lt;normal&gt;
+    <value>8b 8b 68 01 00 00       mov    ecx,DWORD PTR [rbx+0x168]
+50                      push   rax
+48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # e &lt;_main+0xe&gt;
+48 39 98 d0 00 00 00    cmp    QWORD PTR [rax+0xd0],rbx
+75 0e                   jne    25 &lt;exit&gt;
+89 c8                   mov    eax,ecx
+29 f0                   sub    eax,esi
 85 c0                   test   eax,eax
-79 06                   jns    1b &lt;normal&gt;
-ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 1b &lt;normal&gt;
-00000000001b &lt;normal&gt;:
-59                      pop    rcx
-89 83 68 01 00 00       mov    DWORD PTR [rbx+0x168],eax
-e9 00 00 00 00          jmp    27 &lt;normal+0xc&gt;</value>
+7f 06                   jg     25 &lt;exit&gt;
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 25 &lt;exit&gt;
+
+000000000025 &lt;exit&gt;:
+58                      pop    rax
+e9 00 00 00 00          jmp    2b &lt;exit+0x6&gt;</value>
   </data>
   <data name="ScholarKillBox" xml:space="preserve">
     <value>4c 8b 01                mov    r8,QWORD PTR [rcx]
@@ -1920,20 +1923,22 @@ ff 05 00 00 00 00       inc    DWORD PTR ds:0x0
 e9 fc ff ff ff          jmp    39 &lt;skip+0x1&gt;</value>
   </data>
   <data name="VanillaGeneralApplyDamage" xml:space="preserve">
-    <value>50                      push   eax
-a1 00 00 00 00          mov    eax,ds:0x0
-85 c0                   test   eax,eax
-74 0f                   je     19 &lt;normal&gt;
-39 70 74                cmp    DWORD PTR [eax+0x74],esi
-75 0a                   jne    19 &lt;normal&gt;
+    <value>8b 86 fc 00 00 00       mov    eax,DWORD PTR [esi+0xfc]
+51                      push   ecx
+8b 0d 00 00 00 00       mov    ecx,DWORD PTR ds:0x0
 85 c9                   test   ecx,ecx
-79 06                   jns    19 &lt;normal&gt;
+74 13                   je     24 &lt;exit&gt;
+39 71 74                cmp    DWORD PTR [ecx+0x74],esi
+75 0e                   jne    24 &lt;exit&gt;
+89 c1                   mov    ecx,eax
+29 d1                   sub    ecx,edx
+85 c9                   test   ecx,ecx
+7f 06                   jg     24 &lt;exit&gt;
 ff 05 00 00 00 00       inc    DWORD PTR ds:0x0
 
-0019 &lt;normal&gt;:
-89 8e fc 00 00 00       mov    DWORD PTR [esi+0xfc],ecx
-58                      pop    eax
-e9 fc ff ff ff          jmp    21 &lt;normal+0x8&gt;</value>
+0024 &lt;exit&gt;:
+59                      pop    ecx
+e9 fc ff ff ff          jmp    26 &lt;exit+0x2&gt;</value>
   </data>
   <data name="VanillaKillBox" xml:space="preserve">
     <value>8b 01                   mov    eax,DWORD PTR [ecx]
