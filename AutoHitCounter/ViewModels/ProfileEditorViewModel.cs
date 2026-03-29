@@ -626,16 +626,51 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
         IsDirty = true;
     }
 
+    // fuzzy search
+    private static readonly Dictionary<string, string[]> Aliases = new(StringComparer.OrdinalIgnoreCase)
+    {
+        { "godfrey", ["Godfrey, the First Elden Lord (Golden Shade)", "Hoarah Loux, Warrior"] },
+        { "hoarah loux", ["Godfrey, the First Elden Lord (Golden Shade)", "Hoarah Loux, Warrior"] },
+        { "bofa", ["Beastman of Farum Azula"] },
+        { "moose", ["Regal Ancestor Spirit", "Ancestor Spirit"] },
+        { "bbh", ["Bell Bearing Hunter (Warmaster's Shack)", "Bell Bearing Hunter (Church of Vows)", "Bell Bearing Hunter (Hermit Merchant's Shack)", "Bell Bearing Hunter (Isolated Merchant's Shack)"] },
+        { "bbk", ["Black Blade Kindred (Greyoll's Dragonbarrow)", "Black Blade Kindred (Forbidden Lands)"] },
+        { "death bird", ["Deathbird (Stormhill)", "Deathbird (Weeping Peninsula)", "Deathbird (Liurnia of the Lakes)", "Deathbird (Capital Outskirts)",
+        "Death Rite Bird (Academy Gate Town)", "Death Rite Bird (Caelid)", "Death Rite Bird (Mountaintops of the Giants)", "Death Rite Bird (Consecrated Snowfield)", "Death Rite Bird (Charo's Hidden Grave)"] },
+        { "dragon", ["Ancient Dragon Lansseax", "Borealis the Freezing Fog", "Decaying Ekzykes", "Dragonkin Soldier (Lake of Rot)",
+            "Dragonkin Soldier (Siofra River)", "Dragonkin Soldier of Nokstella", "Dragonlord Placidusax", "Flying Dragon Agheel",
+            "Flying Dragon Greyll", "Glintstone Dragon Adula", "Glintstone Dragon Smarag", "Lichdragon Fortissax",
+            "Ancient Dragon-Man", "Ancient Dragon Senessax", "Ghostflame Dragon (Gravesite Plain)",
+            "Ghostflame Dragon (Scadu Altus)", "Ghostflame Dragon (Cerulean Coast)", "Jagged Peak Drake",
+            "Jagged Peak Drake (Duo Encounter)", "Bayle the Dread" ] },
+    };
+
 
     private void FilterEvents()
     {
         FilteredEvents.Clear();
 
+        HashSet<string> aliasMatches = [];
+        if (!string.IsNullOrEmpty(_searchText))
+        {
+            foreach (var kvp in Aliases)
+            {
+                if (kvp.Key.IndexOf(_searchText, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    foreach (var name in kvp.Value)
+                        aliasMatches.Add(name);
+                }
+            }
+        }
+
         foreach (var entry in AllEvents)
         {
-            if (!string.IsNullOrEmpty(_searchText) &&
-                !entry.Name.ToLower().Contains(_searchText.ToLower()))
-                continue;
+            var matchesDirect = string.IsNullOrEmpty(_searchText) ||
+                                entry.Name.IndexOf(_searchText, StringComparison.OrdinalIgnoreCase) >= 0;
+
+            var matchesAlias = aliasMatches.Contains(entry.Name);
+
+            if (!matchesDirect && !matchesAlias) continue;
 
             if (HideAdded && !AllowDuplicates && Splits.Any(s => s.EventId == entry.EventId))
                 continue;
