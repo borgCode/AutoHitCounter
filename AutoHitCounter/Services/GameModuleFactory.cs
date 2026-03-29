@@ -49,10 +49,11 @@ public class GameModuleFactory(
         }).ToList();
 
     public Dictionary<uint, string> GetEventsForGame(GameTitle title) =>
-        title == GameTitle.Manual ? new()
-        : Registrations.TryGetValue(title, out var reg) && reg.EventResource != null
-            ? EventLoader.GetEvents(reg.EventResource)
-            : new();
+    title == GameTitle.Manual ? new()
+    : Registrations.TryGetValue(title, out var reg) && reg.EventResource != null
+        ? EventLoader.GetEvents(reg.EventResource)
+            .ToDictionary(kvp => kvp.Key, kvp => string.Join(" / ", kvp.Value))
+        : new();
 
     public IGameModule CreateModule(Game game, Dictionary<uint, (string Name, int Required, int Hit)> events, IHitRulesProvider rules)
     {
