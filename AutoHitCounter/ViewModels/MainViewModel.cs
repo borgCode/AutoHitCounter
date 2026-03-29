@@ -196,7 +196,17 @@ namespace AutoHitCounter.ViewModels
                                 ?? Profiles.FirstOrDefault();
 
                 if (_selectedGame?.IsManual == true)
+                {
+                    _isPracticeMode = false;
+                    OnPropertyChanged(nameof(IsPracticeMode));
                     StartTrackingGame();
+                }
+                else
+                {
+                    _isPracticeMode = SettingsManager.Default.PracticeMode;
+                    OnPropertyChanged(nameof(IsPracticeMode));
+                }
+                    
 
                 if (!Profiles.Any())
                 {
@@ -566,7 +576,7 @@ namespace AutoHitCounter.ViewModels
             AppVer = VersionChecker.GetVersionText();
             if (SettingsManager.Default.EnableUpdateChecks)
                 VersionChecker.CheckForUpdates(Application.Current.MainWindow);
-            _isPracticeMode = SettingsManager.Default.PracticeMode;
+            _isPracticeMode = _selectedGame?.IsManual != true && SettingsManager.Default.PracticeMode;
             OnPropertyChanged(nameof(IsPracticeMode));
         }
 
@@ -676,7 +686,7 @@ namespace AutoHitCounter.ViewModels
                 if (_currentModule is ManualGameModule manual) manual.StopTimer();
             });
             _hotkeyManager.RegisterAction(HotkeyActions.TogglePracticeMode,
-                () => { IsPracticeMode = !IsPracticeMode; });
+                () => { if (_activeGame?.IsManual != true) IsPracticeMode = !IsPracticeMode; });
         }
 
         private void OnSplitStateChanged()
