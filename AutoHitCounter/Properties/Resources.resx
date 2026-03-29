@@ -2060,7 +2060,7 @@ Folding Screen Monkeys,9305
 General Kuranosuke Matsumoto,11110410
 General Naomori Kawarada,11100300
 General Tenzen Yamauchi,11100301
-Genichiro Ashina (Castle),11110800
+Genichiro Ashina (Castle) / Genichiro Ashina (Gauntlet),11110800
 Genichiro Ashina (Reservoir),1027
 Great Shinobi - Owl,9308
 Guardian Ape,9304
@@ -2071,7 +2071,7 @@ Headless (Gokan),11700500
 Headless (Ungo),11110660
 Headless (Yashariku),12500550
 Headless Ape,9307
-"Isshin, the Sword Saint",11125877
+"Isshin, the Sword Saint / Isshin, the Sword Saint (Gauntlet) / Inner Isshin",11125877
 Isshin Ashina,9316
 Juzou the Drunkard (Hirata 1),11000300
 Juzou the Drunkard (Hirata 2),11000301
@@ -2101,7 +2101,6 @@ Tokujiro the Glutton,11500490
 True Monk,9309
 Gyoubu Oniwa (Gauntlet),9701
 Lady Butterfly (Gauntlet),11005637
-Genichiro Ashina (Gauntlet),11110800
 Guardian Ape (Gauntlet),9704
 Fake Monk (Gauntlet),9706
 Great Shinobi - Owl (Gauntlet),11115850
@@ -2109,13 +2108,11 @@ Headless Ape (Gauntlet),11705850
 "Emma, the Gentle Blade (Gauntlet)",9715
 Isshin Ashina (Gauntlet),9716
 True Monk (Gauntlet),12505950
-"Owl (Father, Gauntlet)",11000809
+"Owl (Father, Gauntlet) / Inner Father (Gauntlet)",11000809
 Demon of Hatred (Gauntlet),11100900
 "Genichiro, Way of Tomoe (Gauntlet)",21125011
-"Isshin, the Sword Saint (Gauntlet)",11125877
 Inner Genichiro (Gauntlet),11110890
-Inner Father (Gauntlet),11000809
-Inner Isshin (Gauntlet),11125877</value>
+</value>
   </data>
   <data name="VanillaBabyJump" xml:space="preserve">
     <value>0f 51 c0                sqrtps xmm0,xmm0

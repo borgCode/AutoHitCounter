@@ -1287,10 +1287,8 @@ namespace AutoHitCounter.Properties {
         ///General Kuranosuke Matsumoto,11110410
         ///General Naomori Kawarada,11100300
         ///General Tenzen Yamauchi,11100301
-        ///Genichiro Ashina (Castle),11110800
-        ///Genichiro Ashina (Reservoir),1027
-        ///Great Shinobi - Owl,9308
-        ///Gua [rest of string was truncated]&quot;;.
+        ///Genichiro Ashina (Castle) / Genichiro Ashina (Gauntlet),11110800
+        ///Genichiro Ashina (Reservoir),1027        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SKEvents {
             get {

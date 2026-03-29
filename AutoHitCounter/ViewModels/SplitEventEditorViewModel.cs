@@ -119,7 +119,7 @@ public class SplitEventEditorViewModel : BaseViewModel
             "Ghostflame Dragon (Scadu Altus)", "Ghostflame Dragon (Cerulean Coast)", "Jagged Peak Drake",
             "Jagged Peak Drake (Duo Encounter)", "Bayle the Dread" ] },
         { "corrupted monk", ["Fake Monk", "True Monk", "Fake Monk (Gauntlet)", "True Monk (Gauntlet)",] },
-        { "SSI", ["Isshin, the Sword Saint", "Isshin, the Sword Saint (Gauntlet)",] },
+        { "SSI", ["Isshin, the Sword Saint / Isshin, the Sword Saint (Gauntlet) / Inner Isshin",] },
         { "orin", ["O'Rin of the Water",] },
         { "hape", ["Headless Ape", "Headless Ape (Gauntlet)",] },
         { "gape", ["Guardian Ape", "Guardian Ape (Gauntlet)",] },
