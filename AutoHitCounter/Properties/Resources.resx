@@ -436,7 +436,7 @@ Magma Wyrm Makar,39200800
 "Maliketh, the Black Blade",13000800
 "Margit, the Fell Omen",10000850
 Mimic Tear,12020850
-Miranda the Blighted Bloom,31020800
+Miranda Blossom,31020800
 Misbegotten Crusader,31120800
 "Mohg, Lord of Blood",12050800
 "Mohg, the Omen",510250
@@ -444,7 +444,7 @@ Misbegotten Crusader,31120800
 Necromancer Garris,31190850
 Night's Cavalry (Weeping Peninsula),1044320850
 Night's Cavalry (Limgrave),1043370800
-Night's Cavalry (Liurnia of the Lakes),1039430800
+Night's Cavalry (Southeast Liurnia),1039430800
 Night's Cavalry (Bellum Highway),1036480800
 Night's Cavalry (Altus Plateau),1039510800
 Night's Cavalry (Caelid),1049370800
@@ -497,7 +497,7 @@ Blackgaol Knight,2046410800
 Chief Bloodfiend,43000800
 Demi-Human Swordmaster Onze,41000800
 Divine Beast Dancing Lion (Belurat),20000800
-Ghostflame Dragon,2045440800
+Ghostflame Dragon (Gravesite Plain),2045440800
 Lamenter,41020800
 Rellana Twin Moon Knight,2048440800
 Red Bear,2046450800
@@ -508,23 +508,21 @@ Count Ymir Mother of Fingers,2051450800
 Curseblade Labirith,41010800
 Death Knight (Twin Axes),40000800
 Dryleaf Dane,2049440800
-Ghostflame Dragon,2049430800
+Ghostflame Dragon (Scadu Altus),2049430800
 Golden Hippopotamus,21000850
 Messmer The Impaler,21010800
 Metyr Mother of Fingers,25000800
 Rakshasa,2051440800
 Ralva the Great Red Bear,2049450800
-Tree Sentinel (Shield),2050480860
-Tree Sentinel (Torch),2050470800
 Death Knight (Longhaft Axe),40010800
 Divine Beast Dancing Lion (Rauh),2046460800
 Romina Saint of the Bud,2044450800
 Rugalea the Great Red Bear,2044470800
 Dancer of Ranah,2046380800
-Ghostflame Dragon,2048380850
-Putrescent Knight,22000800
-Death Rite Bird,2047390800
 Demi-Human Queen Marigga,2046400800
+Ghostflame Dragon (Cerulean Coast),2048380850
+Putrescent Knight,22000800
+Death Rite Bird (Charo's Hidden Grave),2047390800
 Ancient Dragon-Man,43010800
 Ancient Dragon Senessax,2054390850
 Bayle the Dread,2054390800
@@ -534,6 +532,8 @@ Jori Elder Inquisitor,2052430800
 Midra Lord of Frenzied Flame,28000800
 Fallingstar Beast,2052480800
 Scadutree Avatar,2050480800
+Tree Sentinel (Shield),2050480860
+Tree Sentinel (Torch),2050470800
 Promised Consort Radahn,20010800</value>
   </data>
   <data name="EldenRingEventLog" xml:space="preserve">
