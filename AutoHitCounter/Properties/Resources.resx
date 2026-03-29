@@ -2577,54 +2577,63 @@ c3                      ret</value>
 52                      push   rdx
 48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # a &lt;_main+0xa&gt;
 48 85 c9                test   rcx,rcx
-74 7a                   je     89 &lt;exit&gt;
+0f 84 aa 00 00 00       je     bd &lt;exit&gt;
 48 8b 89 88 00 00 00    mov    rcx,QWORD PTR [rcx+0x88]
 48 85 c9                test   rcx,rcx
-74 6e                   je     89 &lt;exit&gt;
+0f 84 9a 00 00 00       je     bd &lt;exit&gt;
 48 39 c1                cmp    rcx,rax
-75 69                   jne    89 &lt;exit&gt;
+0f 85 91 00 00 00       jne    bd &lt;exit&gt;
 48 8b 89 d0 11 00 00    mov    rcx,QWORD PTR [rcx+0x11d0]
 48 85 c9                test   rcx,rcx
-74 5d                   je     89 &lt;exit&gt;
+0f 84 81 00 00 00       je     bd &lt;exit&gt;
 53                      push   rbx
 48 89 cb                mov    rbx,rcx
 ba d6 24 00 00          mov    edx,0x24d6
-e8 00 00 00 00          call   3a &lt;_main+0x3a&gt;
+e8 00 00 00 00          call   4a &lt;_main+0x4a&gt;
 84 c0                   test   al,al
-75 44                   jne    82 &lt;count_hit&gt;
+75 68                   jne    b6 &lt;count_hit&gt;
 48 89 d9                mov    rcx,rbx
 ba d7 24 00 00          mov    edx,0x24d7
-e8 00 00 00 00          call   4b &lt;_main+0x4b&gt;
+e8 00 00 00 00          call   5b &lt;_main+0x5b&gt;
 84 c0                   test   al,al
-75 33                   jne    82 &lt;count_hit&gt;
+75 57                   jne    b6 &lt;count_hit&gt;
 48 89 d9                mov    rcx,rbx
 ba d8 24 00 00          mov    edx,0x24d8
-e8 00 00 00 00          call   5c &lt;_main+0x5c&gt;
+e8 00 00 00 00          call   6c &lt;_main+0x6c&gt;
 84 c0                   test   al,al
-75 22                   jne    82 &lt;count_hit&gt;
+75 46                   jne    b6 &lt;count_hit&gt;
 48 89 d9                mov    rcx,rbx
 ba d9 24 00 00          mov    edx,0x24d9
-e8 00 00 00 00          call   6d &lt;_main+0x6d&gt;
+e8 00 00 00 00          call   7d &lt;_main+0x7d&gt;
 84 c0                   test   al,al
-75 11                   jne    82 &lt;count_hit&gt;
+75 35                   jne    b6 &lt;count_hit&gt;
 48 89 d9                mov    rcx,rbx
 ba da 24 00 00          mov    edx,0x24da
-e8 00 00 00 00          call   7e &lt;_main+0x7e&gt;
+e8 00 00 00 00          call   8e &lt;_main+0x8e&gt;
 84 c0                   test   al,al
-74 06                   je     88 &lt;exit_pop_rbx&gt;
+75 24                   jne    b6 &lt;count_hit&gt;
+48 89 d9                mov    rcx,rbx
+ba db 24 00 00          mov    edx,0x24db
+e8 00 00 00 00          call   9f &lt;_main+0x9f&gt;
+84 c0                   test   al,al
+74 19                   je     bc &lt;exit_pop_rbx&gt;
+48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # aa &lt;_main+0xaa&gt;
+81 b9 c0 00 00 00 c0    cmp    DWORD PTR [rcx+0xc0],0x2628c0
+28 26 00 
+75 06                   jne    bc &lt;exit_pop_rbx&gt;
 
-000000000082 &lt;count_hit&gt;:
-ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 88 &lt;exit_pop_rbx&gt;
+0000000000b6 &lt;count_hit&gt;:
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # bc &lt;exit_pop_rbx&gt;
 
-000000000088 &lt;exit_pop_rbx&gt;:
+0000000000bc &lt;exit_pop_rbx&gt;:
 5b                      pop    rbx
 
-000000000089 &lt;exit&gt;:
+0000000000bd &lt;exit&gt;:
 5a                      pop    rdx
 59                      pop    rcx
 58                      pop    rax
 48 8b 88 f8 1f 00 00    mov    rcx,QWORD PTR [rax+0x1ff8]
-e9 00 00 00 00          jmp    98 &lt;exit+0xf&gt;</value>
+e9 00 00 00 00          jmp    cc &lt;exit+0xf&gt;</value>
   </data>
   <data name="SKSakuraDance" xml:space="preserve">
     <value>f3 0f 10 a5 10 02 00    movss  xmm4,DWORD PTR [rbp+0x210]

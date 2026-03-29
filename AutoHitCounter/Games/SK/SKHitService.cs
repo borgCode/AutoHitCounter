@@ -273,13 +273,15 @@ public class SKHitService(IMemoryService memoryService, HookManager hookManager)
         
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x3, WorldChrMan.Base, 7, 0x3 + 3),
-            (code + 0x35, Functions.HasSpEffectId, 5, 0x35 + 1),
-            (code + 0x46, Functions.HasSpEffectId, 5, 0x46 + 1),
-            (code + 0x57, Functions.HasSpEffectId, 5, 0x57 + 1),
-            (code + 0x68, Functions.HasSpEffectId, 5, 0x68 + 1),
-            (code + 0x79, Functions.HasSpEffectId, 5, 0x79 + 1),
-            (code + 0x82, hit, 6, 0x82 + 2),
-            (code + 0x93, Hooks.ApplySpEffectDamage + 7, 5, 0x93 + 1),
+            (code + 0x45, Functions.HasSpEffectId, 5, 0x45 + 1),
+            (code + 0x56, Functions.HasSpEffectId, 5, 0x56 + 1),
+            (code + 0x67, Functions.HasSpEffectId, 5, 0x67 + 1),
+            (code + 0x78, Functions.HasSpEffectId, 5, 0x78 + 1),
+            (code + 0x89, Functions.HasSpEffectId, 5, 0x89 + 1),
+            (code + 0x9A, Functions.HasSpEffectId, 5, 0x9A + 1),
+            (code + 0xA3, GameDataMan.Base, 7, 0xA3 + 3),
+            (code + 0xB6, hit, 6, 0xB6 + 2),
+            (code + 0xC7, Hooks.ApplySpEffectDamage + 7, 5, 0xC7 + 1),
         ]);
         
         memoryService.WriteBytes(code, bytes);
