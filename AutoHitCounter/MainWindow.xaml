@@ -13,7 +13,10 @@
         Style="{StaticResource DefaultWindowStyle}"
         WindowStyle="None"
         AllowsTransparency="True"
-        Title="Auto Hit Counter" Height="800" Width="525">
+        Title="Auto Hit Counter" MinHeight="800" MinWidth="525"
+        Height="800" Width="525"
+        ResizeMode="CanResize"
+                       behaviors:WindowResizeBehavior.EnableCustomResize="True">
     <Window.Resources>
         <FontFamily x:Key="AppFont">Segoe UI</FontFamily>
         <system:Double x:Key="FontSizeHeader">15</system:Double>
@@ -108,7 +111,8 @@
                                         Command="{Binding TrackGameCommand}"
                                         Height="22"
                                         Margin="4,0,0,0"
-                                        ToolTip="{Binding TrackingText}">
+                                        ToolTip="{Binding TrackingText}"
+                                        ToolTipService.InitialShowDelay="300">
                                     <Button.Style>
                                         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                                             <Style.Triggers>
@@ -155,7 +159,8 @@
                                     Command="{Binding OpenProfileEditorCommand}"
                                     Width="30" Height="22.1"
                                     FontSize="14" Padding="0,0,0.5,2.7"
-                                    ToolTip="Edit Profile" />
+                                    ToolTip="Edit Profile"
+                                    ToolTipService.InitialShowDelay="300"/>
                             <!-- Lock Splits Button -->
                             <ToggleButton
                                 IsChecked="{Binding IsUnlocked, Mode=OneWay}"
@@ -165,7 +170,8 @@
                                 Width="30" Height="22.1"
                                 FontSize="13" Padding="0,0,0,0"
                                 Margin="4,0,0,0"
-                                FontFamily="Segoe MDL2 Assets">
+                                FontFamily="Segoe MDL2 Assets"
+                                ToolTipService.InitialShowDelay="300">
                                 <ToggleButton.Style>
                                     <Style TargetType="ToggleButton">
                                         <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
@@ -216,7 +222,7 @@
                                 HorizontalAlignment="Left" Margin="9,-5,0,0">
                         <StackPanel Orientation="Horizontal" Margin="0,0,4,0"
                                     ToolTip="Stops auto split / auto hit counting"
-                                    ToolTipService.InitialShowDelay="100"
+                                    ToolTipService.InitialShowDelay="300"
                                     Visibility="{Binding SelectedGame.IsEventLogSupported, Converter={StaticResource BoolToVisConverter}}">
                             <TextBlock Text="Practice"
                                        Foreground="{StaticResource TextBrush}"
@@ -306,11 +312,13 @@
                                 HorizontalAlignment="Right" Margin="0,-5,8,0">
                         <Button Content="▲" Width="24" Height="23" FontSize="10"
                                 Command="{Binding MoveSplitUpCommand}"
-                                ToolTip="Move split up (Alt+Up)" />
+                                ToolTip="Move split up (Alt+Up)"
+                                ToolTipService.InitialShowDelay="300"/>
                         <Button Content="▼" Width="24" Height="23" FontSize="10"
                                 Margin="2,0,0,0"
                                 Command="{Binding MoveSplitDownCommand}"
-                                ToolTip="Move split down (Alt+Down)" />
+                                ToolTip="Move split down (Alt+Down)"
+                                ToolTipService.InitialShowDelay="300"/>
                     </StackPanel>
 
                     <Border Grid.Row="2" BorderBrush="#333333" BorderThickness="0,0,0,4">
@@ -361,9 +369,9 @@
                                         </Style>
                                     </TextBlock.Style>
                                     <Run Text="(" />
-                                    <Run Text="{Binding CurrentSplitNumber, Mode=OneWay}" ToolTip="Current Split" />
+                                    <Run Text="{Binding CurrentSplitNumber, Mode=OneWay}" ToolTip="Current Split" ToolTipService.InitialShowDelay="300" />
                                     <Run Text="/" />
-                                    <Run Text="{Binding TotalSplitCount, Mode=OneWay}" ToolTip="Total Splits" />
+                                    <Run Text="{Binding TotalSplitCount, Mode=OneWay}" ToolTip="Total Splits" ToolTipService.InitialShowDelay="300" />
                                     <Run Text=")" />
                                 </TextBlock>
 
@@ -387,7 +395,7 @@
                                            VerticalAlignment="Center"
                                            Cursor="Hand"
                                            Text="{Binding AttemptCount, StringFormat='#{0}'}"
-                                           ToolTip="Double Click to edit attempts count"
+                                           ToolTip="Double Click to edit attempts count" ToolTipService.InitialShowDelay="300"
                                            Foreground="{Binding AttemptCount, Converter={StaticResource AttemptCountColorConverter}}">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
@@ -433,7 +441,7 @@
                                         Width="24"
                                         Margin="7,0,0,0"
                                         VerticalAlignment="Center"
-                                        ToolTip="Reset attempts count"
+                                        ToolTip="Reset attempts count" ToolTipService.InitialShowDelay="300"
                                         Click="ResetAttempts_Click" />
                             </StackPanel>
 
@@ -733,7 +741,7 @@
                                                    HorizontalAlignment="Right"
                                                    VerticalAlignment="Center"
                                                    Margin="0,0,4,0"
-                                                   ToolTip="Right click for options">
+                                                   ToolTip="Right click for options" ToolTipService.InitialShowDelay="300">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="Visibility" Value="Collapsed" />

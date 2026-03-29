@@ -113,6 +113,7 @@
         <Compile Include="Behaviors\InsertionAdorner.cs" />
         <Compile Include="Behaviors\SplitListDragDropBehavior.cs" />
         <Compile Include="Behaviors\TemplatesDragDropBehavior.cs" />
+        <Compile Include="Behaviors\WindowResizeBehavior.cs" />
         <Compile Include="Converters\AttemptCountColorConverter.cs" />
         <Compile Include="Converters\CssCalcEvaluator.cs" />
         <Compile Include="Converters\CssColorParser.cs" />

@@ -12,7 +12,10 @@
         Style="{StaticResource DefaultWindowStyle}"
         WindowStyle="None"
         AllowsTransparency="True"
-        Title="Profile Editor" Height="800" Width="850">
+        Title="Profile Editor" Height="800" Width="850"
+        MinHeight="800" MinWidth="850"
+        ResizeMode="CanResize"
+                       behaviors:WindowResizeBehavior.EnableCustomResize="True">
     <Window.Resources>
         <converters:ExpanderArrowConverter x:Key="ExpanderArrowConverter" />
         <converters:ParentChildMarginMultiConverter x:Key="ParentChildMarginMultiConverter" />

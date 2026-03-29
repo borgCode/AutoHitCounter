@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:controls="clr-namespace:AutoHitCounter.Views.Controls"
+        xmlns:behaviors="clr-namespace:AutoHitCounter.Behaviors"
         Style="{StaticResource DefaultWindowStyle}"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -10,7 +11,8 @@
         Width="920" Height="700"
         MinWidth="920" MinHeight="700"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
+        ResizeMode="CanResize"
+                       behaviors:WindowResizeBehavior.EnableCustomResize="True">
 
     <Window.Resources>
 
