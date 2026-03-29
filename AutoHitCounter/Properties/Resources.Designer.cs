@@ -1422,11 +1422,11 @@ namespace AutoHitCounter.Properties {
         ///74 3c                   je     4d &lt;exit&gt;
         ///c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 18 &lt;_main+0x18&gt;
         ///83 7d 6c 00             cmp    DWORD PTR [rbp+0x6c],0x0
-        ///75 2f                   jne    4d &lt;exit&gt;
+        ///75 29                   jne    47 &lt;count_hit&gt;
         ///51                      push   rcx
         ///52                      push   rdx
         ///50                      push   rax
-        ///ba c9 26 02 00          mov    edx,0x226c [rest of string was truncated]&quot;;.
+        ///ba c9 26 02 00          mov    edx,0 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SKSakuraDance {
             get {

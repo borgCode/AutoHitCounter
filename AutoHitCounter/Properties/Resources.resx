@@ -2637,7 +2637,7 @@ e9 00 00 00 00          jmp    98 &lt;exit+0xf&gt;</value>
 74 3c                   je     4d &lt;exit&gt;
 c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 18 &lt;_main+0x18&gt;
 83 7d 6c 00             cmp    DWORD PTR [rbp+0x6c],0x0
-75 2f                   jne    4d &lt;exit&gt;
+75 29                   jne    47 &lt;count_hit&gt;
 51                      push   rcx
 52                      push   rdx
 50                      push   rax
@@ -2651,6 +2651,8 @@ e8 00 00 00 00          call   40 &lt;_main+0x40&gt;
 5a                      pop    rdx
 59                      pop    rcx
 75 06                   jne    4d &lt;exit&gt;
+
+000000000047 &lt;count_hit&gt;:
 ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 4d &lt;exit&gt;
 
 00000000004d &lt;exit&gt;:
