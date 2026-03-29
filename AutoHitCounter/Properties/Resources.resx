@@ -2053,48 +2053,33 @@ Ashina Elite - Ujinari Mizuo,11110511
 Blazing Bull,11110440
 Chained Ogre (Castle),11110620
 Chained Ogre (Outskirts),11100310
-Demon of Hatred (Gauntlet),11100900
-Demon of Hatred,11100900
+Demon of Hatred / Demon of Hatred (Gauntlet),11100900
 Divine Dragon,9310
-Emma,9315
-Emma (Gauntlet),9715 
 Fake Monk,9306
-Fake Monk (Gauntlet),9706
 Folding Screen Monkeys,9305
 General Kuranosuke Matsumoto,11110410
 General Naomori Kawarada,11100300
 General Tenzen Yamauchi,11100301
-Genichiro Ashina (Castle),11110800
-Genichiro Ashina (Gauntlet),11110800
+Genichiro Ashina (Castle) / Genichiro Ashina (Gauntlet),11110800
 Genichiro Ashina (Reservoir),1027
-Genichiro Way of Tomoe (Gauntlet),21125011
 Great Shinobi - Owl,9308
-Guardian Ape (Gauntlet),9704
 Guardian Ape,9304
-Gyoubu Oniwa (Gauntlet),9701
 Gyoubu Oniwa,9301
 Headless (Ako),11100330
 Headless (Gachiin),11500680
 Headless (Gokan),11700500
 Headless (Ungo),11110660
 Headless (Yashariku),12500550
-Headless Ape (Gauntlet),11705850
 Headless Ape,9307
-Inner Father (Gauntlet),11000809
-Inner Genichiro (Gauntlet),11110890
-Inner Isshin (Gauntlet),11125877
-"Isshin, the Sword Saint",11125877
-"Isshin, the Sword Saint (Gauntlet)",11125877
+"Isshin, the Sword Saint / Isshin, the Sword Saint (Gauntlet) / Inner Isshin",11125877
 Isshin Ashina,9316
-Isshin Ashina (Gauntlet),9716 
 Juzou the Drunkard (Hirata 1),11000300
 Juzou the Drunkard (Hirata 2),11000301
-Lady Butterfly (Gauntlet),11005637
 Lady Butterfly,9302
 Leader Shigenori Yamauchi,11120390
 Lone Shadow Longswordsman,11120450
 Lone Shadow Masanaga the Spear-Bearer (Castle),11110316
-Lone Shadow Masanaga the Spear-Bearer (Hirata),11000353
+Lone Shadow Masanaga the Spear-Bearer (Hirata 2),11000353
 Lone Shadow Vilehand,11110305
 Long-arm Centipede Giraffe,11700425
 Long-arm Centipede Sen'un,12000279
@@ -2102,7 +2087,6 @@ Mist Noble,9380
 O'Rin of the Water,11500690
 Okami Leader Shizu,12500406
 Owl (Father),9317
-Owl Father (Gauntlet),11000809
 Sakura Bull of the Palace,12500570
 Seven Ashina Spears - Shikibu Toshikatsu Yamauchi,11120530
 Seven Ashina Spears - Shume Masaji Oniwa,11120521
@@ -2111,12 +2095,23 @@ Shichimen Warrior (Fountainhead),12500580
 Shichimen Warrior (Sunken Valley),11700520
 Shigekichi of the Red Guard,11100480
 Shinobi Hunter Enshin of Misen,11000330
-Shinobi Owl (Gauntlet),11115850
 Snake Eyes Shirafuji,11700200
 Snake Eyes Shirahagi,11700201
 Tokujiro the Glutton,11500490
 True Monk,9309
-True Monk (Gauntlet),12505950</value>
+Gyoubu Oniwa (Gauntlet),9701
+Lady Butterfly (Gauntlet),11005637
+Guardian Ape (Gauntlet),9704
+Fake Monk (Gauntlet),9706
+Great Shinobi - Owl (Gauntlet),11115850
+Headless Ape (Gauntlet),11705850
+"Emma, the Gentle Blade (Gauntlet)",9715
+Isshin Ashina (Gauntlet),9716
+True Monk (Gauntlet),12505950
+"Owl (Father, Gauntlet) / Inner Father (Gauntlet)",11000809
+"Genichiro, Way of Tomoe (Gauntlet)",21125011
+Inner Genichiro (Gauntlet),11110890
+</value>
   </data>
   <data name="VanillaBabyJump" xml:space="preserve">
     <value>0f 51 c0                sqrtps xmm0,xmm0
