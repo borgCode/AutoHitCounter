@@ -68,7 +68,7 @@
             <Style TargetType="ToolTip">
                 <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
                 <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
-                <Setter Property="BorderBrush" Value="#5a3d63" />
+                <Setter Property="BorderBrush" Value="{DynamicResource TooltipBorderBrush}" />
                 <Setter Property="BorderThickness" Value="1" />
                 <Setter Property="Padding" Value="8,5" />
                 <Setter Property="FontSize" Value="12" />
