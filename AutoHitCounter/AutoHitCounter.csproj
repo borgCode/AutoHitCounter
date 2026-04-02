@@ -135,6 +135,7 @@
         <Compile Include="Enums\SplitType.cs" />
         <Compile Include="Enums\NotesDisplayMode.cs" />
         <Compile Include="Enums\State.cs" />
+        <Compile Include="Enums\ThemeMode.cs" />
         <Compile Include="Games\DS2\DS2EventService.cs" />
         <Compile Include="Games\DS2\DS2HitService.cs" />
         <Compile Include="Games\DS2\DS2IgtService.cs" />
@@ -202,6 +203,7 @@
         <Compile Include="Services\ProfileService.cs" />
         <Compile Include="Services\SplitNavigationService.cs" />
         <Compile Include="Services\StateService.cs" />
+        <Compile Include="Services\ThemeService.cs" />
         <Compile Include="Services\TickService.cs" />
         <Compile Include="Utilities\EnumExtensions.cs" />
         <Compile Include="Utilities\AsmHelper.cs" />
@@ -264,6 +266,8 @@
             <DependentUpon>MainWindow.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Page Include="Themes\DarkTheme.xaml" />
+        <Page Include="Themes\LightTheme.xaml" />
         <Page Include="Views\Controls\HotkeysTab.xaml" />
         <Page Include="Views\Controls\SettingsTab.xaml" />
         <Page Include="Views\Controls\SplitEventEditorWindow.xaml" />

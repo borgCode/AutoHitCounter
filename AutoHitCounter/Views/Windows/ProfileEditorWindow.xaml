@@ -12,6 +12,7 @@
         Style="{StaticResource DefaultWindowStyle}"
         WindowStyle="None"
         AllowsTransparency="True"
+        Background="Transparent"
         Title="Profile Editor" Height="800" Width="850"
         MinHeight="800" MinWidth="850"
         ResizeMode="CanResize"
@@ -26,7 +27,11 @@
         </Style>
     </Window.Resources>
 
-    <Grid>
+    <Grid Background="{DynamicResource BackgroundBrush}">
+        <Grid.Clip>
+            <RectangleGeometry RadiusX="5" RadiusY="5"
+                               Rect="0,0,850,800"/>
+        </Grid.Clip>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="Auto" />
@@ -35,18 +40,18 @@
         </Grid.RowDefinitions>
 
         <controls:TitleBar Grid.Row="0" Title="Profile Editor" />
-
+        
         <!-- Focus outline -->
         <Border Grid.Row="0" Grid.RowSpan="4"
                 BorderThickness="1" IsHitTestVisible="False" Panel.ZIndex="99"
-                CornerRadius="4">
+                CornerRadius="4" ClipToBounds="True" Background="Transparent">
             <Border.Style>
                 <Style TargetType="Border">
                     <Setter Property="BorderBrush" Value="Transparent" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType=Window}}"
                                      Value="True">
-                            <Setter Property="BorderBrush" Value="#4a2d52" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource AppBorderBrush}" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -138,21 +143,21 @@
 
                         <StackPanel>
                             <TextBlock Text="Available Templates" FontSize="13" FontWeight="SemiBold"
-                                       Foreground="#aaa" />
+                                       Foreground="{DynamicResource EditorHeaderBrush}" />
                             <TextBlock Margin="0,3,0,-1"
                                        Text="A list of pre-made splits that automatically advance once a boss is defeated."
                                        FontSize="11" FontStyle="Italic"
-                                       Foreground="#878686" TextWrapping="Wrap" />
+                                       Foreground="{DynamicResource EditorTextBrush}" TextWrapping="Wrap" />
                             <TextBlock
                                 Text="To add a boss to the current profile, click the + sign next to the name."
                                 FontSize="11" FontStyle="Italic"
-                                Foreground="#878686" />
+                                Foreground="{DynamicResource EditorTextBrush}" />
                         </StackPanel>
                         <TextBlock HorizontalAlignment="Right" FontSize="11"
                                    Foreground="#555" FontFamily="JetBrains Mono"
                                    Text="{Binding FilteredEvents.Count, StringFormat='{}{0} events'}" />
                     </Grid>
-                    <Border Grid.Row="1" BorderBrush="#B37c4d85" BorderThickness="0,0,0,1"
+                    <Border Grid.Row="1" BorderBrush="{DynamicResource SplitsCurrentBrush}" BorderThickness="0,0,0,1"
                             Padding="8,0,8,8">
                         <DockPanel>
                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal"
@@ -243,16 +248,16 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="ListBoxItem">
-                                            <Border x:Name="Bd" Padding="10,6" BorderBrush="#B37c4d85"
+                                            <Border x:Name="Bd" Padding="10,6" BorderBrush="{DynamicResource SplitsCurrentBrush}"
                                                     BorderThickness="0,0,0,1" Background="Transparent">
                                                 <ContentPresenter />
                                             </Border>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter TargetName="Bd" Property="Background" Value="#6683518c" />
+                                                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SplitsHoverBrush}" />
                                                 </Trigger>
                                                 <Trigger Property="IsSelected" Value="True">
-                                                    <Setter TargetName="Bd" Property="Background" Value="#B37c4d85" />
+                                                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SplitsCurrentBrush}" />
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
@@ -263,7 +268,7 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <TextBlock Text="{Binding Name}" Foreground="#bbb" FontSize="13"
+                                    <TextBlock Text="{Binding Name}" Foreground="{DynamicResource EditorTemplatesBrush}" FontSize="13"
                                                VerticalAlignment="Center"
                                                TextTrimming="CharacterEllipsis" />
                                     <Button HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -291,7 +296,7 @@
                 </Grid>
             </Border>
 
-            <Border Grid.Column="1" VerticalAlignment="Stretch" Width="0.5" Background="#B37c4d85" Margin="1,20,1,10">
+            <Border Grid.Column="1" VerticalAlignment="Stretch" Width="0.5" Background="{DynamicResource SplitsCurrentBrush}" Margin="1,20,1,10">
                 <Border.Style>
                     <Style TargetType="Border">
                         <Style.Triggers>
@@ -314,15 +319,15 @@
                     <Grid Grid.Row="0" Margin="10,8">
                         <StackPanel>
                             <TextBlock Text="Profile Splits" FontSize="13" FontWeight="SemiBold"
-                                       Foreground="#aaa" />
+                                       Foreground="{DynamicResource EditorHeaderBrush}" />
                             <TextBlock Margin="0,3,0,-1"
                                        Text="This is the list of splits that are used during a run."
                                        FontSize="11" FontStyle="Italic"
-                                       Foreground="#878686" TextWrapping="Wrap" />
+                                       Foreground="{DynamicResource EditorTextBrush}" TextWrapping="Wrap" />
                             <TextBlock
                                 Text="You can reorder, group or create custom entries that require manual splitting."
                                 FontSize="11" FontStyle="Italic"
-                                Foreground="#878686" />
+                                Foreground="{DynamicResource EditorTextBrush}" />
                         </StackPanel>
                         <TextBlock HorizontalAlignment="Right" FontSize="11"
                                    Foreground="#555" FontFamily="JetBrains Mono"
@@ -404,16 +409,16 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="ListBoxItem">
-                                            <Border x:Name="Bd" Padding="8,6" BorderBrush="#B37c4d85"
+                                            <Border x:Name="Bd" Padding="8,6" BorderBrush="{DynamicResource SplitsCurrentBrush}"
                                                     BorderThickness="0,0,0,1" Background="Transparent">
                                                 <ContentPresenter />
                                             </Border>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter TargetName="Bd" Property="Background" Value="#6683518c" />
+                                                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SplitsHoverBrush}" />
                                                 </Trigger>
                                                 <Trigger Property="IsSelected" Value="True">
-                                                    <Setter TargetName="Bd" Property="Background" Value="#B37c4d85" />
+                                                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SplitsCurrentBrush}" />
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
@@ -439,7 +444,7 @@
                                         </StackPanel.Margin>
 
                                         <!-- Auto split indicator -->
-                                        <TextBlock Text="⚡" FontSize="10" Foreground="#666"
+                                        <TextBlock Text="⚡" FontSize="10" Foreground="{DynamicResource EditorIndicatorBrush}"
                                                    Margin="0,0,6,0" VerticalAlignment="Center"
                                                    HorizontalAlignment="Left"
                                                    ToolTip="Auto split">
@@ -460,7 +465,7 @@
                                         </TextBlock>
 
                                         <!-- Manual split indicator -->
-                                        <TextBlock Text="⌨" FontSize="10" Foreground="#666"
+                                        <TextBlock Text="⌨" FontSize="10" Foreground="{DynamicResource EditorIndicatorBrush}"
                                                    Margin="0,0,6,0" VerticalAlignment="Center"
                                                    HorizontalAlignment="Left"
                                                    ToolTip="Manual split">
@@ -486,12 +491,12 @@
                                                    TextTrimming="CharacterEllipsis">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
-                                                    <Setter Property="Foreground" Value="#ccc" />
+                                                    <Setter Property="Foreground" Value="{DynamicResource EditorSplitsBrush}" />
                                                     <Setter Property="FontWeight" Value="Normal" />
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding Type}"
                                                                      Value="{x:Static enums:SplitType.Parent}">
-                                                            <Setter Property="Foreground" Value="#fff" />
+                                                            <Setter Property="Foreground" Value="{DynamicResource EditorSplitsParentBrush}" />
                                                             <Setter Property="FontWeight" Value="SemiBold" />
                                                         </DataTrigger>
                                                     </Style.Triggers>

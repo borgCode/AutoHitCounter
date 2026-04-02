@@ -41,7 +41,7 @@ public class SettingsViewModel : BaseViewModel
         OpenOverlaySettingsCommand = new DelegateCommand(OpenOverlaySettings);
     }
 
-    
+
     #region Commands
 
     public DelegateCommand OpenOverlaySettingsCommand { get; }
@@ -65,7 +65,31 @@ public class SettingsViewModel : BaseViewModel
         }
     }
 
-    public IReadOnlyList<NotesDisplayMode> NotesDisplayModes { get; } = EnumExtensions.GetValues<NotesDisplayMode>().ToList();
+    public IReadOnlyList<NotesDisplayMode> NotesDisplayModes { get; } =
+        EnumExtensions.GetValues<NotesDisplayMode>().ToList();
+
+    public IReadOnlyList<ThemeMode> ThemeModes { get; } =
+        EnumExtensions.GetValues<ThemeMode>().ToList();
+
+    private ThemeMode _themeMode;
+
+    public ThemeMode ThemeMode
+    {
+        get => _themeMode;
+        set
+        {
+            if (!SetProperty(ref _themeMode, value)) return;
+            SettingsManager.Default.ThemeMode = (int)value;
+            SettingsManager.Default.Save();
+
+            if (value == ThemeMode.System)
+                ThemeService.StartWatchingSystem();
+            else
+                ThemeService.StopWatchingSystem();
+
+            ThemeService.Apply(value);
+        }
+    }
 
     private NotesDisplayMode _notesDisplayMode;
 
@@ -79,8 +103,6 @@ public class SettingsViewModel : BaseViewModel
             SettingsManager.Default.Save();
         }
     }
-    
-    
 
 
     #region Elden Ring
@@ -252,13 +274,15 @@ public class SettingsViewModel : BaseViewModel
 
         IsAlwaysOnTopEnabled = SettingsManager.Default.AlwaysOnTop;
 
+        _themeMode = (ThemeMode)SettingsManager.Default.ThemeMode;
+        OnPropertyChanged(nameof(ThemeMode));
+        ThemeService.Apply(_themeMode);
+
         _notesDisplayMode = (NotesDisplayMode)SettingsManager.Default.NotesDisplayMode;
         OnPropertyChanged(nameof(NotesDisplayMode));
     }
-    
-    
-    
-    
+
+
     private void OpenOverlaySettings()
     {
         if (_overlaySettingsWindow != null)

@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
-
+using System.Windows.Controls;
 
 namespace AutoHitCounter.Behaviors
 {
@@ -44,17 +44,20 @@ namespace AutoHitCounter.Behaviors
 
         private static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            const int
-                wmNchittest = 0x0084;
-            
-            const int
-                wmGetminmaxinfo = 0x0024;
+            const int wmNchittest = 0x0084;
+            const int wmGetminmaxinfo = 0x0024;
 
             switch (msg)
             {
                 case wmNchittest:
-                    handled = true;
-                    return HitTestNca(hwnd, wParam, lParam);
+                    var result = HitTestNca(hwnd, wParam, lParam);
+                    if (result != (IntPtr)Htclient)
+                    {
+                        handled = true;
+                        return result;
+                    }
+
+                    break;
 
                 case wmGetminmaxinfo:
                     HandleGetMinMaxInfo(hwnd, lParam);
@@ -67,6 +70,9 @@ namespace AutoHitCounter.Behaviors
 
         private static IntPtr HitTestNca(IntPtr hwnd, IntPtr wParam, IntPtr lParam)
         {
+            const int titleBarHeight = 30;
+            const int resizeBorder = 8;
+
             // Get the point coordinates
             int x = (short)(lParam.ToInt32() & 0xFFFF);
             int y = (short)(lParam.ToInt32() >> 16);
@@ -74,9 +80,6 @@ namespace AutoHitCounter.Behaviors
             // Get the window rectangle
             Rect rect;
             GetWindowRect(hwnd, out rect);
-
-            // Define the resize border thickness
-            const int resizeBorder = 8;
 
             // Calculate relative position
             int relativeX = x - rect.Left;
@@ -104,6 +107,18 @@ namespace AutoHitCounter.Behaviors
             if (relativeX > windowWidth - resizeBorder)
                 return (IntPtr)Htright;
 
+            if (relativeY <= titleBarHeight)
+            {
+                // Area for buttons
+                int buttonAreaWidth = 46 * 3;
+                if (relativeX >= windowWidth - buttonAreaWidth)
+                {
+                    return (IntPtr)Htclient;
+                }
+
+                return (IntPtr)Htcaption;
+            }
+
             // Default to client area
             return (IntPtr)Htclient;
         }
@@ -130,7 +145,6 @@ namespace AutoHitCounter.Behaviors
                 mmi.ptMaxSize.y = Math.Abs(workArea.Bottom - workArea.Top);
             }
 
-
             var source = HwndSource.FromHwnd(hwnd);
             if (source?.RootVisual is Window window)
             {
@@ -138,19 +152,18 @@ namespace AutoHitCounter.Behaviors
 
                 mmi.ptMinTrackSize.x = (int)(window.MinWidth * dpi.DpiScaleX);
                 mmi.ptMinTrackSize.y = (int)(window.MinHeight * dpi.DpiScaleY);
-                
-                if (!double.IsInfinity(window.MaxWidth))
-                    mmi.ptMaxTrackSize.x = (int)(window.MaxWidth * dpi.DpiScaleX);
-
-                if (!double.IsInfinity(window.MaxHeight))
-                    mmi.ptMaxTrackSize.y = (int)(window.MaxHeight * dpi.DpiScaleY);
             }
 
             Marshal.StructureToPtr(mmi, lParam, true);
         }
 
+        public static Point GetCursorPosition()
+        {
+            GetCursorPos(out POINT p);
+            return new Point(p.X, p.Y);
+        }
 
-        #region Native Constants
+        #region Native
 
         private const int Httopleft = 13;
         private const int Httop = 12;
@@ -161,14 +174,34 @@ namespace AutoHitCounter.Behaviors
         private const int Htbottom = 15;
         private const int Htbottomright = 17;
         private const int Htclient = 1;
+        private const int Htcaption = 2;
         private const uint MonitorDefaulttonearest = 2;
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct POINT
+        {
+            public int X;
+            public int Y;
+        }
+
+        [DllImport("user32.dll")]
+        private static extern bool GetCursorPos(out POINT lpPoint);
+
+        [DllImport("user32.dll")]
+        private static extern bool GetWindowRect(IntPtr hwnd, out Rect lpRect);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
+
+        [DllImport("user32.dll")]
+        private static extern bool GetMonitorInfo(IntPtr hMonitor, Monitorinfo lpmi);
 
         #endregion
 
-        #region Native Structures
+        #region Structs
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct Point
+        private struct PointNative
         {
             public int x;
             public int y;
@@ -177,20 +210,17 @@ namespace AutoHitCounter.Behaviors
         [StructLayout(LayoutKind.Sequential)]
         private struct Minmaxinfo
         {
-            public Point ptReserved;
-            public Point ptMaxSize;
-            public Point ptMaxPosition;
-            public Point ptMinTrackSize;
-            public Point ptMaxTrackSize;
+            public PointNative ptReserved;
+            public PointNative ptMaxSize;
+            public PointNative ptMaxPosition;
+            public PointNative ptMinTrackSize;
+            public PointNative ptMaxTrackSize;
         }
 
         [StructLayout(LayoutKind.Sequential)]
         private struct Rect
         {
-            public int Left;
-            public int Top;
-            public int Right;
-            public int Bottom;
+            public int Left, Top, Right, Bottom;
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -201,19 +231,6 @@ namespace AutoHitCounter.Behaviors
             public Rect rcWork;
             public uint dwFlags;
         }
-
-        #endregion
-
-        #region Native Methods
-
-        [DllImport("user32.dll")]
-        private static extern bool GetWindowRect(IntPtr hwnd, out Rect lpRect);
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
-
-        [DllImport("user32.dll")]
-        private static extern bool GetMonitorInfo(IntPtr hMonitor, Monitorinfo lpmi);
 
         #endregion
     }

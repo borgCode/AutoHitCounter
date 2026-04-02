@@ -13,6 +13,7 @@
         Style="{StaticResource DefaultWindowStyle}"
         WindowStyle="None"
         AllowsTransparency="True"
+        Background="Transparent"
         Title="Auto Hit Counter" MinHeight="800" MinWidth="525"
         Height="800" Width="525"
         ResizeMode="CanResize"
@@ -30,7 +31,11 @@
         <converters:AttemptCountColorConverter x:Key="AttemptCountColorConverter" />
     </Window.Resources>
 
-    <Grid>
+    <Grid Background="{DynamicResource BackgroundBrush}">
+        <Grid.Clip>
+            <RectangleGeometry RadiusX="5" RadiusY="5"
+                               Rect="0,0,525,800"/>
+        </Grid.Clip>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
@@ -41,14 +46,14 @@
         <!-- Focus outline -->
         <Border Grid.Row="0" Grid.RowSpan="3"
                 BorderThickness="1" IsHitTestVisible="False" Panel.ZIndex="99"
-                CornerRadius="4">
+                CornerRadius="3" ClipToBounds="True" Background="Transparent">
             <Border.Style>
                 <Style TargetType="Border">
                     <Setter Property="BorderBrush" Value="Transparent" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType=Window}}"
                                      Value="True">
-                            <Setter Property="BorderBrush" Value="#4a2d52" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource AppBorderBrush}" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -58,7 +63,7 @@
         <!-- Tool Attachment Info -->
         <Grid Grid.Row="1" Margin="5,3,8,3">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <TextBlock Text="{Binding AppVer}" Foreground="White" FontSize="11" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding AppVer}" Foreground="{DynamicResource TextBrush}" FontSize="11" VerticalAlignment="Center" />
                 <Button Command="{Binding CheckUpdateCommand}" Content="Check for Updates"
                         Margin="8,0,0,0" Height="20" FontSize="11"
                         VerticalAlignment="Center" />
@@ -174,9 +179,9 @@
                                 ToolTipService.InitialShowDelay="300">
                                 <ToggleButton.Style>
                                     <Style TargetType="ToggleButton">
-                                        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
-                                        <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
-                                        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+                                        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                                        <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
                                         <Setter Property="BorderThickness" Value="1" />
                                         <Setter Property="Template">
                                             <Setter.Value>
@@ -194,21 +199,20 @@
                                         </Setter>
                                         <Style.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Background" Value="{StaticResource AccentBrush}" />
-                                                <Setter Property="BorderBrush" Value="{StaticResource HoverBrush}" />
+                                                <Setter Property="Background" Value="{DynamicResource AccentBrush}" />
+                                                <Setter Property="BorderBrush" Value="{DynamicResource HoverBrush}" />
                                             </Trigger>
                                             <Trigger Property="IsChecked" Value="True">
-                                                <Setter Property="Foreground" Value="#c47fd4" />
-                                                <Setter Property="BorderBrush" Value="#9D61A8" />
-                                                <Setter Property="Background" Value="#9D61A8" />
+                                                <Setter Property="BorderBrush" Value="{DynamicResource UnlockedBorderBrush}" />
+                                                <Setter Property="Background" Value="{DynamicResource UnlockedBrush}" />
                                             </Trigger>
                                             <MultiTrigger>
                                                 <MultiTrigger.Conditions>
                                                     <Condition Property="IsMouseOver" Value="True" />
                                                     <Condition Property="IsChecked" Value="True" />
                                                 </MultiTrigger.Conditions>
-                                                <Setter Property="Background" Value="{StaticResource AccentBrush}" />
-                                                <Setter Property="BorderBrush" Value="{StaticResource HoverBrush}" />
+                                                <Setter Property="Background" Value="{DynamicResource AccentBrush}" />
+                                                <Setter Property="BorderBrush" Value="{DynamicResource HoverBrush}" />
                                                 <Setter Property="Foreground" Value="#6683518c" />
                                             </MultiTrigger>
                                         </Style.Triggers>
@@ -225,7 +229,7 @@
                                     ToolTipService.InitialShowDelay="300"
                                     Visibility="{Binding SelectedGame.IsEventLogSupported, Converter={StaticResource BoolToVisConverter}}">
                             <TextBlock Text="Practice"
-                                       Foreground="{StaticResource TextBrush}"
+                                       Foreground="{DynamicResource TextBrush}"
                                        VerticalAlignment="Center" Margin="0,0,4,0" />
                             <CheckBox IsChecked="{Binding IsPracticeMode}"
                                       VerticalAlignment="Center">
@@ -237,14 +241,14 @@
                                                     <Border x:Name="Track"
                                                             Width="35" Height="18"
                                                             CornerRadius="7"
-                                                            Background="#444444"
-                                                            BorderBrush="#555555"
+                                                            Background="{DynamicResource SwitchBackgroundBrush}"
+                                                            BorderBrush="{DynamicResource SwitchBorderBrush}"
                                                             BorderThickness="1"
                                                             Cursor="Hand">
                                                         <Border x:Name="Thumb"
                                                                 Width="14" Height="14"
                                                                 CornerRadius="7"
-                                                                Background="#AAAAAA"
+                                                                Background="{DynamicResource SwitchDotBrush}"
                                                                 HorizontalAlignment="Left"
                                                                 Margin="1,0,0,0" />
                                                     </Border>
@@ -257,7 +261,7 @@
                                                             <Setter TargetName="Thumb" Property="Margin" Value="0,0,1,0" />
                                                         </Trigger>
                                                         <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter TargetName="Track" Property="BorderBrush" Value="{StaticResource HoverBrush}" />
+                                                            <Setter TargetName="Track" Property="BorderBrush" Value="{DynamicResource SwitchHoverBorderBrush}" />
                                                         </Trigger>
                                                     </ControlTemplate.Triggers>
                                                 </ControlTemplate>
@@ -321,7 +325,7 @@
                                 ToolTipService.InitialShowDelay="300"/>
                     </StackPanel>
 
-                    <Border Grid.Row="2" BorderBrush="#333333" BorderThickness="0,0,0,4">
+                    <Border Grid.Row="2" BorderBrush="{DynamicResource SplitterBrush}" BorderThickness="0,0,0,4">
                         <Grid
                             Margin="{Binding IsSplitListScrollbarVisible, Converter={StaticResource ScrollbarVisibleToMarginConverter}}">
                             <Grid.ColumnDefinitions>
@@ -376,7 +380,7 @@
                                 </TextBlock>
 
                                 <!-- Splitter -->
-                                <Rectangle Width="1" Height="12" Fill="#444" Margin="7,0,7,0"
+                                <Rectangle Width="1" Height="12" Fill="#444" Margin="7,0,0,0"
                                            VerticalAlignment="Center">
                                     <Rectangle.Style>
                                         <Style TargetType="Rectangle">
@@ -396,7 +400,8 @@
                                            Cursor="Hand"
                                            Text="{Binding AttemptCount, StringFormat='#{0}'}"
                                            ToolTip="Double Click to edit attempts count" ToolTipService.InitialShowDelay="300"
-                                           Foreground="{Binding AttemptCount, Converter={StaticResource AttemptCountColorConverter}}">
+                                           Foreground="{Binding AttemptCount, Converter={StaticResource AttemptCountColorConverter}}"
+                                           Margin="7,0,0,0">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Visibility" Value="Visible" />
@@ -424,7 +429,7 @@
                                     <TextBox.Style>
                                         <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
                                             <Setter Property="Visibility" Value="Collapsed" />
-                                            <Setter Property="Foreground" Value="#DDDDDD" />
+                                            <Setter Property="SelectionBrush" Value="#9d61a8"/>
                                             <Setter Property="Padding" Value="3,1" />
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsEditingAttempts}" Value="True">
@@ -534,17 +539,17 @@
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="ListBox.AlternationIndex" Value="0">
                                                     <Setter TargetName="Border" Property="Background"
-                                                            Value="{StaticResource BackgroundBrush}" />
+                                                            Value="{DynamicResource BackgroundBrush}" />
                                                 </Trigger>
                                                 <Trigger Property="ListBox.AlternationIndex" Value="1">
-                                                    <Setter TargetName="Border" Property="Background" Value="#222222" />
+                                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource SplitsBackgroundBrush}" />
                                                 </Trigger>
                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter TargetName="Border" Property="Background" Value="#6683518c" />
+                                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource SplitsHoverBrush}" />
                                                 </Trigger>
                                                 <DataTrigger Binding="{Binding IsCurrent}" Value="True">
                                                     <Setter TargetName="Border" Property="BorderBrush" Value="#c47fd4" />
-                                                    <Setter TargetName="Border" Property="Background" Value="#B37c4d85" />
+                                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource SplitsCurrentBrush}" />
                                                 </DataTrigger>
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
@@ -558,7 +563,7 @@
                                                     <Setter TargetName="Border" Property="Background" Value="#3383518c" />
                                                 </MultiDataTrigger>
                                                 <DataTrigger Binding="{Binding IsParent}" Value="True">
-                                                    <Setter TargetName="Border" Property="Background" Value="#1A1A1A" />
+                                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource SplitsParentBrush}" />
                                                     <Setter TargetName="Border" Property="BorderBrush"
                                                             Value="Transparent" />
                                                     <Setter Property="FontWeight" Value="SemiBold" />
@@ -586,7 +591,7 @@
                                             <TextBlock Text="⋮⋮"
                                                        Cursor="Hand"
                                                        FontSize="11"
-                                                       Foreground="#888"
+                                                       Foreground="{DynamicResource IndicatorBrush}"
                                                        VerticalAlignment="Center"
                                                        Margin="4,0,0,0"
                                                        HorizontalAlignment="Left">
@@ -645,8 +650,8 @@
                                                            BasedOn="{StaticResource {x:Type TextBox}}">
                                                         <Setter Property="Visibility" Value="Collapsed" />
                                                         <Setter Property="Background"
-                                                                Value="{StaticResource BackgroundBrush}" />
-                                                        <Setter Property="Foreground" Value="White" />
+                                                                Value="{DynamicResource BackgroundBrush}" />
+                                                        <Setter Property="SelectionBrush" Value="#9d61a8"/>
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding IsEditing}" Value="True">
                                                                 <Setter Property="Visibility" Value="Visible" />
@@ -737,7 +742,7 @@
                                                    MouseDown="SplitContextDots_MouseDown"
                                                    Cursor="Hand"
                                                    FontSize="13"
-                                                   Foreground="#888"
+                                                   Foreground="{DynamicResource IndicatorBrush}"
                                                    HorizontalAlignment="Right"
                                                    VerticalAlignment="Center"
                                                    Margin="0,0,4,0"
@@ -792,13 +797,13 @@
                                             </Style>
                                         </Grid.Style>
 
-                                        <Border BorderThickness="2,0,0,0" BorderBrush="#3d3040" Padding="6,2">
+                                        <Border BorderThickness="2,0,0,0" BorderBrush="{DynamicResource NotesSideBorderBrush}" Padding="6,2">
                                             <Grid>
                                                 <TextBox Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}"
                                                          TextWrapping="Wrap"
                                                          AcceptsReturn="True"
                                                          FontSize="11"
-                                                         Foreground="#AAA"
+                                                         Foreground="{DynamicResource NotesTextBrush}"
                                                          Padding="2"
                                                          LostFocus="NotesBox_LostFocus">
                                                     <TextBox.Style>
@@ -808,9 +813,10 @@
                                                             <Setter Property="Cursor" Value="IBeam" />
                                                             <Style.Triggers>
                                                                 <Trigger Property="IsFocused" Value="True">
-                                                                    <Setter Property="Background" Value="#1c1424" />
+                                                                    <Setter Property="Background" Value="{DynamicResource NotesEditingBackgroundBrush}" />
                                                                     <Setter Property="BorderThickness" Value="1" />
-                                                                    <Setter Property="BorderBrush" Value="#5a3d63" />
+                                                                    <Setter Property="BorderBrush" Value="{DynamicResource NotesEditingBorderBrush}" />
+                                                                    <Setter Property="SelectionBrush" Value="#9d61a8"/>
                                                                 </Trigger>
                                                             </Style.Triggers>
                                                         </Style>
@@ -818,7 +824,7 @@
                                                 </TextBox>
                                                 <TextBlock Text="Add notes..."
                                                            FontSize="11" FontStyle="Italic"
-                                                           Foreground="#AAA"
+                                                           Foreground="{DynamicResource EditorHeaderBrush}"
                                                            Margin="4,2,0,0"
                                                            IsHitTestVisible="False">
                                                     <TextBlock.Style>
@@ -870,7 +876,7 @@
                                        Text="Total"
                                        FontFamily="{StaticResource AppFont}"
                                        FontSize="{StaticResource FontSizeBody}"
-                                       Foreground="#FFFFFF"
+                                       Foreground="{DynamicResource TextBrush}"
                                        VerticalAlignment="Center"
                                        Margin="30,0,0,0" />
                             <TextBlock Grid.Column="1"
@@ -882,7 +888,7 @@
                             <TextBlock Grid.Column="2"
                                        Margin="0,0,4,0"
                                        Text="{Binding TotalDiff}"
-                                       Foreground="#888"
+                                       Foreground="{DynamicResource TotalDiffBrush}"
                                        FontFamily="{StaticResource AppFont}"
                                        FontSize="{StaticResource FontSizeBody}"
                                        HorizontalAlignment="Center" VerticalAlignment="Center" />
@@ -891,7 +897,7 @@
                                        Text="{Binding TotalPb}"
                                        FontFamily="{StaticResource AppFont}"
                                        FontSize="{StaticResource FontSizeBody}"
-                                       Foreground="#909090"
+                                       Foreground="{DynamicResource TotalPbBrush}"
                                        HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Grid>
                     </Border>
@@ -935,10 +941,10 @@
                                        Foreground="#00CC66"
                                        HorizontalAlignment="Center" Margin="0,4,0,6" />
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,6">
-                                <TextBlock Text="Total Hits: " Foreground="#999" />
-                                <TextBlock Text="{Binding TotalHits}" Foreground="White" Margin="0,0,12,0" />
-                                <TextBlock Text="PB: " Foreground="#999" />
-                                <TextBlock Text="{Binding TotalPb}" Foreground="White" />
+                                <TextBlock Text="Total Hits: " Foreground="{DynamicResource OverlayFieldBrush}" />
+                                <TextBlock Text="{Binding TotalHits}" Foreground="{DynamicResource EditorSplitsParentBrush}" Margin="0,0,12,0" />
+                                <TextBlock Text="PB: " Foreground="{DynamicResource OverlayFieldBrush}" />
+                                <TextBlock Text="{Binding TotalPb}" Foreground="{DynamicResource EditorSplitsParentBrush}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Button Content="Mark as PB" Margin="4,0"
@@ -960,7 +966,7 @@
                             <TextBlock Text="{Binding InGameTimeFormatted}"
                                        FontFamily="JetBrains Mono"
                                        FontSize="16"
-                                       Foreground="#c47fd4"
+                                       Foreground="{DynamicResource IgtBrush}"
                                        VerticalAlignment="Center" />
                         </StackPanel>
                     </Grid>

@@ -84,6 +84,7 @@ namespace AutoHitCounter.ViewModels
 
             _isUnlocked = SettingsManager.Default.IsUnlocked;
 
+            ThemeService.ThemeChanged += OnThemeChanged;
             InitialiseCommands();
 
 
@@ -206,7 +207,7 @@ namespace AutoHitCounter.ViewModels
                     _isPracticeMode = SettingsManager.Default.PracticeMode;
                     OnPropertyChanged(nameof(IsPracticeMode));
                 }
-                    
+
 
                 if (!Profiles.Any())
                 {
@@ -366,10 +367,10 @@ namespace AutoHitCounter.ViewModels
         {
             get
             {
-                if (TotalPb == 0) return new SolidColorBrush(Color.FromRgb(0x70, 0x70, 0x70));
-                if (TotalHits < TotalPb) return new SolidColorBrush(Color.FromRgb(0x5a, 0x90, 0x68));
-                if (TotalHits > TotalPb) return new SolidColorBrush(Color.FromRgb(0xb8, 0x55, 0x55));
-                return new SolidColorBrush(Color.FromRgb(0x70, 0x70, 0x70));
+                if (TotalPb == 0) return GetBrush("DiffNeutralBrush");
+                if (TotalHits < TotalPb) return GetBrush("DiffNegativeBrush");
+                if (TotalHits > TotalPb) return GetBrush("DiffPositiveBrush");
+                return GetBrush("DiffNeutralBrush");
             }
         }
 
@@ -381,10 +382,9 @@ namespace AutoHitCounter.ViewModels
         {
             get
             {
-                var diff = TotalDiff;
-                if (diff > 0) return new SolidColorBrush(Color.FromRgb(0xb8, 0x55, 0x55));
-                if (diff < 0) return new SolidColorBrush(Color.FromRgb(0x5a, 0x90, 0x68));
-                return new SolidColorBrush(Color.FromRgb(0x90, 0x90, 0x90));
+                if (TotalDiff > 0) return GetBrush("DiffPositiveBrush");
+                if (TotalDiff < 0) return GetBrush("DiffNegativeBrush");
+                return GetBrush("DiffNeutralBrush");
             }
         }
 
@@ -567,6 +567,16 @@ namespace AutoHitCounter.ViewModels
 
         public void JumpToSplit(SplitViewModel target) => _splitNav.JumpTo(target);
 
+        private void OnThemeChanged()
+        {
+            OnPropertyChanged(nameof(TotalHitsBrush));
+        }
+
+        public override void Dispose()
+        {
+            ThemeService.ThemeChanged -= OnThemeChanged;
+        }
+
         #endregion
 
         #region Private Methods
@@ -686,7 +696,10 @@ namespace AutoHitCounter.ViewModels
                 if (_currentModule is ManualGameModule manual) manual.StopTimer();
             });
             _hotkeyManager.RegisterAction(HotkeyActions.TogglePracticeMode,
-                () => { if (_activeGame?.IsManual != true) IsPracticeMode = !IsPracticeMode; });
+                () =>
+                {
+                    if (_activeGame?.IsManual != true) IsPracticeMode = !IsPracticeMode;
+                });
         }
 
         private void OnSplitStateChanged()
@@ -898,6 +911,9 @@ namespace AutoHitCounter.ViewModels
 
         private void UpdateSplits()
         {
+            foreach (var split in Splits)
+                ((IDisposable)split).Dispose();
+
             Splits.Clear();
             if (ActiveProfile == null) return;
             if (ActiveProfile.Splits.Count == 0) return;
@@ -924,6 +940,13 @@ namespace AutoHitCounter.ViewModels
                 };
                 Splits.Add(vm);
             }
+        }
+
+        private static Brush GetBrush(string key)
+        {
+            if (Application.Current.Resources[key] is SolidColorBrush brush)
+                return brush;
+            return new SolidColorBrush(Colors.White);
         }
 
         private void UpdateDistancePb()

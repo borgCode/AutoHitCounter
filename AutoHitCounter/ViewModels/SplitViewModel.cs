@@ -1,12 +1,19 @@
 ﻿//
 
+using System.Windows;
 using System.Windows.Media;
 using AutoHitCounter.Enums;
+using AutoHitCounter.Services;
 
 namespace AutoHitCounter.ViewModels;
 
 public class SplitViewModel : BaseViewModel
 {
+    public SplitViewModel()
+    {
+        ThemeService.ThemeChanged += OnThemeChanged;
+    }
+
     private string _name;
 
     public string Name
@@ -100,17 +107,24 @@ public class SplitViewModel : BaseViewModel
     public int Diff => NumOfHits - PersonalBest;
 
     public Brush HitsBrush => NumOfHits > 0
-        ? new SolidColorBrush(Color.FromRgb(0xc8, 0x84, 0x3a))
-        : new SolidColorBrush(Color.FromRgb(0x99, 0x99, 0x99));
+        ? GetBrush("HitsActiveBrush")
+        : GetBrush("HitsInactiveBrush");
 
     public Brush DiffBrush
     {
         get
         {
-            if (Diff > 0) return new SolidColorBrush(Color.FromRgb(0xb8, 0x55, 0x55));
-            if (Diff < 0) return new SolidColorBrush(Color.FromRgb(0x5a, 0x90, 0x68));
-            return new SolidColorBrush(Color.FromRgb(0xAA, 0xAA, 0xAA));
+            if (Diff > 0) return GetBrush("DiffPositiveBrush");
+            if (Diff < 0) return GetBrush("DiffNegativeBrush");
+            return GetBrush("DiffNeutralBrush");
         }
+    }
+
+    private static Brush GetBrush(string key)
+    {
+        if (Application.Current.Resources[key] is SolidColorBrush brush)
+            return brush;
+        return new SolidColorBrush(Colors.White);
     }
 
     private bool _isEditing;
@@ -137,5 +151,16 @@ public class SplitViewModel : BaseViewModel
     {
         OnPropertyChanged(nameof(IsEditingPb));
         OnPropertyChanged(nameof(PersonalBest));
+    }
+
+    private void OnThemeChanged()
+    {
+        OnPropertyChanged(nameof(HitsBrush));
+        OnPropertyChanged(nameof(DiffBrush));
+    }
+
+    public override void Dispose()
+    {
+        ThemeService.ThemeChanged -= OnThemeChanged;
     }
 }

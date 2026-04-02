@@ -7,6 +7,7 @@
         Style="{StaticResource DefaultWindowStyle}"
         WindowStyle="None"
         AllowsTransparency="True"
+        Background="Transparent"
         Title="Overlay Settings"
         Width="920" Height="700"
         MinWidth="920" MinHeight="700"
@@ -17,7 +18,7 @@
     <Window.Resources>
 
         <Style x:Key="PanelBorder" TargetType="Border">
-            <Setter Property="BorderBrush" Value="#2a2a2a" />
+            <Setter Property="BorderBrush" Value="{DynamicResource OverlayPanelBorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="CornerRadius" Value="4" />
             <Setter Property="Padding" Value="12" />
@@ -26,19 +27,19 @@
         <Style x:Key="PanelHeader" TargetType="TextBlock">
             <Setter Property="FontSize" Value="16" />
             <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="Foreground" Value="#888888" />
+            <Setter Property="Foreground" Value="{DynamicResource OverlayHeaderBrush}" />
             <Setter Property="Margin" Value="0,0,0,10" />
 
         </Style>
 
         <Style x:Key="SectionLabel" TargetType="TextBlock">
             <Setter Property="FontSize" Value="11" />
-            <Setter Property="Foreground" Value="#777777" />
+            <Setter Property="Foreground" Value="{DynamicResource OverlaySectionBrush}" />
             <Setter Property="Margin" Value="0,10,0,4" />
         </Style>
 
         <Style x:Key="FieldLabel" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#999999" />
+            <Setter Property="Foreground" Value="{DynamicResource OverlayFieldBrush}" />
             <Setter Property="FontSize" Value="11" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Width" Value="140" />
@@ -50,17 +51,21 @@
         </Style>
 
         <Style x:Key="Separator" TargetType="Separator">
-            <Setter Property="Background" Value="#2a2a2a" />
+            <Setter Property="Background" Value="{DynamicResource OverlaySeparatorBackgroundBrush}" />
             <Setter Property="Margin" Value="0,8,0,4" />
         </Style>
         <Style TargetType="{x:Type xctk:ColorPicker}">
-            <Setter Property="Background" Value="#2d2d2d" />
-            <Setter Property="Foreground" Value="#cccccc" />
-            <Setter Property="BorderBrush" Value="#444444" />
+            <Setter Property="Background" Value="{DynamicResource OverlayColorPickerBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource OverlayColorPickerForegroundBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource OverlayColorPickerBorderBrush}" />
         </Style>
     </Window.Resources>
 
-    <Grid>
+    <Grid Background="{DynamicResource BackgroundBrush}">
+        <Grid.Clip>
+            <RectangleGeometry RadiusX="5" RadiusY="5"
+                               Rect="0,0,920,700"/>
+        </Grid.Clip>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="Auto" />
@@ -69,6 +74,23 @@
         </Grid.RowDefinitions>
 
         <controls:TitleBar Grid.Row="0" Title="Overlay Settings" />
+        
+        <!-- Focus outline -->
+        <Border Grid.Row="0" Grid.RowSpan="4"
+                BorderThickness="1" IsHitTestVisible="False" Panel.ZIndex="99"
+                CornerRadius="4" ClipToBounds="True" Background="Transparent">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType=Window}}"
+                                     Value="True">
+                            <Setter Property="BorderBrush" Value="{DynamicResource AppBorderBrush}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
 
         <!-- Profile Bar -->
         <Border Grid.Row="1" BorderBrush="#2a2a2a" BorderThickness="0,0,0,1" Padding="8,5">
@@ -89,23 +111,7 @@
                 <Button Content="Export" Command="{Binding ExportProfileCommand}" FontSize="11" Padding="8,2" />
             </StackPanel>
         </Border>
-
-        <!-- Focus outline -->
-        <Border Grid.Row="0" Grid.RowSpan="4"
-                BorderThickness="1" IsHitTestVisible="False" Panel.ZIndex="99"
-                CornerRadius="4">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Setter Property="BorderBrush" Value="Transparent" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType=Window}}"
-                                     Value="True">
-                            <Setter Property="BorderBrush" Value="#4a2d52" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
-        </Border>
+        
 
         <!-- Main content -->
         <Grid Grid.Row="2" Margin="8,6,8,6">
@@ -167,14 +173,14 @@
                             <Slider Value="{Binding BackgroundOpacity, Delay=400}" Minimum="0" Maximum="1"
                                     Width="110" VerticalAlignment="Center" />
                             <TextBlock Text="{Binding BackgroundOpacity, StringFormat={}{0:F2}}"
-                                       Foreground="#888888" FontSize="11" Margin="6,0,0,0"
+                                       Foreground="{DynamicResource OverlayFieldBrush}" FontSize="11" Margin="6,0,0,0"
                                        VerticalAlignment="Center" />
                         </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" />
                         <TextBlock Text="CUSTOM CSS" Style="{StaticResource SectionLabel}" />
                         <TextBlock Text="Overrides all other overlay settings" FontSize="10" FontStyle="Italic"
-                                   Foreground="#878686" Margin="0,-4,0,4" />
+                                   Foreground="{DynamicResource OverlayCommentsBrush}" Margin="0,-4,0,4" />
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBox Text="{Binding CustomCss, UpdateSourceTrigger=PropertyChanged}"
                                      Height="250"
@@ -625,7 +631,7 @@
 
                         <TextBlock Text="STYLE" Style="{StaticResource SectionLabel}" />
                         <TextBlock Text="Applies to all but title and run completion." FontSize="10" FontStyle="Italic"
-                                   Foreground="#878686" Margin="0,-4,0,4" />
+                                   Foreground="{DynamicResource OverlayCommentsBrush}" Margin="0,-4,0,4" />
                         <CheckBox Content="Bold" IsChecked="{Binding FontBold}" Margin="0,3,0,3" />
                         <CheckBox Content="Italic" IsChecked="{Binding FontItalic}" Margin="0,3,0,3" />
                         <CheckBox Content="Underline" IsChecked="{Binding FontUnderline}" Margin="0,3,0,3" />

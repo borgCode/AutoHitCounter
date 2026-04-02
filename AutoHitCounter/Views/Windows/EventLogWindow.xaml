@@ -39,7 +39,8 @@
                      ItemsSource="{Binding LogEntries}"
                      VirtualizingPanel.IsVirtualizing="True"
                      VirtualizingPanel.VirtualizationMode="Recycling"
-                     ScrollViewer.ScrollChanged="LogListBox_ScrollChanged">
+                     ScrollViewer.ScrollChanged="LogListBox_ScrollChanged"
+                     Background="{DynamicResource EventsBackgroundBrush}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding DisplayText}"

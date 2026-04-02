@@ -14,7 +14,7 @@ namespace AutoHitCounter.Views.Windows;
 public partial class InputBox : Window
 {
     public bool Result { get; private set; }
-    
+
     private readonly List<TextBox> _textBoxes = new();
     private readonly string[] _keys;
 
@@ -29,16 +29,16 @@ public partial class InputBox : Window
             var label = new TextBlock
             {
                 Text = field.Prompt,
-                Foreground = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#F1F1F1")!,
+                Foreground = (System.Windows.Media.Brush)FindResource("InputTextBrush"),
                 Margin = new Thickness(0, 0, 0, 4)
             };
 
             var textBox = new TextBox
             {
                 Text = field.DefaultValue,
-                Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#3E3E42")!,
-                Foreground = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#F1F1F1")!,
-                BorderBrush = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#555555")!,
+                Background = (System.Windows.Media.Brush)FindResource("ControlBackgroundBrush"),
+                Foreground = (System.Windows.Media.Brush)FindResource("InputTextBrush"),
+                BorderBrush = (System.Windows.Media.Brush)FindResource("BorderBrush"),
                 Padding = new Thickness(5, 3, 5, 3),
                 Margin = new Thickness(0, 0, 0, 12)
             };
@@ -53,7 +53,7 @@ public partial class InputBox : Window
         {
             IntPtr hwnd = new WindowInteropHelper(this).Handle;
             User32.SetTopmost(hwnd);
-            
+
             if (_textBoxes.Count > 0)
             {
                 _textBoxes[0].Focus();
@@ -66,7 +66,7 @@ public partial class InputBox : Window
             }
         };
     }
-    
+
     public InputBox(string prompt, string defaultValue = "", string title = "Input")
         : this(new[] { new InputField("value", prompt, defaultValue) }, title)
     {
@@ -79,9 +79,10 @@ public partial class InputBox : Window
         {
             result[_keys[i]] = _textBoxes[i].Text;
         }
+
         return result;
     }
-    
+
     public string InputValue => _textBoxes.Count > 0 ? _textBoxes[0].Text : string.Empty;
 
     private void OkButton_Click(object sender, RoutedEventArgs e)
@@ -107,7 +108,7 @@ public partial class InputBox : Window
         {
             var currentBox = sender as TextBox;
             int index = _textBoxes.IndexOf(currentBox!);
-            
+
             if (index < _textBoxes.Count - 1)
             {
                 _textBoxes[index + 1].Focus();
