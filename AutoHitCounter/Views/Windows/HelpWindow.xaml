@@ -185,9 +185,9 @@
                                 <!-- Off state -->
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                     <Border Width="35" Height="18" CornerRadius="7"
-                                            Background="#444444" BorderBrush="#555555" BorderThickness="1">
+                                            Background="{DynamicResource SwitchBackgroundBrush}" BorderBrush="{DynamicResource SwitchBorderBrush}" BorderThickness="1">
                                         <Border Width="14" Height="14" CornerRadius="7"
-                                                Background="#AAAAAA" HorizontalAlignment="Left" Margin="1,0,0,0" />
+                                                Background="{DynamicResource SwitchDotBrush}" HorizontalAlignment="Left" Margin="1,0,0,0" />
                                     </Border>
                                     <TextBlock Text=" Inactive" Foreground="{DynamicResource EditorSplitsBrush}" VerticalAlignment="Center"
                                                FontSize="11" />
