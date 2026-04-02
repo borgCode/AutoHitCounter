@@ -21,6 +21,8 @@
     <SolidColorBrush x:Key="PanelBrush" Color="#1A1A1A " />
     <SolidColorBrush x:Key="AppBorderBrush" Color="#4a2d52 " />
     <SolidColorBrush x:Key="TooltipBorderBrush" Color="#a670b0" />
+    <SolidColorBrush x:Key="TextBoxBorderBrush" Color="#5a3d63" />
+    
     
     <!-- Input Box / Message Box-->
     <SolidColorBrush x:Key="InputBackgroundBrush" Color="#2D2D30 " />
