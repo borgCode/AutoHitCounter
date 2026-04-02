@@ -279,10 +279,10 @@
                                            Foreground="#00CC66"
                                            HorizontalAlignment="Center" Margin="0,4,0,6" />
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,6">
-                                    <TextBlock Text="Total Hits: " Foreground="#999" />
-                                    <TextBlock Text="10" Foreground="White" Margin="0,0,12,0" />
-                                    <TextBlock Text="PB: " Foreground="#999" />
-                                    <TextBlock Text="50" Foreground="White" />
+                                    <TextBlock Text="Total Hits: " Foreground="{DynamicResource OverlayFieldBrush}" />
+                                    <TextBlock Text="10" Foreground="{DynamicResource TotalDiffBrush}" Margin="0,0,12,0" />
+                                    <TextBlock Text="PB: " Foreground="{DynamicResource OverlayFieldBrush}" />
+                                    <TextBlock Text="50" Foreground="{DynamicResource TotalPbBrush}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <Button Content="Mark as PB" Margin="4,0" />
