@@ -120,6 +120,8 @@ public static class EldenRingOffsets
         public static nint ChrInsByHandle;
         public static nint HasSpEffectId;
         public static nint GetEvent;
+        public static nint HasStateInfo;
+        public static nint IsNoDeathEnabled;
     }
 
     public static class Patches
@@ -274,21 +276,22 @@ public static class EldenRingOffsets
 
         Hooks.KillBox = moduleBase + Version switch
         {
-            Version1_2_0 => 0x3F46FB,
-            Version1_2_1 or Version1_2_2 => 0x3F476B,
-            Version1_2_3 => 0x3F488B,
-            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x3F535B,
-            Version1_4_0 or Version1_4_1 => 0x3F783B,
-            Version1_5_0 => 0x3F7C0B,
-            Version1_6_0 => 0x3F89EB,
-            Version1_7_0 => 0x3F8A6B,
-            Version1_8_0 or Version1_8_1 => 0x44AA6D,
-            Version1_9_0 or Version1_9_1 => 0x44ABAD,
-            Version2_0_0 or Version2_0_1 => 0x44AD4D,
-            Version2_2_0 or Version2_2_3 => 0x44DB3D,
-            Version2_3_0 => 0x44DC4D,
-            Version2_4_0 or Version2_5_0 => 0x44DC8D,
-            Version2_6_0 or Version2_6_1 => 0x44DC5D,
+            Version1_2_0 => 0x451801,
+            Version1_2_1 or Version1_2_2 => 0x451871,
+            Version1_2_3 => 0x451991,
+            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x4525F1,
+            Version1_4_0 => 0x454E11,
+            Version1_4_1 => 0x454D21,
+            Version1_5_0 => 0x4550A1,
+            Version1_6_0 => 0x456101,
+            Version1_7_0 => 0x456251,
+            Version1_8_0 or Version1_8_1 => 0x457BE1,
+            Version1_9_0 or Version1_9_1 => 0x457D21,
+            Version2_0_0 or Version2_0_1 => 0x457EC1,
+            Version2_2_0 or Version2_2_3 => 0x45ACB1,
+            Version2_3_0 => 0x45ADC1,
+            Version2_4_0 or Version2_5_0 => 0x45AE01,
+            Version2_6_0 or Version2_6_1 => 0x45ADD1,
             _ => 0
         };
 
@@ -490,7 +493,8 @@ public static class EldenRingOffsets
             Version2_6_0 or Version2_6_1 => 0x5F9CD0,
             _ => 0
         };
-
+        
+        
         Functions.ChrInsByHandle = moduleBase + Version switch
         {
             Version1_2_0 => 0x4F7580,
@@ -557,6 +561,51 @@ public static class EldenRingOffsets
             Version2_6_0 or Version2_6_1 => 0x5F94E0,
             _ => 0
         };
+        
+        Functions.HasStateInfo = moduleBase + Version switch
+        {
+            Version1_2_0 => 0x4E9620,
+            Version1_2_1 or Version1_2_2 => 0x4E9690,
+            Version1_2_3 => 0x4E97B0,
+            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x4EA680,
+            Version1_4_0 => 0x4ED3E0,
+            Version1_4_1 => 0x4ED2F0,
+            Version1_5_0 => 0x4ED680,
+            Version1_6_0 => 0x4EE7F0,
+            Version1_7_0 => 0x4EE7A0,
+            Version1_8_0 or Version1_8_1 => 0x4F5A70,
+            Version1_9_0 => 0x4F5CD0,
+            Version1_9_1 => 0x4F5D00,
+            Version2_0_0 or Version2_0_1 => 0x4F5F40,
+            Version2_2_0 or Version2_2_3 => 0x4F94E0,
+            Version2_3_0 => 0x4F9660,
+            Version2_4_0 or Version2_5_0 => 0x4F96A0,
+            Version2_6_0 or Version2_6_1 => 0x4F9670,
+            _ => 0
+        };
+
+        
+        Functions.IsNoDeathEnabled = moduleBase + Version switch
+        {
+            Version1_2_0 => 0x42E580,
+            Version1_2_1 or Version1_2_2 => 0x42E5F0,
+            Version1_2_3 => 0x42E710,
+            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x42F330,
+            Version1_4_0 => 0x4319B0,
+            Version1_4_1 => 0x4319C0,
+            Version1_5_0 => 0x431DF0,
+            Version1_6_0 => 0x432C30,
+            Version1_7_0 => 0x432CB0,
+            Version1_8_0 or Version1_8_1 => 0x434610,
+            Version1_9_0 or Version1_9_1 => 0x434750,
+            Version2_0_0 or Version2_0_1 => 0x4347F0,
+            Version2_2_0 or Version2_2_3 => 0x437550,
+            Version2_3_0 => 0x437570,
+            Version2_4_0 or Version2_5_0 => 0x4375B0,
+            Version2_6_0 or Version2_6_1 => 0x437580,
+            _ => 0
+        };
+
 
         Patches.NoLogo = moduleBase + Version switch
         {
@@ -583,7 +632,7 @@ public static class EldenRingOffsets
             Version2_6_1 => 0xB0C44D,
             _ => 0
         };
-
+        
 
 #if DEBUG
         _baseAddr = moduleBase;
@@ -615,6 +664,8 @@ public static class EldenRingOffsets
         PrintOffset("ChrInsByHandle", Functions.ChrInsByHandle);
         PrintOffset("HasSpEffectId", Functions.HasSpEffectId);
         PrintOffset("GetEvent", Functions.GetEvent);
+        PrintOffset("HasStateInfo", Functions.HasStateInfo);
+        PrintOffset("IsNoDeathEnabled", Functions.IsNoDeathEnabled);
 
 
         Console.WriteLine("\n--- Patches ---");

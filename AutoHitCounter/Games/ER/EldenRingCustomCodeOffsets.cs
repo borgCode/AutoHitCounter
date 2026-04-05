@@ -12,6 +12,7 @@ public static class EldenRingCustomCodeOffsets
     public const int DeflectTearCheckFlag = 0x3;
     public const int InThrowFlag = 0x4;
     public const int HasRaptorFlag = 0x5;
+    public const int HasCountedKillBoxFlag = 0x6;
     public const int Hit = 0x10;
     public const int CheckPlayerDead = 0x20;
 

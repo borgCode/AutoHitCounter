@@ -777,17 +777,16 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to c6 44 24 28 01          mov    BYTE PTR [rsp+0x28],0x1
-        ///50                      push   rax
+        ///   Looks up a localized string similar to e8 00 00 00 00          call   5 &lt;_main+0x5&gt;
+        ///80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # c &lt;_main+0xc&gt;
+        ///0f 84 82 00 00 00       je     94 &lt;exit_no_pop&gt;
         ///51                      push   rcx
-        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # e &lt;_main+0xe&gt;
-        ///48 8b 88 08 e5 01 00    mov    rcx,QWORD PTR [rax+0x1e508]
-        ///48 8b 81 90 01 00 00    mov    rax,QWORD PTR [rcx+0x190]
-        ///48 3b 58 70             cmp    rbx,QWORD PTR [rax+0x70]
-        ///75 42                   jne    64 &lt;skip&gt;
-        ///52                      push   rdx
-        ///41 50                   push   r8
-        ///41 51             [rest of string was truncated]&quot;;.
+        ///48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 1a &lt;_main+0x1a&gt;
+        ///48 85 c9                test   rcx,rcx
+        ///74 74                   je     93 &lt;exit&gt;
+        ///48 8b 89 08 e5 01 00    mov    rcx,QWORD PTR [rcx+0x1e508]
+        ///48 85 c9                test   rcx,rcx
+        ///74 68                   je     93 &lt;exit&gt; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string EldenRingKillBox {
             get {
