@@ -59,7 +59,8 @@ public class SettingsManager
     [DefaultValue(0)] public int MigrationVersion { get; set; }
     
     [DefaultValue(2)] public int ThemeMode { get; set; }
-
+    [DefaultValue(false)] public bool HideAdded { get; set; }
+    [DefaultValue(false)] public bool AllowDuplicates { get; set; }
     public void Save()
     {
         try

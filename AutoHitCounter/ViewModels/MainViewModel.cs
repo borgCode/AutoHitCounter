@@ -883,6 +883,7 @@ namespace AutoHitCounter.ViewModels
                     Profiles.Add(p);
 
                 ActiveProfile = Profiles.FirstOrDefault(p => p.Name == vm.SelectedProfile?.Name);
+                _currentModule.UpdateEvents(GetActiveEvents());
             };
             vm.OnSaved += onSaved;
 
