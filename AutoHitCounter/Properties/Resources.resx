@@ -287,44 +287,60 @@ ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 35 &lt;skip_count&gt
 e9 00 00 00 00          jmp    3c &lt;skip_count+0x7&gt;</value>
   </data>
   <data name="EldenRingKillBox" xml:space="preserve">
-    <value>c6 44 24 28 01          mov    BYTE PTR [rsp+0x28],0x1
-50                      push   rax
+    <value>e8 00 00 00 00          call   5 &lt;_main+0x5&gt;
+80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # c &lt;_main+0xc&gt;
+0f 84 82 00 00 00       je     94 &lt;exit_no_pop&gt;
 51                      push   rcx
-48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # e &lt;_main+0xe&gt;
-48 8b 88 08 e5 01 00    mov    rcx,QWORD PTR [rax+0x1e508]
-48 8b 81 90 01 00 00    mov    rax,QWORD PTR [rcx+0x190]
-48 3b 58 70             cmp    rbx,QWORD PTR [rax+0x70]
-75 42                   jne    64 &lt;skip&gt;
+48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 1a &lt;_main+0x1a&gt;
+48 85 c9                test   rcx,rcx
+74 74                   je     93 &lt;exit&gt;
+48 8b 89 08 e5 01 00    mov    rcx,QWORD PTR [rcx+0x1e508]
+48 85 c9                test   rcx,rcx
+74 68                   je     93 &lt;exit&gt;
+48 39 0b                cmp    QWORD PTR [rbx],rcx
+75 63                   jne    93 &lt;exit&gt;
 52                      push   rdx
+50                      push   rax
+48 8b 0b                mov    rcx,QWORD PTR [rbx]
+48 8b 89 78 01 00 00    mov    rcx,QWORD PTR [rcx+0x178]
+ba 8f 00 00 00          mov    edx,0x8f
+e8 00 00 00 00          call   46 &lt;_main+0x46&gt;
+84 c0                   test   al,al
+75 47                   jne    91 &lt;has_state_info&gt;
 41 50                   push   r8
 41 51                   push   r9
 41 52                   push   r10
 41 53                   push   r11
-48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 32 &lt;_main+0x32&gt;
+48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 59 &lt;_main+0x59&gt;
 ba b1 c0 98 00          mov    edx,0x98c0b1
-e8 00 00 00 00          call   3c &lt;_main+0x3c&gt;
+e8 00 00 00 00          call   63 &lt;_main+0x63&gt;
 84 c0                   test   al,al
-74 15                   je     55 &lt;do_inc&gt;
-48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 47 &lt;_main+0x47&gt;
+74 15                   je     7c &lt;count_hit&gt;
+48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 6e &lt;_main+0x6e&gt;
 ba 65 00 00 00          mov    edx,0x65
-e8 00 00 00 00          call   51 &lt;_main+0x51&gt;
+e8 00 00 00 00          call   78 &lt;_main+0x78&gt;
 84 c0                   test   al,al
-74 06                   je     5b &lt;skip_full_epi&gt;
+74 0d                   je     89 &lt;skip_full_epi&gt;
 
-000000000055 &lt;do_inc&gt;:
-ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 5b &lt;skip_full_epi&gt;
+00000000007c &lt;count_hit&gt;:
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 82 &lt;count_hit+0x6&gt;
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 89 &lt;skip_full_epi&gt;
 
-00000000005b &lt;skip_full_epi&gt;:
+000000000089 &lt;skip_full_epi&gt;:
 41 5b                   pop    r11
 41 5a                   pop    r10
 41 59                   pop    r9
 41 58                   pop    r8
+
+000000000091 &lt;has_state_info&gt;:
+58                      pop    rax
 5a                      pop    rdx
 
-000000000064 &lt;skip&gt;:
+000000000093 &lt;exit&gt;:
 59                      pop    rcx
-58                      pop    rax
-e9 00 00 00 00          jmp    6b &lt;skip+0x7&gt;</value>
+
+000000000094 &lt;exit_no_pop&gt;:
+e9 00 00 00 00          jmp    99 &lt;exit_no_pop+0x5&gt;</value>
   </data>
   <data name="EldenRingEvents" xml:space="preserve">
     <value>BossName,DeathFlag

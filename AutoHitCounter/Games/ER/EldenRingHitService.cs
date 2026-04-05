@@ -19,7 +19,7 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
     public void InstallHooks()
     {
         WritePlayerDeadCheck();
-
+        
         InstallHitHook();
         InstallFallDamageHook();
         InstallKillBoxHook();
@@ -37,6 +37,7 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
     public void ResetFlags()
     {
         memoryService.Write(Base + InThrowFlag, false);
+        memoryService.Write(Base + HasCountedKillBoxFlag, false);
     }
 
     public void EnsureHooksInstalled()
@@ -68,7 +69,7 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         AsmHelper.WriteRelativeOffset(bytes, code, WorldChrMan.Base, 7, 3);
         memoryService.WriteBytes(code, bytes);
     }
-
+    
     private void InstallHitHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingHit);
@@ -123,18 +124,26 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingKillBox);
         var hit = Base + Hit;
+        var hasCountedFlag = Base + HasCountedKillBoxFlag;
         var code = Base + KillBox;
         AsmHelper.WriteRelativeOffsets(bytes, [
-            (code + 0x7, WorldChrMan.Base, 7, 0x7 + 3),
-            (code + 0x2B, VirtualMemFlag.Base, 7, 0x2B + 3),
-            (code + 0x37, Functions.GetEvent, 5, 0x37 + 1),
-            (code + 0x40, VirtualMemFlag.Base, 7, 0x40 + 3),
-            (code + 0x4C, Functions.GetEvent, 5, 0x4C + 1),
-            (code + 0x55, hit, 6, 0x55 + 2),
-            (code + 0x66, Hooks.KillBox + 5, 5, 0x66 + 1),
+            (code, Functions.IsNoDeathEnabled, 5, 1),
+            (code + 0x5, hasCountedFlag, 7, 0x5 + 2),
+            (code + 0x13, WorldChrMan.Base, 7, 0x13 + 3),
+            (code + 0x41, Functions.HasStateInfo, 5, 0x41 + 1),
+            (code + 0x52, VirtualMemFlag.Base, 7, 0x52 + 3),
+            (code + 0x5E, Functions.GetEvent, 5, 0x5E + 1),
+            (code + 0x67, VirtualMemFlag.Base, 7, 0x67 + 3),
+            (code + 0x73, Functions.GetEvent, 5, 0x73 + 1),
+            (code + 0x7C, hit, 6, 0x7C + 2),
+            (code + 0x82, hasCountedFlag, 7, 0x82 + 2),
+            (code + 0x94, Hooks.KillBox + 5, 5, 0x94 + 1),
         ]);
+
+        var originalBytes = memoryService.ReadBytes(Hooks.KillBox, 5);
+        
         memoryService.WriteBytes(code, bytes);
-        InstallHook(code, Hooks.KillBox, [0xC6, 0x44, 0x24, 0x28, 0x01]);
+        InstallHook(code, Hooks.KillBox, originalBytes);
     }
 
     private void InstallAuxHooks()
