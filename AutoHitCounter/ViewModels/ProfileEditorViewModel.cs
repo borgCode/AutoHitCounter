@@ -665,11 +665,12 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
                 "Dragonkin Soldier (Siofra River)", "Dragonkin Soldier of Nokstella", "Dragonlord Placidusax",
                 "Flying Dragon Agheel",
                 "Flying Dragon Greyll", "Glintstone Dragon Adula", "Glintstone Dragon Smarag", "Lichdragon Fortissax",
-                "Ancient Dragon-Man", "Ancient Dragon Senessax", "Ghostflame Dragon (Gravesite Plain)",
+                "Ancient Dragon Senessax", "Ghostflame Dragon (Gravesite Plain)",
                 "Ghostflame Dragon (Scadu Altus)", "Ghostflame Dragon (Cerulean Coast)", "Jagged Peak Drake",
                 "Jagged Peak Drake (Duo Encounter)", "Bayle the Dread"
             ]
         },
+        { "ancient dragon man", ["Ancient Dragon-Man",] },
         { "corrupted monk", ["Fake Monk", "True Monk", "Fake Monk (Gauntlet)", "True Monk (Gauntlet)",] },
         { "SSI", ["Isshin, the Sword Saint / Isshin, the Sword Saint (Gauntlet) / Inner Isshin",] },
         { "orin", ["O'Rin of the Water",] },
