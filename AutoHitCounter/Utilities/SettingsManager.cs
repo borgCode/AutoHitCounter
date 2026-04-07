@@ -34,6 +34,7 @@ public class SettingsManager
     public bool AlwaysOnTop { get; set; }
     [DefaultValue(0)] public int NotesDisplayMode { get; set; }
     public bool PracticeMode { get; set; }
+    public bool AutoResetOnNewGameStart { get; set; }
     public bool IsUnlocked { get; set; }
     public bool DS3NoLogo { get; set; }
     public bool DS3StutterFix { get; set; }

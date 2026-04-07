@@ -2679,4 +2679,9 @@ ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 4d &lt;exit&gt;
 00000000004d &lt;exit&gt;:
 e9 00 00 00 00          jmp    52 &lt;exit+0x5&gt;</value>
   </data>
+  <data name="EldenRingRunStart" xml:space="preserve">
+    <value>ba 05 00 00 00          mov    edx,0x5
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # c &lt;_main+0xc&gt;
+e9 00 00 00 00          jmp    11 &lt;_main+0x11&gt;</value>
+  </data>
 </root>

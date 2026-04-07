@@ -815,6 +815,17 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ba 05 00 00 00          mov    edx,0x5
+        ///c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # c &lt;_main+0xc&gt;
+        ///e9 00 00 00 00          jmp    11 &lt;_main+0x11&gt;.
+        /// </summary>
+        internal static string EldenRingRunStart {
+            get {
+                return ResourceManager.GetString("EldenRingRunStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 41 80 8e 67 02 00 00    or     BYTE PTR [r14+0x267],0x10
         ///10 
         ///50                      push   rax

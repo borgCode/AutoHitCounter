@@ -781,6 +781,7 @@ namespace AutoHitCounter.ViewModels
                 SaveRunState();
                 _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
             };
+            _currentModule.OnRunStart += HandleRunStart;
             _currentModule.OnEventSet += AutoAdvanceSplit;
             _currentModule.OnEventLogEntriesReceived += entries => _eventLogViewModel?.RefreshEventLogs(entries);
             _currentModule.OnTimeChanged += UpdateInGameTime;
@@ -799,6 +800,19 @@ namespace AutoHitCounter.ViewModels
             if (CurrentSplit == null) return;
             _splitNav.Advance();
         }
+
+        private void HandleRunStart()
+        {
+            if (_activeGame?.IsManual == true) return;
+            if (_selectedGame != _activeGame) return;
+            if (IsPracticeMode) return;
+            if (!SettingsManager.Default.AutoResetOnNewGameStart) return;
+            if (!HasRunProgress()) return;
+
+            ResetRun();
+        }
+
+        private bool HasRunProgress() => CurrentSplitNumber > 1 || TotalHits > 0 || InGameTime > TimeSpan.Zero;
 
         private void ManualAdvanceSplit()
         {
@@ -1218,6 +1232,11 @@ namespace AutoHitCounter.ViewModels
 
         private void ResetSplits()
         {
+            ResetRun();
+        }
+
+        private void ResetRun()
+        {
             _saveDebounce.Stop();
             UpdateDistancePb();
 
@@ -1235,11 +1254,10 @@ namespace AutoHitCounter.ViewModels
             _splitNav.InitFresh();
 
             if (_currentModule is ManualGameModule manualModule)
-            {
                 manualModule.ResetTimer();
-                InGameTime = TimeSpan.Zero;
-                InGameTimeFormatted = "0:00:00";
-            }
+
+            InGameTime = TimeSpan.Zero;
+            InGameTimeFormatted = "0:00:00";
 
             if (_activeGame == _selectedGame && _currentModule != null)
                 _currentModule.UpdateEvents(GetActiveEvents());
@@ -1248,6 +1266,7 @@ namespace AutoHitCounter.ViewModels
             OnPropertyChanged(nameof(CurrentSplit));
             OnPropertyChanged(nameof(CurrentSplitNumber));
             _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
+            _overlayServerService.BroadcastIgt(InGameTimeFormatted);
         }
 
         private void SetPb()

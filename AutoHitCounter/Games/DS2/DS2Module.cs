@@ -36,6 +36,7 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
     public event Action OnEventSet;
     public event Action<List<EventLogEntry>> OnEventLogEntriesReceived;
     public event Action<long> OnTimeChanged;
+    public event Action OnRunStart;
     public event Action OnVersionDetected;
 
     public DS2Module(IMemoryService memoryService, IStateService stateService, HookManager hookManager,
@@ -148,6 +149,7 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
         OnEventSet = null;
         OnEventLogEntriesReceived = null;
         OnTimeChanged = null;
+        OnRunStart = null;
     }
 
     public void UpdateEvents(Dictionary<uint, (string Name, int Required, int Hit)> events)
