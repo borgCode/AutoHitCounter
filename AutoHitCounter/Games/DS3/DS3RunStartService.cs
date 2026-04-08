@@ -4,16 +4,16 @@ using AutoHitCounter.Enums;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
 using AutoHitCounter.Utilities;
-using static AutoHitCounter.Games.SK.SKCustomCodeOffsets;
-using static AutoHitCounter.Games.SK.SKOffsets;
+using static AutoHitCounter.Games.DS3.DS3CustomCodeOffsets;
+using static AutoHitCounter.Games.DS3.DS3Offsets;
 
-namespace AutoHitCounter.Games.SK;
+namespace AutoHitCounter.Games.DS3;
 
-public class SKRunStartService(IMemoryService memoryService, HookManager hookManager) : IRunStartService
+public class DS3RunStartService(IMemoryService memoryService, HookManager hookManager) : IRunStartService
 {
     public void InstallHook()
     {
-        var bytes = AsmLoader.GetAsmBytes(AsmScript.SKRunStart);
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.DS3RunStart);
         var code = Base + RunStartCode;
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x5, Base + RunStartFlag, 7, 0x5 + 2),
@@ -26,9 +26,16 @@ public class SKRunStartService(IMemoryService memoryService, HookManager hookMan
 
     public bool IsNewGameStarted()
     {
+        EnsureHookInstalled();
         if (memoryService.Read<byte>(Base + RunStartFlag) != 1)
             return false;
         memoryService.WriteBytes(Base + RunStartFlag, [0]);
         return true;
+    }
+
+    private void EnsureHookInstalled()
+    {
+        if (memoryService.Read<byte>(Hooks.StartNewGame) != 0xE9)
+            InstallHook();
     }
 }

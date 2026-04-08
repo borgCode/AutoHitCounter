@@ -2690,4 +2690,10 @@ e9 00 00 00 00          jmp    11 &lt;_main+0x11&gt;</value>
 c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # c &lt;_main+0xc&gt;
 e9 00 00 00 00          jmp    11 &lt;_main+0x11&gt;</value>
   </data>
+  <data name="DS3RunStart" xml:space="preserve">
+    <value>41 b0 01                mov    r8b,0x1
+31 d2                   xor    edx,edx
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # c &lt;_main+0xc&gt;
+e9 00 00 00 00          jmp    11 &lt;_main+0x11&gt;</value>
+  </data>
 </root>

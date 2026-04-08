@@ -11,16 +11,15 @@ namespace AutoHitCounter.Games.ER;
 
 public class EldenRingRunStartService(IMemoryService memoryService, HookManager hookManager) : IRunStartService
 {
-    
     public void InstallHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingRunStart);
         var code = Base + RunStartCode;
         AsmHelper.WriteRelativeOffsets(bytes, [
-        (code + 0x5, Base + RunStartFlag, 7, 0x5 + 2),
-        (code + 0xC, Hooks.StartNewGame + 5, 5, 0xC + 1)
+            (code + 0x5, Base + RunStartFlag, 7, 0x5 + 2),
+            (code + 0xC, Hooks.StartNewGame + 5, 5, 0xC + 1)
         ]);
-        
+
         memoryService.WriteBytes(code, bytes);
         hookManager.InstallHook(code, Hooks.StartNewGame, [0xBA, 0x05, 0x00, 0x00, 0x00]);
     }

@@ -350,6 +350,18 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 41 b0 01                mov    r8b,0x1
+        ///31 d2                   xor    edx,edx
+        ///c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # c &lt;_main+0xc&gt;
+        ///e9 00 00 00 00          jmp    11 &lt;_main+0x11&gt;.
+        /// </summary>
+        internal static string DS3RunStart {
+            get {
+                return ResourceManager.GetString("DS3RunStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 80 8b 11 02 00 00 20    or     BYTE PTR [rbx+0x211],0x20
         ///50                      push   rax
         ///e8 00 00 00 00          call   d &lt;_main+0xd&gt;

@@ -328,6 +328,7 @@ public static class SKOffsets
         PrintOffset("ApplySpEffectDamage", Hooks.ApplySpEffectDamage);
         PrintOffset("SakuraDance", Hooks.SakuraDance);
         PrintOffset("SetEvent", Hooks.SetEvent);
+        PrintOffset("StartNewGame", Hooks.StartNewGame);
 
 
         Console.WriteLine("\n--- Functions ---");

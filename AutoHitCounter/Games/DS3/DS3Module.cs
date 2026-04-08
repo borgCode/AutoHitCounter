@@ -28,6 +28,7 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
     private DS3EventService _eventService;
     private DS3SettingsService _settingsService;
     private EventLogReader _eventLogReader;
+    private DS3RunStartService _runStartService;
 
     public event Action<int> OnHit;
     public event Action OnEventSet;
@@ -65,14 +66,15 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
         _eventLogReader = new EventLogReader(_memoryService,
             Base + EventLogWriteIdx,
             Base + EventLogBuffer);
+        _runStartService = new DS3RunStartService(_memoryService, _hookManager);
         _eventLogReader.EntriesReceived += entries => OnEventLogEntriesReceived?.Invoke(entries);
 
         ApplySettings(onlyEnabled: true);
 
         _eventService.InstallHook();
         _hitService.InstallHooks();
+        _runStartService.InstallHook();
 
-        
 
         _tickService.RegisterGameTick(Tick);
 
@@ -90,6 +92,8 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
 
     private void Tick()
     {
+        if (_runStartService.IsNewGameStarted()) OnRunStart?.Invoke();
+        
         if (!IsLoaded())
         {
             _hitService.ResetFlags();
@@ -111,7 +115,7 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
 
         _eventLogReader.Poll();
 
-        var igtPtr  = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
+        var igtPtr = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
         OnTimeChanged?.Invoke(_memoryService.Read<uint>(igtPtr));
     }
 

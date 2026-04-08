@@ -150,6 +150,7 @@
         <Compile Include="Games\DS3\DS3HitService.cs" />
         <Compile Include="Games\DS3\DS3Module.cs" />
         <Compile Include="Games\DS3\DS3Offsets.cs" />
+        <Compile Include="Games\DS3\DS3RunStartService.cs" />
         <Compile Include="Games\DS3\DS3SettingsService.cs" />
         <Compile Include="Games\DS3\DS3Version.cs" />
         <Compile Include="Games\DSR\DSRCustomCodeOffsets.cs" />
