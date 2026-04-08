@@ -29,6 +29,7 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
     private SKEventService _eventService;
     private SKSettingsService _settingsService;
     private EventLogReader _eventLogReader;
+    private SKRunStartService _runStartService;
 
     public event Action<int> OnHit;
     public event Action OnEventSet;
@@ -75,12 +76,14 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
         _eventLogReader = new EventLogReader(_memoryService,
             Base + EventLogWriteIdx,
             Base + EventLogBuffer);
+        _runStartService = new SKRunStartService(_memoryService, _hookManager);
         _eventLogReader.EntriesReceived += entries => OnEventLogEntriesReceived?.Invoke(entries);
 
         ApplySettings(onlyEnabled: true);
 
         _eventService.InstallHook();
         _hitService.InstallHooks();
+        _runStartService.InstallHook();
         
         ApplyRules();
 
@@ -100,6 +103,8 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
 
     private void Tick()
     {
+        if (_runStartService.IsNewGameStarted()) OnRunStart?.Invoke();
+        
         if (!IsLoaded()) return;
 
         if (_hitService.HasHit() && (_lastHit == null || (DateTime.Now - _lastHit.Value).TotalSeconds > 3))

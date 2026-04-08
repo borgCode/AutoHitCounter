@@ -1424,6 +1424,18 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 41 b0 01                mov    r8b,0x1
+        ///31 d2                   xor    edx,edx
+        ///c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # c &lt;_main+0xc&gt;
+        ///e9 00 00 00 00          jmp    11 &lt;_main+0x11&gt;.
+        /// </summary>
+        internal static string SKRunStart {
+            get {
+                return ResourceManager.GetString("SKRunStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to f3 0f 10 a5 10 02 00    movss  xmm4,DWORD PTR [rbp+0x210]
         ///00 
         ///80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # f &lt;_main+0xf&gt;

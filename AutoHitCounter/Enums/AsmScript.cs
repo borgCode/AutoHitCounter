@@ -74,6 +74,7 @@ public enum AsmScript
     SKApplySpEffectDamage,
     SKSakuraDance,
     SKEventLog,
+    SKRunStart,
 
     EldenRingHit,
     EldenRingCheckPlayerDead,
