@@ -45,6 +45,9 @@ public class SettingsManager
     public bool DS2NoBabyJump { get; set; }
     public bool DS2SkipCredits { get; set; }
     public bool DS2DisableDoubleClick { get; set; }
+    public bool ExternalIntegrationEnabled { get; set; }
+    public string ExternalIntegrationEndpointUrl { get; set; }
+    public string ExternalIntegrationUserIdentifier { get; set; }
 
     public string LastImportExportPath { get; set; }
 

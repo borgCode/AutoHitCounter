@@ -261,6 +261,50 @@ public class SettingsViewModel : BaseViewModel
 
     #endregion
 
+    #region External Integration
+
+    private bool _isExternalIntegrationEnabled;
+
+    public bool IsExternalIntegrationEnabled
+    {
+        get => _isExternalIntegrationEnabled;
+        set
+        {
+            if (!SetProperty(ref _isExternalIntegrationEnabled, value)) return;
+            SettingsManager.Default.ExternalIntegrationEnabled = value;
+            SettingsManager.Default.Save();
+            OnGameSettingChanged?.Invoke();
+        }
+    }
+
+    private string _externalIntegrationEndpoint;
+    public string ExternalIntegrationEndpoint
+        {
+        get => _externalIntegrationEndpoint;
+        set
+        {
+            if (!SetProperty(ref _externalIntegrationEndpoint, value)) return;
+            SettingsManager.Default.ExternalIntegrationEndpointUrl = value;
+            SettingsManager.Default.Save();
+            OnGameSettingChanged?.Invoke();
+        }
+    }
+
+    private string _externalIntegrationUserId;
+    public string ExternalIntegrationUserId
+    {
+        get => _externalIntegrationUserId;
+        set
+        {
+            if (!SetProperty(ref _externalIntegrationUserId, value)) return;
+            SettingsManager.Default.ExternalIntegrationUserIdentifier = value;
+            SettingsManager.Default.Save();
+            OnGameSettingChanged?.Invoke();
+        }
+    }
+
+    #endregion
+
     #endregion
 
     #region Private Methods

@@ -45,6 +45,7 @@ namespace AutoHitCounter
 
             OverlayServerService overlayServerService = new OverlayServerService();
             SplitNavigationService splitNavigationService = new SplitNavigationService();
+            ExternalIntegrationService externalIntegrationService = new ExternalIntegrationService();
 
             HookManager hookManager = new HookManager(memoryService);
 
@@ -65,7 +66,7 @@ namespace AutoHitCounter
 
             _mainViewModel = new MainViewModel(memoryService, hotkeyManager, gameModuleFactory, profileService,
                 stateService,
-                settingsViewModel, hotkeysViewModel, overlayServerService, splitNavigationService);
+                settingsViewModel, hotkeysViewModel, overlayServerService, splitNavigationService, externalIntegrationService);
             var mainWindow = new MainWindow
             {
                 DataContext = _mainViewModel

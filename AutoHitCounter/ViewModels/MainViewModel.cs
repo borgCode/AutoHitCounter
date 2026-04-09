@@ -28,6 +28,7 @@ namespace AutoHitCounter.ViewModels
         private readonly IProfileService _profileService;
         private readonly SplitNavigationService _splitNav;
         private readonly OverlayServerService _overlayServerService;
+        private readonly ExternalIntegrationService _externalIntegrationService;
         private IGameModule _currentModule;
         private string _lastIgt;
         private readonly DispatcherTimer _saveDebounce;
@@ -49,7 +50,7 @@ namespace AutoHitCounter.ViewModels
             GameModuleFactory gameModuleFactory,
             IProfileService profileService, IStateService stateService, SettingsViewModel settings,
             HotkeyTabViewModel hotkeyTabViewModel, OverlayServerService overlayServerService,
-            SplitNavigationService splitNavigationService)
+            SplitNavigationService splitNavigationService, ExternalIntegrationService externalIntegrationService)
         {
             Settings = settings;
             Hotkeys = hotkeyTabViewModel;
@@ -58,6 +59,7 @@ namespace AutoHitCounter.ViewModels
             _gameModuleFactory = gameModuleFactory;
             _profileService = profileService;
             _overlayServerService = overlayServerService;
+            _externalIntegrationService = externalIntegrationService;
             _overlayServerService.Start();
 
 
@@ -773,13 +775,27 @@ namespace AutoHitCounter.ViewModels
                 _memoryService.StartAutoAttach(_activeGame.ProcessName);
             }
 
-            _currentModule.OnHit += count =>
+            _currentModule.OnHit += async count =>
             {
                 if (IsRunComplete || CurrentSplit == null || IsPracticeMode) return;
                 if (_selectedGame != _activeGame) return;
                 CurrentSplit.NumOfHits += count;
                 SaveRunState();
                 _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
+
+                var payload = new HitPayload
+                {
+                    UserId = SettingsManager.Default.ExternalIntegrationUserIdentifier,
+                    GameName = _activeGame.GameName,
+                    GameProfile = ActiveProfile?.Name ?? "",
+                    SplitName = CurrentSplit.Name,
+                    SplitHits = CurrentSplit.NumOfHits,
+                    TotalHits = TotalHits,
+                    Timestamp = DateTime.UtcNow
+                };
+
+                await _externalIntegrationService.SendHitAsync(payload);
+
             };
             _currentModule.OnEventSet += AutoAdvanceSplit;
             _currentModule.OnEventLogEntriesReceived += entries => _eventLogViewModel?.RefreshEventLogs(entries);
