@@ -39,6 +39,9 @@ public class SettingsViewModel : BaseViewModel
         SelectedSettingsGame = GameTitle.DarkSouls2;
         stateService.Subscribe(State.AppStart, OnAppStart);
         OpenOverlaySettingsCommand = new DelegateCommand(OpenOverlaySettings);
+        IsExternalIntegrationEnabled = SettingsManager.Default.ExternalIntegrationEnabled;
+        ExternalIntegrationEndpoint = SettingsManager.Default.ExternalIntegrationEndpointUrl;
+        ExternalIntegrationUserId = SettingsManager.Default.ExternalIntegrationUserIdentifier;
     }
 
 
@@ -100,19 +103,6 @@ public class SettingsViewModel : BaseViewModel
         {
             if (!SetProperty(ref _notesDisplayMode, value)) return;
             SettingsManager.Default.NotesDisplayMode = (int)value;
-            SettingsManager.Default.Save();
-        }
-    }
-
-    private bool _autoResetOnNewGameStart;
-
-    public bool AutoResetOnNewGameStart
-    {
-        get => _autoResetOnNewGameStart;
-        set
-        {
-            if (!SetProperty(ref _autoResetOnNewGameStart, value)) return;
-            SettingsManager.Default.AutoResetOnNewGameStart = value;
             SettingsManager.Default.Save();
         }
     }
@@ -328,7 +318,6 @@ public class SettingsViewModel : BaseViewModel
         ApplyDS3Settings();
         ApplySKSettings();
         ApplyDS2Settings();
-        ApplyExternalIntegrationSettings();
 
         IsAlwaysOnTopEnabled = SettingsManager.Default.AlwaysOnTop;
 
@@ -338,9 +327,7 @@ public class SettingsViewModel : BaseViewModel
 
         _notesDisplayMode = (NotesDisplayMode)SettingsManager.Default.NotesDisplayMode;
         OnPropertyChanged(nameof(NotesDisplayMode));
-
-        _autoResetOnNewGameStart = SettingsManager.Default.AutoResetOnNewGameStart;
-        OnPropertyChanged(nameof(AutoResetOnNewGameStart));
+        
     }
 
 
@@ -397,16 +384,6 @@ public class SettingsViewModel : BaseViewModel
 
         _ds2DisableDoubleClick = SettingsManager.Default.DS2DisableDoubleClick;
         OnPropertyChanged(nameof(DS2DisableDoubleClick));
-    }
-
-    private void ApplyExternalIntegrationSettings()
-    {
-        _isExternalIntegrationEnabled = SettingsManager.Default.ExternalIntegrationEnabled;
-        OnPropertyChanged(nameof(IsExternalIntegrationEnabled));
-        _externalIntegrationEndpoint = SettingsManager.Default.ExternalIntegrationEndpointUrl;
-        OnPropertyChanged(nameof(ExternalIntegrationEndpoint));
-        _externalIntegrationUserId = SettingsManager.Default.ExternalIntegrationUserIdentifier;
-        OnPropertyChanged(nameof(ExternalIntegrationUserId));
     }
 
     #endregion

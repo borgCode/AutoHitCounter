@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converters="clr-namespace:AutoHitCounter.Converters"
              xmlns:enums="clr-namespace:AutoHitCounter.Enums"
-             mc:Ignorable="d" Height="665" Width="299">
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <converters:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
     </UserControl.Resources>
@@ -16,7 +16,7 @@
                 <StackPanel>
                     <TextBlock Text="General Settings" FontWeight="SemiBold" Margin="0,0,0,8" />
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        
+
                         <TextBlock Text="Theme:" VerticalAlignment="Center" Margin="0,0,5,0" />
                         <ComboBox ItemsSource="{Binding ThemeModes}"
                                   SelectedItem="{Binding ThemeMode}"
@@ -27,7 +27,7 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                        
+
                         <TextBlock Text="Notes:" VerticalAlignment="Center" Margin="0,0,5,0" />
                         <ComboBox ItemsSource="{Binding NotesDisplayModes}"
                                   SelectedItem="{Binding NotesDisplayMode}"
@@ -38,14 +38,8 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        
                         <CheckBox Content="Always On Top"
                                   IsChecked="{Binding IsAlwaysOnTopEnabled}"
-                                  Margin="0,0,5,0" />
-                        <CheckBox Content="Auto Reset On New Game Start"
-                                  IsChecked="{Binding AutoResetOnNewGameStart}"
                                   Margin="0,0,5,0" />
                     </StackPanel>
                 </StackPanel>
@@ -163,30 +157,124 @@
                 </StackPanel>
             </Border>
 
-            <Border BorderBrush="Gray" BorderThickness="1" Margin="0,10,0,0" Padding="5" Height="259">
+            <Border BorderBrush="Gray" BorderThickness="1" Margin="0,10,0,0" Padding="5">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Height" Value="60" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsExternalIntegrationEnabled}"
+                                         Value="True">
+                                <Setter Property="Height" Value="190" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
                 <StackPanel>
-                    <TextBlock Text="External Integration" FontWeight="Bold" Margin="0,0,0,5" HorizontalAlignment="Left" />
-                    <TextBlock Text="If enabled this service will send a POST request to the URI provided, with some data about the current hit."
-                       FontSize="10" FontStyle="Italic" Foreground="#777" Margin="0,0,0,10" TextWrapping="Wrap" />
-                    <StackPanel Margin="0,5,0,10" Height="218">
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                            <CheckBox Content="Enable"
-                              IsChecked="{Binding IsExternalIntegrationEnabled}"
-                              Margin="0,0,10,0" />
-                        </StackPanel>
-                        <StackPanel Margin="0,0,0,5">
-                            <Label Content="External URI:" />
-                            <TextBox Text="{Binding ExternalIntegrationEndpoint}" />
-                            <TextBlock Text="Examples: http://localhost:3000/hits, https://your.app"
-                               FontSize="10" FontStyle="Italic" Foreground="#777"
-                               Margin="0,2,0,0" />
-                        </StackPanel>
-                        <StackPanel Margin="0,0,0,5">
-                            <Label Content="Runner ID:" />
-                            <TextBox Text="{Binding ExternalIntegrationUserId}" />
-                            <TextBlock Text="In case external services requires an identifier to manage multiple users."
-                               FontSize="10" FontStyle="Italic" Foreground="#777" TextWrapping="Wrap"
-                               Margin="0,2,0,0" />
+                    <TextBlock Text="External Integration" FontWeight="Bold" Margin="0,0,0,5"
+                               HorizontalAlignment="Left" />
+                    <StackPanel>
+                        <StackPanel Margin="0,5,0,0">
+                            <StackPanel Margin="0,5,0,5" Orientation="Horizontal">
+                                <CheckBox Content="Enable Integration"
+                                          IsChecked="{Binding IsExternalIntegrationEnabled}"
+                                          Margin="0,0,10,0" />
+                                <StackPanel>
+                                    <Border
+                                        Background="#3498db"
+                                        CornerRadius="10"
+                                        Width="12"
+                                        Height="12"
+                                        Margin="-3,3,0,0"
+                                        VerticalAlignment="Center"
+                                        ToolTipService.InitialShowDelay='100'>
+                                        <Border.ToolTip>
+                                            <ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock Foreground="{DynamicResource UnlockedToolTipTextBrush}"
+                                                               FontSize="11" TextWrapping="Wrap"
+                                                               MaxWidth="240"
+                                                               Text="If enabled, this service will send a POST request&#x0a;to the URI provided with data about the current hit." />
+                                                </StackPanel>
+                                            </ToolTip>
+                                        </Border.ToolTip>
+                                        <TextBlock Text="i"
+                                                   Foreground="White"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   FontWeight="Bold"
+                                                   FontSize="10" />
+                                    </Border>
+                                </StackPanel>
+
+                            </StackPanel>
+                            <StackPanel>
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsExternalIntegrationEnabled}"
+                                                         Value="True">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                                <StackPanel Margin="0,0,0,5">
+                                    <Label Content="External URI:" />
+                                    <Grid Width="430">
+                                        <TextBox
+                                            Text="{Binding ExternalIntegrationEndpoint, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock Text="e.g. http://localhost:3000/hits, https://your.app"
+                                                   FontSize="11" FontStyle="Italic" Foreground="#777"
+                                                   Margin="12,0,0,0" VerticalAlignment="Center"
+                                                   IsHitTestVisible="False">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ExternalIntegrationEndpoint}"
+                                                                     Value="">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ExternalIntegrationEndpoint}"
+                                                                     Value="{x:Null}">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </Grid>
+                                </StackPanel>
+                                <StackPanel Margin="0,0,0,5">
+                                    <Label Content="Runner ID:" />
+                                    <Grid Width="430">
+                                        <TextBox
+                                            Text="{Binding ExternalIntegrationEndpoint, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock
+                                            Text="In case external services requires an identifier to manage multiple users."
+                                            FontSize="11" FontStyle="Italic" Foreground="#777"
+                                            Margin="12,0,0,0" VerticalAlignment="Center"
+                                            IsHitTestVisible="False">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ExternalIntegrationUserId}"
+                                                                     Value="">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ExternalIntegrationUserId}"
+                                                                     Value="{x:Null}">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </Grid>
+                                </StackPanel>
+                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
