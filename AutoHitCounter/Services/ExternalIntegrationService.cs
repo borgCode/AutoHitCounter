@@ -3,7 +3,6 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Text;
-using System.Text.Json;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Utilities;
 
@@ -26,7 +25,7 @@ public class ExternalIntegrationService : IExternalHitService
         try
         {
             var content = new StringContent(
-                JsonSerializer.Serialize(payload),
+                payload.toJson(),
                 Encoding.UTF8,
                 "application/json"
             );

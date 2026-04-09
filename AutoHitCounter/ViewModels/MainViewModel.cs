@@ -783,17 +783,7 @@ namespace AutoHitCounter.ViewModels
                 SaveRunState();
                 _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
 
-                var payload = new HitPayload
-                {
-                    UserId = SettingsManager.Default.ExternalIntegrationUserIdentifier,
-                    GameName = _activeGame.GameName,
-                    GameProfile = ActiveProfile?.Name ?? "",
-                    SplitName = CurrentSplit.Name,
-                    SplitHits = CurrentSplit.NumOfHits,
-                    TotalHits = TotalHits,
-                    Timestamp = DateTime.UtcNow
-                };
-
+                var payload = new HitPayload(_activeGame, ActiveProfile, CurrentSplit, TotalHits, TotalPb, InGameTime);
                 await _externalIntegrationService.SendHitAsync(payload);
 
             };
