@@ -1553,46 +1553,62 @@ e9 00 00 00 00          jmp    6f &lt;skip+0xc&gt;</value>
   <data name="SKPostHit" xml:space="preserve">
     <value>50                      push   rax
 80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # 8 &lt;_main+0x8&gt;
-74 70                   je     7a &lt;commit_skip&gt;
+0f 84 a9 00 00 00       je     b7 &lt;commit_skip&gt;
 41 83 be e0 01 00 00    cmp    DWORD PTR [r14+0x1e0],0x0
 00 
-7f 50                   jg     64 &lt;commit_hit&gt;
+0f 8f 85 00 00 00       jg     a1 &lt;commit_hit&gt;
 41 80 be c7 01 00 00    cmp    BYTE PTR [r14+0x1c7],0x0
 00 
-75 55                   jne    73 &lt;commit_discard&gt;
-41 80 be 64 01 00 00    cmp    BYTE PTR [r14+0x164],0x0
-00 
-75 3c                   jne    64 &lt;commit_hit&gt;
+0f 85 86 00 00 00       jne    b0 &lt;commit_discard&gt;
 41 0f b6 46 24          movzx  eax,BYTE PTR [r14+0x24]
-ff c8                   dec    eax
-83 f8 0a                cmp    eax,0xa
-77 3f                   ja     73 &lt;commit_discard&gt;
+83 f8 0b                cmp    eax,0xb
+75 27                   jne    5b &lt;no_breath&gt;
 51                      push   rcx
 52                      push   rdx
 48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 3d &lt;_main+0x3d&gt;
 48 8b 89 88 00 00 00    mov    rcx,QWORD PTR [rcx+0x88]
 48 8b 89 d0 11 00 00    mov    rcx,QWORD PTR [rcx+0x11d0]
-ba 31 88 01 00          mov    edx,0x18831
+ba 32 9a 01 00          mov    edx,0x19a32
 e8 00 00 00 00          call   55 &lt;_main+0x55&gt;
 5a                      pop    rdx
 59                      pop    rcx
 84 c0                   test   al,al
-75 18                   jne    73 &lt;commit_discard&gt;
-c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 62 &lt;_main+0x62&gt;
-eb 0f                   jmp    73 &lt;commit_discard&gt;
+75 55                   jne    b0 &lt;commit_discard&gt;
 
-000000000064 &lt;commit_hit&gt;:
-c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 6b &lt;commit_hit+0x7&gt;
-ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 71 &lt;commit_hit+0xd&gt;
-eb 07                   jmp    7a &lt;commit_skip&gt;
+00000000005b &lt;no_breath&gt;:
+41 80 be 64 01 00 00    cmp    BYTE PTR [r14+0x164],0x0
+00 
+75 3c                   jne    a1 &lt;commit_hit&gt;
+41 0f b6 46 24          movzx  eax,BYTE PTR [r14+0x24]
+ff c8                   dec    eax
+83 f8 0a                cmp    eax,0xa
+77 3f                   ja     b0 &lt;commit_discard&gt;
+51                      push   rcx
+52                      push   rdx
+48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 7a &lt;no_breath+0x1f&gt;
+48 8b 89 88 00 00 00    mov    rcx,QWORD PTR [rcx+0x88]
+48 8b 89 d0 11 00 00    mov    rcx,QWORD PTR [rcx+0x11d0]
+ba 31 88 01 00          mov    edx,0x18831
+e8 00 00 00 00          call   92 &lt;no_breath+0x37&gt;
+5a                      pop    rdx
+59                      pop    rcx
+84 c0                   test   al,al
+75 18                   jne    b0 &lt;commit_discard&gt;
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 9f &lt;no_breath+0x44&gt;
+eb 0f                   jmp    b0 &lt;commit_discard&gt;
 
-000000000073 &lt;commit_discard&gt;:
-c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 7a &lt;commit_skip&gt;
+0000000000a1 &lt;commit_hit&gt;:
+c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # a8 &lt;commit_hit+0x7&gt;
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # ae &lt;commit_hit+0xd&gt;
+eb 07                   jmp    b7 &lt;commit_skip&gt;
 
-00000000007a &lt;commit_skip&gt;:
+0000000000b0 &lt;commit_discard&gt;:
+c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # b7 &lt;commit_skip&gt;
+
+0000000000b7 &lt;commit_skip&gt;:
 58                      pop    rax
 48 81 c4 18 01 00 00    add    rsp,0x118
-e9 00 00 00 00          jmp    87 &lt;commit_skip+0xd&gt;</value>
+e9 00 00 00 00          jmp    c4 &lt;commit_skip+0xd&gt;</value>
   </data>
   <data name="SKStaggerIgnoreCheck" xml:space="preserve">
     <value>80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # 7 &lt;_main+0x7&gt;
