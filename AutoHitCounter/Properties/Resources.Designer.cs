@@ -567,6 +567,17 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to b9 67 2b 00 00          mov    ecx,0x2b67
+        ///c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # c &lt;_main+0xc&gt;
+        ///e9 00 00 00 00          jmp    11 &lt;_main+0x11&gt;.
+        /// </summary>
+        internal static string DSRRunStart {
+            get {
+                return ResourceManager.GetString("DSRRunStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 81 8b dc 01 00 00 00    or     DWORD PTR [rbx+0x1dc],0x200000
         ///00 20 00 
         ///50                      push   rax

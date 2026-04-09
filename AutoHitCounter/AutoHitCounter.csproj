@@ -159,6 +159,7 @@
         <Compile Include="Games\DSR\DSRModule.cs" />
         <Compile Include="Games\DSR\DSROffsets.cs" />
         <Compile Include="Games\DSR\DSROriginalBytes.cs" />
+        <Compile Include="Games\DSR\DSRRunStartService.cs" />
         <Compile Include="Games\DSR\DSRVersion.cs" />
         <Compile Include="Games\ER\EldenRingCustomCodeOffsets.cs" />
         <Compile Include="Games\ER\EldenRingEventService.cs" />

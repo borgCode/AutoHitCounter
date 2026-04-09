@@ -21,21 +21,22 @@ public class DSRModule : IGameModule, IDisposable, IVersionedGameModule
     private readonly HookManager _hookManager;
     private readonly ITickService _tickService;
     private readonly Dictionary<uint, (string Name, int Required, int Hit)> _events;
-    
+
     public string GameVersion => DSROffsets.Version.GetDescription();
 
     private DateTime? _lastHit;
     private DSRHitService _hitService;
     private DSREventService _eventService;
     private EventLogReader _eventLogReader;
-    
+    private DSRRunStartService _runStartService;
+
     public event Action<int> OnHit;
     public event Action OnEventSet;
     public event Action<List<EventLogEntry>> OnEventLogEntriesReceived;
     public event Action<long> OnTimeChanged;
     public event Action OnRunStart;
     public event Action OnVersionDetected;
-    
+
     public DSRModule(IMemoryService memoryService, IStateService stateService, HookManager hookManager,
         ITickService tickService, Dictionary<uint, (string Name, int Required, int Hit)> events)
     {
@@ -44,36 +45,38 @@ public class DSRModule : IGameModule, IDisposable, IVersionedGameModule
         _hookManager = hookManager;
         _tickService = tickService;
         _events = events;
-        
+
         stateService.Subscribe(State.Attached, Initialize);
         _lastHit = DateTime.Now;
     }
-    
+
     private void Initialize()
     {
         InitializeOffsets();
-        
+
         Base = _memoryService.AllocCustomCodeMem();
-        
+
 #if DEBUG
         Console.WriteLine($@"Code cave: 0x{(long)Base:X}");
 #endif
 
-         _hitService = new DSRHitService(_memoryService, _hookManager);
-         _eventService = new DSREventService(_memoryService, _hookManager, _events);
-         _eventLogReader = new EventLogReader(_memoryService,
-             Base + EventLogWriteIdx,
-             Base + EventLogBuffer);
-         _eventLogReader.EntriesReceived += entries => OnEventLogEntriesReceived?.Invoke(entries);
+        _hitService = new DSRHitService(_memoryService, _hookManager);
+        _eventService = new DSREventService(_memoryService, _hookManager, _events);
+        _eventLogReader = new EventLogReader(_memoryService,
+            Base + EventLogWriteIdx,
+            Base + EventLogBuffer);
+        _runStartService = new DSRRunStartService(_memoryService, _hookManager);
+        _eventLogReader.EntriesReceived += entries => OnEventLogEntriesReceived?.Invoke(entries);
 
-         _eventService.InstallHook();
-         _hitService.InstallHooks();
-         
-         _tickService.RegisterGameTick(Tick);
-         
-         OnVersionDetected?.Invoke();
+        _eventService.InstallHook();
+        _hitService.InstallHooks();
+        _runStartService.InstallHook();
+
+        _tickService.RegisterGameTick(Tick);
+
+        OnVersionDetected?.Invoke();
     }
-    
+
     private void InitializeOffsets()
     {
         var module = _memoryService.TargetProcess?.MainModule;
@@ -83,9 +86,11 @@ public class DSRModule : IGameModule, IDisposable, IVersionedGameModule
         var moduleBase = _memoryService.BaseAddress;
         DSROffsets.Initialize(fileSize, moduleBase);
     }
-    
+
     private void Tick()
     {
+        if (_runStartService.IsNewGameStarted()) OnRunStart?.Invoke();
+
         if (!IsLoaded())
         {
             _hitService.ResetFlags();
@@ -107,7 +112,7 @@ public class DSRModule : IGameModule, IDisposable, IVersionedGameModule
 
         _eventLogReader.Poll();
 
-        var igtPtr  = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
+        var igtPtr = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
         OnTimeChanged?.Invoke(_memoryService.Read<uint>(igtPtr));
     }
 
@@ -127,7 +132,7 @@ public class DSRModule : IGameModule, IDisposable, IVersionedGameModule
         OnTimeChanged = null;
         OnRunStart = null;
     }
-    
+
     public void UpdateEvents(Dictionary<uint, (string Name, int Required, int Hit)> events)
     {
         _eventService?.UpdateEvents(events);
