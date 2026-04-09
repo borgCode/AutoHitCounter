@@ -1,326 +1,330 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="..\packages\Costura.Fody.6.0.0\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.6.0.0\build\Costura.Fody.props')" />
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="..\packages\Costura.Fody.6.0.0\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.6.0.0\build\Costura.Fody.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FFD7FD6E-2E14-41EE-A54C-543A338BFBBF}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>AutoHitCounter</RootNamespace>
+    <AssemblyName>AutoHitCounter</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <LangVersion>12</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Costura, Version=6.0.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
+      <HintPath>..\packages\Costura.Fody.6.0.0\lib\netstandard2.0\Costura.dll</HintPath>
+    </Reference>
+    <Reference Include="Fleck, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fleck.1.2.0\lib\net45\Fleck.dll</HintPath>
+    </Reference>
+    <Reference Include="H.Hooks, Version=2.0.0.0, Culture=neutral, PublicKeyToken=603f13207e65c17b, processorArchitecture=MSIL">
+      <HintPath>..\packages\H.Hooks.2.1.0-dev.26\lib\net462\H.Hooks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=10.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.10.0.2\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.IO.Pipelines, Version=10.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Pipelines.10.0.2\lib\net462\System.IO.Pipelines.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encoding.CodePages, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.8.0.0\lib\net462\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=10.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.10.0.2\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=10.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.10.0.2\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.6.3\lib\net462\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.5.0.0\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.5.0.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.5.0.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.5.0.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.5.0.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Behaviors\InsertionAdorner.cs" />
+    <Compile Include="Behaviors\SplitListDragDropBehavior.cs" />
+    <Compile Include="Behaviors\TemplatesDragDropBehavior.cs" />
+    <Compile Include="Behaviors\WindowResizeBehavior.cs" />
+    <Compile Include="Converters\AttemptCountColorConverter.cs" />
+    <Compile Include="Converters\CssCalcEvaluator.cs" />
+    <Compile Include="Converters\CssColorParser.cs" />
+    <Compile Include="Converters\CssColorSpaces.cs" />
+    <Compile Include="Converters\EnumDescriptionConverter.cs" />
+    <Compile Include="Converters\ExpanderArrowConverter.cs" />
+    <Compile Include="Converters\InverseBoolConverter.cs" />
+    <Compile Include="Converters\LockIconConverter.cs" />
+    <Compile Include="Converters\LogEntryToBrushConverter.cs" />
+    <Compile Include="Converters\ParentChildMarginConverter.cs" />
+    <Compile Include="Converters\ParentChildMarginMultiConverter.cs" />
+    <Compile Include="Converters\ScrollbarVisibleToMarginConverter.cs" />
+    <Compile Include="Converters\StringToBrushConverter.cs" />
+    <Compile Include="Converters\StringToColorConverter.cs" />
+    <Compile Include="Core\DelegateCommand.cs" />
+    <Compile Include="Enums\AsmScript.cs" />
+    <Compile Include="Enums\GameTitle.cs" />
+    <Compile Include="Enums\HotkeyActions.cs" />
+    <Compile Include="Enums\SplitType.cs" />
+    <Compile Include="Enums\NotesDisplayMode.cs" />
+    <Compile Include="Enums\State.cs" />
+    <Compile Include="Enums\ThemeMode.cs" />
+    <Compile Include="Games\DS2\DS2EventService.cs" />
+    <Compile Include="Games\DS2\DS2HitService.cs" />
+    <Compile Include="Games\DS2\DS2IgtService.cs" />
+    <Compile Include="Games\DS2\DS2Module.cs" />
+    <Compile Include="Games\DS2\DS2Offsets.cs" />
+    <Compile Include="Games\DS2\DS2SettingsService.cs" />
+    <Compile Include="Games\DS2\DS2Version.cs" />
+    <Compile Include="Games\DS2\DS2TimerStatus.cs" />
+    <Compile Include="Games\DS2\DS2CustomCodeOffsets.cs" />
+    <Compile Include="Games\DS3\DS3CustomCodeOffsets.cs" />
+    <Compile Include="Games\DS3\DS3EventService.cs" />
+    <Compile Include="Games\DS3\DS3HitService.cs" />
+    <Compile Include="Games\DS3\DS3Module.cs" />
+    <Compile Include="Games\DS3\DS3Offsets.cs" />
+    <Compile Include="Games\DS3\DS3SettingsService.cs" />
+    <Compile Include="Games\DS3\DS3Version.cs" />
+    <Compile Include="Games\DSR\DSRCustomCodeOffsets.cs" />
+    <Compile Include="Games\DSR\DSREventService.cs" />
+    <Compile Include="Games\DSR\DSRHitService.cs" />
+    <Compile Include="Games\DSR\DSRModule.cs" />
+    <Compile Include="Games\DSR\DSROffsets.cs" />
+    <Compile Include="Games\DSR\DSROriginalBytes.cs" />
+    <Compile Include="Games\DSR\DSRVersion.cs" />
+    <Compile Include="Games\ER\EldenRingCustomCodeOffsets.cs" />
+    <Compile Include="Games\ER\EldenRingEventService.cs" />
+    <Compile Include="Games\ER\EldenRingHitService.cs" />
+    <Compile Include="Games\ER\EldenRingModule.cs" />
+    <Compile Include="Games\ER\EldenRingOffsets.cs" />
+    <Compile Include="Games\ER\EldenRingSettingsService.cs" />
+    <Compile Include="Games\ER\EldenRingVersion.cs" />
+    <Compile Include="Games\SK\SKCustomCodeOffsets.cs" />
+    <Compile Include="Games\SK\SKEventService.cs" />
+    <Compile Include="Games\SK\SKHitService.cs" />
+    <Compile Include="Games\Manual\ManualGameModule.cs" />
+    <Compile Include="Games\SK\SKModule.cs" />
+    <Compile Include="Games\SK\SKOffsets.cs" />
+    <Compile Include="Games\SK\SKOriginalBytes.cs" />
+    <Compile Include="Games\SK\SKSettingsService.cs" />
+    <Compile Include="Games\SK\SKVersion.cs" />
+    <Compile Include="Interfaces\IEventService.cs" />
+    <Compile Include="Interfaces\IExternalIntegrationService.cs" />
+    <Compile Include="Interfaces\IGameModule.cs" />
+    <Compile Include="Interfaces\IHitRulesProvider.cs" />
+    <Compile Include="Interfaces\IHitService.cs" />
+    <Compile Include="Interfaces\IProfileService.cs" />
+    <Compile Include="Interfaces\IReorderHandler.cs" />
+    <Compile Include="Interfaces\IStateService.cs" />
+    <Compile Include="Interfaces\ITickService.cs" />
+    <Compile Include="Interfaces\IVersionedGameModule.cs" />
+    <Compile Include="Mappers\OverlayMapper.cs" />
+    <Compile Include="Memory\HookManager.cs" />
+    <Compile Include="Memory\Kernel32.cs" />
+    <Compile Include="Models\EventLogEntry.cs" />
+    <Compile Include="Models\Game.cs" />
+    <Compile Include="Models\HitPayload.cs" />
+    <Compile Include="Models\OverlayConfig.cs" />
+    <Compile Include="Models\OverlayState.cs" />
+    <Compile Include="Models\Profile.cs" />
+    <Compile Include="Models\RunState.cs" />
+    <Compile Include="Models\SplitEntry.cs" />
+    <Compile Include="Services\EventLogReader.cs" />
+    <Compile Include="Services\EventServiceBase.cs" />
+    <Compile Include="Services\ExternalIntegrationService.cs" />
+    <Compile Include="Services\GameFlagRegistry.cs" />
+    <Compile Include="Services\GameModuleFactory.cs" />
+    <Compile Include="Services\MemoryService.cs" />
+    <Compile Include="Services\OverlayServerService.cs" />
+    <Compile Include="Services\ProfileService.cs" />
+    <Compile Include="Services\SplitNavigationService.cs" />
+    <Compile Include="Services\StateService.cs" />
+    <Compile Include="Services\ThemeService.cs" />
+    <Compile Include="Services\TickService.cs" />
+    <Compile Include="Utilities\EnumExtensions.cs" />
+    <Compile Include="Utilities\AsmHelper.cs" />
+    <Compile Include="Utilities\AsmLoader.cs" />
+    <Compile Include="Utilities\EventLoader.cs" />
+    <Compile Include="Utilities\ExternalIntegration.cs" />
+    <Compile Include="Utilities\HotkeyManager.cs" />
+    <Compile Include="Utilities\MsgBox.cs" />
+    <Compile Include="Utilities\OverlayProfileManager.cs" />
+    <Compile Include="Utilities\ProfileMigrator.cs" />
+    <Compile Include="Utilities\SettingsManager.cs" />
+    <Compile Include="Utilities\UpDownHelper.cs" />
+    <Compile Include="Utilities\User32.cs" />
+    <Compile Include="Utilities\VersionChecker.cs" />
+    <Compile Include="Utilities\VisualTreeHelpers.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\EventLogViewModel.cs" />
+    <Compile Include="ViewModels\GameFlagViewModel.cs" />
+    <Compile Include="ViewModels\HotkeyBindingViewModel.cs" />
+    <Compile Include="ViewModels\HotkeyTabViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\OverlaySettingsViewModel.cs" />
+    <Compile Include="ViewModels\ProfileEditorViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\SplitEventEditorViewModel.cs" />
+    <Compile Include="ViewModels\SplitViewModel.cs" />
+    <Compile Include="Views\Controls\HotkeysTab.xaml.cs">
+      <DependentUpon>HotkeysTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\SettingsTab.xaml.cs">
+      <DependentUpon>SettingsTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\SplitEventEditorWindow.xaml.cs">
+      <DependentUpon>SplitEventEditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\TitleBar.xaml.cs">
+      <DependentUpon>TitleBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\CustomMessageBox.xaml.cs" />
+    <Compile Include="Views\Windows\EventLogWindow.xaml.cs" />
+    <Compile Include="Views\Windows\HelpWindow.xaml.cs">
+      <DependentUpon>HelpWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\InputBox.xaml.cs" />
+    <Compile Include="Views\Windows\OverlaySettingsWindow.xaml.cs">
+      <DependentUpon>OverlaySettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\ProfileEditorWindow.xaml.cs">
+      <DependentUpon>ProfileEditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interfaces\IMemoryService.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Themes\DarkTheme.xaml" />
+    <Page Include="Themes\LightTheme.xaml" />
+    <Page Include="Views\Controls\HotkeysTab.xaml" />
+    <Page Include="Views\Controls\SettingsTab.xaml" />
+    <Page Include="Views\Controls\SplitEventEditorWindow.xaml" />
+    <Page Include="Views\Controls\TitleBar.xaml" />
+    <Page Include="Views\Windows\CustomMessageBox.xaml" />
+    <Page Include="Views\Windows\EventLogWindow.xaml" />
+    <Page Include="Views\Windows\HelpWindow.xaml" />
+    <Page Include="Views\Windows\InputBox.xaml" />
+    <Page Include="Views\Windows\OverlaySettingsWindow.xaml" />
+    <Page Include="Views\Windows\ProfileEditorWindow.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\icon.ico" />
+    <Content Include="DefaultProfiles.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FodyWeavers.xml" />
+    <Content Include="Overlay.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{FFD7FD6E-2E14-41EE-A54C-543A338BFBBF}</ProjectGuid>
-        <OutputType>WinExe</OutputType>
-        <RootNamespace>AutoHitCounter</RootNamespace>
-        <AssemblyName>AutoHitCounter</AssemblyName>
-        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-        <FileAlignment>512</FileAlignment>
-        <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-        <WarningLevel>4</WarningLevel>
-        <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
-        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-        <LangVersion>12</LangVersion>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <PlatformTarget>x64</PlatformTarget>
-        <DebugSymbols>true</DebugSymbols>
-        <DebugType>full</DebugType>
-        <Optimize>false</Optimize>
-        <OutputPath>bin\Debug\</OutputPath>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <PlatformTarget>x64</PlatformTarget>
-        <DebugType>pdbonly</DebugType>
-        <Optimize>true</Optimize>
-        <OutputPath>bin\Release\</OutputPath>
-        <DefineConstants>TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-    </PropertyGroup>
-    <ItemGroup>
-        <Reference Include="Costura, Version=6.0.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
-          <HintPath>..\packages\Costura.Fody.6.0.0\lib\netstandard2.0\Costura.dll</HintPath>
-        </Reference>
-        <Reference Include="Fleck, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-          <HintPath>..\packages\Fleck.1.2.0\lib\net45\Fleck.dll</HintPath>
-        </Reference>
-        <Reference Include="H.Hooks, Version=2.0.0.0, Culture=neutral, PublicKeyToken=603f13207e65c17b, processorArchitecture=MSIL">
-          <HintPath>..\packages\H.Hooks.2.1.0-dev.26\lib\net462\H.Hooks.dll</HintPath>
-        </Reference>
-        <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=10.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-          <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.10.0.2\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
-        </Reference>
-        <Reference Include="mscorlib" />
-        <Reference Include="System" />
-        <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-          <HintPath>..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
-        </Reference>
-        <Reference Include="System.Core" />
-        <Reference Include="System.Data" />
-        <Reference Include="System.IO.Pipelines, Version=10.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-          <HintPath>..\packages\System.IO.Pipelines.10.0.2\lib\net462\System.IO.Pipelines.dll</HintPath>
-        </Reference>
-        <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-          <HintPath>..\packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
-        </Reference>
-        <Reference Include="System.Net.Http" />
-        <Reference Include="System.Numerics" />
-        <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <HintPath>..\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
-        </Reference>
-        <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-        </Reference>
-        <Reference Include="System.Text.Encoding.CodePages, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <HintPath>..\packages\System.Text.Encoding.CodePages.8.0.0\lib\net462\System.Text.Encoding.CodePages.dll</HintPath>
-        </Reference>
-        <Reference Include="System.Text.Encodings.Web, Version=10.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-          <HintPath>..\packages\System.Text.Encodings.Web.10.0.2\lib\net462\System.Text.Encodings.Web.dll</HintPath>
-        </Reference>
-        <Reference Include="System.Text.Json, Version=10.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-          <HintPath>..\packages\System.Text.Json.10.0.2\lib\net462\System.Text.Json.dll</HintPath>
-        </Reference>
-        <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-          <HintPath>..\packages\System.Threading.Tasks.Extensions.4.6.3\lib\net462\System.Threading.Tasks.Extensions.dll</HintPath>
-        </Reference>
-        <Reference Include="System.Xml" />
-        <Reference Include="System.Xaml">
-            <RequiredTargetFramework>4.0</RequiredTargetFramework>
-        </Reference>
-        <Reference Include="WindowsBase" />
-        <Reference Include="PresentationCore" />
-        <Reference Include="PresentationFramework" />
-        <Reference Include="Xceed.Wpf.AvalonDock, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-          <HintPath>..\packages\Extended.Wpf.Toolkit.5.0.0\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
-        </Reference>
-        <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-          <HintPath>..\packages\Extended.Wpf.Toolkit.5.0.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
-        </Reference>
-        <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-          <HintPath>..\packages\Extended.Wpf.Toolkit.5.0.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
-        </Reference>
-        <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-          <HintPath>..\packages\Extended.Wpf.Toolkit.5.0.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
-        </Reference>
-        <Reference Include="Xceed.Wpf.Toolkit, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-          <HintPath>..\packages\Extended.Wpf.Toolkit.5.0.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
-        </Reference>
-    </ItemGroup>
-    <ItemGroup>
-        <ApplicationDefinition Include="App.xaml">
-            <Generator>MSBuild:Compile</Generator>
-            <SubType>Designer</SubType>
-        </ApplicationDefinition>
-        <Compile Include="Behaviors\InsertionAdorner.cs" />
-        <Compile Include="Behaviors\SplitListDragDropBehavior.cs" />
-        <Compile Include="Behaviors\TemplatesDragDropBehavior.cs" />
-        <Compile Include="Behaviors\WindowResizeBehavior.cs" />
-        <Compile Include="Converters\AttemptCountColorConverter.cs" />
-        <Compile Include="Converters\CssCalcEvaluator.cs" />
-        <Compile Include="Converters\CssColorParser.cs" />
-        <Compile Include="Converters\CssColorSpaces.cs" />
-        <Compile Include="Converters\EnumDescriptionConverter.cs" />
-        <Compile Include="Converters\ExpanderArrowConverter.cs" />
-        <Compile Include="Converters\InverseBoolConverter.cs" />
-        <Compile Include="Converters\LockIconConverter.cs" />
-        <Compile Include="Converters\LogEntryToBrushConverter.cs" />
-        <Compile Include="Converters\ParentChildMarginConverter.cs" />
-        <Compile Include="Converters\ParentChildMarginMultiConverter.cs" />
-        <Compile Include="Converters\ScrollbarVisibleToMarginConverter.cs" />
-        <Compile Include="Converters\StringToBrushConverter.cs" />
-        <Compile Include="Converters\StringToColorConverter.cs" />
-        <Compile Include="Core\DelegateCommand.cs" />
-        <Compile Include="Enums\AsmScript.cs" />
-        <Compile Include="Enums\GameTitle.cs" />
-        <Compile Include="Enums\HotkeyActions.cs" />
-        <Compile Include="Enums\SplitType.cs" />
-        <Compile Include="Enums\NotesDisplayMode.cs" />
-        <Compile Include="Enums\State.cs" />
-        <Compile Include="Enums\ThemeMode.cs" />
-        <Compile Include="Games\DS2\DS2EventService.cs" />
-        <Compile Include="Games\DS2\DS2HitService.cs" />
-        <Compile Include="Games\DS2\DS2IgtService.cs" />
-        <Compile Include="Games\DS2\DS2Module.cs" />
-        <Compile Include="Games\DS2\DS2Offsets.cs" />
-        <Compile Include="Games\DS2\DS2SettingsService.cs" />
-        <Compile Include="Games\DS2\DS2Version.cs" />
-        <Compile Include="Games\DS2\DS2TimerStatus.cs" />
-        <Compile Include="Games\DS2\DS2CustomCodeOffsets.cs" />
-        <Compile Include="Games\DS3\DS3CustomCodeOffsets.cs" />
-        <Compile Include="Games\DS3\DS3EventService.cs" />
-        <Compile Include="Games\DS3\DS3HitService.cs" />
-        <Compile Include="Games\DS3\DS3Module.cs" />
-        <Compile Include="Games\DS3\DS3Offsets.cs" />
-        <Compile Include="Games\DS3\DS3SettingsService.cs" />
-        <Compile Include="Games\DS3\DS3Version.cs" />
-        <Compile Include="Games\DSR\DSRCustomCodeOffsets.cs" />
-        <Compile Include="Games\DSR\DSREventService.cs" />
-        <Compile Include="Games\DSR\DSRHitService.cs" />
-        <Compile Include="Games\DSR\DSRModule.cs" />
-        <Compile Include="Games\DSR\DSROffsets.cs" />
-        <Compile Include="Games\DSR\DSROriginalBytes.cs" />
-        <Compile Include="Games\DSR\DSRVersion.cs" />
-        <Compile Include="Games\ER\EldenRingCustomCodeOffsets.cs" />
-        <Compile Include="Games\ER\EldenRingEventService.cs" />
-        <Compile Include="Games\ER\EldenRingHitService.cs" />
-        <Compile Include="Games\ER\EldenRingModule.cs" />
-        <Compile Include="Games\ER\EldenRingOffsets.cs" />
-        <Compile Include="Games\ER\EldenRingSettingsService.cs" />
-        <Compile Include="Games\ER\EldenRingVersion.cs" />
-        <Compile Include="Games\SK\SKCustomCodeOffsets.cs" />
-        <Compile Include="Games\SK\SKEventService.cs" />
-        <Compile Include="Games\SK\SKHitService.cs" />
-        <Compile Include="Games\Manual\ManualGameModule.cs" />
-        <Compile Include="Games\SK\SKModule.cs" />
-        <Compile Include="Games\SK\SKOffsets.cs" />
-        <Compile Include="Games\SK\SKOriginalBytes.cs" />
-        <Compile Include="Games\SK\SKSettingsService.cs" />
-        <Compile Include="Games\SK\SKVersion.cs" />
-        <Compile Include="Interfaces\IEventService.cs" />
-        <Compile Include="Interfaces\IGameModule.cs" />
-        <Compile Include="Interfaces\IHitRulesProvider.cs" />
-        <Compile Include="Interfaces\IHitService.cs" />
-        <Compile Include="Interfaces\IProfileService.cs" />
-        <Compile Include="Interfaces\IReorderHandler.cs" />
-        <Compile Include="Interfaces\IStateService.cs" />
-        <Compile Include="Interfaces\ITickService.cs" />
-        <Compile Include="Interfaces\IVersionedGameModule.cs" />
-        <Compile Include="Mappers\OverlayMapper.cs" />
-        <Compile Include="Memory\HookManager.cs" />
-        <Compile Include="Memory\Kernel32.cs" />
-        <Compile Include="Models\EventLogEntry.cs" />
-        <Compile Include="Models\Game.cs" />
-        <Compile Include="Models\OverlayConfig.cs" />
-        <Compile Include="Models\OverlayState.cs" />
-        <Compile Include="Models\Profile.cs" />
-        <Compile Include="Models\RunState.cs" />
-        <Compile Include="Models\SplitEntry.cs" />
-        <Compile Include="Services\EventLogReader.cs" />
-        <Compile Include="Services\EventServiceBase.cs" />
-        <Compile Include="Services\GameFlagRegistry.cs" />
-        <Compile Include="Services\GameModuleFactory.cs" />
-        <Compile Include="Services\MemoryService.cs" />
-        <Compile Include="Services\OverlayServerService.cs" />
-        <Compile Include="Services\ProfileService.cs" />
-        <Compile Include="Services\SplitNavigationService.cs" />
-        <Compile Include="Services\StateService.cs" />
-        <Compile Include="Services\ThemeService.cs" />
-        <Compile Include="Services\TickService.cs" />
-        <Compile Include="Utilities\EnumExtensions.cs" />
-        <Compile Include="Utilities\AsmHelper.cs" />
-        <Compile Include="Utilities\AsmLoader.cs" />
-        <Compile Include="Utilities\EventLoader.cs" />
-        <Compile Include="Utilities\HotkeyManager.cs" />
-        <Compile Include="Utilities\MsgBox.cs" />
-        <Compile Include="Utilities\OverlayProfileManager.cs" />
-        <Compile Include="Utilities\ProfileMigrator.cs" />
-        <Compile Include="Utilities\SettingsManager.cs" />
-        <Compile Include="Utilities\UpDownHelper.cs" />
-        <Compile Include="Utilities\User32.cs" />
-        <Compile Include="Utilities\VersionChecker.cs" />
-        <Compile Include="Utilities\VisualTreeHelpers.cs" />
-        <Compile Include="ViewModels\BaseViewModel.cs" />
-        <Compile Include="ViewModels\EventLogViewModel.cs" />
-        <Compile Include="ViewModels\GameFlagViewModel.cs" />
-        <Compile Include="ViewModels\HotkeyBindingViewModel.cs" />
-        <Compile Include="ViewModels\HotkeyTabViewModel.cs" />
-        <Compile Include="ViewModels\MainViewModel.cs" />
-        <Compile Include="ViewModels\OverlaySettingsViewModel.cs" />
-        <Compile Include="ViewModels\ProfileEditorViewModel.cs" />
-        <Compile Include="ViewModels\SettingsViewModel.cs" />
-        <Compile Include="ViewModels\SplitEventEditorViewModel.cs" />
-        <Compile Include="ViewModels\SplitViewModel.cs" />
-        <Compile Include="Views\Controls\HotkeysTab.xaml.cs">
-          <DependentUpon>HotkeysTab.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="Views\Controls\SettingsTab.xaml.cs">
-          <DependentUpon>SettingsTab.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="Views\Controls\SplitEventEditorWindow.xaml.cs">
-          <DependentUpon>SplitEventEditorWindow.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="Views\Controls\TitleBar.xaml.cs">
-          <DependentUpon>TitleBar.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="Views\Windows\CustomMessageBox.xaml.cs" />
-        <Compile Include="Views\Windows\EventLogWindow.xaml.cs" />
-        <Compile Include="Views\Windows\HelpWindow.xaml.cs">
-          <DependentUpon>HelpWindow.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="Views\Windows\InputBox.xaml.cs" />
-        <Compile Include="Views\Windows\OverlaySettingsWindow.xaml.cs">
-          <DependentUpon>OverlaySettingsWindow.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="Views\Windows\ProfileEditorWindow.xaml.cs">
-          <DependentUpon>ProfileEditorWindow.xaml</DependentUpon>
-        </Compile>
-        <Page Include="MainWindow.xaml">
-            <Generator>MSBuild:Compile</Generator>
-            <SubType>Designer</SubType>
-        </Page>
-        <Compile Include="App.xaml.cs">
-            <DependentUpon>App.xaml</DependentUpon>
-            <SubType>Code</SubType>
-        </Compile>
-        <Compile Include="Interfaces\IMemoryService.cs" />
-        <Compile Include="MainWindow.xaml.cs">
-            <DependentUpon>MainWindow.xaml</DependentUpon>
-            <SubType>Code</SubType>
-        </Compile>
-        <Page Include="Themes\DarkTheme.xaml" />
-        <Page Include="Themes\LightTheme.xaml" />
-        <Page Include="Views\Controls\HotkeysTab.xaml" />
-        <Page Include="Views\Controls\SettingsTab.xaml" />
-        <Page Include="Views\Controls\SplitEventEditorWindow.xaml" />
-        <Page Include="Views\Controls\TitleBar.xaml" />
-        <Page Include="Views\Windows\CustomMessageBox.xaml" />
-        <Page Include="Views\Windows\EventLogWindow.xaml" />
-        <Page Include="Views\Windows\HelpWindow.xaml" />
-        <Page Include="Views\Windows\InputBox.xaml" />
-        <Page Include="Views\Windows\OverlaySettingsWindow.xaml" />
-        <Page Include="Views\Windows\ProfileEditorWindow.xaml" />
-    </ItemGroup>
-    <ItemGroup>
-        <Compile Include="Properties\AssemblyInfo.cs">
-            <SubType>Code</SubType>
-        </Compile>
-        <Compile Include="Properties\Resources.Designer.cs">
-            <AutoGen>True</AutoGen>
-            <DesignTime>True</DesignTime>
-            <DependentUpon>Resources.resx</DependentUpon>
-        </Compile>
-        <EmbeddedResource Include="Properties\Resources.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="App.config" />
-        <None Include="packages.config" />
-    </ItemGroup>
-    <ItemGroup>
-        <Resource Include="Assets\icon.ico" />
-        <Content Include="DefaultProfiles.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-      <Content Include="FodyWeavers.xml" />
-      <Content Include="Overlay.html">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-    </ItemGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-    <Import Project="..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />
-    <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-      <PropertyGroup>
-        <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
-      </PropertyGroup>
-      <Error Condition="!Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets'))" />
-      <Error Condition="!Exists('..\packages\Fody.6.9.3\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.9.3\build\Fody.targets'))" />
-      <Error Condition="!Exists('..\packages\Costura.Fody.6.0.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.6.0.0\build\Costura.Fody.props'))" />
-      <Error Condition="!Exists('..\packages\Costura.Fody.6.0.0\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.6.0.0\build\Costura.Fody.targets'))" />
-    </Target>
-    <Import Project="..\packages\Fody.6.9.3\build\Fody.targets" Condition="Exists('..\packages\Fody.6.9.3\build\Fody.targets')" />
-    <Import Project="..\packages\Costura.Fody.6.0.0\build\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.6.0.0\build\Costura.Fody.targets')" />
-    <Target Name="PackageRelease" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
-        <Exec Command="powershell -Command &quot;Compress-Archive -Force -Path '$(OutputPath)AutoHitCounter.exe', '$(OutputPath)DefaultProfiles.json', '$(OutputPath)Overlay.html' -DestinationPath '$(OutputPath)AutoHitCounter.zip'&quot;" />
-    </Target>
+    <Error Condition="!Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets'))" />
+    <Error Condition="!Exists('..\packages\Fody.6.9.3\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.9.3\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Costura.Fody.6.0.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.6.0.0\build\Costura.Fody.props'))" />
+    <Error Condition="!Exists('..\packages\Costura.Fody.6.0.0\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.6.0.0\build\Costura.Fody.targets'))" />
+  </Target>
+  <Import Project="..\packages\Fody.6.9.3\build\Fody.targets" Condition="Exists('..\packages\Fody.6.9.3\build\Fody.targets')" />
+  <Import Project="..\packages\Costura.Fody.6.0.0\build\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.6.0.0\build\Costura.Fody.targets')" />
+  <Target Name="PackageRelease" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+    <Exec Command="powershell -Command &quot;Compress-Archive -Force -Path '$(OutputPath)AutoHitCounter.exe', '$(OutputPath)DefaultProfiles.json', '$(OutputPath)Overlay.html' -DestinationPath '$(OutputPath)AutoHitCounter.zip'&quot;" />
+  </Target>
 </Project>
