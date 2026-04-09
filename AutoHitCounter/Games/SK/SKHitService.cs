@@ -99,11 +99,13 @@ public class SKHitService(IMemoryService memoryService, HookManager hookManager)
             (code + 0x1, pendingHitFlag, 7, 0x1 + 2),
             (code + 0x36, WorldChrMan.Base, 7, 0x36 + 3),
             (code + 0x50, Functions.HasSpEffectId, 5, 0x50 + 1),
-            (code + 0x5B, staggerCheckFlag, 7, 0x5B + 2),
-            (code + 0x64, pendingHitFlag, 7, 0x64 + 2),
-            (code + 0x6B, hit, 6, 0x6B + 2),
-            (code + 0x73, pendingHitFlag, 7, 0x73 + 2),
-            (code + 0x82, Hooks.PostHit + 7, 5, 0x82 + 1),
+            (code + 0x73, WorldChrMan.Base, 7, 0x73 + 3),
+            (code + 0x8D, Functions.HasSpEffectId, 5, 0x8D + 1),
+            (code + 0x98, staggerCheckFlag, 7, 0x98 + 2),
+            (code + 0xA1, pendingHitFlag, 7, 0xA1 + 2),
+            (code + 0xA8, hit, 6, 0xA8 + 2),
+            (code + 0xB0, pendingHitFlag, 7, 0xB0 + 2),
+            (code + 0xBF, Hooks.PostHit + 7, 5, 0xBF + 1),
         ]);
 
         memoryService.WriteBytes(code, bytes);

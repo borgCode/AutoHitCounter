@@ -21,6 +21,7 @@ public class ManualGameModule : IGameModule, IDisposable
     public event Action OnEventSet;
     public event Action<List<EventLogEntry>> OnEventLogEntriesReceived;
     public event Action<long> OnTimeChanged;
+    public event Action OnRunStart;
 
     public ManualGameModule()
     {
@@ -64,5 +65,6 @@ public class ManualGameModule : IGameModule, IDisposable
         OnEventSet = null;
         OnEventLogEntriesReceived = null;
         OnTimeChanged = null;
+        OnRunStart = null;
     }
 }

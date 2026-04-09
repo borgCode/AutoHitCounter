@@ -12,6 +12,7 @@ public enum AsmScript
     DSREventLog,
     DSRClearThrowState,
     DSRSetThrowState,
+    DSRRunStart,
     
     VanillaCheckPlayerDead,
     VanillaHit,
@@ -57,6 +58,7 @@ public enum AsmScript
     DS3IsFallDamageDisabled,
     DS3SetThrowState,
     DS3ClearThrowState,
+    DS3RunStart,
     
     
     SKCheckPlayerDead,
@@ -74,6 +76,7 @@ public enum AsmScript
     SKApplySpEffectDamage,
     SKSakuraDance,
     SKEventLog,
+    SKRunStart,
 
     EldenRingHit,
     EldenRingCheckPlayerDead,
@@ -89,5 +92,6 @@ public enum AsmScript
     EldenRingKillChr,
     EldenRingSetThrowState,
     EldenRingClearThrowState,
-    EldenRingEventLog
+    EldenRingEventLog,
+    EldenRingRunStart,
 }

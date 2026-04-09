@@ -350,6 +350,18 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 41 b0 01                mov    r8b,0x1
+        ///31 d2                   xor    edx,edx
+        ///c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # c &lt;_main+0xc&gt;
+        ///e9 00 00 00 00          jmp    11 &lt;_main+0x11&gt;.
+        /// </summary>
+        internal static string DS3RunStart {
+            get {
+                return ResourceManager.GetString("DS3RunStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 80 8b 11 02 00 00 20    or     BYTE PTR [rbx+0x211],0x20
         ///50                      push   rax
         ///e8 00 00 00 00          call   d &lt;_main+0xd&gt;
@@ -551,6 +563,17 @@ namespace AutoHitCounter.Properties {
         internal static string DSRKillChr {
             get {
                 return ResourceManager.GetString("DSRKillChr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to b9 67 2b 00 00          mov    ecx,0x2b67
+        ///c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # c &lt;_main+0xc&gt;
+        ///e9 00 00 00 00          jmp    11 &lt;_main+0x11&gt;.
+        /// </summary>
+        internal static string DSRRunStart {
+            get {
+                return ResourceManager.GetString("DSRRunStart", resourceCulture);
             }
         }
         
@@ -811,6 +834,17 @@ namespace AutoHitCounter.Properties {
         internal static string EldenRingKillChr {
             get {
                 return ResourceManager.GetString("EldenRingKillChr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ba 05 00 00 00          mov    edx,0x5
+        ///c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # c &lt;_main+0xc&gt;
+        ///e9 00 00 00 00          jmp    11 &lt;_main+0x11&gt;.
+        /// </summary>
+        internal static string EldenRingRunStart {
+            get {
+                return ResourceManager.GetString("EldenRingRunStart", resourceCulture);
             }
         }
         
@@ -1394,21 +1428,32 @@ namespace AutoHitCounter.Properties {
         /// <summary>
         ///   Looks up a localized string similar to 50                      push   rax
         ///80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # 8 &lt;_main+0x8&gt;
-        ///74 70                   je     7a &lt;commit_skip&gt;
+        ///0f 84 a9 00 00 00       je     b7 &lt;commit_skip&gt;
         ///41 83 be e0 01 00 00    cmp    DWORD PTR [r14+0x1e0],0x0
         ///00 
-        ///7f 50                   jg     64 &lt;commit_hit&gt;
+        ///0f 8f 85 00 00 00       jg     a1 &lt;commit_hit&gt;
         ///41 80 be c7 01 00 00    cmp    BYTE PTR [r14+0x1c7],0x0
         ///00 
-        ///75 55                   jne    73 &lt;commit_discard&gt;
-        ///41 80 be 64 01 00 00    cmp    BYTE PTR [r14+0x164],0x0
-        ///00 
-        ///75 3c                   jne    64 &lt;commit_hit&gt;
-        ///41 0f b6 46 24 [rest of string was truncated]&quot;;.
+        ///0f 85 86 00 00 00       jne    b0 &lt;commit_discard&gt;
+        ///41 0f b6 46 24          movzx  eax,BYTE PTR [r14+0x24]
+        ///83 f8 0b                cmp    eax,0xb
+        ///75 27                   jne  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SKPostHit {
             get {
                 return ResourceManager.GetString("SKPostHit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 41 b0 01                mov    r8b,0x1
+        ///31 d2                   xor    edx,edx
+        ///c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # c &lt;_main+0xc&gt;
+        ///e9 00 00 00 00          jmp    11 &lt;_main+0x11&gt;.
+        /// </summary>
+        internal static string SKRunStart {
+            get {
+                return ResourceManager.GetString("SKRunStart", resourceCulture);
             }
         }
         

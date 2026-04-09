@@ -20,11 +20,12 @@ public class DSRCustomCodeOffsets
     public const int ClearThrowState = 0xA00;
     public const int SetThrowState = 0xB00;
     
+    public const int RunStartFlag = 0x2000;
+    public const int RunStartCode = 0x2010;
     
     
-    
-    public const int EventLogWriteIdx = 0x2000;
-    public const int EventLogCode = 0x2020;
-    public const int EventLogBuffer = 0x2100;
+    public const int EventLogWriteIdx = 0x3000;
+    public const int EventLogCode = 0x3020;
+    public const int EventLogBuffer = 0x3100;
 
 }

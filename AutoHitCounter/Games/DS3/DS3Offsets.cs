@@ -88,6 +88,7 @@ public static class DS3Offsets
         public static nint SetThrowState;
         public static nint ClearThrowState;
         public static nint SetEvent;
+        public static nint StartNewGame;
     }
 
     public static class Functions
@@ -397,6 +398,28 @@ public static class DS3Offsets
             Version1_15_2_0 => 0x9C7E48,
             _ => 0
         };
+        
+        Hooks.StartNewGame = moduleBase + Version switch
+        {
+            Version1_3_2_0 => 0xAACC5D,
+            Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0xAACC9D,
+            Version1_5_0_0 => 0xAAD90D,
+            Version1_5_1_0 => 0xAAD73D,
+            Version1_6_0_0 => 0xAADD0D,
+            Version1_7_0_0 => 0xAAED5D,
+            Version1_8_0_0 => 0xAC0B7D,
+            Version1_9_0_0 => 0xAC113D,
+            Version1_10_0_0 => 0xAC11AD,
+            Version1_11_0_0 => 0xACEB9D,
+            Version1_12_0_0 => 0xACF5ED,
+            Version1_13_0_0 => 0xAD119D,
+            Version1_14_0_0 => 0xAD146D,
+            Version1_15_0_0 => 0xAD156D,
+            Version1_15_1_0 => 0xADBD6D,
+            Version1_15_2_0 => 0xADBE9D,
+            _ => 0
+        };
+
 
 
 
@@ -528,6 +551,7 @@ public static class DS3Offsets
         PrintOffset("SetThrowState", Hooks.SetThrowState);
         PrintOffset("ClearThrowState", Hooks.ClearThrowState);
         PrintOffset("SetEvent", Hooks.SetEvent);
+        PrintOffset("StartNewGame", Hooks.StartNewGame);
 
 
         Console.WriteLine("\n--- Functions ---");
