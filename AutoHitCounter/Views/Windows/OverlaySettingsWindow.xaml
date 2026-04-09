@@ -217,7 +217,7 @@
                                                 <TextBlock Text=" Colour Formatting" FontWeight="SemiBold"
                                                            Foreground="#9D61A8" VerticalAlignment="Center" />
                                             </StackPanel>
-                                            <TextBlock Foreground="#bbbbbb" FontSize="11" TextWrapping="Wrap"
+                                            <TextBlock Foreground="{DynamicResource UnlockedToolTipTextBrush}" FontSize="11" TextWrapping="Wrap"
                                                        MaxWidth="240"
                                                        Text="Adjust the colours to your liking here.&#x0a;&#x0a;The preview box supports CSS3 through CSS5 - named colours, hex, rgb(), hsl(), hwb(), lab(), lch(), oklab(), oklch(), color-mix(), and relative colours.&#x0a;&#x0a;You can use #00000000 or rgba(0, 0, 0, 0) to make any element fully transparent." />
                                         </StackPanel>
