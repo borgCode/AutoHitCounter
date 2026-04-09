@@ -315,6 +315,7 @@ public class SettingsViewModel : BaseViewModel
         ApplyDS3Settings();
         ApplySKSettings();
         ApplyDS2Settings();
+        ApplyExternalIntegrationSettings();
 
         IsAlwaysOnTopEnabled = SettingsManager.Default.AlwaysOnTop;
 
@@ -380,6 +381,16 @@ public class SettingsViewModel : BaseViewModel
 
         _ds2DisableDoubleClick = SettingsManager.Default.DS2DisableDoubleClick;
         OnPropertyChanged(nameof(DS2DisableDoubleClick));
+    }
+
+    private void ApplyExternalIntegrationSettings()
+    {
+        _isExternalIntegrationEnabled = SettingsManager.Default.ExternalIntegrationEnabled;
+        OnPropertyChanged(nameof(IsExternalIntegrationEnabled));
+        _externalIntegrationEndpoint = SettingsManager.Default.ExternalIntegrationEndpointUrl;
+        OnPropertyChanged(nameof(ExternalIntegrationEndpoint));
+        _externalIntegrationUserId = SettingsManager.Default.ExternalIntegrationUserIdentifier;
+        OnPropertyChanged(nameof(ExternalIntegrationUserId));
     }
 
     #endregion
