@@ -113,6 +113,7 @@ public static class EldenRingOffsets
         public static nint SetThrowState;
         public static nint ClearThrowState;
         public static nint SetEvent;
+        public static nint StartNewGame;
     }
 
     public static class Functions
@@ -494,6 +495,32 @@ public static class EldenRingOffsets
             _ => 0
         };
         
+        Hooks.StartNewGame = moduleBase + Version switch
+        {
+            Version1_2_0 => 0xAAAF7F,
+            Version1_2_1 => 0xAAAFFF,
+            Version1_2_2 => 0xAAB06F,
+            Version1_2_3 => 0xAAB14F,
+            Version1_3_0 => 0xAB044F,
+            Version1_3_1 => 0xAB045F,
+            Version1_3_2 => 0xAB043F,
+            Version1_4_0 => 0xA8FD9F,
+            Version1_4_1 => 0xA8FCAF,
+            Version1_5_0 => 0xA943AF,
+            Version1_6_0 => 0xA982AF,
+            Version1_7_0 => 0xA9995F,
+            Version1_8_0 or Version1_8_1 => 0xADB32F,
+            Version1_9_0 => 0xADDEBF,
+            Version1_9_1 => 0xADDF1F,
+            Version2_0_0 or Version2_0_1 => 0xADE1AF,
+            Version2_2_0 or Version2_2_3 => 0xB0BFAF,
+            Version2_3_0 => 0xB0C31F,
+            Version2_4_0 or Version2_5_0 => 0xB0C49F,
+            Version2_6_0 => 0xB0C61F,
+            Version2_6_1 => 0xB0C67F,
+            _ => 0
+        };
+
         
         Functions.ChrInsByHandle = moduleBase + Version switch
         {
@@ -658,6 +685,7 @@ public static class EldenRingOffsets
         PrintOffset("SetThrowState", Hooks.SetThrowState);
         PrintOffset("ClearThrowState", Hooks.ClearThrowState);
         PrintOffset("SetEvent", Hooks.SetEvent);
+        PrintOffset("StartNewGame", Hooks.StartNewGame);
 
 
         Console.WriteLine("\n--- Functions ---");

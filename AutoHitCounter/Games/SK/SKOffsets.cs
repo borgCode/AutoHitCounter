@@ -73,6 +73,7 @@ public static class SKOffsets
         public static nint SetEvent;
         public static nint ApplySpEffectDamage;
         public static nint SakuraDance;
+        public static nint StartNewGame;
     }
 
     public static class Functions
@@ -233,7 +234,6 @@ public static class SKOffsets
             Version1_5_0 or Version1_6_0 => 0xB6D853,
             _ => 0
         };
-
         
         Hooks.SetEvent = moduleBase + Version switch
         {
@@ -242,6 +242,16 @@ public static class SKOffsets
             Version1_5_0 or Version1_6_0 => 0x6C4520,
             _ => 0
         };
+
+        Hooks.StartNewGame = moduleBase + Version switch
+        {
+            Version1_2_0 => 0xD005C5,
+            Version1_3_0 or Version1_4_0 => 0xD00D15,
+            Version1_5_0 or Version1_6_0 => 0xD25ED5,
+            _ => 0
+
+        };
+
 
         Functions.HasSpEffectId = moduleBase + Version switch
         {
@@ -318,6 +328,7 @@ public static class SKOffsets
         PrintOffset("ApplySpEffectDamage", Hooks.ApplySpEffectDamage);
         PrintOffset("SakuraDance", Hooks.SakuraDance);
         PrintOffset("SetEvent", Hooks.SetEvent);
+        PrintOffset("StartNewGame", Hooks.StartNewGame);
 
 
         Console.WriteLine("\n--- Functions ---");

@@ -12,6 +12,7 @@ public interface IGameModule
     event Action OnEventSet;
     event Action<List<EventLogEntry>> OnEventLogEntriesReceived;
     event Action<long> OnTimeChanged;
+    event Action OnRunStart;
     void UpdateEvents(Dictionary<uint, (string Name, int Required, int Hit)> events);
     void ApplySettings(bool onlyEnabled = false);
     void SetEventLogEnabled(bool enabled);

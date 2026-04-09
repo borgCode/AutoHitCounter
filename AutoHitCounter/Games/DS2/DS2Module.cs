@@ -36,6 +36,7 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
     public event Action OnEventSet;
     public event Action<List<EventLogEntry>> OnEventLogEntriesReceived;
     public event Action<long> OnTimeChanged;
+    public event Action OnRunStart;
     public event Action OnVersionDetected;
 
     public DS2Module(IMemoryService memoryService, IStateService stateService, HookManager hookManager,
@@ -71,7 +72,7 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
         _hitService = new DS2HitService(_memoryService, _hookManager);
         _eventService = new DS2EventService(_memoryService, _hookManager, _events);
         _settingsService = new DS2SettingsService(_memoryService, _hookManager);
-        _igtService = new DS2IgtService(_memoryService, _hookManager);
+        _igtService = new DS2IgtService(_memoryService, _hookManager, OnRunStart);
         _eventLogReader = new EventLogReader(_memoryService,
             Base + EventLogWriteIdx,
             Base + EventLogBuffer);
@@ -104,6 +105,8 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
 
     private void Tick()
     {
+        
+        
         if (!IsLoaded()) _hitService.ResetFlags();
         
         _hitService.EnsureHooksInstalled();
@@ -148,6 +151,7 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
         OnEventSet = null;
         OnEventLogEntriesReceived = null;
         OnTimeChanged = null;
+        OnRunStart = null;
     }
 
     public void UpdateEvents(Dictionary<uint, (string Name, int Required, int Hit)> events)

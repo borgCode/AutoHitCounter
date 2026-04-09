@@ -104,6 +104,19 @@ public class SettingsViewModel : BaseViewModel
         }
     }
 
+    private bool _autoResetOnNewGameStart;
+
+    public bool AutoResetOnNewGameStart
+    {
+        get => _autoResetOnNewGameStart;
+        set
+        {
+            if (!SetProperty(ref _autoResetOnNewGameStart, value)) return;
+            SettingsManager.Default.AutoResetOnNewGameStart = value;
+            SettingsManager.Default.Save();
+        }
+    }
+
 
     #region Elden Ring
 
@@ -325,6 +338,9 @@ public class SettingsViewModel : BaseViewModel
 
         _notesDisplayMode = (NotesDisplayMode)SettingsManager.Default.NotesDisplayMode;
         OnPropertyChanged(nameof(NotesDisplayMode));
+
+        _autoResetOnNewGameStart = SettingsManager.Default.AutoResetOnNewGameStart;
+        OnPropertyChanged(nameof(AutoResetOnNewGameStart));
     }
 
 

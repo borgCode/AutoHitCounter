@@ -67,6 +67,7 @@ public static class DSROffsets
         public static nint SetThrowState;
         public static nint ClearThrowState;
         public static nint SetEvent;
+        public static nint StartNewGame;
     }
 
     private static void InitializeBaseAddresses(nint moduleBase)
@@ -197,6 +198,15 @@ public static class DSROffsets
             _ => 0
         };
 
+        Hooks.StartNewGame = moduleBase + Version switch
+        {
+            Version1_0_1_0 => 0x279259,
+            Version1_0_1_1 => 0x278F59,
+            Version1_0_1_2 => 0x27C3A9,
+            Version1_0_3_0 => 0x2809E9,
+            Version1_0_3_1 => 0x282299,
+            _ => 0
+        };
 
 
 
@@ -217,8 +227,8 @@ public static class DSROffsets
         PrintOffset("CheckAuxProc", Hooks.CheckAuxProc);
         PrintOffset("SetThrowState", Hooks.SetThrowState);
         PrintOffset("ClearThrowState", Hooks.ClearThrowState);
-        
         PrintOffset("SetEvent", Hooks.SetEvent);
+        PrintOffset("StartNewGame", Hooks.StartNewGame);
       
 
 

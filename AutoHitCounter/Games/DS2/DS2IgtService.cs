@@ -21,13 +21,15 @@ public class DS2IgtService
 
     private readonly IMemoryService _memoryService;
     private readonly HookManager _hookManager;
+    private readonly Action _onRunStart;
 
     private const int SaveSlotSize = 0x1F0;
 
-    public DS2IgtService(IMemoryService memoryService, HookManager hookManager)
+    public DS2IgtService(IMemoryService memoryService, HookManager hookManager, Action onRunStart)
     {
         _memoryService = memoryService;
         _hookManager = hookManager;
+        _onRunStart = onRunStart;
         _saveDataManager = ResolveSaveDataManager();
     }
 
@@ -102,6 +104,7 @@ public class DS2IgtService
             case (int)DS2TimerStatus.NewGame:
                 _baseMs = 0;
                 _stopwatch.Restart();
+                _onRunStart?.Invoke();
                 return;
             case (int)DS2TimerStatus.StopTimer:
                 _stopwatch.Stop();
