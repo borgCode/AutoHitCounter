@@ -306,6 +306,7 @@ namespace AutoHitCounter.ViewModels
                 }
 
                 LoadProfile(value);
+                SetDistancePbCommand?.RaiseCanExecuteChanged();
 
                 if (_activeGame == _selectedGame && _currentModule != null)
                     _currentModule.UpdateEvents(GetActiveEvents());
@@ -525,6 +526,7 @@ namespace AutoHitCounter.ViewModels
             SelectedSplit = split;
             MoveSplitUpCommand.RaiseCanExecuteChanged();
             MoveSplitDownCommand.RaiseCanExecuteChanged();
+            SetDistancePbCommand?.RaiseCanExecuteChanged();
             NotifyProfileSplitsChanged();
         }
 
@@ -786,7 +788,6 @@ namespace AutoHitCounter.ViewModels
 
                 var payload = new HitPayload(_activeGame, ActiveProfile, CurrentSplit, TotalHits, TotalPb, InGameTime);
                 await _externalIntegrationService.SendHitAsync(payload);
-
             };
             _currentModule.OnRunStart += HandleRunStart;
             _currentModule.OnEventSet += AutoAdvanceSplit;
@@ -959,6 +960,7 @@ namespace AutoHitCounter.ViewModels
                     OnPropertyChanged(nameof(TotalDiff));
                     OnPropertyChanged(nameof(TotalHitsBrush));
                     OnPropertyChanged(nameof(TotalPb));
+                    RefreshDistancePbIndicator();
                 };
                 Splits.Add(vm);
             }
@@ -986,6 +988,7 @@ namespace AutoHitCounter.ViewModels
             if (index < 0) return;
 
             _activeProfile.DistancePb = index;
+            RefreshDistancePbIndicator();
             _profileService.SaveProfile(_activeProfile);
             _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
         }
@@ -1003,6 +1006,13 @@ namespace AutoHitCounter.ViewModels
             }
         }
 
+        private void RefreshDistancePbIndicator()
+        {
+            if (_activeProfile == null) return;
+            for (int i = 0; i < Splits.Count; i++)
+                Splits[i].IsDistancePb = i == _activeProfile.DistancePb;
+        }
+
         private void RefreshSplitValues()
         {
             var hits = Splits.Select(s => s.NumOfHits).ToArray();
@@ -1010,6 +1020,7 @@ namespace AutoHitCounter.ViewModels
             var selectedIndex = SelectedSplit != null ? Splits.IndexOf(SelectedSplit) : -1;
 
             UpdateSplits();
+            RefreshDistancePbIndicator();
 
             for (int i = 0; i < Splits.Count && i < hits.Length; i++)
                 Splits[i].NumOfHits = hits[i];
@@ -1210,6 +1221,7 @@ namespace AutoHitCounter.ViewModels
             OnPropertyChanged(nameof(TotalHits));
             OnPropertyChanged(nameof(TotalPb));
             OnPropertyChanged(nameof(TotalDiff));
+            RefreshDistancePbIndicator();
             _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
         }
 
@@ -1257,6 +1269,7 @@ namespace AutoHitCounter.ViewModels
                 _activeProfile.SavedRun = null;
                 _profileService.SaveProfile(_activeProfile);
                 OnPropertyChanged(nameof(AttemptCount));
+                RefreshDistancePbIndicator();
             }
 
             var key = $"{_selectedGame?.GameName}|{_activeProfile?.Name}";
@@ -1308,6 +1321,7 @@ namespace AutoHitCounter.ViewModels
 
             split.IsEditingPb = false;
             RefreshSplitValues();
+            SetDistancePbCommand?.RaiseCanExecuteChanged();
             _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
         }
 

@@ -59,6 +59,14 @@ public class SplitViewModel : BaseViewModel
         set => SetProperty(ref _isCurrent, value);
     }
 
+    private bool _isDistancePb;
+
+    public bool IsDistancePb
+    {
+        get => _isDistancePb;
+        set => SetProperty(ref _isDistancePb, value);
+    }
+
     private bool _isAuto;
 
     public bool IsAuto
