@@ -180,9 +180,23 @@ namespace AutoHitCounter
             var editingPbSplit = vm.Splits.FirstOrDefault(s => s.IsEditingPb);
             if (editingPbSplit != null)
             {
-                var pbBox = FindRenameBox(SplitListBox, editingPbSplit);
+                var pbBox = FindRenameBox(SplitListBox, editingPbSplit, "PbBox");
                 if (pbBox == null || (hit != null && !IsDescendantOf(pbBox, hit)))
+                {
+                    var clickedItem = hit != null
+                        ? VisualTreeHelpers.FindAncestor<ListBoxItem>(hit as DependencyObject)
+                        : null;
+                    var clickedSplit = clickedItem?.DataContext as SplitViewModel;
+
                     vm.CommitPbEdit(editingPbSplit, pbBox?.Text ?? editingPbSplit.PersonalBest.ToString());
+                    
+                    if (clickedSplit != null)
+                    {
+                        var newSplit = vm.Splits.FirstOrDefault(s => s.Name == clickedSplit.Name);
+                        if (newSplit != null)
+                            vm.SelectedSplit = newSplit;
+                    }
+                }
             }
         }
 
@@ -215,6 +229,14 @@ namespace AutoHitCounter
         private void SplitContextDots_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton != MouseButton.Left) return;
+
+            if (sender is FrameworkElement fe)
+            {
+                var item = VisualTreeHelpers.FindAncestor<ListBoxItem>(fe);
+                if (item != null)
+                    item.IsSelected = true;
+            }
+
             var contextMenu = SplitListBox.ContextMenu;
             if (contextMenu == null) return;
             contextMenu.PlacementTarget = SplitListBox;
