@@ -519,6 +519,7 @@
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <EventSetter Event="MouseDoubleClick" Handler="SplitItem_DoubleClick" />
+                                <EventSetter Event="PreviewMouseRightButtonDown" Handler="SplitItem_RightClick" />
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                                 <Setter Property="BorderThickness" Value="4,0,0,0" />
                                 <Setter Property="BorderBrush" Value="Transparent" />

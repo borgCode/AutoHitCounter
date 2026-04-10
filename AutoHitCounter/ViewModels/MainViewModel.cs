@@ -675,6 +675,7 @@ namespace AutoHitCounter.ViewModels
                 if (!IsUnlocked) SelectedSplit = null;
                 MoveSplitUpCommand.RaiseCanExecuteChanged();
                 MoveSplitDownCommand.RaiseCanExecuteChanged();
+                SetDistancePbCommand.RaiseCanExecuteChanged();
             });
 
             MoveSplitUpCommand = new DelegateCommand(MoveSplitUp, () => CanMoveSplitUp());
@@ -1006,6 +1007,7 @@ namespace AutoHitCounter.ViewModels
         {
             var hits = Splits.Select(s => s.NumOfHits).ToArray();
             var currentIndex = CurrentSplit != null ? Splits.IndexOf(CurrentSplit) : -1;
+            var selectedIndex = SelectedSplit != null ? Splits.IndexOf(SelectedSplit) : -1;
 
             UpdateSplits();
 
@@ -1017,6 +1019,9 @@ namespace AutoHitCounter.ViewModels
                 CurrentSplit = Splits[currentIndex];
                 CurrentSplit.IsCurrent = true;
             }
+
+            if (selectedIndex >= 0 && selectedIndex < Splits.Count)
+                SelectedSplit = Splits[selectedIndex];
         }
 
         private Dictionary<uint, (string Name, int Required, int Hit)> GetActiveEvents()

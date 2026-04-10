@@ -64,6 +64,12 @@ namespace AutoHitCounter
         }
 
 
+        private void SplitItem_RightClick(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is ListBoxItem item)
+                item.IsSelected = true;
+        }
+
         private void SplitItem_DoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (sender is not ListBoxItem { DataContext: SplitViewModel split }) return;
