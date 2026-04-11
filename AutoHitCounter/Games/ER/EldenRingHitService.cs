@@ -112,8 +112,9 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         var code = Base + FallDamage;
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x7, WorldChrMan.Base, 7, 0x7 + 3),
-            (code + 0x2F, hit, 6, 0x2F + 2),
-            (code + 0x37, Hooks.FallDamage + 5, 5, 0x37 + 1),
+            (code + 0x3F, Functions.IsTorrent, 5, 0x3F + 1),
+            (code + 0x5F, hit, 6, 0x5F + 2),
+            (code + 0x67, Hooks.FallDamage + 5, 5, 0x67 + 1),
         ]);
 
         memoryService.WriteBytes(code, bytes);

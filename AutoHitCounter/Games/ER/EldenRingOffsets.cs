@@ -123,6 +123,7 @@ public static class EldenRingOffsets
         public static nint GetEvent;
         public static nint HasStateInfo;
         public static nint IsNoDeathEnabled;
+        public static nint IsTorrent;
     }
 
     public static class Patches
@@ -632,6 +633,26 @@ public static class EldenRingOffsets
             Version2_6_0 or Version2_6_1 => 0x437580,
             _ => 0
         };
+        
+        Functions.IsTorrent = moduleBase + Version switch
+        {
+            Version1_2_0 => 0x3EC2A0,
+            Version1_2_1 or Version1_2_2 => 0x3EC310,
+            Version1_2_3 => 0x3EC430,
+            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x3ECC00,
+            Version1_4_0 or Version1_4_1 => 0x3EF100,
+            Version1_5_0 => 0x3EF4D0,
+            Version1_6_0 => 0x3F02B0,
+            Version1_7_0 => 0x3F0300,
+            Version1_8_0 or Version1_8_1 => 0x3F17F0,
+            Version1_9_0 or Version1_9_1 => 0x3F1920,
+            Version2_0_0 or Version2_0_1 => 0x3F19F0,
+            Version2_2_0 or Version2_2_3 or Version2_6_0 or Version2_6_1 => 0x3F40B0,
+            Version2_3_0 => 0x3F40C0,
+            Version2_4_0 or Version2_5_0 => 0x3F40E0,
+            _ => 0
+        };
+
 
 
         Patches.NoLogo = moduleBase + Version switch
@@ -694,6 +715,7 @@ public static class EldenRingOffsets
         PrintOffset("GetEvent", Functions.GetEvent);
         PrintOffset("HasStateInfo", Functions.HasStateInfo);
         PrintOffset("IsNoDeathEnabled", Functions.IsNoDeathEnabled);
+        PrintOffset("IsTorrent", Functions.IsTorrent);
 
 
         Console.WriteLine("\n--- Patches ---");
