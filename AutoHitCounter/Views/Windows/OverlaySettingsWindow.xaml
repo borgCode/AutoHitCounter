@@ -133,12 +133,23 @@
                         <CheckBox Content="Show IGT" IsChecked="{Binding ShowIgt}" Margin="0,2,0,2" />
                         <CheckBox Content="Show Attempts" IsChecked="{Binding ShowAttempts}" Margin="0,2,0,2" />
                         <CheckBox Content="Show Progress" IsChecked="{Binding ShowProgress}" Margin="0,2,0,2" />
+                        <CheckBox Content="Show Progress Bar" IsChecked="{Binding ShowProgressBar}" Margin="0,2,0,2" />
                         <CheckBox Content="Show Distance PB" IsChecked="{Binding ShowDpbHighlight}" Margin="0,2,0,2" />
                         <CheckBox Content="Show Footer Totals" IsChecked="{Binding ShowFooterTotals}" Margin="0,2,0,2" />
+                        <CheckBox Content="Show Header Border" IsChecked="{Binding ShowHeaderBorder}" Margin="0,2,0,2" />
+                        <CheckBox Content="Show Footer Border" IsChecked="{Binding ShowFooterBorder}" Margin="0,2,0,2" />
                         <CheckBox Content="Show Run Complete" IsChecked="{Binding ShowRunComplete}" Margin="0,2,0,2" />
                         <CheckBox Content="Table Mode" IsChecked="{Binding TableMode}" Margin="0,2,0,2" />
                         <CheckBox Content="PB Color Matches Hit" IsChecked="{Binding PbMatchesHit}" Margin="0,2,0,2" />
 
+                        <Separator Style="{StaticResource Separator}" />
+                        <TextBlock Text="PROGRESS BAR" Style="{StaticResource SectionLabel}" />
+                        
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="Height" Style="{StaticResource FieldLabel}" Width="80" />
+                            <xctk:IntegerUpDown Value="{Binding ProgressBarHeight}" Minimum="1" Maximum="50" Width="55" />
+                        </StackPanel>
+                        
                         <Separator Style="{StaticResource Separator}" />
                         <TextBlock Text="SPLITS" Style="{StaticResource SectionLabel}" />
 
@@ -252,6 +263,26 @@
                                     Fill="{Binding HeaderTextColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding HeaderTextColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                        </StackPanel>
+                        
+                        <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
+
+                        <TextBlock Text="PROGRESS BAR" Style="{StaticResource SectionLabel}" />
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Progress Color" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding ProgressBarColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding ProgressBarColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Bar Color" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding ProgressBarBgColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding ProgressBarBgColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
                         </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />

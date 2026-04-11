@@ -33,12 +33,23 @@ public class OverlayConfig
     public string HeaderTextColor { get; set; }
     public string HeaderFontFamily { get; set; }
     public int HeaderFontSize { get; set; }
+    public bool ShowHeaderBorder { get; set; }
 
 
     // Attempts Counter //
 
     public string AttemptsZeroColor { get; set; }
     public string AttemptsActiveColor { get; set; }
+    
+    // Progress Bar Section //
+    
+    public bool ShowProgressBar { get; set; } 
+    
+    public int ProgressBarHeight  { get; set; }
+    
+    public string ProgressBarBgColor  { get; set; }
+    
+    public string ProgressBarColor   { get; set; }
 
 
     // Splits Section //
@@ -101,6 +112,7 @@ public class OverlayConfig
 
     // Footer Section //
 
+    public bool ShowFooterBorder { get; set; }
     public string FooterHitFontColor { get; set; }
     public string FooterHitsCurrentColor { get; set; }
     public string FooterPbFontColor { get; set; }

@@ -61,7 +61,6 @@
             text-transform: uppercase;
             color: #bbb;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            margin-bottom: 2px;
         }
 
         /* Center align header columns except the first */
@@ -154,7 +153,6 @@
         .footer {
             display: grid;
             padding: 4px 8px 4px 10px;
-            margin-top: 1px;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
             font-size: 15px;
             font-weight: 450;
@@ -217,6 +215,10 @@
     <div id="title" style="display:none;"></div>
     <!-- Header row - columns injected by applyLayout() -->
     <div class="header" id="header"></div>
+    <!-- Progress Bar - columns injected by applyLayout() -->
+    <div id="progressBar" style="display:none;">
+        <div id="progressBarFill"></div>
+    </div>
     <!-- Split rows - injected by renderState() -->
     <div id="splits"></div>
     <!-- Footer row - IGT + run totals, injected by renderState() -->
@@ -231,64 +233,70 @@
         const RECONNECT_INTERVAL = 3000;
 
         const DEFAULTS = {
-            showAttempts: true,
-            prevSplits: 4,
-            nextSplits: 10,
-            showDiff: true,
-            showPb: true,
-            showIgt: true,
-            overlayWidth: 380,
-            overlayHeight: 500,
-            showProgress: true,
-            fontFamily: 'Segoe UI',
-            fontSize: 16,
-            rowHeight: 29,
-            backgroundOpacity: 0,
-            tableMode: false,
-            hitsCurrentColor: '#888888',
-            hitsClearedColor: '#00cc66',
-            hitsActiveColor: '#c8843a',
-            rowHitColor: 'rgba(255, 76, 76, 0.17)',
-            rowClearedColor: 'rgba(0, 204, 102, 0.17)',
-            diffPosColor: '#ff4c4c',
-            diffNegColor: '#00cc66',
-            diffZeroColor: '#bbbbbb',
-            attemptsZeroColor: '#ffffff',
-            attemptsActiveColor: '#9D61A8',
-            headerTextColor: '#bbbbbb',
-            igtColor: '#c47fd4',
-            runCompleteBannerColor: '#00cc66',
-            fontBold: false,
-            fontItalic: false,
-            fontUnderline: false,
-            splitNameColor: '#e0e0e0',
-            splitNameOnHitColor: '#e0e0e0',
-            splitNameOnHitlessColor: '#e0e0e0',
-            groupNameColor: '#999999',
-            pbColor: '#bbbbbb',
-            showFooterTotals: true,
-            igtFontFamily: 'Consolas',
-            igtFontSize: 17,
-            alternatingRows: 'rgba(255, 255, 255, 0.05)',
-            headerFontFamily: 'Segoe UI',
-            headerFontSize: 13,
-            showTitle: false,
-            titleText: '',
-            titleColor: '#e0e0e0',
-            titleFontFamily: 'Segoe UI',
-            titleFontSize: 20,
-            showRunComplete: true,
-            runCompleteText: '✓ Run Complete',
-            pbMatchesHit: false,
-            footerFontSize: 16,
-            footerFontFamily: 'Segoe UI',
-            footerHitFontColor: '#c8843a',
-            footerHitsCurrentColor: '#888888',
-            footerPbFontColor: '#bbbbbb',
-            dpbHighlightColor: '#ffe766',
-            showDpbHighlight: true,
-            customCss: '',
-        };
+                showAttempts: true,
+                prevSplits: 4,
+                nextSplits: 10,
+                showDiff: true,
+                showPb: true,
+                showIgt: true,
+                overlayWidth: 380,
+                overlayHeight: 500,
+                showProgress: true,
+                fontFamily: 'Segoe UI',
+                fontSize: 16,
+                rowHeight: 29,
+                backgroundOpacity: 0,
+                tableMode: false,
+                hitsCurrentColor: '#888888',
+                hitsClearedColor: '#00cc66',
+                hitsActiveColor: '#c8843a',
+                rowHitColor: 'rgba(255, 76, 76, 0.17)',
+                rowClearedColor: 'rgba(0, 204, 102, 0.17)',
+                diffPosColor: '#ff4c4c',
+                diffNegColor: '#00cc66',
+                diffZeroColor: '#bbbbbb',
+                attemptsZeroColor: '#ffffff',
+                attemptsActiveColor: '#9D61A8',
+                headerTextColor: '#bbbbbb',
+                igtColor: '#c47fd4',
+                runCompleteBannerColor: '#00cc66',
+                fontBold: false,
+                fontItalic: false,
+                fontUnderline: false,
+                splitNameColor: '#e0e0e0',
+                splitNameOnHitColor: '#e0e0e0',
+                splitNameOnHitlessColor: '#e0e0e0',
+                groupNameColor: '#999999',
+                pbColor: '#bbbbbb',
+                showFooterTotals: true,
+                igtFontFamily: 'Consolas',
+                igtFontSize: 17,
+                alternatingRows: 'rgba(255, 255, 255, 0.05)',
+                headerFontFamily: 'Segoe UI',
+                headerFontSize: 13,
+                showTitle: false,
+                titleText: '',
+                titleColor: '#e0e0e0',
+                titleFontFamily: 'Segoe UI',
+                titleFontSize: 20,
+                showRunComplete: true,
+                runCompleteText: '✓ Run Complete',
+                pbMatchesHit: false,
+                footerFontSize: 16,
+                footerFontFamily: 'Segoe UI',
+                footerHitFontColor: '#c8843a',
+                footerHitsCurrentColor: '#888888',
+                footerPbFontColor: '#bbbbbb',
+                dpbHighlightColor: '#ffe766',
+                showDpbHighlight: true,
+                customCss: '',
+                showProgressBar: false,
+                progressBarHeight: 5,
+                progressBarColor: '#c47fd4',
+                progressBarBgColor: 'rgba(255,255,255,0.08)',
+                showHeaderBorder: true,
+                showFooterBorder: true,
+            };
 
         let config = {...DEFAULTS};
 
@@ -379,7 +387,8 @@
                 .split-row { height: ${config.rowHeight}px; font-size: ${config.fontSize}px; }
                 .footer { font-family: ${config.footerFontFamily};
                         font-size: ${config.footerFontSize}px;
-                        background: ${config.backgroundOpacity > 0 ? `rgba(0, 0, 0, ${config.backgroundOpacity})` : 'transparent'}; 
+                        background: ${config.backgroundOpacity > 0 ? `rgba(0, 0, 0, ${config.backgroundOpacity})` : 'transparent'};
+                        border-top: ${config.showFooterBorder ? '1px solid rgba(255,255,255,0.08)' : 'none'}; 
                         }
                 .run-complete { 
                     color: ${config.runCompleteBannerColor}; 
@@ -423,12 +432,15 @@
                     font-weight: ${config.fontBold ? 'bold' : 'normal'};
                     font-style: ${config.fontItalic ? 'italic' : 'normal'};
                     text-decoration: ${config.fontUnderline ? 'underline' : 'none'};
+                    border-bottom: ${config.showHeaderBorder ? '1px solid rgba(255,255,255,0.08)' : 'none'};
                 }
                 #progress { font-size: ${config.headerFontSize + 1}px; }
                 #attempts { font-size: ${config.headerFontSize + 2}px; }
                 .header span:not(:first-child) { color: ${config.headerTextColor}; }
                 .igt { color: ${config.igtColor}; font-family: ${config.igtFontFamily || 'Consolas, monospace'}; font-size: ${config.igtFontSize || 16}px; }
                 #title { color: ${config.titleColor}; font-family: ${config.titleFontFamily || 'Segoe UI'}; font-size: ${config.titleFontSize || 18}px; }
+                #progressBar { height: ${config.progressBarHeight}px; background: ${config.progressBarBgColor}; }
+                #progressBarFill { height: 100%; background: ${config.progressBarColor}; transition: width 0.2s ease; }
                 `;
         }
 
@@ -456,6 +468,7 @@
             const cols = getGridColumns();
             headerEl.style.gridTemplateColumns = cols;
             document.getElementById('footer').style.gridTemplateColumns = cols;
+            document.getElementById('progressBar').style.display = config.showProgressBar ? 'block' : 'none';
 
             overlay.style.background = config.backgroundOpacity > 0
                 ? `rgba(0, 0, 0, ${config.backgroundOpacity})`
@@ -535,6 +548,14 @@
                 html += buildRow(splits[i], cols, start + i, currentIndex, dpbHighlightIndex);
             }
             splitsEl.innerHTML = html;
+
+            const progressBarEl = document.getElementById('progressBarFill');
+            if (progressBarEl && config.showProgressBar) {
+                const children = state.splits.filter(s => !s.isParent);
+                const doneCount = children.filter((s, i) => i < children.findIndex(s => s.isCurrent)).length;
+                const pct = children.length > 0 ? (doneCount / children.length) * 100 : 0;
+                progressBarEl.style.width = pct + '%';
+            }
 
             const footerEl = document.getElementById('footer');
             const progressEl = document.getElementById('progress');
