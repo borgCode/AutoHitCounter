@@ -163,6 +163,8 @@ public partial class ProfileEditorWindow : Window
             }
 
             vm.ImportProfile(profile);
+            
         }
+        vm.NotifySaved();
     }
 }

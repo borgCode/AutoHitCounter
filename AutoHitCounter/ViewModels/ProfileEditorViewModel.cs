@@ -167,6 +167,8 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
         else
             Profiles.Add(profile);
     }
+    
+    public void NotifySaved() => OnSaved?.Invoke();
 
 
     public ObservableCollection<SplitEntry> FilteredEvents { get; } = new();
