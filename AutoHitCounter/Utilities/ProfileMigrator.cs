@@ -8,7 +8,7 @@ namespace AutoHitCounter.Utilities;
 
 public static class ProfileMigrator
 {
-    private const int CurrentMigrationVersion = 2;
+    private const int CurrentMigrationVersion = 3;
 
     private static readonly string UserProfilesPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -41,8 +41,8 @@ public static class ProfileMigrator
 
             bool changed = false;
 
-            if (settings.MigrationVersion < 1)
-                changed |= Migration1_FixEventIds(profiles);
+            if (settings.MigrationVersion < CurrentMigrationVersion)
+                changed |= MigrateEventIds(profiles);
 
             if (changed)
             {
@@ -63,7 +63,7 @@ public static class ProfileMigrator
         }
     }
 
-    private static bool Migration1_FixEventIds(Dictionary<string, List<Profile>> profiles)
+    private static bool MigrateEventIds(Dictionary<string, List<Profile>> profiles)
     {
         // Old event ID -> correct event ID, organized by game name
         var migrations = new Dictionary<string, Dictionary<uint, uint>>
@@ -72,7 +72,7 @@ public static class ProfileMigrator
             {
                 { 11210001, 11215015 },  // Artorias
                 { 11010902, 11015375 },  // Capra Demon
-                { 11210004, 11215065 },  // Kalameet
+                { 11215065, 11210004 },  // Kalameet  
                 { 11210002, 11215025 },  // Manus
                 { 11210000, 11215005 },  // Sanctuary Guardian
                 { 11010901, 11015385 },  // Taurus Demon
