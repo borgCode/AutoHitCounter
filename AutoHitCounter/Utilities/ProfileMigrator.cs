@@ -97,7 +97,7 @@ public static class ProfileMigrator
                 { 20005340, 11110410 },  // General Kuranosuke Matsumoto
                 { 9302, 11020800 },          // Lady Butterfly
                 { 11005637, 11020800 },          // Lady Butterfly
-                { 9314, 9307 },          // Headless Ape
+                { 9314, 11700850 },          // Headless Ape
                 { 9307, 11700850 },          // Headless Ape
                 { 9308, 1359 },          // Shinobi Owl
                 { 11115850, 1359 },          // Shinobi Owl
@@ -106,7 +106,10 @@ public static class ProfileMigrator
                 {9303, 11110800},             //Geni Castle
                 {11500200, 9380},            // Mist noble
                 {9313, 11110800},             //Demon of Hatred
-                {9312, 11125860}             // Isshin
+                {11125830, 1296},             // Tomoe Geni
+                {9312, 1299},             // Isshin
+                {11125877, 1299}             // Isshin
+                
             },
             ["Elden Ring"] = new()
             {
