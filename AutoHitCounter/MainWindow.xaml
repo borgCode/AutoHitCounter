@@ -823,7 +823,7 @@
                                                 <TextBox Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}"
                                                          TextWrapping="Wrap"
                                                          AcceptsReturn="True"
-                                                         FontSize="11"
+                                                         FontSize="13"
                                                          Foreground="{DynamicResource NotesTextBrush}"
                                                          Padding="2"
                                                          LostFocus="NotesBox_LostFocus">
