@@ -8,7 +8,7 @@ namespace AutoHitCounter.Utilities;
 
 public static class ProfileMigrator
 {
-    private const int CurrentMigrationVersion = 1;
+    private const int CurrentMigrationVersion = 2;
 
     private static readonly string UserProfilesPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -97,7 +97,10 @@ public static class ProfileMigrator
                 { 20005340, 11110410 },  // General Kuranosuke Matsumoto
                 { 9314, 9307 },          // Headless Ape
                 {9300, 1027},             //Geni
-                {11500200, 9380}            // MIst noble
+                {9303, 11110800},             //Geni Castle
+                {11500200, 9380},            // Mist noble
+                {9313, 11110800},             //Demon of Hatred
+                {9312, 11125877}             // Isshin
             },
             ["Elden Ring"] = new()
             {

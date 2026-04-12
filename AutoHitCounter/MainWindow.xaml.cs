@@ -44,6 +44,16 @@ namespace AutoHitCounter
             };
         }
 
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            base.OnRenderSizeChanged(sizeInfo);
+            var clip = new RectangleGeometry(
+                new Rect(0, 0, sizeInfo.NewSize.Width, sizeInfo.NewSize.Height), 5, 5);
+            // find the root grid
+            if (Content is Grid grid)
+                grid.Clip = clip;
+        }
+
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
@@ -52,12 +62,11 @@ namespace AutoHitCounter
             SettingsManager.Default.MainWindowTop = Top;
             SettingsManager.Default.Save();
         }
-        
+
 
         private void SplitItem_DoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (sender is not ListBoxItem { DataContext: SplitViewModel split }) return;
-            if (split.IsParent) return;
 
             var vm = (MainViewModel)DataContext;
 

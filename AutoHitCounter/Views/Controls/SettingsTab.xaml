@@ -13,139 +13,151 @@
 
     <Grid Margin="10">
         <StackPanel Margin="0,0,0,5">
-        <Border BorderBrush="Gray" BorderThickness="1" Margin="0,10,0,0" Padding="5">
-            <StackPanel>
-                <TextBlock Text="General Settings" FontWeight="SemiBold" Margin="0,0,0,8" />
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                    <CheckBox Content="Always On Top"
-                              IsChecked="{Binding IsAlwaysOnTopEnabled}"
-                              Margin="0,0,10,0" />
-                    <TextBlock Text="Notes:" VerticalAlignment="Center" Margin="0,0,5,0" />
-                    <ComboBox ItemsSource="{Binding NotesDisplayModes}"
-                              SelectedItem="{Binding NotesDisplayMode}"
-                              Width="120">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </StackPanel>
-            </StackPanel>
-        </Border>
-
-        <Separator Margin="0,0,0,10" />
-
-        <Border BorderBrush="Gray" BorderThickness="1" Margin="0,10,0,0" Padding="5">
-            <StackPanel>
-                <TextBlock Text="Overlay Settings" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Left" />
-
-
-                <Button Content="Open Overlay Settings"
-                        Command="{Binding OpenOverlaySettingsCommand}"
-                        VerticalAlignment="Center"
-                        MaxWidth="250"
-                        Margin="0,5,0,5"
-                        Height="50">
-                </Button>
-            </StackPanel>
-        </Border>
-
-
-        <Border BorderBrush="Gray" BorderThickness="1" Margin="0,10,0,0" Padding="5">
-            <StackPanel>
-                <TextBlock Text="Game Settings" FontWeight="Bold" Margin="0,0,0,10" />
-
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                    <TextBlock Text="Game" VerticalAlignment="Center" Margin="0,0,10,0" />
-                    <ComboBox ItemsSource="{Binding GameTitles}"
-                              SelectedItem="{Binding SelectedSettingsGame}"
-                              Width="160">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </StackPanel>
-
-                <StackPanel Margin="0,0,0,0">
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                            <Setter Property="Visibility" Value="Collapsed" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedSettingsGame}"
-                                             Value="{x:Static enums:GameTitle.EldenRing}">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
-                    <StackPanel Orientation="Horizontal">
-                        <CheckBox Content="No Logo" IsChecked="{Binding ErNoLogo}" Margin="0, 0, 5, 0" />
-                        <CheckBox Content="Stutter Fix" IsChecked="{Binding ERStutterFix}" Margin="0, 0, 5, 0" />
-                        <CheckBox Content="Disable Achievements" IsChecked="{Binding ERDisableAchievements}"
-                                  Margin="0, 0, 5, 0" />
+            <Border BorderBrush="Gray" BorderThickness="1" Margin="0,10,0,0" Padding="5">
+                <StackPanel>
+                    <TextBlock Text="General Settings" FontWeight="SemiBold" Margin="0,0,0,8" />
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        
+                        <TextBlock Text="Theme:" VerticalAlignment="Center" Margin="0,0,5,0" />
+                        <ComboBox ItemsSource="{Binding ThemeModes}"
+                                  SelectedItem="{Binding ThemeMode}"
+                                  Width="120" Margin="0,0,10,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        
+                        <TextBlock Text="Notes:" VerticalAlignment="Center" Margin="0,0,5,0" />
+                        <ComboBox ItemsSource="{Binding NotesDisplayModes}"
+                                  SelectedItem="{Binding NotesDisplayMode}"
+                                  Width="120" Margin="0,0,10,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <CheckBox Content="Always On Top"
+                                  IsChecked="{Binding IsAlwaysOnTopEnabled}"
+                                  Margin="0,0,5,0" />
                     </StackPanel>
                 </StackPanel>
+            </Border>
 
-                <StackPanel Margin="0,0,0,0">
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                            <Setter Property="Visibility" Value="Collapsed" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedSettingsGame}"
-                                             Value="{x:Static enums:GameTitle.DarkSouls3}">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
-                    <StackPanel Orientation="Horizontal">
-                        <CheckBox Content="No Logo" IsChecked="{Binding DS3NoLogo}" Margin="0, 0, 5, 0" />
-                        <CheckBox Content="Stutter Fix" IsChecked="{Binding DS3StutterFix}" Margin="0, 0, 5, 0" />
+            <Separator Margin="0,0,0,10" />
+
+            <Border BorderBrush="Gray" BorderThickness="1" Margin="0,10,0,0" Padding="5">
+                <StackPanel>
+                    <TextBlock Text="Overlay Settings" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Left" />
+
+
+                    <Button Content="Open Overlay Settings"
+                            Command="{Binding OpenOverlaySettingsCommand}"
+                            VerticalAlignment="Center"
+                            MaxWidth="250"
+                            Margin="0,5,0,5"
+                            Height="50">
+                    </Button>
+                </StackPanel>
+            </Border>
+
+
+            <Border BorderBrush="Gray" BorderThickness="1" Margin="0,10,0,0" Padding="5">
+                <StackPanel>
+                    <TextBlock Text="Game Settings" FontWeight="Bold" Margin="0,0,0,10" />
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBlock Text="Game" VerticalAlignment="Center" Margin="0,0,10,0" />
+                        <ComboBox ItemsSource="{Binding GameTitles}"
+                                  SelectedItem="{Binding SelectedSettingsGame}"
+                                  Width="160">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,0,0">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedSettingsGame}"
+                                                 Value="{x:Static enums:GameTitle.EldenRing}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="No Logo" IsChecked="{Binding ErNoLogo}" Margin="0, 0, 5, 0" />
+                            <CheckBox Content="Stutter Fix" IsChecked="{Binding ERStutterFix}" Margin="0, 0, 5, 0" />
+                            <CheckBox Content="Disable Achievements" IsChecked="{Binding ERDisableAchievements}"
+                                      Margin="0, 0, 5, 0" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,0,0">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedSettingsGame}"
+                                                 Value="{x:Static enums:GameTitle.DarkSouls3}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="No Logo" IsChecked="{Binding DS3NoLogo}" Margin="0, 0, 5, 0" />
+                            <CheckBox Content="Stutter Fix" IsChecked="{Binding DS3StutterFix}" Margin="0, 0, 5, 0" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,0,0">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedSettingsGame}"
+                                                 Value="{x:Static enums:GameTitle.Sekiro}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="No Logo" IsChecked="{Binding SKNoLogo}" Margin="0, 0, 5, 0" />
+                            <CheckBox Content="No Tutorials" IsChecked="{Binding SKNoTutorials}" Margin="0, 0, 5, 0" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,0,0">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedSettingsGame}"
+                                                 Value="{x:Static enums:GameTitle.DarkSouls2}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="No Baby Jump" IsChecked="{Binding DS2NoBabyJump}" Margin="0, 0, 5, 0" />
+                            <CheckBox Content="Skip Credits" IsChecked="{Binding DS2SkipCredits}" Margin="0, 0, 5, 0" />
+                            <CheckBox Content="Disable Double Click" IsChecked="{Binding DS2DisableDoubleClick}"
+                                      Margin="0, 0, 5, 0" />
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
-
-                <StackPanel Margin="0,0,0,0">
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                            <Setter Property="Visibility" Value="Collapsed" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedSettingsGame}"
-                                             Value="{x:Static enums:GameTitle.Sekiro}">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
-                    <StackPanel Orientation="Horizontal">
-                        <CheckBox Content="No Logo" IsChecked="{Binding SKNoLogo}" Margin="0, 0, 5, 0" />
-                        <CheckBox Content="No Tutorials" IsChecked="{Binding SKNoTutorials}" Margin="0, 0, 5, 0" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Margin="0,0,0,0">
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                            <Setter Property="Visibility" Value="Collapsed" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedSettingsGame}"
-                                             Value="{x:Static enums:GameTitle.DarkSouls2}">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
-                    <StackPanel Orientation="Horizontal">
-                        <CheckBox Content="No Baby Jump" IsChecked="{Binding DS2NoBabyJump}" Margin="0, 0, 5, 0" />
-                        <CheckBox Content="Skip Credits" IsChecked="{Binding DS2SkipCredits}" Margin="0, 0, 5, 0" />
-                        <CheckBox Content="Disable Double Click" IsChecked="{Binding DS2DisableDoubleClick}"
-                                  Margin="0, 0, 5, 0" />
-                    </StackPanel>
-                </StackPanel>
-            </StackPanel>
-        </Border>
+            </Border>
         </StackPanel>
     </Grid>
 </UserControl>

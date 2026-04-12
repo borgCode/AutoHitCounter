@@ -31,6 +31,11 @@ namespace AutoHitCounter
             base.OnStartup(e);
 
             ProfileMigrator.RunIfNeeded();
+            
+            var savedTheme = (ThemeMode)SettingsManager.Default.ThemeMode;
+            ThemeService.Apply(savedTheme);
+            if (savedTheme == ThemeMode.System)
+                ThemeService.StartWatchingSystem();
 
             IMemoryService memoryService = new MemoryService();
             IStateService stateService = new StateService();
@@ -67,11 +72,14 @@ namespace AutoHitCounter
             };
             mainWindow.Show();
 
+            
+
             stateService.Publish(State.AppStart);
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
+            ThemeService.StopWatchingSystem();
             _mainViewModel?.FlushRunState();
             base.OnExit(e);
         }

@@ -66,7 +66,7 @@ public static class DS2Offsets
         {
             public const int PlayTime = 0x1CC;
         }
-        
+
         public static int PlayerCtrl => Version switch
         {
             Vanilla1_0_11 or Vanilla1_0_12 => 0x74,
@@ -107,7 +107,7 @@ public static class DS2Offsets
         public static nint NoBabyJump;
         public static nint CreditSkip;
     }
-    
+
     private static void InitializeBaseAddresses(nint moduleBase)
     {
         GameManagerImp.Base = moduleBase + Version switch
@@ -127,7 +127,7 @@ public static class DS2Offsets
             Scholar1_0_3 => 0x156D1C4,
             _ => 0
         };
-        
+
         KatanaMainApp.Base = moduleBase + Version switch
         {
             Vanilla1_0_11 => 0x11936C4,
@@ -149,10 +149,10 @@ public static class DS2Offsets
 
         Hooks.GeneralApplyDamage = moduleBase + Version switch
         {
-            Vanilla1_0_11 => 0x1F33D1,
-            Vanilla1_0_12 => 0x1F5AD1,
-            Scholar1_0_2 => 0x16727A,
-            Scholar1_0_3 => 0x16A39A,
+            Vanilla1_0_11 => 0x1F3395,
+            Vanilla1_0_12 => 0x1F5A95,
+            Scholar1_0_2 => 0x167234,
+            Scholar1_0_3 => 0x16A354,
             _ => 0
         };
 
@@ -174,7 +174,7 @@ public static class DS2Offsets
             _ => 0
         };
 
-        
+
         Hooks.ClearWetPoisonBit = moduleBase + Version switch
         {
             Vanilla1_0_11 => 0x28B93B,
@@ -183,7 +183,7 @@ public static class DS2Offsets
             Scholar1_0_3 => 0x223050,
             _ => 0
         };
-        
+
         Hooks.StaggerCheck = moduleBase + Version switch
         {
             Vanilla1_0_11 => 0x1CA788,
@@ -227,7 +227,7 @@ public static class DS2Offsets
             Scholar1_0_3 => 0xFCE7D,
             _ => 0
         };
-        
+
         Hooks.NoBabyJump = moduleBase + Version switch
         {
             Vanilla1_0_11 => 0x3A09C9,
@@ -236,7 +236,7 @@ public static class DS2Offsets
             Scholar1_0_3 => 0x381E27,
             _ => 0
         };
-        
+
         Hooks.CreditSkip = moduleBase + Version switch
         {
             Vanilla1_0_11 => 0x11BD53,
@@ -246,7 +246,7 @@ public static class DS2Offsets
             _ => 0
         };
 
-        
+
 #if DEBUG
         _baseAddr = moduleBase;
         Console.WriteLine("--- Base Pointers ---");
@@ -267,7 +267,7 @@ public static class DS2Offsets
         PrintOffset("IgtLoadGame", Hooks.IgtLoadGame);
         PrintOffset("NoBabyJump", Hooks.NoBabyJump);
         PrintOffset("CreditSkip", Hooks.CreditSkip);
-        
+
 
         Console.WriteLine("\n====================================\n");
 #endif

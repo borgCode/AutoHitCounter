@@ -2,6 +2,7 @@
 
 using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using AutoHitCounter.Models;
@@ -14,7 +15,9 @@ public class LogEntryToBrushConverter : IValueConverter
     {
         if (value is EventLogEntry entry)
         {
-            return entry.Value ? Brushes.Chartreuse : Brushes.Red;
+            return entry.Value 
+                ? GetBrush("EventTrueBrush")
+                : GetBrush("EventFalseBrush");
         }
 
         return Brushes.Black;
@@ -22,4 +25,12 @@ public class LogEntryToBrushConverter : IValueConverter
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         => throw new NotImplementedException();
+    
+    private static SolidColorBrush GetBrush(string key)
+    {
+        if (Application.Current.Resources[key] is SolidColorBrush brush)
+            return brush;
+        
+        return new SolidColorBrush(Colors.White);
+    }
 }

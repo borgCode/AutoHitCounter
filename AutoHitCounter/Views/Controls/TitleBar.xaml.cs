@@ -3,6 +3,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using AutoHitCounter.Behaviors;
 
 namespace AutoHitCounter.Views.Controls;
 
@@ -30,6 +32,17 @@ public partial class TitleBar : UserControl
 
     private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
+        if (e.OriginalSource is DependencyObject dep)
+        {
+            while (dep != null)
+            {
+                if (dep is Button)
+                    return;
+
+                dep = VisualTreeHelper.GetParent(dep);
+            }
+        }
+
         var window = Window.GetWindow(this);
         if (window == null) return;
 
@@ -38,11 +51,24 @@ public partial class TitleBar : UserControl
             window.WindowState = window.WindowState == WindowState.Maximized
                 ? WindowState.Normal
                 : WindowState.Maximized;
+            return;
         }
-        else
+
+        if (window.WindowState == WindowState.Maximized)
         {
-            window.DragMove();
+            var mousePos = e.GetPosition(window);
+            double percentX = mousePos.X / window.ActualWidth;
+
+            var cursor = WindowResizeBehavior.GetCursorPosition();
+
+            window.WindowState = WindowState.Normal;
+            window.UpdateLayout();
+
+            window.Left = cursor.X - (window.Width * percentX);
+            window.Top = cursor.Y - mousePos.Y;
         }
+
+        window.DragMove();
     }
 
     private void MinimizeButton_Click(object sender, RoutedEventArgs e)
@@ -60,8 +86,11 @@ public partial class TitleBar : UserControl
             : WindowState.Maximized;
     }
 
-    private void UpdateMaximizeIcon(Window window) =>
-        MaximizeButton.Content = window.WindowState == WindowState.Maximized ? "❐" : "☐";
+    private void UpdateMaximizeIcon(Window window)
+    {
+        if (MaximizeButton.Content is TextBlock tb)
+            tb.Text = window.WindowState == WindowState.Maximized ? "❐" : "☐";
+    }
 
     private void CloseButton_Click(object sender, RoutedEventArgs e) =>
         Window.GetWindow(this)?.Close();

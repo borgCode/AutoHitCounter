@@ -14,8 +14,8 @@
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent">
-    <Border Background="#2D2D30"
-            BorderBrush="#472d4c"
+    <Border Background="{DynamicResource InputBackgroundBrush}"
+            BorderBrush="{DynamicResource AppBorderBrush}"
             BorderThickness="1"
             CornerRadius="4"
             Margin="10">
@@ -31,19 +31,19 @@
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0"
-                    Background="#472d4c"
+                    Background="{DynamicResource TitleBarBrush}"
                     CornerRadius="3,3,0,0"
                     MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <TextBlock x:Name="TitleText"
                            Text="Message"
-                           Foreground="White"
+                           Foreground="{DynamicResource TitleTextBrush}"
                            FontWeight="SemiBold"
                            Margin="10,6" />
             </Border>
 
             <TextBlock x:Name="MessageText"
                        Grid.Row="1"
-                       Foreground="#F1F1F1"
+                       Foreground="{DynamicResource InputTextBrush}"
                        TextWrapping="Wrap"
                        Margin="15"
                        VerticalAlignment="Center" />
@@ -128,9 +128,9 @@
 
     <Window.Resources>
         <Style x:Key="MessageBoxButton" TargetType="Button">
-            <Setter Property="Background" Value="#3E3E42" />
-            <Setter Property="Foreground" Value="#F1F1F1" />
-            <Setter Property="BorderBrush" Value="#555555" />
+            <Setter Property="Background" Value="{DynamicResource MessageBoxBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource InputTextBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SwitchBorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">

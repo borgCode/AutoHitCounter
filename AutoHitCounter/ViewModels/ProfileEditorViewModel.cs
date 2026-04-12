@@ -78,7 +78,7 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
         EditSplitEventCommand = new DelegateCommand(EditSplitEvent,
             () => SelectedSplit?.Type == SplitType.Child);
     }
-    
+
     #region Commands
 
     public DelegateCommand<SplitEntry> AddCommand { get; }
@@ -96,9 +96,8 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
 
     public DelegateCommand AddSelectedCommand { get; private set; }
     public DelegateCommand RemoveSelectedCommand { get; private set; }
-    
+
     public DelegateCommand ClearAutoSplitEventsCommand { get; private set; }
-    
 
     #endregion
 
@@ -416,19 +415,14 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
 
     private void RenameSplit(SplitEntry entry)
     {
+        entry ??= SelectedSplit;
         if (entry == null) return;
 
         var newName = MsgBox.ShowInput("Rename Split", entry.Label, "Rename");
         if (string.IsNullOrWhiteSpace(newName)) return;
 
-        if (entry.IsAuto)
-        {
-            entry.DisplayName = newName;
-        }
-        else
-        {
-            entry.Name = newName;
-        }
+        entry.DisplayName = newName;
+        entry.Name = newName;
 
         IsDirty = true;
     }
@@ -552,6 +546,28 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
                Splits.IndexOf(SelectedSplit) < Splits.Count - 1;
     }
 
+    public void RefreshSplits()
+    {
+        var selectedName = SelectedSplit?.Name;
+        Splits.Clear();
+        if (_selectedProfile == null) return;
+        foreach (var split in _selectedProfile.Splits)
+            Splits.Add(new SplitEntry
+            {
+                EventId = split.EventId,
+                Name = split.Name,
+                DisplayName = split.DisplayName,
+                PersonalBest = split.PersonalBest,
+                Type = split.Type,
+                GroupId = split.GroupId,
+                Notes = split.Notes
+            });
+        if (selectedName != null)
+            SelectedSplit = Splits.FirstOrDefault(s => s.Name == selectedName);
+
+        FilterEvents();
+    }
+
     private int FindLastChildIndex(int parentIndex)
     {
         var lastIndex = parentIndex;
@@ -610,16 +626,56 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
         IsDirty = true;
     }
 
+    // fuzzy search
+    private static readonly Dictionary<string, string[]> Aliases = new(StringComparer.OrdinalIgnoreCase)
+    {
+        { "godfrey", ["Godfrey, the First Elden Lord (Golden Shade)", "Hoarah Loux, Warrior"] },
+        { "hoarah loux", ["Godfrey, the First Elden Lord (Golden Shade)", "Hoarah Loux, Warrior"] },
+        { "bofa", ["Beastman of Farum Azula"] },
+        { "moose", ["Regal Ancestor Spirit", "Ancestor Spirit"] },
+        { "bbh", ["Bell Bearing Hunter (Warmaster's Shack)", "Bell Bearing Hunter (Church of Vows)", "Bell Bearing Hunter (Hermit Merchant's Shack)", "Bell Bearing Hunter (Isolated Merchant's Shack)"] },
+        { "bbk", ["Black Blade Kindred (Greyoll's Dragonbarrow)", "Black Blade Kindred (Forbidden Lands)"] },
+        { "death bird", ["Deathbird (Stormhill)", "Deathbird (Weeping Peninsula)", "Deathbird (Liurnia of the Lakes)", "Deathbird (Capital Outskirts)",
+        "Death Rite Bird (Academy Gate Town)", "Death Rite Bird (Caelid)", "Death Rite Bird (Mountaintops of the Giants)", "Death Rite Bird (Consecrated Snowfield)", "Death Rite Bird (Charo's Hidden Grave)"] },
+        { "dragon", ["Ancient Dragon Lansseax", "Borealis the Freezing Fog", "Decaying Ekzykes", "Dragonkin Soldier (Lake of Rot)",
+            "Dragonkin Soldier (Siofra River)", "Dragonkin Soldier of Nokstella", "Dragonlord Placidusax", "Flying Dragon Agheel",
+            "Flying Dragon Greyll", "Glintstone Dragon Adula", "Glintstone Dragon Smarag", "Lichdragon Fortissax",
+            "Ancient Dragon-Man", "Ancient Dragon Senessax", "Ghostflame Dragon (Gravesite Plain)",
+            "Ghostflame Dragon (Scadu Altus)", "Ghostflame Dragon (Cerulean Coast)", "Jagged Peak Drake",
+            "Jagged Peak Drake (Duo Encounter)", "Bayle the Dread" ] },
+        { "corrupted monk", ["Fake Monk", "True Monk", "Fake Monk (Gauntlet)", "True Monk (Gauntlet)",] },
+        { "SSI", ["Isshin, the Sword Saint / Isshin, the Sword Saint (Gauntlet) / Inner Isshin",] },
+        { "orin", ["O'Rin of the Water",] },
+        { "hape", ["Headless Ape", "Headless Ape (Gauntlet)",] },
+        { "gape", ["Guardian Ape", "Guardian Ape (Gauntlet)",] },
+    };
+
 
     private void FilterEvents()
     {
         FilteredEvents.Clear();
 
+        HashSet<string> aliasMatches = [];
+        if (!string.IsNullOrEmpty(_searchText))
+        {
+            foreach (var kvp in Aliases)
+            {
+                if (kvp.Key.IndexOf(_searchText, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    foreach (var name in kvp.Value)
+                        aliasMatches.Add(name);
+                }
+            }
+        }
+
         foreach (var entry in AllEvents)
         {
-            if (!string.IsNullOrEmpty(_searchText) &&
-                !entry.Name.ToLower().Contains(_searchText.ToLower()))
-                continue;
+            var matchesDirect = string.IsNullOrEmpty(_searchText) ||
+                                entry.Name.IndexOf(_searchText, StringComparison.OrdinalIgnoreCase) >= 0;
+
+            var matchesAlias = aliasMatches.Contains(entry.Name);
+
+            if (!matchesDirect && !matchesAlias) continue;
 
             if (HideAdded && !AllowDuplicates && Splits.Any(s => s.EventId == entry.EventId))
                 continue;
@@ -658,6 +714,7 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
         _profileService.SaveProfile(profile);
         Profiles.Add(profile);
         SelectedProfile = profile;
+        OnSaved?.Invoke();
     }
 
     private void RenameProfile()
@@ -671,9 +728,12 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
         _profileService.DeleteProfile(_gameName, _selectedProfile.Name);
         _selectedProfile.Name = newName;
         _profileService.SaveProfile(_selectedProfile);
+        OnSaved?.Invoke();
 
         IsDirty = false;
     }
+
+    public event Action OnSaved;
 
     private void Save()
     {
@@ -684,6 +744,7 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
         _selectedProfile.Splits = Splits.ToList();
         _profileService.SaveProfile(_selectedProfile);
         IsDirty = false;
+        OnSaved?.Invoke();
     }
 
     private void Delete()
@@ -693,6 +754,7 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
         _profileService.DeleteProfile(_gameName, _selectedProfile.Name);
         Profiles.Remove(_selectedProfile);
         SelectedProfile = Profiles.FirstOrDefault();
+        OnSaved?.Invoke();
     }
 
     private void AssignGroupFromPosition(SplitEntry entry, int index)
@@ -711,14 +773,14 @@ public class ProfileEditorViewModel : BaseViewModel, IReorderHandler
 
         entry.GroupId = groupId;
     }
-    
+
     private void ClearEventIds()
     {
         bool shouldClearEvents = MsgBox.ShowYesNo(
             "Are you sure you want to clear all the autosplit events for this profile?",
             "Clear Events"
         );
-        
+
         if (shouldClearEvents)
         {
             foreach (var split in Splits)

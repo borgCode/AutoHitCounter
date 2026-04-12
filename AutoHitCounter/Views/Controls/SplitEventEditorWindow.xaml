@@ -9,16 +9,21 @@
         Height="440" Width="380"
         ResizeMode="NoResize"
         Background="Transparent">
-    <Border Background="#121212"
-            BorderBrush="#472d4c"
+    <Border Background="{DynamicResource BackgroundBrush}"
+            BorderBrush="{DynamicResource AppBorderBrush}"
             BorderThickness="1"
-            CornerRadius="4"
-            Margin="10">
+            CornerRadius="3"
+            Margin="10"
+            ClipToBounds="True" >
         <Border.Effect>
             <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="0.5" />
         </Border.Effect>
 
         <Grid>
+            <Grid.Clip>
+            <RectangleGeometry RadiusX="5" RadiusY="5"
+                               Rect="0,0,440,380"/>
+        </Grid.Clip>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
                 <RowDefinition Height="*" />
@@ -31,7 +36,7 @@
                 <!-- Split name -->
                 <TextBlock Text="{Binding SplitName}"
                            FontSize="13" FontWeight="SemiBold"
-                           Foreground="#ccc"
+                           Foreground="{DynamicResource EditorSplitsBrush}"
                            Margin="0,0,0,10"
                            TextTrimming="CharacterEllipsis" />
 
@@ -109,7 +114,7 @@
                                 <Trigger Property="IsKeyboardFocused" Value="True">
                                     <Setter TargetName="border"
                                             Property="BorderBrush"
-                                            Value="{StaticResource AccentBrush}" />
+                                            Value="{DynamicResource AccentBrush}" />
                                     <Setter TargetName="border"
                                             Property="BorderThickness"
                                             Value="1.5" />
@@ -135,17 +140,17 @@
                                     <ControlTemplate TargetType="ListBoxItem">
                                         <Border x:Name="Bd"
                                                 Background="Transparent"
-                                                BorderBrush="#B37c4d85"
+                                                BorderBrush="{DynamicResource SplitsCurrentBrush}"
                                                 BorderThickness="0,0,0,1"
                                                 Padding="{TemplateBinding Padding}">
                                             <ContentPresenter />
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="Bd" Property="Background" Value="#6683518c" />
+                                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SplitsHoverBrush}" />
                                             </Trigger>
                                             <Trigger Property="IsSelected" Value="True">
-                                                <Setter TargetName="Bd" Property="Background" Value="#B37c4d85" />
+                                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SplitsCurrentBrush}" />
                                             </Trigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
@@ -157,7 +162,7 @@
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}"
                                        FontSize="12"
-                                       Foreground="#bbb"
+                                       Foreground="{DynamicResource EditorTemplatesBrush}"
                                        TextTrimming="CharacterEllipsis" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>

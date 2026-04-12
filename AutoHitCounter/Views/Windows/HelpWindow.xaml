@@ -2,12 +2,21 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:AutoHitCounter.Views.Controls"
+        xmlns:behaviors="clr-namespace:AutoHitCounter.Behaviors"
         Style="{StaticResource DefaultWindowStyle}"
         WindowStyle="None"
         AllowsTransparency="True"
+        Background="Transparent"
         Title="Help" Height="600" Width="600"
+        MinHeight="600" MinWidth="600"
+        ResizeMode="CanResize"
+                       behaviors:WindowResizeBehavior.EnableCustomResize="True"
         WindowStartupLocation="CenterOwner">
-    <Grid>
+    <Grid Background="{DynamicResource BackgroundBrush}">
+        <Grid.Clip>
+            <RectangleGeometry RadiusX="5" RadiusY="5"
+                               Rect="0,0,600,600"/>
+        </Grid.Clip>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
@@ -17,6 +26,23 @@
         <!-- Title Bar -->
         <controls:TitleBar Grid.Row="0" Title="Help Center" />
 
+        <!-- Focus outline -->
+        <Border Grid.Row="0" Grid.RowSpan="3"
+                BorderThickness="1" IsHitTestVisible="False" Panel.ZIndex="99"
+                CornerRadius="3" ClipToBounds="True" Background="Transparent">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType=Window}}"
+                                     Value="True">
+                            <Setter Property="BorderBrush" Value="{DynamicResource AppBorderBrush}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
+        
         <!-- Tab Headers -->
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -49,15 +75,15 @@
                     <Grid>
                         <StackPanel x:Name="PageOverview">
                             <TextBlock Text="Overview" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10" />
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" LineHeight="22">
                                 Welcome to the Auto Hit Counter Help Center!
                             </TextBlock>
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,0,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,0,0" LineHeight="22">
                                 Auto Hit Counter is a tool which tracks boss hits in all From Software Titles that are available on PC
                                 (Dark Souls Remastered,Dark Souls 2,Dark Souls 3, Sekiro and Elden Ring).
                                 This tool both increment hits and advance splits once a boss is defeated automatically, while the tool is capable of counting every instance of a hit it only adds one for every 3 seconds to avoid counting 20 on attacks similar to Malenia's Waterfowl Dance.
                             </TextBlock>
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,0,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,0,0" LineHeight="22">
                                 In the next panels you will get familiar with the capabilities of the tool and how you can set things up for your desired game. Good luck running, and don't get hit!
                             </TextBlock>
                         </StackPanel>
@@ -67,7 +93,7 @@
                         <StackPanel x:Name="PageSplits" Visibility="Collapsed">
                             <TextBlock Text="Splits" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10" />
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,0,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,0,0" LineHeight="22">
                                 Welcome to the Splits section! This is the main view and what you'll see when you first open the tool.
                             </TextBlock>
 
@@ -78,7 +104,7 @@
                                 Tracking Games
                             </TextBlock>
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,0,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,0,0" LineHeight="22">
                                 Right under the Splits tab you can see a dropdown menu called Game.
                                 Here is where you choose what game the tool should track hits for.
                                 Depending on the game certain features will unlock for both the settings tab and the profile editor settings.
@@ -115,7 +141,7 @@
                                 Profile Editor
                             </TextBlock>
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,0,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,0,0" LineHeight="22">
                                 Next to Tracking is another dropdown menu.
                                 This contains all the available profiles for the selected game (both default templates and personal profiles).
                                 You do not need to track a game to check out different game profiles and the tool will remember all the ongoing progress if you decide to check out other profiles temporarily.
@@ -133,7 +159,7 @@
                                 🔒Lock or 🔓Unlock Button
                             </TextBlock>
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,0,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,0,0" LineHeight="22">
                                 The Splits Lock/Unlock feature prevents accidental edits while allowing minimal customization.
                                 <LineBreak />
                                 This button works as follows:<LineBreak />
@@ -142,7 +168,7 @@
                                 <LineBreak />When 🔒 Locked: the splits cannot be moved, and double clicking a split advances the current split to the selected one.
                                 Basic options provided through the context menu are still available when Locked; see below.
                             </TextBlock>
-                            
+
                             <!-- Practice Mode -->
                             <TextBlock FontSize="15" FontWeight="SemiBold"
                                        Margin="0,0,0,10">
@@ -150,24 +176,24 @@
                                 Practice Mode
                             </TextBlock>
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,0,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,0,0" LineHeight="22">
                                 Enabling Practice Mode makes it so hits don't count and doesn't automatically split in case you kill a boss, simple as that!
                                 <LineBreak />
                                 The colours of the switch will change to reflect if it's active or not as seen below.
                                 <LineBreak />
-                                
+
                                 <!-- Off state -->
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                     <Border Width="35" Height="18" CornerRadius="7"
-                                            Background="#444444" BorderBrush="#555555" BorderThickness="1">
+                                            Background="{DynamicResource SwitchBackgroundBrush}" BorderBrush="{DynamicResource SwitchBorderBrush}" BorderThickness="1">
                                         <Border Width="14" Height="14" CornerRadius="7"
-                                                Background="#AAAAAA" HorizontalAlignment="Left" Margin="1,0,0,0" />
+                                                Background="{DynamicResource SwitchDotBrush}" HorizontalAlignment="Left" Margin="1,0,0,0" />
                                     </Border>
-                                    <TextBlock Text=" Inactive" Foreground="#CCC" VerticalAlignment="Center"
+                                    <TextBlock Text=" Inactive" Foreground="{DynamicResource EditorSplitsBrush}" VerticalAlignment="Center"
                                                FontSize="11" />
                                 </StackPanel>
                                 <LineBreak />
-                                
+
                                 <!-- On state -->
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,6,0,0">
                                     <Border Width="35" Height="18" CornerRadius="7"
@@ -175,7 +201,7 @@
                                         <Border Width="14" Height="14" CornerRadius="7"
                                                 Background="#FFFFFF" HorizontalAlignment="Right" Margin="0,0,1,0" />
                                     </Border>
-                                    <TextBlock Text=" Active" Foreground="#CCC" VerticalAlignment="Center"
+                                    <TextBlock Text=" Active" Foreground="{DynamicResource EditorSplitsBrush}" VerticalAlignment="Center"
                                                FontSize="11" />
                                 </StackPanel>
                             </TextBlock>
@@ -187,7 +213,7 @@
                                 Splits Header Elements
                             </TextBlock>
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,0,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,0,0" LineHeight="22">
                                 Next to “Split” is the current progress through all splits, indicated by ([current split] / [total splits]).
                                 <LineBreak />
                                 The number of attempts is also shown - as #[attempts] - alongside a reset button for attempts. Resetting the attempts counter will set it back to 0.
@@ -208,7 +234,7 @@
                                 The Splits Section
                             </TextBlock>
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,0,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,0,0" LineHeight="22">
                                 Using ⋯ found on the right of the hovered split or right click, you can open a context menu with basic options to edit a split.
                                 This includes things like renaming the split, editing the Personal Best, opening the Profile Editor and more.
                             </TextBlock>
@@ -220,7 +246,7 @@
                                 Splits Footer Elements
                             </TextBlock>
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,0,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,0,0" LineHeight="22">
                                 Underneath the splits you will find the “Total” row.
                                 This contains the total number of recorded hits,
                                 the total Difference between the current run and the personal best,
@@ -242,7 +268,7 @@
                                 Completing A Run
                             </TextBlock>
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,0,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,0,0" LineHeight="22">
                                 Upon advancing past the last split - the run is complete,
                                 and the bottom section will provide a prompt to mark that run as the new pb and/or to reset splits.
                                 It looks something like this:
@@ -253,10 +279,10 @@
                                            Foreground="#00CC66"
                                            HorizontalAlignment="Center" Margin="0,4,0,6" />
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,6">
-                                    <TextBlock Text="Total Hits: " Foreground="#999" />
-                                    <TextBlock Text="10" Foreground="White" Margin="0,0,12,0" />
-                                    <TextBlock Text="PB: " Foreground="#999" />
-                                    <TextBlock Text="50" Foreground="White" />
+                                    <TextBlock Text="Total Hits: " Foreground="{DynamicResource OverlayFieldBrush}" />
+                                    <TextBlock Text="10" Foreground="{DynamicResource TotalDiffBrush}" Margin="0,0,12,0" />
+                                    <TextBlock Text="PB: " Foreground="{DynamicResource OverlayFieldBrush}" />
+                                    <TextBlock Text="50" Foreground="{DynamicResource TotalPbBrush}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <Button Content="Mark as PB" Margin="4,0" />
@@ -271,7 +297,7 @@
                         <!-- Profile Editor -->
                         <StackPanel x:Name="PageProfileEditor" Visibility="Collapsed">
                             <TextBlock Text="Profile Editor" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10" />
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" LineHeight="22">
                                 Welcome to the Profile Editor section! This is where the magic happens
                             </TextBlock>
 
@@ -283,7 +309,7 @@
                             </TextBlock>
 
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 Profile dropdown
                                 <LineBreak />
                                 Selects which profile you are currently editing.
@@ -291,7 +317,7 @@
                             </TextBlock>
 
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 <Run FontWeight="SemiBold">New</Run>
                                 <LineBreak />
                                 Creates a new blank profile.
@@ -303,7 +329,7 @@
                             </TextBlock>
 
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 <Run FontWeight="SemiBold">Rename</Run>
                                 <LineBreak />
                                 Changes the name of the currently selected profile.
@@ -311,14 +337,14 @@
                             </TextBlock>
 
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 <Run FontWeight="SemiBold">Delete</Run>
                                 <LineBreak />
                                 Removes the selected profile.
                                 <LineBreak />
                             </TextBlock>
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 <Run FontWeight="SemiBold">Saved ✓</Run>
                                 <LineBreak />
                                 Indicates that the current profile has been saved.
@@ -329,7 +355,7 @@
                                 <LineBreak />
                             </TextBlock>
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 <Run FontWeight="SemiBold">Import</Run>
                                 <LineBreak />
                                 Loads any profile file from your computer.
@@ -337,7 +363,7 @@
                             </TextBlock>
 
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 <Run FontWeight="SemiBold">Export</Run>
                                 <LineBreak />
                                 Saves the current profile or all profiles as a file so it can be backed up or shared to others.
@@ -345,7 +371,7 @@
                             </TextBlock>
 
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 <Run FontWeight="SemiBold">Available Templates Panel</Run>
                                 <LineBreak />
                                 This section is a list of pre-made splits that will automatically advance to the next split once a boss is defeated.
@@ -359,7 +385,7 @@
                             </TextBlock>
 
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 <Run FontWeight="SemiBold">Profile Splits Panel</Run>
                                 <LineBreak />
                                 This section shows the splits that you have added to a specific profile and are the ones that will show up on the main window when you select it.
@@ -382,56 +408,89 @@
                             </TextBlock>
 
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 1. Click on the New button.
                             </TextBlock>
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 2. -Optional- Choose whether you want to keep any existing items into the profile or not.
                             </TextBlock>
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 3. Choose a name for the profile.
                             </TextBlock>
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 4. Create your very first split.
                                 You can either do so by adding one of the templates and clicking the + button, opening the context menu and clicking "Add" or dragging the items you want into the profile panel.
                                 Alternatively you can make a split of your own which will require manual splitting with the Custom Split button.
                             </TextBlock>
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 5. Organize it to your liking, rename stuff, group others, re-order the items however you prefer.
                             </TextBlock>
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 6. Click the save button and close the window.
                             </TextBlock>
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 7. Depending on your game of choice you might have extra options just below the profile name such as counting Roberto's stagger in Sekiro as a hit or ignoring Shulva's Spikes for melee players in Dark Souls 2.
+                            </TextBlock>
+
+                            <!-- Editing Events -->
+                            <TextBlock FontSize="15" FontWeight="SemiBold"
+                                       Margin="0,0,0,10">
+                                <LineBreak />
+                                Editing Events
+                            </TextBlock>
+
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
+                                Editing events can be a little bit daunting when you don't know what to look for.
+                                <LineBreak />
+                                <Hyperlink NavigateUri="https://youtu.be/RZxS9cjQvUg"
+                                           RequestNavigate="Hyperlink_RequestNavigate">
+                                    <Hyperlink.Style>
+                                        <Style TargetType="Hyperlink">
+                                            <Setter Property="TextDecorations" Value="None" />
+                                            <Setter Property="Foreground" Value="#c47fd4" />
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                            <Setter Property="FontSize" Value="14" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="#e0a0f0" />
+                                                    <Setter Property="TextDecorations" Value="Underline" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Foreground" Value="#666666" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Hyperlink.Style>
+                                    This video will try to briefly explain the process to you and how to use event logger.
+                                </Hyperlink>
                             </TextBlock>
                         </StackPanel>
 
                         <!-- Hotkeys -->
                         <StackPanel x:Name="PageHotkeys" Visibility="Collapsed">
                             <TextBlock Text="Hotkeys" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10" />
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" LineHeight="22">
 
                             </TextBlock>
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 Hotkeys are essentially shortcuts you can assign to your keyboard to trigger certain actions from the tool without needing to keep it in focus.
                                 <LineBreak />
                             </TextBlock>
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 To Assign a hotkey you need to click the box next to each action and press the key combination you want to assign it to.
                                 <LineBreak />
                             </TextBlock>
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 Make sure you toggle the Enable Hotkeys checkbox for the hotkeys to register and function otherwise they will not do anything.
                                 <LineBreak />
                             </TextBlock>
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 You can set it so hotkeys would function globally regardless of what app is being focused at the time.
                             </TextBlock>
                         </StackPanel>
@@ -448,7 +507,7 @@
                                 General Settings
                             </TextBlock>
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 In the General Settings you can find options that work for pretty much any game.
                                 <LineBreak />
                                 Always on top keeps the main hit counter window over any other window you have even when it's not focused.
@@ -467,7 +526,7 @@
                                 Game Specific Settings
                             </TextBlock>
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 Game Specific Settings are just Quality of Life options depending on the game you're playing for example "No Logo" or "No Stutter" in Elden Ring.
                                 <LineBreak />
                             </TextBlock>
@@ -481,7 +540,7 @@
                             </TextBlock>
 
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 To add the Overlay to your OBS Scene simply open the OBS Application and look for the "Sources" panel.
                                 <LineBreak />
                                 <LineBreak />
@@ -517,7 +576,7 @@
                                 Customizing the Overlay
                             </TextBlock>
 
-                            <TextBlock TextWrapping="Wrap" Foreground="#CCC" Margin="0,10,5,0" LineHeight="22">
+                            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource EditorSplitsBrush}" Margin="0,10,5,0" LineHeight="22">
                                 In the settings tab you can click on Open Overlay Settings to pop out a window that contains many options to customize the hit counter to your taste.
                                 <LineBreak />
                                 <LineBreak />

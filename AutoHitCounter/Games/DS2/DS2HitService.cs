@@ -128,13 +128,13 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         var hit = Base + Hit;
         var code = Base + GeneralApplyDamage;
         AsmHelper.WriteRelativeOffsets(bytes, [
-            (code + 0x1, GameManagerImp.Base, 7, 0x1 + 3),
-            (code + 0x15, hit, 6, 0x15 + 2),
-            (code + 0x22, Hooks.GeneralApplyDamage + 6, 5, 0x22 + 1)
+            (code + 0x7, GameManagerImp.Base, 7, 0x7 + 3),
+            (code + 0x1F, hit, 6, 0x1F + 2),
+            (code + 0x26, Hooks.GeneralApplyDamage + 6, 5, 0x26 + 1)
         ]);
 
         memoryService.WriteBytes(code, bytes);
-        InstallHook(code, Hooks.GeneralApplyDamage, [0x89, 0x83, 0x68, 0x01, 0x00, 0x00]);
+        InstallHook(code, Hooks.GeneralApplyDamage, [0x8B, 0x8B, 0x68, 0x01, 0x00, 0x00]);
     }
 
     private void InstallScholarKillBoxHook()
@@ -307,14 +307,14 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         var code = Base + GeneralApplyDamage;
 
         AsmHelper.WriteImmediateDwords(bytes, [
-            ((int)GameManagerImp.Base, 0x1 + 1),
-            ((int)hit, 0x13 + 2),
+            ((int)GameManagerImp.Base, 0x7 + 2),
+            ((int)hit, 0x1E + 2),
         ]);
 
-        AsmHelper.WriteRelativeOffset(bytes, code + 0x20, Hooks.GeneralApplyDamage + 6, 5, 0x20 + 1);
+        AsmHelper.WriteRelativeOffset(bytes, code + 0x25, Hooks.GeneralApplyDamage + 6, 5, 0x25 + 1);
         
         memoryService.WriteBytes(code, bytes);
-        InstallHook(code, Hooks.GeneralApplyDamage, [0x89, 0x8E, 0xFC, 0x00, 0x00, 0x00]);
+        InstallHook(code, Hooks.GeneralApplyDamage, [0x8B, 0x86, 0xFC, 0x00, 0x00, 0x00]);
     }
 
     private void InstallVanillaKillBoxHook()

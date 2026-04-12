@@ -19,6 +19,7 @@ namespace AutoHitCounter.Converters
     public class LockTooltipConverter : IValueConverter
     {
         private static readonly FontFamily Mdl2 = new FontFamily("Segoe MDL2 Assets");
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
             // Prettier tooltip
         {
@@ -29,17 +30,21 @@ namespace AutoHitCounter.Converters
                 Text = isUnlocked ? "\uE785" : "\uE72E",
                 FontFamily = Mdl2,
                 FontSize = 13,
-                Foreground = new SolidColorBrush(isUnlocked
-                    ? Color.FromRgb(0x9D, 0x61, 0xA8)
-                    : Color.FromRgb(0x99, 0x99, 0x99)),
             };
+            icon.SetResourceReference(TextBlock.ForegroundProperty, isUnlocked
+                ? "UnlockedToolTipBrush"
+                : "LockedToolTipBrush"
+            );
 
             var label = new TextBlock
             {
                 Text = isUnlocked ? " Unlocked Splits" : " Locked Splits",
                 FontWeight = FontWeights.SemiBold,
-                Foreground = icon.Foreground,
             };
+            label.SetResourceReference(TextBlock.ForegroundProperty, isUnlocked
+                ? "UnlockedToolTipBrush"
+                : "LockedToolTipBrush"
+            );
 
             var header = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 0, 4) };
             header.Children.Add(icon);
@@ -51,11 +56,11 @@ namespace AutoHitCounter.Converters
                 Text = isUnlocked
                     ? "Reorder splits by dragging them up or down.\nRename Splits by double clicking them."
                     : "Splits are locked and can't be reordered.\nDouble click now moves through splits.",
-                Foreground = new SolidColorBrush(Color.FromRgb(0xBB, 0xBB, 0xBB)),
                 TextWrapping = TextWrapping.Wrap,
                 MaxWidth = 220,
                 FontSize = 11
             };
+            body.SetResourceReference(TextBlock.ForegroundProperty, "UnlockedToolTipTextBrush");
 
             var panel = new StackPanel();
             panel.Children.Add(header);
@@ -67,5 +72,13 @@ namespace AutoHitCounter.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
             => throw new NotImplementedException();
+
+        private static SolidColorBrush GetBrush(string key)
+        {
+            if (Application.Current.Resources[key] is SolidColorBrush brush)
+                return brush;
+
+            return new SolidColorBrush(Colors.White);
+        }
     }
 }

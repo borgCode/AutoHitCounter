@@ -1,9 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace AutoHitCounter.ViewModels
 {
-    public abstract class BaseViewModel : INotifyPropertyChanged
+    public abstract class BaseViewModel : INotifyPropertyChanged, IDisposable
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -19,6 +20,7 @@ namespace AutoHitCounter.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
-    }
 
+        public virtual void Dispose() { }
+    }
 }

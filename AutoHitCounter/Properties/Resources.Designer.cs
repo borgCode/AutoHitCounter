@@ -985,17 +985,18 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 51                      push   rcx
-        ///48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
-        ///48 39 99 d0 00 00 00    cmp    QWORD PTR [rcx+0xd0],rbx
-        ///75 0a                   jne    1b &lt;normal&gt;
+        ///   Looks up a localized string similar to 8b 8b 68 01 00 00       mov    ecx,DWORD PTR [rbx+0x168]
+        ///50                      push   rax
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # e &lt;_main+0xe&gt;
+        ///48 39 98 d0 00 00 00    cmp    QWORD PTR [rax+0xd0],rbx
+        ///75 0e                   jne    25 &lt;exit&gt;
+        ///89 c8                   mov    eax,ecx
+        ///29 f0                   sub    eax,esi
         ///85 c0                   test   eax,eax
-        ///79 06                   jns    1b &lt;normal&gt;
-        ///ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 1b &lt;normal&gt;
-        ///00000000001b &lt;normal&gt;:
-        ///59                      pop    rcx
-        ///89 83 68 01 00 00       mov    DWORD PTR [rbx+0x168],eax
-        ///e9 00 00 00 00        [rest of string was truncated]&quot;;.
+        ///7f 06                   jg     25 &lt;exit&gt;
+        ///ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 25 &lt;exit&gt;
+        ///
+        ///00000 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ScholarGeneralApplyDamage {
             get {
@@ -1141,6 +1142,26 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 50                      push   rax
+        ///51                      push   rcx
+        ///52                      push   rdx
+        ///48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # a &lt;_main+0xa&gt;
+        ///48 85 c9                test   rcx,rcx
+        ///0f 84 aa 00 00 00       je     bd &lt;exit&gt;
+        ///48 8b 89 88 00 00 00    mov    rcx,QWORD PTR [rcx+0x88]
+        ///48 85 c9                test   rcx,rcx
+        ///0f 84 9a 00 00 00       je     bd &lt;exit&gt;
+        ///48 39 c1                cmp    rcx,rax
+        ///0f 85 91 00 00 00       jne    bd &lt;exit&gt;
+        ///48 8b 89 d0 11 00 00   [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SKApplySpEffectDamage {
+            get {
+                return ResourceManager.GetString("SKApplySpEffectDamage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to d3 e0                   shl    eax,cl
         ///41 09 41 4c             or     DWORD PTR [r9+0x4c],eax
         ///80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # d &lt;_main+0xd&gt;
@@ -1259,16 +1280,15 @@ namespace AutoHitCounter.Properties {
         ///Blazing Bull,11110440
         ///Chained Ogre (Castle),11110620
         ///Chained Ogre (Outskirts),11100310
-        ///Corrupted Monk (Fountainhead),9309
-        ///Corrupted Monk (Mibu),9306
-        ///Demon of Hatred,9313
+        ///Demon of Hatred / Demon of Hatred (Gauntlet),11100900
         ///Divine Dragon,9310
+        ///Fake Monk,9306
         ///Folding Screen Monkeys,9305
         ///General Kuranosuke Matsumoto,11110410
         ///General Naomori Kawarada,11100300
         ///General Tenzen Yamauchi,11100301
-        ///Genichiro Ashina (Castle),9303
-        ///Genichiro Ashina (Reserv [rest of string was truncated]&quot;;.
+        ///Genichiro Ashina (Castle) / Genichiro Ashina (Gauntlet),11110800
+        ///Genic [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SKEvents {
             get {
@@ -1321,11 +1341,11 @@ namespace AutoHitCounter.Properties {
         ///48 89 44 24 50          mov    QWORD PTR [rsp+0x50],rax
         ///50                      push   rax
         ///e8 00 00 00 00          call   12 &lt;_main+0x12&gt;
-        ///0f 84 70 01 00 00       je     188 &lt;skip_count&gt;
+        ///0f 84 a5 01 00 00       je     1bd &lt;skip_count&gt;
         ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 1f &lt;_main+0x1f&gt;
         ///48 8b 80 88 00 00 00    mov    rax,QWORD PTR [rax+0x88]
         ///48 39 d0                cmp    rax,rdx
-        ///0f 84 59 01 00 00       je     188 &lt;skip_count&gt;
+        ///0f 84 8e 01 00 00       je     1bd &lt;skip_count&gt;
         ///48 8b 80 f8 1f 00 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SKHit {
@@ -1390,6 +1410,25 @@ namespace AutoHitCounter.Properties {
         internal static string SKPostHit {
             get {
                 return ResourceManager.GetString("SKPostHit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to f3 0f 10 a5 10 02 00    movss  xmm4,DWORD PTR [rbp+0x210]
+        ///00 
+        ///80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # f &lt;_main+0xf&gt;
+        ///74 3c                   je     4d &lt;exit&gt;
+        ///c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 18 &lt;_main+0x18&gt;
+        ///83 7d 6c 00             cmp    DWORD PTR [rbp+0x6c],0x0
+        ///75 29                   jne    47 &lt;count_hit&gt;
+        ///51                      push   rcx
+        ///52                      push   rdx
+        ///50                      push   rax
+        ///ba c9 26 02 00          mov    edx,0 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SKSakuraDance {
+            get {
+                return ResourceManager.GetString("SKSakuraDance", resourceCulture);
             }
         }
         
@@ -1530,20 +1569,18 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 50                      push   eax
-        ///a1 00 00 00 00          mov    eax,ds:0x0
-        ///85 c0                   test   eax,eax
-        ///74 0f                   je     19 &lt;normal&gt;
-        ///39 70 74                cmp    DWORD PTR [eax+0x74],esi
-        ///75 0a                   jne    19 &lt;normal&gt;
+        ///   Looks up a localized string similar to 8b 86 fc 00 00 00       mov    eax,DWORD PTR [esi+0xfc]
+        ///51                      push   ecx
+        ///8b 0d 00 00 00 00       mov    ecx,DWORD PTR ds:0x0
         ///85 c9                   test   ecx,ecx
-        ///79 06                   jns    19 &lt;normal&gt;
-        ///ff 05 00 00 00 00       inc    DWORD PTR ds:0x0
-        ///
-        ///0019 &lt;normal&gt;:
-        ///89 8e fc 00 00 00       mov    DWORD PTR [esi+0xfc],ecx
-        ///58                      pop    eax
-        ///e9 f [rest of string was truncated]&quot;;.
+        ///74 13                   je     24 &lt;exit&gt;
+        ///39 71 74                cmp    DWORD PTR [ecx+0x74],esi
+        ///75 0e                   jne    24 &lt;exit&gt;
+        ///89 c1                   mov    ecx,eax
+        ///29 d1                   sub    ecx,edx
+        ///85 c9                   test   ecx,ecx
+        ///7f 06                   jg     24 &lt;exit&gt;
+        ///ff 05 00 00 00 00       [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string VanillaGeneralApplyDamage {
             get {

@@ -1,0 +1,104 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+    <!-- Title Bar -->
+    <SolidColorBrush x:Key="TitleBarBrush" Color="#472d4c " />
+    <SolidColorBrush x:Key="TitleTextBrush" Color="#EAEAEA " />
+    <SolidColorBrush x:Key="TitleButtonsBrush" Color="#252525 " />
+
+    <!-- Attachment -->
+    <SolidColorBrush x:Key="AttachedBrush" Color="#4CAF50" />
+    <SolidColorBrush x:Key="NotAttachedBrush" Color="#D32F2F" />
+
+    <!-- General -->
+    <SolidColorBrush x:Key="TextBrush" Color="#EAEAEA " />
+    <SolidColorBrush x:Key="AccentBrush" Color="#B37c4d85 " />
+    <SolidColorBrush x:Key="HoverBrush" Color="#83518c " />
+    <SolidColorBrush x:Key="BorderBrush" Color="#333333 " />
+    <SolidColorBrush x:Key="ControlBackgroundBrush" Color="#252525 " />
+    <SolidColorBrush x:Key="BackgroundBrush" Color="#121212 " />
+    <SolidColorBrush x:Key="PanelBrush" Color="#1A1A1A " />
+    <SolidColorBrush x:Key="AppBorderBrush" Color="#4a2d52 " />
+    <SolidColorBrush x:Key="TooltipBorderBrush" Color="#a670b0" />
+    <SolidColorBrush x:Key="TextBoxBorderBrush" Color="#5a3d63" />
+    
+    
+    <!-- Input Box / Message Box-->
+    <SolidColorBrush x:Key="InputBackgroundBrush" Color="#2D2D30 " />
+    <SolidColorBrush x:Key="MessageBoxBackgroundBrush" Color="#3E3E42 " />
+    <SolidColorBrush x:Key="InputTextBrush" Color="#F1F1F1 " />
+
+    <!-- Main Window -->
+    
+    <!-- Switch Button -->
+    <SolidColorBrush x:Key="SwitchBorderBrush" Color="#555555 " />
+    <SolidColorBrush x:Key="SwitchBackgroundBrush" Color="#444444 " />
+    <SolidColorBrush x:Key="SwitchDotBrush" Color="#AAAAAA " />
+    <SolidColorBrush x:Key="SwitchHoverBorderBrush" Color="#626262 " />
+
+    <SolidColorBrush x:Key="AttemptsCounterBrush" Color="#83518c " />
+    <SolidColorBrush x:Key="SplitterBrush" Color="#333333 " />
+
+    <!-- Splits -->
+    <SolidColorBrush x:Key="SplitsBackgroundBrush" Color="#222222 " />
+    <SolidColorBrush x:Key="SplitsHoverBrush" Color="#6683518c " />
+    <SolidColorBrush x:Key="SplitsCurrentBrush" Color="#B37c4d85 " />
+    <LinearGradientBrush x:Key="SplitsParentBrush" StartPoint="0,0" EndPoint="1,0.5">
+        <GradientStop Color="#1A1A1A" Offset="0" />
+        <GradientStop Color="#3a3a3a" Offset="0.8" />
+    </LinearGradientBrush>
+    
+    <!-- Drag and context menu indicators -->
+    <SolidColorBrush x:Key="UnlockedBrush" Color="#9D61A8" />
+    <SolidColorBrush x:Key="UnlockedBorderBrush" Color="#a670b0" />
+    <SolidColorBrush x:Key="UnlockedToolTipBrush" Color="#9D61A8" />
+    <SolidColorBrush x:Key="LockedToolTipBrush" Color="#999" />
+    <SolidColorBrush x:Key="UnlockedToolTipTextBrush" Color="#bbb" />
+    <SolidColorBrush x:Key="IndicatorBrush" Color="#888 " />
+    
+    <!-- Notes -->
+    <SolidColorBrush x:Key="NotesSideBorderBrush" Color="#3d3040"/>
+    <SolidColorBrush x:Key="NotesTextBrush" Color="#aaa"/>
+    <SolidColorBrush x:Key="NotesEditingBackgroundBrush" Color="#1c1424"/>
+    <SolidColorBrush x:Key="NotesEditingBorderBrush" Color="#5a3d63"/>
+    
+
+    <!-- Hits / Diff brushes -->
+    <SolidColorBrush x:Key="HitsActiveBrush" Color="#c8843a" />
+    <SolidColorBrush x:Key="HitsInactiveBrush" Color="#999999" />
+    <SolidColorBrush x:Key="DiffPositiveBrush" Color="#b85555" />
+    <SolidColorBrush x:Key="DiffNegativeBrush" Color="#5a9068" />
+    <SolidColorBrush x:Key="DiffNeutralBrush" Color="#AAAAAA" />
+    <SolidColorBrush x:Key="TotalDiffBrush" Color="#888" />
+    <SolidColorBrush x:Key="TotalPbBrush" Color="#909090" />
+    
+    <!-- In-Game Time -->
+    <SolidColorBrush x:Key="IgtBrush" Color="#c47fd4" />
+    
+    <!-- Event Logger -->
+    <SolidColorBrush x:Key="EventsBackgroundBrush" Color="#252525" />
+    <SolidColorBrush x:Key="EventTrueBrush" Color="#3DBE5A " />
+    <SolidColorBrush x:Key="EventFalseBrush" Color="#E8453C " />
+
+    <!-- Profile Editor -->
+    <SolidColorBrush x:Key="EditorHeaderBrush" Color="#aaa " />
+    <SolidColorBrush x:Key="EditorTextBrush" Color="#878686 " />
+    <SolidColorBrush x:Key="EditorTemplatesBrush" Color="#bbb " />
+    <SolidColorBrush x:Key="EditorIndicatorBrush" Color="#666 " />
+    <SolidColorBrush x:Key="EditorSplitsParentBrush" Color="#fff " />
+    <SolidColorBrush x:Key="EditorSplitsBrush" Color="#ccc " />
+    
+    <!-- Overlay Settings -->
+    <SolidColorBrush x:Key="OverlayPanelBorderBrush" Color="#2a2a2a " />
+    <SolidColorBrush x:Key="OverlayHeaderBrush" Color="#888888 " />
+    <SolidColorBrush x:Key="OverlaySectionBrush" Color="#777777 " />
+    <SolidColorBrush x:Key="OverlayFieldBrush" Color="#999999 " />
+    <SolidColorBrush x:Key="OverlaySeparatorBackgroundBrush" Color="#2a2a2a " />
+    <SolidColorBrush x:Key="OverlayColorPickerBackgroundBrush" Color="#2d2d2d " />
+	<SolidColorBrush x:Key="OverlayColorPickerForegroundBrush" Color="#cccccc " />
+	<SolidColorBrush x:Key="OverlayColorPickerBorderBrush" Color="#444444 " />
+    <SolidColorBrush x:Key="OverlayCommentsBrush" Color="#878686 " />
+
+
+</ResourceDictionary>

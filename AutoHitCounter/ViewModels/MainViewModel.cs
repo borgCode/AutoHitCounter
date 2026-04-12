@@ -84,6 +84,7 @@ namespace AutoHitCounter.ViewModels
 
             _isUnlocked = SettingsManager.Default.IsUnlocked;
 
+            ThemeService.ThemeChanged += OnThemeChanged;
             InitialiseCommands();
 
 
@@ -196,7 +197,17 @@ namespace AutoHitCounter.ViewModels
                                 ?? Profiles.FirstOrDefault();
 
                 if (_selectedGame?.IsManual == true)
+                {
+                    _isPracticeMode = false;
+                    OnPropertyChanged(nameof(IsPracticeMode));
                     StartTrackingGame();
+                }
+                else
+                {
+                    _isPracticeMode = SettingsManager.Default.PracticeMode;
+                    OnPropertyChanged(nameof(IsPracticeMode));
+                }
+
 
                 if (!Profiles.Any())
                 {
@@ -356,10 +367,10 @@ namespace AutoHitCounter.ViewModels
         {
             get
             {
-                if (TotalPb == 0) return new SolidColorBrush(Color.FromRgb(0x70, 0x70, 0x70));
-                if (TotalHits < TotalPb) return new SolidColorBrush(Color.FromRgb(0x5a, 0x90, 0x68));
-                if (TotalHits > TotalPb) return new SolidColorBrush(Color.FromRgb(0xb8, 0x55, 0x55));
-                return new SolidColorBrush(Color.FromRgb(0x70, 0x70, 0x70));
+                if (TotalPb == 0) return GetBrush("DiffNeutralBrush");
+                if (TotalHits < TotalPb) return GetBrush("DiffNegativeBrush");
+                if (TotalHits > TotalPb) return GetBrush("DiffPositiveBrush");
+                return GetBrush("DiffNeutralBrush");
             }
         }
 
@@ -371,10 +382,9 @@ namespace AutoHitCounter.ViewModels
         {
             get
             {
-                var diff = TotalDiff;
-                if (diff > 0) return new SolidColorBrush(Color.FromRgb(0xb8, 0x55, 0x55));
-                if (diff < 0) return new SolidColorBrush(Color.FromRgb(0x5a, 0x90, 0x68));
-                return new SolidColorBrush(Color.FromRgb(0x90, 0x90, 0x90));
+                if (TotalDiff > 0) return GetBrush("DiffPositiveBrush");
+                if (TotalDiff < 0) return GetBrush("DiffNegativeBrush");
+                return GetBrush("DiffNeutralBrush");
             }
         }
 
@@ -391,11 +401,14 @@ namespace AutoHitCounter.ViewModels
             var index = Splits.IndexOf(split);
             if (index >= 0 && index < ActiveProfile.Splits.Count)
             {
-                ActiveProfile.Splits[index].DisplayName = split.Name;
+                ActiveProfile.Splits[index].Name = split.Name;
+                if (!split.IsParent)
+                    ActiveProfile.Splits[index].DisplayName = split.Name;
                 _profileService.SaveProfile(ActiveProfile);
             }
 
             _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
+            NotifyProfileSplitsChanged();
         }
 
         public bool HasSplits => TotalSplitCount > 0;
@@ -498,6 +511,7 @@ namespace AutoHitCounter.ViewModels
             }
 
             _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
+            NotifyProfileSplitsChanged();
         }
 
         private void MoveSplitUp()
@@ -509,6 +523,7 @@ namespace AutoHitCounter.ViewModels
             SelectedSplit = split;
             MoveSplitUpCommand.RaiseCanExecuteChanged();
             MoveSplitDownCommand.RaiseCanExecuteChanged();
+            NotifyProfileSplitsChanged();
         }
 
         private void MoveSplitDown()
@@ -520,6 +535,7 @@ namespace AutoHitCounter.ViewModels
             SelectedSplit = split;
             MoveSplitUpCommand.RaiseCanExecuteChanged();
             MoveSplitDownCommand.RaiseCanExecuteChanged();
+            NotifyProfileSplitsChanged();
         }
 
         private bool CanMoveSplitUp()
@@ -551,6 +567,16 @@ namespace AutoHitCounter.ViewModels
 
         public void JumpToSplit(SplitViewModel target) => _splitNav.JumpTo(target);
 
+        private void OnThemeChanged()
+        {
+            OnPropertyChanged(nameof(TotalHitsBrush));
+        }
+
+        public override void Dispose()
+        {
+            ThemeService.ThemeChanged -= OnThemeChanged;
+        }
+
         #endregion
 
         #region Private Methods
@@ -560,7 +586,7 @@ namespace AutoHitCounter.ViewModels
             AppVer = VersionChecker.GetVersionText();
             if (SettingsManager.Default.EnableUpdateChecks)
                 VersionChecker.CheckForUpdates(Application.Current.MainWindow);
-            _isPracticeMode = SettingsManager.Default.PracticeMode;
+            _isPracticeMode = _selectedGame?.IsManual != true && SettingsManager.Default.PracticeMode;
             OnPropertyChanged(nameof(IsPracticeMode));
         }
 
@@ -601,7 +627,7 @@ namespace AutoHitCounter.ViewModels
 
             RenameSelectedSplitCommand = new DelegateCommand(() =>
             {
-                if (SelectedSplit == null || SelectedSplit.IsParent) return;
+                if (SelectedSplit == null) return;
                 SelectedSplit.IsEditing = true;
             });
 
@@ -669,7 +695,11 @@ namespace AutoHitCounter.ViewModels
             {
                 if (_currentModule is ManualGameModule manual) manual.StopTimer();
             });
-            _hotkeyManager.RegisterAction(HotkeyActions.TogglePracticeMode, () => { IsPracticeMode = !IsPracticeMode; });
+            _hotkeyManager.RegisterAction(HotkeyActions.TogglePracticeMode,
+                () =>
+                {
+                    if (_activeGame?.IsManual != true) IsPracticeMode = !IsPracticeMode;
+                });
         }
 
         private void OnSplitStateChanged()
@@ -687,10 +717,15 @@ namespace AutoHitCounter.ViewModels
 
         private void UpdateAttachedText()
         {
-            var version = (_currentModule as IVersionedGameModule)?.GameVersion;
-            AttachedText = string.IsNullOrEmpty(version)
-                ? $"Attached to {SelectedGame.GameName}"
-                : $"Attached to {SelectedGame.GameName} ({version})";
+            var moduleGame = _activeGame;
+            if (_currentModule is IVersionedGameModule versioned)
+                versioned.OnVersionDetected += () =>
+                {
+                    var version = versioned.GameVersion;
+                    AttachedText = string.IsNullOrEmpty(version)
+                        ? $"Attached to {moduleGame.GameName}"
+                        : $"Attached to {moduleGame.GameName} ({version})";
+                };
         }
 
         private void OnAttached()
@@ -810,6 +845,11 @@ namespace AutoHitCounter.ViewModels
             _eventLogWindow.Show();
         }
 
+        private event Action ActiveProfileSplitsChanged;
+
+        private void NotifyProfileSplitsChanged()
+            => ActiveProfileSplitsChanged?.Invoke();
+
         private void OpenProfileEditor()
         {
             if (_selectedGame == null) return;
@@ -833,6 +873,19 @@ namespace AutoHitCounter.ViewModels
 
             _profileEditorWindow = new ProfileEditorWindow { DataContext = vm };
 
+            ActiveProfileSplitsChanged += vm.RefreshSplits;
+
+            Action onSaved = () =>
+            {
+                var updatedProfiles = _profileService.GetProfiles(_selectedGame.GameName);
+                Profiles.Clear();
+                foreach (var p in updatedProfiles)
+                    Profiles.Add(p);
+
+                ActiveProfile = Profiles.FirstOrDefault(p => p.Name == vm.SelectedProfile?.Name);
+            };
+            vm.OnSaved += onSaved;
+
             _profileEditorWindow.Closed += (s, e) =>
             {
                 _profileEditorWindow = null;
@@ -843,20 +896,14 @@ namespace AutoHitCounter.ViewModels
                     _runSnapshots.Remove(key);
                 }
 
-                var updatedProfiles = _profileService.GetProfiles(_selectedGame.GameName);
                 var validKeys = new HashSet<string>(
-                    updatedProfiles.Select(p => $"{_selectedGame.GameName}|{p.Name}"));
+                    _profileService.GetProfiles(_selectedGame.GameName)
+                        .Select(p => $"{_selectedGame.GameName}|{p.Name}"));
                 var staleKeys = _runSnapshots.Keys
                     .Where(k => k.StartsWith($"{_selectedGame.GameName}|") && !validKeys.Contains(k))
                     .ToList();
                 foreach (var stale in staleKeys)
                     _runSnapshots.Remove(stale);
-
-                Profiles.Clear();
-                foreach (var p in updatedProfiles)
-                    Profiles.Add(p);
-
-                ActiveProfile = vm.SelectedProfile;
             };
 
             _profileEditorWindow.Show();
@@ -864,6 +911,9 @@ namespace AutoHitCounter.ViewModels
 
         private void UpdateSplits()
         {
+            foreach (var split in Splits)
+                ((IDisposable)split).Dispose();
+
             Splits.Clear();
             if (ActiveProfile == null) return;
             if (ActiveProfile.Splits.Count == 0) return;
@@ -890,6 +940,13 @@ namespace AutoHitCounter.ViewModels
                 };
                 Splits.Add(vm);
             }
+        }
+
+        private static Brush GetBrush(string key)
+        {
+            if (Application.Current.Resources[key] is SolidColorBrush brush)
+                return brush;
+            return new SolidColorBrush(Colors.White);
         }
 
         private void UpdateDistancePb()
