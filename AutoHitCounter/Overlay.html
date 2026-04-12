@@ -531,6 +531,43 @@
             return { groupOf, activeGroup, groupTotals };
         }
 
+        function computeVisibleRowWindow(anchorPos, totalRows, maxRows) {
+            const prevAvailable = anchorPos;
+            const nextAvailable = totalRows - anchorPos - 1;
+            const prevWanted = config.prevSplits;
+            const nextWanted = config.nextSplits;
+
+            const prevActual = Math.min(prevWanted, prevAvailable);
+            const nextActual = Math.min(nextWanted + (prevWanted - prevActual), nextAvailable);
+            const prevFinal = Math.min(prevWanted + (nextWanted - Math.min(nextWanted, nextAvailable)), prevAvailable);
+
+            let start = Math.max(0, anchorPos - prevFinal);
+            let end = Math.min(totalRows, anchorPos + nextActual + 1);
+
+            if (end - start > maxRows) {
+                if (anchorPos - start >= maxRows) {
+                    start = Math.max(0, anchorPos - Math.min(prevFinal, maxRows - 1));
+                }
+                end = Math.min(totalRows, start + maxRows);
+            }
+
+            return { start, end };
+        }
+
+        function buildCollapseVisibleIndices(allSplits, groupOf, activeGroup) {
+            const indices = [];
+            for (let i = 0; i < allSplits.length; i++) {
+                const s = allSplits[i];
+                const inActive = groupOf[i] === activeGroup;
+                if (s.isParent) {
+                    indices.push(i);
+                } else if (inActive) {
+                    indices.push(i);
+                }
+            }
+            return indices;
+        }
+
         function renderState(state) {
             const cols = getGridColumns();
             let html = '';
@@ -557,36 +594,34 @@
 
             if (groupInfo) {
                 const { groupOf, activeGroup, groupTotals } = groupInfo;
-                for (let i = 0; i < allSplits.length; i++) {
-                    const s = allSplits[i];
-                    const isInActiveGroup = groupOf[i] === activeGroup;
-                    const collapsed = !s.isParent && !isInActiveGroup;
-                    const inactiveParent = s.isParent && !isInActiveGroup;
-                    const totals = (s.isParent && inactiveParent) ? (groupTotals[groupOf[i]] ?? null) : null;
-                    html += buildRow(s, cols, i, currentIndex, dpbHighlightIndex, collapsed, inactiveParent, totals);
+                const visibleIndices = buildCollapseVisibleIndices(allSplits, groupOf, activeGroup);
+                if (visibleIndices.length > 0) {
+                    let anchorPos = visibleIndices.indexOf(anchor);
+                    if (anchorPos < 0) {
+                        let best = 0;
+                        for (let p = 0; p < visibleIndices.length; p++) {
+                            if (visibleIndices[p] <= anchor) best = p;
+                            else break;
+                        }
+                        anchorPos = best;
+                    }
+
+                    const { start: wStart, end: wEnd } = computeVisibleRowWindow(
+                        anchorPos,
+                        visibleIndices.length,
+                        maxRows
+                    );
+                    for (let j = wStart; j < wEnd; j++) {
+                        const i = visibleIndices[j];
+                        const s = allSplits[i];
+                        const isInActiveGroup = groupOf[i] === activeGroup;
+                        const inactiveParent = s.isParent && !isInActiveGroup;
+                        const totals = (s.isParent && inactiveParent) ? (groupTotals[groupOf[i]] ?? null) : null;
+                        html += buildRow(s, cols, i, currentIndex, dpbHighlightIndex, false, inactiveParent, totals);
+                    }
                 }
             } else {
-                // Use prev/next as preferences, but redistribute unused slots
-                const prevAvailable = anchor;
-                const nextAvailable = total - anchor - 1;
-                let prevWanted = config.prevSplits;
-                let nextWanted = config.nextSplits;
-
-                // If we can't fill prev, give surplus to next and vice versa
-                const prevActual = Math.min(prevWanted, prevAvailable);
-                const nextActual = Math.min(nextWanted + (prevWanted - prevActual), nextAvailable);
-                const prevFinal = Math.min(prevWanted + (nextWanted - Math.min(nextWanted, nextAvailable)), prevAvailable);
-
-                let start = Math.max(0, anchor - prevFinal);
-                let end = Math.min(total, anchor + nextActual + 1);
-
-                if (end - start > maxRows) {
-                    if (anchor - start >= maxRows) {
-                        start = Math.max(0, anchor - Math.min(prevFinal, maxRows - 1));
-                    }
-                    end = Math.min(total, start + maxRows);
-                }
-
+                const { start, end } = computeVisibleRowWindow(anchor, total, maxRows);
                 const windowed = allSplits.slice(start, end);
                 for (let i = 0; i < windowed.length; i++) {
                     html += buildRow(windowed[i], cols, start + i, currentIndex, dpbHighlightIndex, false, false, null);
