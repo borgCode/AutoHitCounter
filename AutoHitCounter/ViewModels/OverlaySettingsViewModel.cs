@@ -174,6 +174,16 @@ public class OverlaySettingsViewModel : BaseViewModel
     public string HitsClearedColor          { get => Get<string>(); set => Set(value); }
     public string HeaderFontFamily          { get => Get<string>(); set => Set(value); }
     public int HeaderFontSize          { get => Get<int>(); set => Set(value); }
+
+    public string GroupHeaderFontFamily   { get => Get<string>(); set => Set(value); }
+    public int    GroupHeaderFontSize     { get => Get<int>(); set => Set(value); }
+    public bool   GroupHeaderBold         { get => Get<bool>(); set => Set(value); }
+    public bool   GroupHeaderItalic       { get => Get<bool>(); set => Set(value); }
+    public bool   GroupHeaderUnderline    { get => Get<bool>(); set => Set(value); }
+    public string GroupHeaderHitsColor           { get => Get<string>(); set => Set(value); }
+    public string GroupHeaderHitsHighlightColor { get => Get<string>(); set => Set(value); }
+    public string GroupHeaderPbColor             { get => Get<string>(); set => Set(value); }
+
     public bool PbMatchesHit { get => Get<bool>(); set => Set(value); }
     public string FooterHitFontColor          { get => Get<string>(); set => Set(value); }
     public string FooterHitsCurrentColor          { get => Get<string>(); set => Set(value); }

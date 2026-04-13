@@ -118,12 +118,9 @@
         }
 
 
-        /* Parent category row styling */
+        /* Parent category row — font size/weight/color come from applyDynamicStyles */
         .split-row.parent {
-            font-weight: 700;
-            font-size: 13px;
             letter-spacing: 0.03em;
-            color: #999;
             padding-top: 8px;
             border-left-color: transparent;
             background: transparent;
@@ -276,6 +273,14 @@
             splitNameOnHitColor: '#e0e0e0',
             splitNameOnHitlessColor: '#e0e0e0',
             groupNameColor: '#999999',
+            groupHeaderFontFamily: 'Segoe UI',
+            groupHeaderFontSize: 13,
+            groupHeaderBold: true,
+            groupHeaderItalic: false,
+            groupHeaderUnderline: false,
+            groupHeaderHitsColor: '#888888',
+            groupHeaderHitsHighlightColor: '#c8843a',
+            groupHeaderPbColor: '#bbbbbb',
             groupCollapseMode: 2,
             pbColor: '#bbbbbb',
             showFooterTotals: true,
@@ -389,6 +394,10 @@
                 dynamicStyleEl = document.createElement('style');
                 document.head.appendChild(dynamicStyleEl);
             }
+            const ghFam = config.groupHeaderFontFamily || config.fontFamily || 'Segoe UI';
+            const ghSize = (config.groupHeaderFontSize > 0) ? config.groupHeaderFontSize : 13;
+            const ghHits = config.groupHeaderHitsColor || config.hitsCurrentColor;
+            const ghPb = config.groupHeaderPbColor || config.pbColor;
             dynamicStyleEl.textContent = `
                 .diff-pos { color: ${config.diffPosColor}; }
                 .diff-neg { color: ${config.diffNegColor}; }
@@ -424,7 +433,7 @@
                 .split-row .col-name { color: ${config.splitNameColor}; }
                 .split-row.hit .col-name { color: ${config.splitNameOnHitColor}; }
                 .split-row.cleared .col-name { color: ${config.splitNameOnHitlessColor}; }
-                .split-row.parent { color: ${config.groupNameColor}; }
+                .split-row.parent .col-name { color: ${config.groupNameColor}; }
                 .split-row .col-hits { color: ${config.hitsCurrentColor}; }
                 .split-row.cleared .col-hits { color: ${config.hitsClearedColor}; }
                 .split-row.hit .col-hits { color: ${config.hitsActiveColor}; }
@@ -433,9 +442,18 @@
                 .split-row.hit .col-pb { color: ${config.pbMatchesHit ? config.hitsActiveColor : config.pbColor}; }
                 .split-row.cleared .col-pb { color: ${config.pbMatchesHit ? config.hitsClearedColor : config.pbColor}; }
                 .split-row.current.hit .col-pb { color: ${config.pbMatchesHit ? config.hitsActiveColor : config.pbColor}; }
+                .split-row.parent .col-hits { color: ${ghHits}; }
+                .split-row.parent .col-pb { color: ${ghPb}; }
+                .split-row.parent {
+                    font-family: ${ghFam};
+                    font-size: ${ghSize}px;
+                    font-weight: ${config.groupHeaderBold !== false ? 'bold' : 'normal'};
+                    font-style: ${config.groupHeaderItalic ? 'italic' : 'normal'};
+                    text-decoration: ${config.groupHeaderUnderline ? 'underline' : 'none'};
+                }
                 .footer .col-hits { color: ${config.footerHitFontColor}; }
                 .footer .col-pb { color: ${config.footerPbFontColor}; }
-                #overlay, .split-row, .footer { 
+                #overlay, .split-row:not(.parent), .footer { 
                     font-weight: ${config.fontBold ? 'bold' : 'normal'};
                     font-style: ${config.fontItalic ? 'italic' : 'normal'};
                     text-decoration: ${config.fontUnderline ? 'underline' : 'none'};
@@ -713,7 +731,8 @@
             if (totals) {
                 const tDiffClass = totals.diff > 0 ? 'diff-pos' : totals.diff < 0 ? 'diff-neg' : 'diff-zero';
                 const tDiffText = totals.diff > 0 ? `+${totals.diff}` : `${totals.diff}`;
-                const hitsStyle = totals.hits > 0 ? `style="color:${config.hitsActiveColor}"` : '';
+                const ghHighlight = config.groupHeaderHitsHighlightColor || config.hitsActiveColor;
+                const hitsStyle = totals.hits > 0 ? `style="color:${ghHighlight}"` : '';
                 hitsCell = `<span class="col-hits" ${hitsStyle}>${totals.hits}</span>`;
                 diffCell = config.showDiff ? `<span class="col-diff ${tDiffClass}">${tDiffText}</span>` : '';
                 pbCell = config.showPb ? `<span class="col-pb">${totals.pb}</span>` : '';

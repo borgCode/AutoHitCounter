@@ -273,6 +273,45 @@
 
                         <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
 
+                        <TextBlock Text="GROUP HEADERS" Style="{StaticResource SectionLabel}" />
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Group Name" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding GroupNameColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding GroupNameColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Hits" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding GroupHeaderHitsColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding GroupHeaderHitsColor, UpdateSourceTrigger=PropertyChanged}"
+                                     Width="150" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Hits (totals &gt; 0)" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding GroupHeaderHitsHighlightColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding GroupHeaderHitsHighlightColor, UpdateSourceTrigger=PropertyChanged}"
+                                     Width="150" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="PB Column" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding GroupHeaderPbColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding GroupHeaderPbColor, UpdateSourceTrigger=PropertyChanged}"
+                                     Width="150" />
+                        </StackPanel>
+
+                        <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
+
                         <TextBlock Text="ATTEMPTS COUNTER" Style="{StaticResource SectionLabel}" />
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="When Zero" Style="{StaticResource FieldLabel}" />
@@ -296,15 +335,6 @@
                         <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
 
                         <TextBlock Text="SPLITS" Style="{StaticResource SectionLabel}" />
-
-                        <StackPanel Style="{StaticResource ColorRow}">
-                            <TextBlock Text="Group Name" Style="{StaticResource FieldLabel}" />
-                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
-                                <Rectangle
-                                    Fill="{Binding GroupNameColor, Converter={StaticResource StringToBrushConverter}}" />
-                            </Border>
-                            <TextBox Text="{Binding GroupNameColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
-                        </StackPanel>
 
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Split Name" Style="{StaticResource FieldLabel}" />
@@ -574,6 +604,34 @@
 
                         <Separator Style="{StaticResource Separator}" />
 
+                        <TextBlock Text="GROUP HEADER TEXT" Style="{StaticResource PanelHeader}" />
+
+                        <TextBlock Text="FONT FAMILY" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
+                        <ComboBox ItemsSource="{Binding AvailableFonts}"
+                                  SelectedItem="{Binding GroupHeaderFontFamily}"
+                                  Margin="0,0,0,8"
+                                  FontSize="11" Width="230" HorizontalAlignment="Left">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" FontFamily="{Binding}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Text="SIZE" Style="{StaticResource SectionLabel}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                            <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="90" />
+                            <xctk:IntegerUpDown Value="{Binding GroupHeaderFontSize}" Minimum="2" Maximum="64"
+                                                Width="55" />
+                        </StackPanel>
+
+                        <TextBlock Text="TEXT STYLE" Style="{StaticResource SectionLabel}" />
+                        <CheckBox Content="Bold" IsChecked="{Binding GroupHeaderBold}" Margin="0,3,0,3" />
+                        <CheckBox Content="Italic" IsChecked="{Binding GroupHeaderItalic}" Margin="0,3,0,3" />
+                        <CheckBox Content="Underline" IsChecked="{Binding GroupHeaderUnderline}" Margin="0,3,12,3" />
+
+                        <Separator Style="{StaticResource Separator}" />
+
                         <TextBlock Text="SPLITS TEXT" Style="{StaticResource PanelHeader}" />
 
                         <TextBlock Text="FONT FAMILY" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
@@ -647,7 +705,8 @@
                         <Separator Style="{StaticResource Separator}" />
 
                         <TextBlock Text="STYLE" Style="{StaticResource SectionLabel}" />
-                        <TextBlock Text="Applies to all but title and run completion." FontSize="10" FontStyle="Italic"
+                        <TextBlock Text="Applies to all but title, run completion, and group headers." FontSize="10"
+                                   FontStyle="Italic"
                                    Foreground="{DynamicResource OverlayCommentsBrush}" Margin="0,-4,0,4" />
                         <CheckBox Content="Bold" IsChecked="{Binding FontBold}" Margin="0,3,0,3" />
                         <CheckBox Content="Italic" IsChecked="{Binding FontItalic}" Margin="0,3,0,3" />

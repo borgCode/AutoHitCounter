@@ -57,12 +57,39 @@ public class OverlayProfileManager
         try
         {
             var json = File.ReadAllText(path);
-            return JsonSerializer.Deserialize<OverlayConfig>(json, ReadOptions) ?? CreateDefaultConfig();
+            var config = JsonSerializer.Deserialize<OverlayConfig>(json, ReadOptions) ?? CreateDefaultConfig();
+            EnsureGroupHeaderDefaults(config);
+            return config;
         }
         catch
         {
             return CreateDefaultConfig();
         }
+    }
+
+    /// <summary>
+    /// Fills group-header fields when loading profiles saved before those properties existed.
+    /// </summary>
+    private static void EnsureGroupHeaderDefaults(OverlayConfig c)
+    {
+        var d = CreateDefaultConfig();
+        if (c.GroupHeaderFontSize <= 0)
+        {
+            c.GroupHeaderFontFamily = d.GroupHeaderFontFamily;
+            c.GroupHeaderFontSize = d.GroupHeaderFontSize;
+            c.GroupHeaderBold = d.GroupHeaderBold;
+            c.GroupHeaderItalic = d.GroupHeaderItalic;
+            c.GroupHeaderUnderline = d.GroupHeaderUnderline;
+            c.GroupHeaderHitsColor = d.GroupHeaderHitsColor;
+            c.GroupHeaderHitsHighlightColor = d.GroupHeaderHitsHighlightColor;
+            c.GroupHeaderPbColor = d.GroupHeaderPbColor;
+            return;
+        }
+
+        if (string.IsNullOrEmpty(c.GroupHeaderHitsColor)) c.GroupHeaderHitsColor = d.GroupHeaderHitsColor;
+        if (string.IsNullOrEmpty(c.GroupHeaderHitsHighlightColor)) c.GroupHeaderHitsHighlightColor = d.GroupHeaderHitsHighlightColor;
+        if (string.IsNullOrEmpty(c.GroupHeaderPbColor)) c.GroupHeaderPbColor = d.GroupHeaderPbColor;
+        if (string.IsNullOrEmpty(c.GroupHeaderFontFamily)) c.GroupHeaderFontFamily = d.GroupHeaderFontFamily;
     }
 
     public void SaveActiveProfile(OverlayConfig config)
@@ -185,6 +212,15 @@ public class OverlayProfileManager
             HeaderTextColor = "#bbbbbb",
             HeaderFontFamily = "Segoe UI",
             HeaderFontSize = 13,
+
+            GroupHeaderFontFamily = "Segoe UI",
+            GroupHeaderFontSize = 13,
+            GroupHeaderBold = true,
+            GroupHeaderItalic = false,
+            GroupHeaderUnderline = false,
+            GroupHeaderHitsColor = "#888888",
+            GroupHeaderHitsHighlightColor = "#c8843a",
+            GroupHeaderPbColor = "#bbbbbb",
 
             AttemptsZeroColor = "#ffffff",
             AttemptsActiveColor = "#9D61A8",

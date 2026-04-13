@@ -39,6 +39,18 @@ public class OverlayConfig
     public int HeaderFontSize { get; set; }
 
 
+    // Group Header Section //
+
+    public string GroupHeaderFontFamily { get; set; }
+    public int GroupHeaderFontSize { get; set; }
+    public bool GroupHeaderBold { get; set; }
+    public bool GroupHeaderItalic { get; set; }
+    public bool GroupHeaderUnderline { get; set; }
+    public string GroupHeaderHitsColor { get; set; }
+    public string GroupHeaderHitsHighlightColor { get; set; }
+    public string GroupHeaderPbColor { get; set; }
+
+
     // Attempts Counter //
 
     public string AttemptsZeroColor { get; set; }
