@@ -279,6 +279,7 @@
             groupCollapseMode: 2,
             pbColor: '#bbbbbb',
             showFooterTotals: true,
+            showGroupHeaderTotals: false,
             igtFontFamily: 'Consolas',
             igtFontSize: 17,
             alternatingRows: 'rgba(255, 255, 255, 0.05)',
@@ -636,7 +637,8 @@
                         const inactiveParent = s.isParent && (collapseMode === 0
                             ? g !== activeGroup
                             : g < activeGroup);
-                        const totals = (s.isParent && inactiveParent) ? (groupTotals[g] ?? null) : null;
+                        const showGroupSums = config.showGroupHeaderTotals === true;
+                        const totals = (s.isParent && inactiveParent && showGroupSums) ? (groupTotals[g] ?? null) : null;
                         html += buildRow(s, cols, i, currentIndex, dpbHighlightIndex, false, inactiveParent, totals);
                     }
                 }
@@ -715,6 +717,10 @@
                 hitsCell = `<span class="col-hits" ${hitsStyle}>${totals.hits}</span>`;
                 diffCell = config.showDiff ? `<span class="col-diff ${tDiffClass}">${tDiffText}</span>` : '';
                 pbCell = config.showPb ? `<span class="col-pb">${totals.pb}</span>` : '';
+            } else if (s.isParent && inactiveParent && config.showGroupHeaderTotals !== true) {
+                hitsCell = `<span class="col-hits"></span>`;
+                diffCell = config.showDiff ? `<span class="col-diff"></span>` : '';
+                pbCell = config.showPb ? `<span class="col-pb"></span>` : '';
             } else {
                 hitsCell = `<span class="col-hits">${s.hits}</span>`;
                 diffCell = config.showDiff ? `<span class="col-diff ${diffClass}">${diffText}</span>` : '';
