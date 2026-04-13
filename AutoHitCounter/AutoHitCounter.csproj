@@ -183,6 +183,7 @@
     <Compile Include="Interfaces\IExternalIntegrationService.cs" />
     <Compile Include="Interfaces\IGameModule.cs" />
     <Compile Include="Interfaces\IHitRulesProvider.cs" />
+    <Compile Include="Interfaces\ICustomGamesStore.cs" />
     <Compile Include="Interfaces\IHitService.cs" />
     <Compile Include="Interfaces\IProfileService.cs" />
     <Compile Include="Interfaces\IReorderHandler.cs" />
@@ -202,6 +203,7 @@
     <Compile Include="Models\RunSnapshot.cs" />
     <Compile Include="Models\RunState.cs" />
     <Compile Include="Models\SplitEntry.cs" />
+    <Compile Include="Services\CustomGameService.cs" />
     <Compile Include="Services\EventLogReader.cs" />
     <Compile Include="Services\EventServiceBase.cs" />
     <Compile Include="Services\ExternalIntegrationService.cs" />
@@ -211,6 +213,7 @@
     <Compile Include="Services\OverlayServerService.cs" />
     <Compile Include="Services\ProfileService.cs" />
     <Compile Include="Services\RunStateService.cs" />
+    <Compile Include="Services\SettingsCustomGamesStore.cs" />
     <Compile Include="Services\SplitNavigationService.cs" />
     <Compile Include="Services\StateService.cs" />
     <Compile Include="Services\ThemeService.cs" />

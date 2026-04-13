@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using AutoHitCounter.Core;
@@ -28,6 +27,7 @@ namespace AutoHitCounter.ViewModels
         private readonly SplitNavigationService _splitNav;
         private readonly OverlayServerService _overlayServerService;
         private readonly ExternalIntegrationService _externalIntegrationService;
+        private readonly CustomGameService _customGameService;
         private IGameModule _currentModule;
         private string _lastIgt;
         private readonly RunStateService _runStateService;
@@ -64,6 +64,7 @@ namespace AutoHitCounter.ViewModels
             _splitNav.StateChanged += OnSplitStateChanged;
 
             _runStateService = new RunStateService(profileService);
+            _customGameService = new CustomGameService(new SettingsCustomGamesStore(), profileService, _runStateService);
 
             RegisterHotkeys();
 
@@ -1023,29 +1024,24 @@ namespace AutoHitCounter.ViewModels
 
         private void LoadCustomGames()
         {
-            var raw = SettingsManager.Default.CustomGames;
-            if (string.IsNullOrWhiteSpace(raw)) return;
-
-            foreach (var name in raw.Split(','))
-            {
-                var trimmed = name.Trim();
-                if (string.IsNullOrEmpty(trimmed)) continue;
-                Games.Add(new Game
-                {
-                    Title = GameTitle.Manual,
-                    GameName = trimmed,
-                    ProcessName = null,
-                    IsManual = true
-                });
-            }
+            foreach (var game in _customGameService.Load())
+                Games.Add(game);
         }
 
         private void CreateCustomGame()
         {
-            var name = MsgBox.ShowInput(
+            var input = MsgBox.ShowInput(
                 "Create a game to add profiles and splits to.\nAuto hit counting and auto splitting are not supported,\nbut you can use a timer and track hits manually.",
                 "", "New Custom Game");
-            if (string.IsNullOrWhiteSpace(name)) return;
+            if (string.IsNullOrWhiteSpace(input)) return;
+
+            var name = input.Trim();
+
+            if (!CustomGameService.IsValidName(name))
+            {
+                MsgBox.Show("Name cannot contain ','.", "New Custom Game");
+                return;
+            }
 
             if (Games.Any(g => g.GameName == name))
             {
@@ -1053,18 +1049,8 @@ namespace AutoHitCounter.ViewModels
                 return;
             }
 
-            var game = new Game
-            {
-                Title = GameTitle.Manual,
-                GameName = name,
-                ProcessName = null,
-                IsManual = true
-            };
+            var game = _customGameService.Add(name);
             Games.Add(game);
-
-            var existing = SettingsManager.Default.CustomGames;
-            SettingsManager.Default.CustomGames = string.IsNullOrEmpty(existing) ? name : $"{existing},{name}";
-            SettingsManager.Default.Save();
 
             SelectedGame = game;
             StartTrackingGame();
@@ -1086,8 +1072,7 @@ namespace AutoHitCounter.ViewModels
                     "Delete Custom Game"))
                 return;
 
-            foreach (var profile in profiles.ToList())
-                _profileService.DeleteProfile(name, profile.Name);
+            _customGameService.Delete(name);
 
             (_currentModule as IDisposable)?.Dispose();
             _currentModule = null;
@@ -1097,13 +1082,6 @@ namespace AutoHitCounter.ViewModels
 
             Games.Remove(_selectedGame);
             SelectedGame = Games.FirstOrDefault();
-
-            var names = (SettingsManager.Default.CustomGames ?? "")
-                .Split(',')
-                .Select(n => n.Trim())
-                .Where(n => n != name);
-            SettingsManager.Default.CustomGames = string.Join(",", names);
-            SettingsManager.Default.Save();
         }
 
         private void RenameCustomGame()
@@ -1111,8 +1089,17 @@ namespace AutoHitCounter.ViewModels
             if (_selectedGame == null || !_selectedGame.IsManual) return;
 
             var oldName = _selectedGame.GameName;
-            var newName = MsgBox.ShowInput("Rename Game", oldName, "Rename Custom Game");
-            if (string.IsNullOrWhiteSpace(newName) || newName == oldName) return;
+            var input = MsgBox.ShowInput("Rename Game", oldName, "Rename Custom Game");
+            if (string.IsNullOrWhiteSpace(input)) return;
+
+            var newName = input.Trim();
+            if (newName == oldName) return;
+
+            if (!CustomGameService.IsValidName(newName))
+            {
+                MsgBox.Show("Name cannot contain ','.", "Rename Custom Game");
+                return;
+            }
 
             if (Games.Any(g => g.GameName == newName))
             {
@@ -1120,7 +1107,7 @@ namespace AutoHitCounter.ViewModels
                 return;
             }
 
-            _profileService.RenameGame(oldName, newName);
+            _customGameService.Rename(oldName, newName);
 
             var game = _selectedGame;
             game.GameName = newName;
@@ -1132,18 +1119,11 @@ namespace AutoHitCounter.ViewModels
             _selectedGame = null;
             SelectedGame = game;
 
-            var customNames = (SettingsManager.Default.CustomGames ?? "")
-                .Split(',')
-                .Select(n => n.Trim())
-                .Select(n => n == oldName ? newName : n);
-            SettingsManager.Default.CustomGames = string.Join(",", customNames);
             SettingsManager.Default.LastSelectedGame = newName;
             SettingsManager.Default.Save();
 
             if (_activeGame == game)
                 AttachedText = $"Custom Game: {newName}";
-
-            _runStateService.RenameGame(oldName, newName);
         }
 
         private void SaveNotes()
