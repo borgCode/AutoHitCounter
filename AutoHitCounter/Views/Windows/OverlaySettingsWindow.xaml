@@ -10,8 +10,8 @@
         AllowsTransparency="True"
         Background="Transparent"
         Title="Overlay Settings"
-        Width="920" Height="700"
-        MinWidth="920" MinHeight="700"
+        Width="920" Height="720"
+        MinWidth="920" MinHeight="720"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
                        behaviors:WindowResizeBehavior.EnableCustomResize="True">
@@ -67,7 +67,7 @@
     <Grid Background="{DynamicResource BackgroundBrush}">
         <Grid.Clip>
             <RectangleGeometry RadiusX="5" RadiusY="5"
-                               Rect="0,0,920,700"/>
+                               Rect="0,0,920,720"/>
         </Grid.Clip>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
@@ -119,7 +119,7 @@
         <!-- Main content -->
         <Grid Grid.Row="2" Margin="8,6,8,6">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="232" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="280" />
             </Grid.ColumnDefinitions>
@@ -159,7 +159,8 @@
                                        Margin="0,0,0,2" />
                             <ComboBox ItemsSource="{Binding GroupCollapseModes}"
                                       SelectedItem="{Binding GroupCollapseMode}"
-                                      FontSize="11" Width="175">
+                                      FontSize="11" Width="184"
+                                      HorizontalAlignment="Left">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" />
@@ -188,7 +189,7 @@
                         <TextBlock Text="BACKGROUND OPACITY" Style="{StaticResource SectionLabel}" />
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <Slider Value="{Binding BackgroundOpacity, Delay=400}" Minimum="0" Maximum="1"
-                                    Width="110" VerticalAlignment="Center" />
+                                    Width="155" VerticalAlignment="Center" />
                             <TextBlock Text="{Binding BackgroundOpacity, StringFormat={}{0:F2}}"
                                        Foreground="{DynamicResource OverlayFieldBrush}" FontSize="11" Margin="6,0,0,0"
                                        VerticalAlignment="Center" />
@@ -201,7 +202,8 @@
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBox Text="{Binding CustomCss, UpdateSourceTrigger=PropertyChanged}"
                                      Height="250"
-                                     Width="150"
+                                     Width="185"
+                                     HorizontalAlignment="Left"
                                      AcceptsTab="True"
                                      AcceptsReturn="True"
                                      VerticalScrollBarVisibility="Auto" />
@@ -560,13 +562,13 @@
 
                         <TextBlock Text="TEXT" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
                         <TextBox Text="{Binding TitleText, UpdateSourceTrigger=PropertyChanged, Delay=400}"
-                                 Margin="0,0,0,8" Width="230" HorizontalAlignment="Left" />
+                                 Margin="0,0,0,8" Width="235" HorizontalAlignment="Left" />
 
                         <TextBlock Text="FONT FAMILY" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding TitleFontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11" Width="230" HorizontalAlignment="Left">
+                                  FontSize="11" Width="235" HorizontalAlignment="Left">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -588,7 +590,7 @@
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding HeaderFontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11" Width="230" HorizontalAlignment="Left">
+                                  FontSize="11" Width="235" HorizontalAlignment="Left">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -610,7 +612,7 @@
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding GroupHeaderFontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11" Width="230" HorizontalAlignment="Left">
+                                  FontSize="11" Width="235" HorizontalAlignment="Left">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -638,7 +640,7 @@
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding FontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11" Width="230" HorizontalAlignment="Left">
+                                  FontSize="11" Width="235" HorizontalAlignment="Left">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -660,7 +662,7 @@
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding FooterFontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11" Width="230" HorizontalAlignment="Left">
+                                  FontSize="11" Width="235" HorizontalAlignment="Left">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -681,7 +683,7 @@
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding IgtFontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11" Width="230" HorizontalAlignment="Left">
+                                  FontSize="11" Width="235" HorizontalAlignment="Left">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -699,13 +701,13 @@
 
                         <TextBlock Text="RUN COMPLETION MESSAGE" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
                         <TextBox Text="{Binding RunCompleteText, UpdateSourceTrigger=PropertyChanged, Delay=400}"
-                                 Margin="0,0,0,8" Width="230" HorizontalAlignment="Left" />
+                                 Margin="0,0,0,8" Width="235" HorizontalAlignment="Left" />
 
 
                         <Separator Style="{StaticResource Separator}" />
 
                         <TextBlock Text="STYLE" Style="{StaticResource SectionLabel}" />
-                        <TextBlock Text="Applies to all but title, run completion, and group headers." FontSize="10"
+                        <TextBlock Text="Doesn't apply to title, run completion, or group headers." FontSize="10"
                                    FontStyle="Italic"
                                    Foreground="{DynamicResource OverlayCommentsBrush}" Margin="0,-4,0,4" />
                         <CheckBox Content="Bold" IsChecked="{Binding FontBold}" Margin="0,3,0,3" />
