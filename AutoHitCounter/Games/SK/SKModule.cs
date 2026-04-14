@@ -31,7 +31,7 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
     private EventLogReader _eventLogReader;
     private SKRunStartService _runStartService;
 
-    public event Action<int> OnHit;
+    public event Action OnHit;
     public event Action OnEventSet;
     public event Action<List<EventLogEntry>> OnEventLogEntriesReceived;
     public event Action<long> OnTimeChanged;
@@ -109,7 +109,7 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
 
         if (_hitService.HasHit() && (_lastHit == null || (DateTime.Now - _lastHit.Value).TotalSeconds > 3))
         {
-            OnHit?.Invoke(1);
+            OnHit?.Invoke();
             _lastHit = DateTime.Now;
         }
 

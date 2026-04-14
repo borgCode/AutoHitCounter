@@ -30,7 +30,7 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
     private EventLogReader _eventLogReader;
     private DS3RunStartService _runStartService;
 
-    public event Action<int> OnHit;
+    public event Action OnHit;
     public event Action OnEventSet;
     public event Action<List<EventLogEntry>> OnEventLogEntriesReceived;
     public event Action<long> OnTimeChanged;
@@ -104,7 +104,7 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
 
         if (_hitService.HasHit() && (_lastHit == null || (DateTime.Now - _lastHit.Value).TotalSeconds > 3))
         {
-            OnHit?.Invoke(1);
+            OnHit?.Invoke();
             _lastHit = DateTime.Now;
         }
 

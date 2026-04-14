@@ -17,7 +17,7 @@ public class ManualGameModule : IGameModule, IDisposable
 
     public long ElapsedMilliseconds => _offset + _stopwatch.ElapsedMilliseconds;
 
-    public event Action<int> OnHit;
+    public event Action OnHit;
     public event Action OnEventSet;
     public event Action<List<EventLogEntry>> OnEventLogEntriesReceived;
     public event Action<long> OnTimeChanged;

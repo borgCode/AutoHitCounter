@@ -10,7 +10,7 @@ using H.Hooks;
 
 namespace AutoHitCounter.Utilities;
 
-public class HotkeyManager
+public class HotkeyManager : IHotkeyManager
 {
     private readonly IMemoryService _memoryService;
     private readonly LowLevelKeyboardHook _keyboardHook = new();

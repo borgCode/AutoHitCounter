@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Services\CustomGameServiceTests.cs" />
+    <Compile Include="Services\GameSessionOrchestratorTests.cs" />
     <Compile Include="Services\RunStateServiceTests.cs" />
     <Compile Include="Services\SplitNavigationServiceTests.cs" />
     <Compile Include="ViewModels\ProfileEditorViewModelTests.cs" />

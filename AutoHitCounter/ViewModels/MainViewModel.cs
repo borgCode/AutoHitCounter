@@ -57,11 +57,11 @@ namespace AutoHitCounter.ViewModels
             Settings.OnGameSettingChanged += () => _orchestrator.ApplyCurrentSettings();
 
             _orchestrator.AttachmentChanged += OnOrchestratorAttachmentChanged;
-            _orchestrator.HitReceived += async count =>
+            _orchestrator.HitReceived += async () =>
             {
                 if (IsRunComplete || CurrentSplit == null || IsPracticeMode) return;
                 if (_selectedGame != _orchestrator.ActiveGame) return;
-                CurrentSplit.NumOfHits += count;
+                CurrentSplit.NumOfHits++;
                 SaveRunState();
                 _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
 
@@ -667,6 +667,8 @@ namespace AutoHitCounter.ViewModels
             _orchestrator.Track(_selectedGame);
             if (_selectedGame.IsManual && InGameTime.TotalMilliseconds > 0)
                 _orchestrator.ManualSetElapsed((long)InGameTime.TotalMilliseconds);
+            SettingsManager.Default.LastSelectedGame = _selectedGame.GameName;
+            SettingsManager.Default.Save();
             OnPropertyChanged(nameof(TrackingText));
             OnPropertyChanged(nameof(TimerLabel));
         }

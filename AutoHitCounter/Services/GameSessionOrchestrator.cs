@@ -6,14 +6,13 @@ using AutoHitCounter.Enums;
 using AutoHitCounter.Games.Manual;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Models;
-using AutoHitCounter.Utilities;
 
 namespace AutoHitCounter.Services;
 
 public class GameSessionOrchestrator : IGameSessionOrchestrator
 {
     private readonly IMemoryService _memoryService;
-    private readonly HotkeyManager _hotkeyManager;
+    private readonly IHotkeyManager _hotkeyManager;
     private readonly IGameModuleFactory _gameModuleFactory;
     private IHitRulesProvider _hitRulesProvider;
     private Func<Dictionary<uint, (string Name, int Required, int Hit)>> _activeEventsProvider;
@@ -26,7 +25,7 @@ public class GameSessionOrchestrator : IGameSessionOrchestrator
 
     public GameSessionOrchestrator(
         IMemoryService memoryService,
-        HotkeyManager hotkeyManager,
+        IHotkeyManager hotkeyManager,
         IGameModuleFactory gameModuleFactory,
         IStateService stateService)
     {
@@ -45,7 +44,7 @@ public class GameSessionOrchestrator : IGameSessionOrchestrator
         _activeEventsProvider = activeEventsProvider;
     }
 
-    public event Action<int> HitReceived;
+    public event Action HitReceived;
     public event Action RunStartDetected;
     public event Action EventSetDetected;
     public event Action<List<EventLogEntry>> EventLogEntries;
@@ -75,8 +74,7 @@ public class GameSessionOrchestrator : IGameSessionOrchestrator
     public void UpdateEvents(Dictionary<uint, (string Name, int Required, int Hit)> events)
         => _currentModule?.UpdateEvents(events);
 
-    public void ApplyCurrentSettings()
-        => _currentModule?.ApplySettings();
+    public void ApplyCurrentSettings() => _currentModule?.ApplySettings();
 
     public void SetEventLogEnabled(bool enabled)
     {
@@ -135,12 +133,22 @@ public class GameSessionOrchestrator : IGameSessionOrchestrator
         else
         {
             if (_currentModule is IVersionedGameModule versioned)
-                versioned.OnVersionDetected += UpdateAttachedText;
+            {
+                var game = _activeGame;
+                versioned.OnVersionDetected += () =>
+                {
+                    var version = versioned.GameVersion;
+                    _attachedText = string.IsNullOrEmpty(version)
+                        ? $"Attached to {game.GameName}"
+                        : $"Attached to {game.GameName} ({version})";
+                    AttachmentChanged?.Invoke();
+                };
+            }
 
             _memoryService.StartAutoAttach(_activeGame.ProcessName);
         }
 
-        _currentModule.OnHit += count => HitReceived?.Invoke(count);
+        _currentModule.OnHit += () => HitReceived?.Invoke();
         _currentModule.OnRunStart += () => RunStartDetected?.Invoke();
         _currentModule.OnEventSet += () => EventSetDetected?.Invoke();
         _currentModule.OnEventLogEntriesReceived += entries => EventLogEntries?.Invoke(entries);
@@ -148,30 +156,14 @@ public class GameSessionOrchestrator : IGameSessionOrchestrator
 
         if (_eventLogEnabled)
             _currentModule.SetEventLogEnabled(true);
-
-        SettingsManager.Default.LastSelectedGame = _activeGame.GameName;
-        SettingsManager.Default.Save();
-    }
-
-    private void UpdateAttachedText()
-    {
-        var moduleGame = _activeGame;
-        if (_currentModule is IVersionedGameModule versioned)
-            versioned.OnVersionDetected += () =>
-            {
-                var version = versioned.GameVersion;
-                _attachedText = string.IsNullOrEmpty(version)
-                    ? $"Attached to {moduleGame.GameName}"
-                    : $"Attached to {moduleGame.GameName} ({version})";
-                AttachmentChanged?.Invoke();
-            };
     }
 
     private void OnAttached()
     {
         _isAttached = true;
+        if (_activeGame != null)
+            _attachedText = $"Attached to {_activeGame.GameName}";
         AttachmentChanged?.Invoke();
-        UpdateAttachedText();
     }
 
     private void OnNotAttached()

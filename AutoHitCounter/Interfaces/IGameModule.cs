@@ -8,7 +8,7 @@ namespace AutoHitCounter.Interfaces;
 
 public interface IGameModule
 {
-    event Action<int> OnHit;
+    event Action OnHit;
     event Action OnEventSet;
     event Action<List<EventLogEntry>> OnEventLogEntriesReceived;
     event Action<long> OnTimeChanged;

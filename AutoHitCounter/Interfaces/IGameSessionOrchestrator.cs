@@ -8,7 +8,7 @@ namespace AutoHitCounter.Interfaces;
 
 public interface IGameSessionOrchestrator : IDisposable
 {
-    event Action<int> HitReceived;
+    event Action HitReceived;
     event Action RunStartDetected;
     event Action EventSetDetected;
     event Action<List<EventLogEntry>> EventLogEntries;
