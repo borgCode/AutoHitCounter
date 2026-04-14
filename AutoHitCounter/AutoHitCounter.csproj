@@ -182,6 +182,8 @@
     <Compile Include="Interfaces\IEventService.cs" />
     <Compile Include="Interfaces\IExternalIntegrationService.cs" />
     <Compile Include="Interfaces\IGameModule.cs" />
+    <Compile Include="Interfaces\IGameModuleFactory.cs" />
+    <Compile Include="Interfaces\IGameSessionOrchestrator.cs" />
     <Compile Include="Interfaces\IHitRulesProvider.cs" />
     <Compile Include="Interfaces\ICustomGamesStore.cs" />
     <Compile Include="Interfaces\IHitService.cs" />
@@ -209,6 +211,7 @@
     <Compile Include="Services\ExternalIntegrationService.cs" />
     <Compile Include="Services\GameFlagRegistry.cs" />
     <Compile Include="Services\GameModuleFactory.cs" />
+    <Compile Include="Services\GameSessionOrchestrator.cs" />
     <Compile Include="Services\MemoryService.cs" />
     <Compile Include="Services\OverlayServerService.cs" />
     <Compile Include="Services\ProfileService.cs" />

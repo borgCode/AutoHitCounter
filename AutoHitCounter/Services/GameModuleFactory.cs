@@ -21,7 +21,7 @@ public class GameModuleFactory(
     IMemoryService memoryService,
     IStateService stateService,
     HookManager hookManager,
-    ITickService tickService)
+    ITickService tickService) : IGameModuleFactory
 {
     private class GameRegistration(string processName, string eventResource, bool isEventLogSupported)
     {
