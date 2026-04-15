@@ -602,6 +602,19 @@
             return indices;
         }
 
+        function findActiveGroupHeaderIndex(allSplits, groupOf, activeGroup) {
+            for (let i = 0; i < allSplits.length; i++) {
+                if (allSplits[i].isParent && groupOf[i] === activeGroup) return i;
+            }
+            return -1;
+        }
+
+        function shouldPinActiveGroupHeader(activeHeaderPos, windowStart, renderIndices, activeHeaderIndex) {
+            return activeHeaderPos >= 0
+                && activeHeaderPos < windowStart
+                && !renderIndices.includes(activeHeaderIndex);
+        }
+
         function renderState(state) {
             const cols = getGridColumns();
             let html = '';
@@ -643,13 +656,42 @@
                         anchorPos = best;
                     }
 
+                    const activeHeaderIndex = findActiveGroupHeaderIndex(allSplits, groupOf, activeGroup);
+                    const activeHeaderPos = activeHeaderIndex >= 0 ? visibleIndices.indexOf(activeHeaderIndex) : -1;
+
                     const { start: wStart, end: wEnd } = computeVisibleRowWindow(
                         anchorPos,
                         visibleIndices.length,
                         maxRows
                     );
-                    for (let j = wStart; j < wEnd; j++) {
-                        const i = visibleIndices[j];
+                    const shouldPinActiveHeader = shouldPinActiveGroupHeader(
+                        activeHeaderPos,
+                        wStart,
+                        visibleIndices.slice(wStart, wEnd),
+                        activeHeaderIndex
+                    );
+                    const effectiveStart = (shouldPinActiveHeader && wStart < anchorPos) ? (wStart + 1) : wStart;
+                    let renderIndices = visibleIndices.slice(effectiveStart, wEnd);
+
+                    if (shouldPinActiveHeader) {
+                        renderIndices.unshift(activeHeaderIndex);
+                        const allowedRows = maxRows + 1;
+                        if (renderIndices.length > allowedRows) {
+                            // Preserve current split and pinned header while enforcing frozen-header cap.
+                            let trimAt = -1;
+                            for (let r = renderIndices.length - 1; r >= 0; r--) {
+                                const idx = renderIndices[r];
+                                if (idx !== anchor && idx !== activeHeaderIndex) {
+                                    trimAt = r;
+                                    break;
+                                }
+                            }
+                            if (trimAt === -1) trimAt = renderIndices.length - 1;
+                            renderIndices.splice(trimAt, 1);
+                        }
+                    }
+
+                    for (const i of renderIndices) {
                         const s = allSplits[i];
                         const g = groupOf[i];
                         const inactiveParent = s.isParent && (collapseMode === 0
