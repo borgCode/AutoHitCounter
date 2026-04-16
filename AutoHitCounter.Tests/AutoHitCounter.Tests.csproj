@@ -63,6 +63,7 @@
     <Compile Include="Services\GameSessionOrchestratorTests.cs" />
     <Compile Include="Services\RunStateServiceTests.cs" />
     <Compile Include="Services\SplitNavigationServiceTests.cs" />
+    <Compile Include="ViewModels\MainViewModelTests.cs" />
     <Compile Include="ViewModels\ProfileEditorViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
