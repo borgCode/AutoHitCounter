@@ -8,14 +8,9 @@ using AutoHitCounter.Utilities;
 
 namespace AutoHitCounter.Services;
 
-public class ExternalIntegrationService : IExternalHitService
+public class ExternalIntegrationService : IExternalIntegrationService
 {
-    private readonly HttpClient _httpClient;
-
-    public ExternalIntegrationService()
-    {
-        _httpClient = new HttpClient();
-    }
+    private readonly HttpClient _httpClient = new();
 
     public async Task SendHitAsync(HitPayload payload)
     {
