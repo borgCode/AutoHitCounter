@@ -212,7 +212,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock Text="Row Height" Style="{StaticResource FieldLabel}" Width="80" />
-                            <xctk:IntegerUpDown Value="{Binding RowHeight}" Minimum="16" Maximum="60" Width="55" />
+                            <xctk:IntegerUpDown Value="{Binding RowHeight}" Minimum="16" Maximum="60" Width="55" Tag="RowHeight" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" />
@@ -332,7 +332,7 @@
                                 <Rectangle
                                     Fill="{Binding GroupNameColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
-                            <TextBox Text="{Binding GroupNameColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                            <TextBox Text="{Binding GroupNameColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="GroupNameColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Hits" Style="{StaticResource FieldLabel}" />
@@ -341,7 +341,7 @@
                                     Fill="{Binding GroupHeaderHitsColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding GroupHeaderHitsColor, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="150" />
+                                     Width="150" Tag="GroupHeaderHitsColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Hits (totals &gt; 0)" Style="{StaticResource FieldLabel}" />
@@ -350,7 +350,7 @@
                                     Fill="{Binding GroupHeaderHitsHighlightColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding GroupHeaderHitsHighlightColor, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="150" />
+                                     Width="150" Tag="GroupHeaderHitsHighlightColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="PB Column" Style="{StaticResource FieldLabel}" />
@@ -359,7 +359,7 @@
                                     Fill="{Binding GroupHeaderPbColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding GroupHeaderPbColor, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="150" />
+                                     Width="150" Tag="GroupHeaderPbColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
@@ -680,7 +680,7 @@
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding GroupHeaderFontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11" Width="235" HorizontalAlignment="Left">
+                                  FontSize="11" Width="235" HorizontalAlignment="Left" Tag="GroupHeaderFontFamily" ContextMenu="{StaticResource ResetContextMenu}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -692,7 +692,7 @@
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                             <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="90" />
                             <xctk:IntegerUpDown Value="{Binding GroupHeaderFontSize}" Minimum="2" Maximum="64"
-                                                Width="55" />
+                                                Width="55" Tag="GroupHeaderFontSize" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
 
                         <TextBlock Text="TEXT STYLE" Style="{StaticResource SectionLabel}" />
