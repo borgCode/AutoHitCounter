@@ -118,22 +118,31 @@
         }
 
 
-        /* Parent category row styling */
+        /* Parent category row — font size/weight/color come from applyDynamicStyles */
         .split-row.parent {
-            font-weight: 700;
-            font-size: 13px;
             letter-spacing: 0.03em;
-            color: #999;
-            padding-top: 8px;
+            align-items: center; 
             border-left-color: transparent;
             background: transparent;
         }
 
-        /* Hide numbers for parent rows */
+        /* Hide numbers for parent rows 
         .split-row.parent .col-hits,
         .split-row.parent .col-diff,
         .split-row.parent .col-pb {
             visibility: hidden;
+        } */
+
+        /* Hide numbers only on the active group header (children are visible) */
+        .split-row.parent:not(.group-inactive) .col-hits,
+        .split-row.parent:not(.group-inactive) .col-diff,
+        .split-row.parent:not(.group-inactive) .col-pb {
+            visibility: hidden;
+        }
+
+        /* Collapsed rows hidden */
+        .split-row.collapsed {
+            display: none;
         }
 
         /* Diff colors - overridden dynamically */
@@ -267,8 +276,18 @@
                 splitNameOnHitColor: '#e0e0e0',
                 splitNameOnHitlessColor: '#e0e0e0',
                 groupNameColor: '#999999',
+                groupHeaderFontFamily: 'Segoe UI',
+                groupHeaderFontSize: 13,
+                groupHeaderBold: true,
+                groupHeaderItalic: false,
+                groupHeaderUnderline: false,
+                groupHeaderHitsColor: '#888888',
+                groupHeaderHitsHighlightColor: '#c8843a',
+                groupHeaderPbColor: '#bbbbbb',
+                groupCollapseMode: 2,
                 pbColor: '#bbbbbb',
                 showFooterTotals: true,
+                groupProgressMode: 0,
                 igtFontFamily: 'Consolas',
                 igtFontSize: 17,
                 alternatingRows: 'rgba(255, 255, 255, 0.05)',
@@ -308,6 +327,17 @@
             }
         }
 
+        function applyLegacyGroupCollapse() {
+            if (config.groupCollapseMode === undefined || config.groupCollapseMode === null) {
+                config.groupCollapseMode = config.collapseInactiveGroups === false ? 2 : 0;
+            } else {
+                const n = Number(config.groupCollapseMode);
+                config.groupCollapseMode = (n === 0 || n === 1 || n === 2) ? n : 0;
+            }
+        }
+
+        applyLegacyGroupCollapse();
+
         const overlay = document.getElementById('overlay');
         const headerEl = document.getElementById('header');
         const splitsEl = document.getElementById('splits');
@@ -339,6 +369,7 @@
                     }
                 } else if (msg.type === 'config') {
                     Object.assign(config, msg.data);
+                    applyLegacyGroupCollapse();
                     localStorage.setItem('overlayConfig', JSON.stringify(config));
                     applyLayout();
                     if (lastState) renderState(lastState);
@@ -372,6 +403,10 @@
                 dynamicStyleEl = document.createElement('style');
                 document.head.appendChild(dynamicStyleEl);
             }
+            const ghFam = config.groupHeaderFontFamily || config.fontFamily || 'Segoe UI';
+            const ghSize = (config.groupHeaderFontSize > 0) ? config.groupHeaderFontSize : 13;
+            const ghHits = config.groupHeaderHitsColor || config.hitsCurrentColor;
+            const ghPb = config.groupHeaderPbColor || config.pbColor;
             dynamicStyleEl.textContent = `
                 .diff-pos { color: ${config.diffPosColor}; }
                 .diff-neg { color: ${config.diffNegColor}; }
@@ -417,9 +452,18 @@
                 .split-row.hit .col-pb { color: ${config.pbMatchesHit ? config.hitsActiveColor : config.pbColor}; }
                 .split-row.cleared .col-pb { color: ${config.pbMatchesHit ? config.hitsClearedColor : config.pbColor}; }
                 .split-row.current.hit .col-pb { color: ${config.pbMatchesHit ? config.hitsActiveColor : config.pbColor}; }
+                .split-row.parent .col-hits { color: ${ghHits}; }
+                .split-row.parent .col-pb { color: ${ghPb}; }
+                .split-row.parent {
+                    font-family: ${ghFam};
+                    font-size: ${ghSize}px;
+                    font-weight: ${config.groupHeaderBold !== false ? 'bold' : 'normal'};
+                    font-style: ${config.groupHeaderItalic ? 'italic' : 'normal'};
+                    text-decoration: ${config.groupHeaderUnderline ? 'underline' : 'none'};
+                }
                 .footer .col-hits { color: ${config.footerHitFontColor}; }
                 .footer .col-pb { color: ${config.footerPbFontColor}; }
-                #overlay, .split-row, .footer { 
+                #overlay, .split-row:not(.parent), .footer { 
                     font-weight: ${config.fontBold ? 'bold' : 'normal'};
                     font-style: ${config.fontItalic ? 'italic' : 'normal'};
                     text-decoration: ${config.fontUnderline ? 'underline' : 'none'};
@@ -435,6 +479,7 @@
                     border-bottom: ${config.showHeaderBorder ? '1px solid rgba(255,255,255,0.08)' : 'none'};
                 }
                 #progress { font-size: ${config.headerFontSize + 1}px; }
+                .group-progress { color: ${config.headerTextColor || '#bbbbbb'}; font-size: ${Math.max(10, (config.groupHeaderFontSize || 13) - 1)}px; font-weight: normal; }
                 #attempts { font-size: ${config.headerFontSize + 2}px; }
                 .header span:not(:first-child) { color: ${config.headerTextColor}; }
                 .igt { color: ${config.igtColor}; font-family: ${config.igtFontFamily || 'Consolas, monospace'}; font-size: ${config.igtFontSize || 16}px; }
@@ -499,43 +544,165 @@
                 + (config.showPb ? '<span>PB</span>' : '');
         }
 
+        function computeGroupVisibility(allSplits, currentIndex) {
+            const hasGroups = allSplits.some(s => s.isParent);
+            if (!hasGroups) return null;
+
+            const groupOf = new Array(allSplits.length).fill(-1);
+            let currentGroup = -1;
+
+            for (let i = 0; i < allSplits.length; i++) {
+                if (allSplits[i].isParent) currentGroup++;
+                groupOf[i] = currentGroup;
+            }
+
+            const anchor = currentIndex >= 0 ? currentIndex : 0;
+            const activeGroup = groupOf[anchor];
+
+            const groupTotals = {};
+            for (let i = 0; i < allSplits.length; i++) {
+                const s = allSplits[i];
+                if (s.isParent) continue;
+                const g = groupOf[i];
+                if (!groupTotals[g]) groupTotals[g] = { hits: 0, pb: 0 };
+                groupTotals[g].hits += s.hits ?? 0;
+                groupTotals[g].pb += s.pb ?? 0;
+            }
+
+            for (const g of Object.keys(groupTotals)) {
+                const t = groupTotals[g];
+                t.diff = t.hits - t.pb;
+            }
+
+            return { groupOf, activeGroup, groupTotals };
+        }
+
+        /**
+         * @param mode 0 = hidden (caller skips), 1 = active group only, 2 = all groups
+         */
+        function computeGroupProgressStrings(allSplits, groupOf, activeGroup, anchorIdx, mode) {
+            const eff = allSplits.findIndex(s => s.isCurrent);
+            const resolved = eff >= 0 ? eff : anchorIdx;
+
+            const childrenByGroup = {};
+            for (let i = 0; i < allSplits.length; i++) {
+                if (allSplits[i].isParent) continue;
+                const g = groupOf[i];
+                if (!childrenByGroup[g]) childrenByGroup[g] = [];
+                childrenByGroup[g].push(i);
+            }
+
+            const out = {};
+            for (const g of Object.keys(childrenByGroup)) {
+                const gi = Number(g);
+                if (mode === 1 && gi !== activeGroup) {
+                    out[gi] = '';
+                    continue;
+                }
+
+                const children = childrenByGroup[g];
+                const total = children.length;
+                let cur;
+                if (children.includes(resolved)) {
+                    cur = children.indexOf(resolved) + 1;
+                } else if (gi < activeGroup) {
+                    cur = total;
+                } else if (gi > activeGroup) {
+                    cur = 0;
+                } else {
+                    let last = 0;
+                    for (const idx of children) {
+                        if (idx < resolved) last = children.indexOf(idx) + 1;
+                    }
+                    cur = last;
+                }
+
+                out[gi] = ` (${cur}/${total})`;
+            }
+            return out;
+        }
+
+        function computeVisibleRowWindow(anchorPos, totalRows, maxRows) {
+            const prevAvailable = anchorPos;
+            const nextAvailable = totalRows - anchorPos - 1;
+            const prevWanted = config.prevSplits;
+            const nextWanted = config.nextSplits;
+
+            const prevActual = Math.min(prevWanted, prevAvailable);
+            const nextActual = Math.min(nextWanted + (prevWanted - prevActual), nextAvailable);
+            const prevFinal = Math.min(prevWanted + (nextWanted - Math.min(nextWanted, nextAvailable)), prevAvailable);
+
+            let start = Math.max(0, anchorPos - prevFinal);
+            let end = Math.min(totalRows, anchorPos + nextActual + 1);
+
+            if (end - start > maxRows) {
+                if (anchorPos - start >= maxRows) {
+                    start = Math.max(0, anchorPos - Math.min(prevFinal, maxRows - 1));
+                }
+                end = Math.min(totalRows, start + maxRows);
+            }
+
+            return { start, end };
+        }
+
+        /** @param mode 0 = all inactive collapsed, 1 = completed collapsed + future expanded */
+        function buildCollapseVisibleIndices(allSplits, groupOf, activeGroup, mode) {
+            const indices = [];
+            for (let i = 0; i < allSplits.length; i++) {
+                const s = allSplits[i];
+                const g = groupOf[i];
+                const inActive = g === activeGroup;
+                const inFuture = g > activeGroup;
+                if (s.isParent) {
+                    indices.push(i);
+                } else if (mode === 1 ? (inActive || inFuture) : inActive) {
+                    indices.push(i);
+                }
+            }
+            return indices;
+        }
+
+        function findActiveGroupHeaderIndex(allSplits, groupOf, activeGroup) {
+            for (let i = 0; i < allSplits.length; i++) {
+                if (allSplits[i].isParent && groupOf[i] === activeGroup) return i;
+            }
+            return -1;
+        }
+
+        function shouldPinActiveGroupHeader(activeHeaderPos, windowStart, renderIndices, activeHeaderIndex) {
+            return activeHeaderPos >= 0
+                && activeHeaderPos < windowStart
+                && !renderIndices.includes(activeHeaderIndex);
+        }
 
         function renderState(state) {
             const cols = getGridColumns();
             let html = '';
 
-
-            let splits = state.splits;
-            const currentIndex = splits.findIndex(s => s.isCurrent);
-            const total = splits.length;
+            const allSplits = state.splits;
+            const currentIndex = allSplits.findIndex(s => s.isCurrent);
+            const total = allSplits.length;
             const maxRows = getVisibleRowCount();
 
             if (currentIndex >= 0) lastCurrentIndex = currentIndex;
 
             const anchor = currentIndex >= 0 ? currentIndex : lastCurrentIndex >= 0 ? lastCurrentIndex : 0;
 
-            // Use prev/next as preferences, but redistribute unused slots
-            const prevAvailable = anchor;
-            const nextAvailable = total - anchor - 1;
-            let prevWanted = config.prevSplits;
-            let nextWanted = config.nextSplits;
-
-            // If we can't fill prev, give surplus to next and vice versa
-            const prevActual = Math.min(prevWanted, prevAvailable);
-            const nextActual = Math.min(nextWanted + (prevWanted - prevActual), nextAvailable);
-            const prevFinal = Math.min(prevWanted + (nextWanted - Math.min(nextWanted, nextAvailable)), prevAvailable);
-
-            let start = Math.max(0, anchor - prevFinal);
-            let end = Math.min(total, anchor + nextActual + 1);
-
-            if (end - start > maxRows) {
-                if (anchor - start >= maxRows) {
-                    start = Math.max(0, anchor - Math.min(prevFinal, maxRows - 1));
-                }
-                end = Math.min(total, start + maxRows);
-            }
-
-            splits = splits.slice(start, end);
+            const progressModeRaw = config.groupProgressMode;
+            const progressMode = (progressModeRaw !== undefined && progressModeRaw !== null)
+                ? Number(progressModeRaw) : 0;
+            const normalizedProgressMode = (progressMode === 0 || progressMode === 1 || progressMode === 2)
+                ? progressMode : 0;
+            const hasGroups = allSplits.some(s => s.isParent);
+            const gvProgress = hasGroups ? computeGroupVisibility(allSplits, anchor) : null;
+            const groupProgressStrings = gvProgress && normalizedProgressMode > 0
+                ? computeGroupProgressStrings(
+                    allSplits,
+                    gvProgress.groupOf,
+                    gvProgress.activeGroup,
+                    anchor,
+                    normalizedProgressMode)
+                : null;
 
             // Distance PB
             const dpbIndex = state.distancePb ?? -1;
@@ -544,9 +711,90 @@
                 ? -1
                 : dpbIndex;
 
-            for (let i = 0; i < splits.length; i++) {
-                html += buildRow(splits[i], cols, start + i, currentIndex, dpbHighlightIndex);
+            let collapseMode = Number(config.groupCollapseMode);
+            if (collapseMode !== 0 && collapseMode !== 1 && collapseMode !== 2) collapseMode = 0;
+
+            const groupInfo = collapseMode !== 2
+                ? computeGroupVisibility(allSplits, anchor)
+                : null;
+
+            if (groupInfo) {
+                const { groupOf, activeGroup, groupTotals } = groupInfo;
+                const visibleIndices = buildCollapseVisibleIndices(allSplits, groupOf, activeGroup, collapseMode);
+                if (visibleIndices.length > 0) {
+                    let anchorPos = visibleIndices.indexOf(anchor);
+                    if (anchorPos < 0) {
+                        let best = 0;
+                        for (let p = 0; p < visibleIndices.length; p++) {
+                            if (visibleIndices[p] <= anchor) best = p;
+                            else break;
+                        }
+                        anchorPos = best;
+                    }
+
+                    const activeHeaderIndex = findActiveGroupHeaderIndex(allSplits, groupOf, activeGroup);
+                    const activeHeaderPos = activeHeaderIndex >= 0 ? visibleIndices.indexOf(activeHeaderIndex) : -1;
+
+                    const { start: wStart, end: wEnd } = computeVisibleRowWindow(
+                        anchorPos,
+                        visibleIndices.length,
+                        maxRows
+                    );
+                    const shouldPinActiveHeader = shouldPinActiveGroupHeader(
+                        activeHeaderPos,
+                        wStart,
+                        visibleIndices.slice(wStart, wEnd),
+                        activeHeaderIndex
+                    );
+                    const effectiveStart = (shouldPinActiveHeader && wStart < anchorPos) ? (wStart + 1) : wStart;
+                    let renderIndices = visibleIndices.slice(effectiveStart, wEnd);
+
+                    if (shouldPinActiveHeader) {
+                        renderIndices.unshift(activeHeaderIndex);
+                        const allowedRows = maxRows + 1;
+                        if (renderIndices.length > allowedRows) {
+                            // Preserve current split and pinned header while enforcing frozen-header cap.
+                            let trimAt = -1;
+                            for (let r = renderIndices.length - 1; r >= 0; r--) {
+                                const idx = renderIndices[r];
+                                if (idx !== anchor && idx !== activeHeaderIndex) {
+                                    trimAt = r;
+                                    break;
+                                }
+                            }
+                            if (trimAt === -1) trimAt = renderIndices.length - 1;
+                            renderIndices.splice(trimAt, 1);
+                        }
+                    }
+
+                    for (const i of renderIndices) {
+                        const s = allSplits[i];
+                        const g = groupOf[i];
+                        const inactiveParent = s.isParent && (collapseMode === 0
+                            ? g !== activeGroup
+                            : g < activeGroup);
+                        const showGroupSums = normalizedProgressMode === 2;
+                        const totals = (s.isParent && inactiveParent && showGroupSums) ? (groupTotals[g] ?? null) : null;
+                        const nameSuffix = s.isParent && groupProgressStrings
+                            ? (groupProgressStrings[g] || '')
+                            : '';
+                        html += buildRow(s, cols, i, currentIndex, dpbHighlightIndex, false, inactiveParent, totals, nameSuffix);
+                    }
+                }
+            } else {
+                const { start, end } = computeVisibleRowWindow(anchor, total, maxRows);
+                const windowed = allSplits.slice(start, end);
+                for (let i = 0; i < windowed.length; i++) {
+                    const idx = start + i;
+                    const s = windowed[i];
+                    const g = gvProgress ? gvProgress.groupOf[idx] : -1;
+                    const nameSuffix = s.isParent && groupProgressStrings && g >= 0
+                        ? (groupProgressStrings[g] || '')
+                        : '';
+                    html += buildRow(s, cols, idx, currentIndex, dpbHighlightIndex, false, false, null, nameSuffix);
+                }
             }
+
             splitsEl.innerHTML = html;
 
             const progressBarEl = document.getElementById('progressBarFill');
@@ -601,7 +849,14 @@
             return div.innerHTML;
         }
 
-        function buildRow(s, cols, index, currentIndex, dpbHighlightIndex) {
+        function buildRow(s, cols, index, currentIndex, dpbHighlightIndex, collapsed, inactiveParent, totals, groupNameSuffix) {
+            const nameExtra = groupNameSuffix || '';
+            let nameHtml;
+            if (s.isParent && nameExtra) {
+                nameHtml = `${escapeHtml(s.name)}<span class="group-progress">${nameExtra}</span>`;
+            } else {
+                nameHtml = escapeHtml(s.name) + nameExtra;
+            }
             const current = s.isCurrent ? ' current' : '';
             const parent = s.isParent ? ' parent' : '';
             const diffClass = s.diff > 0 ? 'diff-pos' : s.diff < 0 ? 'diff-neg' : 'diff-zero';
@@ -610,12 +865,34 @@
             const cleared = isPast && !s.isParent && s.hits === 0 ? ' cleared' : '';
             const hit = (isPast && !s.isParent && s.hits > 0) || (s.isCurrent && s.hits > 0) ? ' hit' : '';
             const dpbhighlight = index === dpbHighlightIndex ? ' pb-dpbhighlight' : '';
+            const collapsedClass = collapsed ? ' collapsed' : '';
+            const inactiveClass = inactiveParent ? ' group-inactive' : '';
 
-            return `<div class="split-row${parent}${current}${cleared}${hit}${dpbhighlight}" style="grid-template-columns: ${cols}">
-                <span class="col-name">${escapeHtml(s.name)}</span>
-                <span class="col-hits">${s.hits}</span>
-                ${config.showDiff ? `<span class="col-diff ${diffClass}">${diffText}</span>` : ''}
-                ${config.showPb ? `<span class="col-pb">${s.pb}</span>` : ''}
+            let hitsCell, diffCell, pbCell;
+
+            if (totals) {
+                const tDiffClass = totals.diff > 0 ? 'diff-pos' : totals.diff < 0 ? 'diff-neg' : 'diff-zero';
+                const tDiffText = totals.diff > 0 ? `+${totals.diff}` : `${totals.diff}`;
+                const ghHighlight = config.groupHeaderHitsHighlightColor || config.hitsActiveColor;
+                const hitsStyle = totals.hits > 0 ? `style="color:${ghHighlight}"` : '';
+                hitsCell = `<span class="col-hits" ${hitsStyle}>${totals.hits}</span>`;
+                diffCell = config.showDiff ? `<span class="col-diff ${tDiffClass}">${tDiffText}</span>` : '';
+                pbCell = config.showPb ? `<span class="col-pb">${totals.pb}</span>` : '';
+            } else if (s.isParent && inactiveParent && Number(config.groupProgressMode) !== 2) {
+                hitsCell = `<span class="col-hits"></span>`;
+                diffCell = config.showDiff ? `<span class="col-diff"></span>` : '';
+                pbCell = config.showPb ? `<span class="col-pb"></span>` : '';
+            } else {
+                hitsCell = `<span class="col-hits">${s.hits}</span>`;
+                diffCell = config.showDiff ? `<span class="col-diff ${diffClass}">${diffText}</span>` : '';
+                pbCell = config.showPb ? `<span class="col-pb">${s.pb}</span>` : '';
+            }
+
+            return `<div class="split-row${parent}${current}${cleared}${hit}${dpbhighlight}${collapsedClass}${inactiveClass}" style="grid-template-columns: ${cols}">
+                <span class="col-name">${nameHtml}</span>
+                ${hitsCell}
+                ${diffCell}
+                ${pbCell}
             </div>`;
         }
 

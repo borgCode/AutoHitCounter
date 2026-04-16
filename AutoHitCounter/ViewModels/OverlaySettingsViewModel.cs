@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
 using AutoHitCounter.Core;
+using AutoHitCounter.Enums;
 using AutoHitCounter.Models;
 using AutoHitCounter.Services;
 using AutoHitCounter.Utilities;
@@ -25,6 +26,12 @@ public class OverlaySettingsViewModel : BaseViewModel
         .Select(f => f.Source)
         .OrderBy(f => f)
         .ToList();
+
+    public IReadOnlyList<OverlayGroupCollapseMode> GroupCollapseModes { get; } =
+        EnumExtensions.GetValues<OverlayGroupCollapseMode>().ToList();
+
+    public IReadOnlyList<OverlayGroupProgressMode> GroupProgressModes { get; } =
+        EnumExtensions.GetValues<OverlayGroupProgressMode>().ToList();
 
     public OverlaySettingsViewModel(OverlayServerService overlayServerService, OverlayProfileManager profileManager)
     {
@@ -117,8 +124,10 @@ public class OverlaySettingsViewModel : BaseViewModel
     public bool ShowPb            { get => Get<bool>();   set => Set(value); }
     public bool ShowIgt           { get => Get<bool>();   set => Set(value); }
     public bool ShowFooterTotals  { get => Get<bool>();   set => Set(value); }
+    public OverlayGroupProgressMode GroupProgressMode { get => Get<OverlayGroupProgressMode>(); set => Set(value); }
     public int  PrevSplits        { get => Get<int>();    set => Set(value); }
     public int  NextSplits        { get => Get<int>();    set => Set(value); }
+    public OverlayGroupCollapseMode GroupCollapseMode { get => Get<OverlayGroupCollapseMode>(); set => Set(value); }
     public int  OverlayWidth      { get => Get<int>();    set => Set(value); }
     public int  OverlayHeight     { get => Get<int>();    set => Set(value); }
     public double BackgroundOpacity { get => Get<double>(); set => Set(value); }
@@ -174,6 +183,16 @@ public class OverlaySettingsViewModel : BaseViewModel
     public string HitsClearedColor          { get => Get<string>(); set => Set(value); }
     public string HeaderFontFamily          { get => Get<string>(); set => Set(value); }
     public int HeaderFontSize          { get => Get<int>(); set => Set(value); }
+
+    public string GroupHeaderFontFamily   { get => Get<string>(); set => Set(value); }
+    public int    GroupHeaderFontSize     { get => Get<int>(); set => Set(value); }
+    public bool   GroupHeaderBold         { get => Get<bool>(); set => Set(value); }
+    public bool   GroupHeaderItalic       { get => Get<bool>(); set => Set(value); }
+    public bool   GroupHeaderUnderline    { get => Get<bool>(); set => Set(value); }
+    public string GroupHeaderHitsColor           { get => Get<string>(); set => Set(value); }
+    public string GroupHeaderHitsHighlightColor { get => Get<string>(); set => Set(value); }
+    public string GroupHeaderPbColor             { get => Get<string>(); set => Set(value); }
+
     public bool PbMatchesHit { get => Get<bool>(); set => Set(value); }
     public string FooterHitFontColor          { get => Get<string>(); set => Set(value); }
     public string FooterHitsCurrentColor          { get => Get<string>(); set => Set(value); }
