@@ -62,6 +62,12 @@
             <Setter Property="Foreground" Value="{DynamicResource OverlayColorPickerForegroundBrush}" />
             <Setter Property="BorderBrush" Value="{DynamicResource OverlayColorPickerBorderBrush}" />
         </Style>
+        <ContextMenu x:Key="ResetContextMenu">
+            <MenuItem Header="Cut" Command="ApplicationCommands.Cut" />
+            <MenuItem Header="Copy" Command="ApplicationCommands.Copy" />
+            <MenuItem Header="Paste" Command="ApplicationCommands.Paste" />
+            <MenuItem Header="Reset to Default" Click="ResetToDefault_Click" />
+</ContextMenu>
     </Window.Resources>
 
     <Grid Background="{DynamicResource BackgroundBrush}">
@@ -150,7 +156,7 @@
                         
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock Text="Height" Style="{StaticResource FieldLabel}" Width="80" />
-                            <xctk:IntegerUpDown Value="{Binding ProgressBarHeight}" Minimum="1" Maximum="50" Width="55" />
+                            <xctk:IntegerUpDown Value="{Binding ProgressBarHeight}" Minimum="1" Maximum="50" Width="55" Tag="ProgressBarHeight" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         
                         <Separator Style="{StaticResource Separator}" />
@@ -158,11 +164,11 @@
 
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock Text="Prev Splits" Style="{StaticResource FieldLabel}" Width="80" />
-                            <xctk:IntegerUpDown Value="{Binding PrevSplits}" Minimum="1" Maximum="50" Width="55" />
+                            <xctk:IntegerUpDown Value="{Binding PrevSplits}" Minimum="1" Maximum="50" Width="55" Tag="PrevSplits" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock Text="Next Splits" Style="{StaticResource FieldLabel}" Width="80" />
-                            <xctk:IntegerUpDown Value="{Binding NextSplits}" Minimum="1" Maximum="50" Width="55" />
+                            <xctk:IntegerUpDown Value="{Binding NextSplits}" Minimum="1" Maximum="50" Width="55" Tag="NextSplits" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Margin="0,0,0,4">
                             <TextBlock Text="Group collapse" Style="{StaticResource FieldLabel}" Width="Auto"
@@ -198,22 +204,22 @@
 
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock Text="Width" Style="{StaticResource FieldLabel}" Width="80" />
-                            <xctk:IntegerUpDown Value="{Binding OverlayWidth}" Minimum="100" Maximum="5000" Width="55" />
+                            <xctk:IntegerUpDown Value="{Binding OverlayWidth}" Minimum="100" Maximum="5000" Width="55" Tag="OverlayWidth" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock Text="Max Height" Style="{StaticResource FieldLabel}" Width="80" />
-                            <xctk:IntegerUpDown Value="{Binding OverlayHeight}" Minimum="100" Maximum="5000" Width="55" />
+                            <xctk:IntegerUpDown Value="{Binding OverlayHeight}" Minimum="100" Maximum="5000" Width="55" Tag="OverlayHeight" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock Text="Row Height" Style="{StaticResource FieldLabel}" Width="80" />
-                            <xctk:IntegerUpDown Value="{Binding RowHeight}" Minimum="16" Maximum="60" Width="55" />
+                            <xctk:IntegerUpDown Value="{Binding RowHeight}" Minimum="16" Maximum="60" Width="55" Tag="RowHeight" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" />
                         <TextBlock Text="BACKGROUND OPACITY" Style="{StaticResource SectionLabel}" />
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <Slider Value="{Binding BackgroundOpacity, Delay=400}" Minimum="0" Maximum="1"
-                                    Width="155" VerticalAlignment="Center" />
+                                    Width="155" VerticalAlignment="Center" Tag="BackgroundOpacity" ContextMenu="{StaticResource ResetContextMenu}"/>
                             <TextBlock Text="{Binding BackgroundOpacity, StringFormat={}{0:F2}}"
                                        Foreground="{DynamicResource OverlayFieldBrush}" FontSize="11" Margin="6,0,0,0"
                                        VerticalAlignment="Center" />
@@ -282,7 +288,7 @@
                                 <Rectangle
                                     Fill="{Binding TitleColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
-                            <TextBox Text="{Binding TitleColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                            <TextBox Text="{Binding TitleColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="TitleColor" ContextMenu="{StaticResource ResetContextMenu}" />
                         </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
@@ -294,7 +300,7 @@
                                 <Rectangle
                                     Fill="{Binding HeaderTextColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
-                            <TextBox Text="{Binding HeaderTextColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                            <TextBox Text="{Binding HeaderTextColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="HeaderTextColor" ContextMenu="{StaticResource ResetContextMenu}" />
                         </StackPanel>
                         
                         <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
@@ -306,7 +312,7 @@
                                 <Rectangle
                                     Fill="{Binding ProgressBarColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
-                            <TextBox Text="{Binding ProgressBarColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                            <TextBox Text="{Binding ProgressBarColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="ProgressBarColor" ContextMenu="{StaticResource ResetContextMenu}" />
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Bar Color" Style="{StaticResource FieldLabel}" />
@@ -314,7 +320,7 @@
                                 <Rectangle
                                     Fill="{Binding ProgressBarBgColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
-                            <TextBox Text="{Binding ProgressBarBgColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                            <TextBox Text="{Binding ProgressBarBgColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="ProgressBarBgColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
@@ -326,7 +332,7 @@
                                 <Rectangle
                                     Fill="{Binding GroupNameColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
-                            <TextBox Text="{Binding GroupNameColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                            <TextBox Text="{Binding GroupNameColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="GroupNameColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Hits" Style="{StaticResource FieldLabel}" />
@@ -335,7 +341,7 @@
                                     Fill="{Binding GroupHeaderHitsColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding GroupHeaderHitsColor, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="150" />
+                                     Width="150" Tag="GroupHeaderHitsColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Hits (totals &gt; 0)" Style="{StaticResource FieldLabel}" />
@@ -344,7 +350,7 @@
                                     Fill="{Binding GroupHeaderHitsHighlightColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding GroupHeaderHitsHighlightColor, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="150" />
+                                     Width="150" Tag="GroupHeaderHitsHighlightColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="PB Column" Style="{StaticResource FieldLabel}" />
@@ -353,7 +359,7 @@
                                     Fill="{Binding GroupHeaderPbColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding GroupHeaderPbColor, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="150" />
+                                     Width="150" Tag="GroupHeaderPbColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
@@ -366,7 +372,7 @@
                                     Fill="{Binding AttemptsZeroColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding AttemptsZeroColor, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="150" />
+                                     Width="150" Tag="AttemptsZeroColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="When Above Zero" Style="{StaticResource FieldLabel}" />
@@ -375,7 +381,7 @@
                                     Fill="{Binding AttemptsActiveColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding AttemptsActiveColor, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="150" />
+                                     Width="150" Tag="AttemptsActiveColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
@@ -383,12 +389,30 @@
                         <TextBlock Text="SPLITS" Style="{StaticResource SectionLabel}" />
 
                         <StackPanel Style="{StaticResource ColorRow}">
-                            <TextBlock Text="Split Name" Style="{StaticResource FieldLabel}" />
+                            <TextBlock Text="Group Name" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding GroupNameColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding GroupNameColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="GroupNameColor" ContextMenu="{StaticResource ResetContextMenu}"/>
+                        </StackPanel>
+
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Split Name (Current)" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding SplitNameCurrentColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding SplitNameCurrentColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="SplitNameCurrentColor" ContextMenu="{StaticResource ResetContextMenu}"/>
+                        </StackPanel>
+                        
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Split Name (Not Current)" Style="{StaticResource FieldLabel}" />
                             <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
                                 <Rectangle
                                     Fill="{Binding SplitNameColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
-                            <TextBox Text="{Binding SplitNameColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                            <TextBox Text="{Binding SplitNameColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="SplitNameColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
 
                         <StackPanel Style="{StaticResource ColorRow}">
@@ -398,7 +422,7 @@
                                     Fill="{Binding SplitNameOnHitColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding SplitNameOnHitColor, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="150" />
+                                     Width="150" Tag="SplitNameOnHitColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
 
                         <StackPanel Style="{StaticResource ColorRow}">
@@ -408,7 +432,7 @@
                                     Fill="{Binding SplitNameOnHitlessColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding SplitNameOnHitlessColor, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="150" />
+                                     Width="150" Tag="SplitNameOnHitlessColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
 
                         <StackPanel Style="{StaticResource ColorRow}">
@@ -417,7 +441,7 @@
                                 <Rectangle
                                     Fill="{Binding HitsCurrentColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
-                            <TextBox Text="{Binding HitsCurrentColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                            <TextBox Text="{Binding HitsCurrentColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="HitsCurrentColor" ContextMenu="{StaticResource ResetContextMenu}" />
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Hits (Not Cleared)" Style="{StaticResource FieldLabel}" />
@@ -425,7 +449,7 @@
                                 <Rectangle
                                     Fill="{Binding HitsActiveColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
-                            <TextBox Text="{Binding HitsActiveColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                            <TextBox Text="{Binding HitsActiveColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="HitsActiveColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Hits (Cleared)" Style="{StaticResource FieldLabel}" />
@@ -433,7 +457,7 @@
                                 <Rectangle
                                     Fill="{Binding HitsClearedColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
-                            <TextBox Text="{Binding HitsClearedColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                            <TextBox Text="{Binding HitsClearedColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="HitsClearedColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Diff (More than PB)" Style="{StaticResource FieldLabel}" />
@@ -441,7 +465,7 @@
                                 <Rectangle
                                     Fill="{Binding DiffPosColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
-                            <TextBox Text="{Binding DiffPosColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                            <TextBox Text="{Binding DiffPosColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="DiffPosColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Diff (Less Than PB)" Style="{StaticResource FieldLabel}" />
@@ -449,7 +473,7 @@
                                 <Rectangle
                                     Fill="{Binding DiffNegColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
-                            <TextBox Text="{Binding DiffNegColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                            <TextBox Text="{Binding DiffNegColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="DiffNegColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Diff (No Difference)" Style="{StaticResource FieldLabel}" />
@@ -457,14 +481,14 @@
                                 <Rectangle
                                     Fill="{Binding DiffZeroColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
-                            <TextBox Text="{Binding DiffZeroColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                            <TextBox Text="{Binding DiffZeroColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="DiffZeroColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="PB Column" Style="{StaticResource FieldLabel}" />
                             <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
                                 <Rectangle Fill="{Binding PbColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
-                            <TextBox Text="{Binding PbColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                            <TextBox Text="{Binding PbColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="PbColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Row (Not Cleared)" Style="{StaticResource FieldLabel}" />
@@ -472,7 +496,7 @@
                                 <Rectangle
                                     Fill="{Binding RowHitColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
-                            <TextBox Text="{Binding RowHitColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                            <TextBox Text="{Binding RowHitColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="RowHitColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Row (Cleared)" Style="{StaticResource FieldLabel}" />
@@ -480,7 +504,7 @@
                                 <Rectangle
                                     Fill="{Binding RowClearedColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
-                            <TextBox Text="{Binding RowClearedColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                            <TextBox Text="{Binding RowClearedColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="RowClearedColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Current Split" Style="{StaticResource FieldLabel}" />
@@ -489,7 +513,7 @@
                                     Fill="{Binding CurrentSplitColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding CurrentSplitColor, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="150" />
+                                     Width="150" Tag="CurrentSplitColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Current Split Banner" Style="{StaticResource FieldLabel}" />
@@ -498,7 +522,7 @@
                                     Fill="{Binding CurrentSplitBorderColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding CurrentSplitBorderColor, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="150" />
+                                     Width="150" ContextMenu="{StaticResource ResetContextMenu}" Tag="CurrentSplitBorderColor"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Current Split (Hit)" Style="{StaticResource FieldLabel}" />
@@ -507,7 +531,7 @@
                                     Fill="{Binding CurrentSplitHitColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding CurrentSplitHitColor, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="150" />
+                                     Width="150" Tag="CurrentSplitHitColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Current Split Banner (Hit)" Style="{StaticResource FieldLabel}" />
@@ -516,7 +540,7 @@
                                     Fill="{Binding CurrentSplitHitBorderColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding CurrentSplitHitBorderColor, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="150" />
+                                     Width="150" ContextMenu="{StaticResource ResetContextMenu}" Tag="CurrentSplitHitBorderColor"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Distance PB Banner" Style="{StaticResource FieldLabel}" />
@@ -525,7 +549,7 @@
                                     Fill="{Binding DpbHighlightColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding DpbHighlightColor, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="150" />
+                                     Width="150" ContextMenu="{StaticResource ResetContextMenu}" Tag="DpbHighlightColor"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Alternating Split Color" Style="{StaticResource FieldLabel}" />
@@ -534,7 +558,7 @@
                                     Fill="{Binding AlternatingRows, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding AlternatingRows, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="150" />
+                                     Width="150" ContextMenu="{StaticResource ResetContextMenu}" Tag="AlternatingRows"/>
                         </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
@@ -548,7 +572,7 @@
                                     Fill="{Binding FooterHitsCurrentColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding FooterHitsCurrentColor, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="150" />
+                                     Width="150" ContextMenu="{StaticResource ResetContextMenu}" Tag="FooterHitsCurrentColor"/>
                         </StackPanel>
 
                         <StackPanel Style="{StaticResource ColorRow}">
@@ -558,7 +582,7 @@
                                     Fill="{Binding FooterHitFontColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding FooterHitFontColor, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="150" />
+                                     Width="150" ContextMenu="{StaticResource ResetContextMenu}" Tag="FooterHitFontColor"/>
                         </StackPanel>
 
                         <StackPanel Style="{StaticResource ColorRow}">
@@ -568,7 +592,7 @@
                                     Fill="{Binding FooterPbFontColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding FooterPbFontColor, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="150" />
+                                     Width="150" Tag="FooterPbFontColor" ContextMenu="{StaticResource ResetContextMenu}" />
                         </StackPanel>
 
 
@@ -579,7 +603,7 @@
                             <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
                                 <Rectangle Fill="{Binding IgtColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
-                            <TextBox Text="{Binding IgtColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                            <TextBox Text="{Binding IgtColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="IgtColor" ContextMenu="{StaticResource ResetContextMenu}" />
                         </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
@@ -591,7 +615,7 @@
                                     Fill="{Binding RunCompleteBannerColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding RunCompleteBannerColor, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="150" />
+                                     Width="150" ContextMenu="{StaticResource ResetContextMenu}" Tag="RunCompleteBannerColor" />
                         </StackPanel>
 
                     </StackPanel>
@@ -612,7 +636,7 @@
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding TitleFontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11" Width="235" HorizontalAlignment="Left">
+                                  FontSize="11" Width="235" HorizontalAlignment="Left" Tag="TitleFontFamily" ContextMenu="{StaticResource ResetContextMenu}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -623,7 +647,7 @@
                         <TextBlock Text="SIZE" Style="{StaticResource SectionLabel}" />
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                             <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="90" />
-                            <xctk:IntegerUpDown Value="{Binding TitleFontSize}" Minimum="2" Maximum="64" Width="55" />
+                            <xctk:IntegerUpDown Value="{Binding TitleFontSize}" Minimum="2" Maximum="64" Width="55" Tag="TitleFontSize" ContextMenu="{StaticResource ResetContextMenu}" />
                         </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" />
@@ -634,7 +658,7 @@
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding HeaderFontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11" Width="235" HorizontalAlignment="Left">
+                                  FontSize="11" Width="235" HorizontalAlignment="Left" Tag="HeaderFontFamily" ContextMenu="{StaticResource ResetContextMenu}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -645,7 +669,7 @@
                         <TextBlock Text="SIZE" Style="{StaticResource SectionLabel}" />
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                             <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="90" />
-                            <xctk:IntegerUpDown Value="{Binding HeaderFontSize}" Minimum="2" Maximum="64" Width="55" />
+                            <xctk:IntegerUpDown Value="{Binding HeaderFontSize}" Minimum="2" Maximum="64" Width="55" Tag="HeaderFontSize" ContextMenu="{StaticResource ResetContextMenu}" />
                         </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" />
@@ -656,7 +680,7 @@
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding GroupHeaderFontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11" Width="235" HorizontalAlignment="Left">
+                                  FontSize="11" Width="235" HorizontalAlignment="Left" Tag="GroupHeaderFontFamily" ContextMenu="{StaticResource ResetContextMenu}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -668,7 +692,7 @@
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                             <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="90" />
                             <xctk:IntegerUpDown Value="{Binding GroupHeaderFontSize}" Minimum="2" Maximum="64"
-                                                Width="55" />
+                                                Width="55" Tag="GroupHeaderFontSize" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
 
                         <TextBlock Text="TEXT STYLE" Style="{StaticResource SectionLabel}" />
@@ -684,7 +708,7 @@
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding FontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11" Width="235" HorizontalAlignment="Left">
+                                  FontSize="11" Width="235" HorizontalAlignment="Left" Tag="FontFamily" ContextMenu="{StaticResource ResetContextMenu}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -695,7 +719,7 @@
                         <TextBlock Text="SIZE" Style="{StaticResource SectionLabel}" />
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                             <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="90" />
-                            <xctk:IntegerUpDown Value="{Binding FontSize}" Minimum="2" Maximum="64" Width="55" />
+                            <xctk:IntegerUpDown Value="{Binding FontSize}" Minimum="2" Maximum="64" Width="55" Tag="FontSize" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" />
@@ -706,7 +730,7 @@
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding FooterFontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11" Width="235" HorizontalAlignment="Left">
+                                  FontSize="11" Width="235" HorizontalAlignment="Left" Tag="FooterFontFamily" ContextMenu="{StaticResource ResetContextMenu}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -716,7 +740,7 @@
                         <TextBlock Text="SIZE" Style="{StaticResource SectionLabel}" />
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                             <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="90" />
-                            <xctk:IntegerUpDown Value="{Binding FooterFontSize}" Minimum="2" Maximum="64" Width="55" />
+                            <xctk:IntegerUpDown Value="{Binding FooterFontSize}" Minimum="2" Maximum="64" Width="55" Tag="FooterFontSize" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" />
@@ -727,7 +751,7 @@
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding IgtFontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11" Width="235" HorizontalAlignment="Left">
+                                  FontSize="11" Width="235" HorizontalAlignment="Left" Tag="IgtFontFamily" ContextMenu="{StaticResource ResetContextMenu}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -738,14 +762,14 @@
                         <TextBlock Text="SIZE" Style="{StaticResource SectionLabel}" />
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                             <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="90" />
-                            <xctk:IntegerUpDown Value="{Binding IgtFontSize}" Minimum="2" Maximum="64" Width="55" />
+                            <xctk:IntegerUpDown Value="{Binding IgtFontSize}" Minimum="2" Maximum="64" Width="55" Tag="IgtFontSize" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
 
                         <TextBlock Text="RUN COMPLETION" Style="{StaticResource PanelHeader}" />
 
                         <TextBlock Text="RUN COMPLETION MESSAGE" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
                         <TextBox Text="{Binding RunCompleteText, UpdateSourceTrigger=PropertyChanged, Delay=400}"
-                                 Margin="0,0,0,8" Width="235" HorizontalAlignment="Left" />
+                                 Margin="0,0,0,8" Width="235" HorizontalAlignment="Left" Tag="RunCompleteText" ContextMenu="{StaticResource ResetContextMenu}"/>
 
 
                         <Separator Style="{StaticResource Separator}" />

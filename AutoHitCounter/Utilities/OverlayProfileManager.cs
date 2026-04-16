@@ -240,6 +240,7 @@ public class OverlayProfileManager
             ProgressBarBgColor = "rgba(255,255,255,0.08)",
 
             GroupNameColor = "#999999",
+            SplitNameCurrentColor ="#e0e0e0", 
             SplitNameColor = "#e0e0e0",
             SplitNameOnHitColor = "#e0e0e0",
             SplitNameOnHitlessColor = "#e0e0e0",

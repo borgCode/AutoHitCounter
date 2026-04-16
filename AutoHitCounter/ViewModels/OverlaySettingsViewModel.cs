@@ -162,6 +162,7 @@ public class OverlaySettingsViewModel : BaseViewModel
     public string AttemptsActiveColor      { get => Get<string>(); set => Set(value); }
     public string ProgressBarBgColor      { get => Get<string>(); set => Set(value); }
     public string ProgressBarColor      { get => Get<string>(); set => Set(value); }
+    public string SplitNameCurrentColor           { get => Get<string>(); set => Set(value); }
     public string SplitNameColor           { get => Get<string>(); set => Set(value); }
     public string SplitNameOnHitColor           { get => Get<string>(); set => Set(value); }
     public string SplitNameOnHitlessColor           { get => Get<string>(); set => Set(value); }

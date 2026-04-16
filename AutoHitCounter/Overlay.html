@@ -272,6 +272,7 @@
                 fontBold: false,
                 fontItalic: false,
                 fontUnderline: false,
+                splitNameCurrentColor: '#e0e0e0',
                 splitNameColor: '#e0e0e0',
                 splitNameOnHitColor: '#e0e0e0',
                 splitNameOnHitlessColor: '#e0e0e0',
@@ -315,6 +316,10 @@
                 progressBarBgColor: 'rgba(255,255,255,0.08)',
                 showHeaderBorder: true,
                 showFooterBorder: true,
+                currentSplitColor: 'rgba(0, 204, 102, 0.06)',
+                currentSplitHitColor: 'rgba(255, 76, 76, 0.06)',
+                currentSplitBorderColor: '#00cc66',
+                currentSplitHitBorderColor: '#ff4c4c',
             };
 
         let config = {...DEFAULTS};
@@ -440,6 +445,7 @@
                     from { background: transparent; border-left-color: transparent; }
                     to { background: ${config.currentSplitColor}; border-left-color: ${config.currentSplitBorderColor}; }
                 }
+                .split-row.current .col-name { color: ${config.splitNameCurrentColor}; }
                 .split-row .col-name { color: ${config.splitNameColor}; }
                 .split-row.hit .col-name { color: ${config.splitNameOnHitColor}; }
                 .split-row.cleared .col-name { color: ${config.splitNameOnHitlessColor}; }
