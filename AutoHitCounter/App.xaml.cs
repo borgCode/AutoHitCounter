@@ -45,7 +45,7 @@ namespace AutoHitCounter
 
             OverlayServerService overlayServerService = new OverlayServerService();
             SplitNavigationService splitNavigationService = new SplitNavigationService();
-            ExternalIntegrationService externalIntegrationService = new ExternalIntegrationService();
+            IExternalIntegrationService externalIntegrationService = new ExternalIntegrationService();
 
             HookManager hookManager = new HookManager(memoryService);
 

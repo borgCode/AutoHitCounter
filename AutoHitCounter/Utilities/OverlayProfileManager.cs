@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using AutoHitCounter.Enums;
 using AutoHitCounter.Models;
 
 namespace AutoHitCounter.Utilities;
@@ -56,12 +57,39 @@ public class OverlayProfileManager
         try
         {
             var json = File.ReadAllText(path);
-            return JsonSerializer.Deserialize<OverlayConfig>(json, ReadOptions) ?? CreateDefaultConfig();
+            var config = JsonSerializer.Deserialize<OverlayConfig>(json, ReadOptions) ?? CreateDefaultConfig();
+            EnsureGroupHeaderDefaults(config);
+            return config;
         }
         catch
         {
             return CreateDefaultConfig();
         }
+    }
+
+    /// <summary>
+    /// Fills group-header fields when loading profiles saved before those properties existed.
+    /// </summary>
+    private static void EnsureGroupHeaderDefaults(OverlayConfig c)
+    {
+        var d = CreateDefaultConfig();
+        if (c.GroupHeaderFontSize <= 0)
+        {
+            c.GroupHeaderFontFamily = d.GroupHeaderFontFamily;
+            c.GroupHeaderFontSize = d.GroupHeaderFontSize;
+            c.GroupHeaderBold = d.GroupHeaderBold;
+            c.GroupHeaderItalic = d.GroupHeaderItalic;
+            c.GroupHeaderUnderline = d.GroupHeaderUnderline;
+            c.GroupHeaderHitsColor = d.GroupHeaderHitsColor;
+            c.GroupHeaderHitsHighlightColor = d.GroupHeaderHitsHighlightColor;
+            c.GroupHeaderPbColor = d.GroupHeaderPbColor;
+            return;
+        }
+
+        if (string.IsNullOrEmpty(c.GroupHeaderHitsColor)) c.GroupHeaderHitsColor = d.GroupHeaderHitsColor;
+        if (string.IsNullOrEmpty(c.GroupHeaderHitsHighlightColor)) c.GroupHeaderHitsHighlightColor = d.GroupHeaderHitsHighlightColor;
+        if (string.IsNullOrEmpty(c.GroupHeaderPbColor)) c.GroupHeaderPbColor = d.GroupHeaderPbColor;
+        if (string.IsNullOrEmpty(c.GroupHeaderFontFamily)) c.GroupHeaderFontFamily = d.GroupHeaderFontFamily;
     }
 
     public void SaveActiveProfile(OverlayConfig config)
@@ -163,6 +191,7 @@ public class OverlayProfileManager
             ShowAttempts = true,
             PrevSplits = 4,
             NextSplits = 10,
+            GroupCollapseMode = OverlayGroupCollapseMode.None,
             ShowDiff = true,
             ShowPb = true,
             ShowIgt = true,
@@ -170,6 +199,7 @@ public class OverlayProfileManager
             OverlayHeight = 500,
             ShowProgress = true,
             ShowFooterTotals = true,
+            GroupProgressMode = OverlayGroupProgressMode.Hidden,
             TableMode = false,
             BackgroundOpacity = 0,
             ShowProgressBar = false,
@@ -186,6 +216,15 @@ public class OverlayProfileManager
             HeaderFontFamily = "Segoe UI",
             HeaderFontSize = 13,
             ShowHeaderBorder = true,
+
+            GroupHeaderFontFamily = "Segoe UI",
+            GroupHeaderFontSize = 13,
+            GroupHeaderBold = true,
+            GroupHeaderItalic = false,
+            GroupHeaderUnderline = false,
+            GroupHeaderHitsColor = "#888888",
+            GroupHeaderHitsHighlightColor = "#c8843a",
+            GroupHeaderPbColor = "#bbbbbb",
 
             AttemptsZeroColor = "#ffffff",
             AttemptsActiveColor = "#9D61A8",

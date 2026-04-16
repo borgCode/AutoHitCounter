@@ -19,27 +19,26 @@ namespace AutoHitCounter.ViewModels
 {
     public class MainViewModel : BaseViewModel, IReorderHandler, IHitRulesProvider
     {
-        private readonly HotkeyManager _hotkeyManager;
+        private readonly IHotkeyManager _hotkeyManager;
         private readonly IGameModuleFactory _gameModuleFactory;
         private readonly IProfileService _profileService;
-        private readonly SplitNavigationService _splitNav;
-        private readonly OverlayServerService _overlayServerService;
-        private readonly ExternalIntegrationService _externalIntegrationService;
-        private readonly CustomGameService _customGameService;
+        private readonly ISplitNavigationService _splitNav;
+        private readonly IOverlayServerService _overlayServerService;
+        private readonly ICustomGameService _customGameService;
         private string _lastIgt;
-        private readonly RunStateService _runStateService;
+        private readonly IRunStateService _runStateService;
         private readonly IGameSessionOrchestrator _orchestrator;
 
         public SettingsViewModel Settings { get; }
         public HotkeyTabViewModel Hotkeys { get; }
 
-        public MainViewModel(HotkeyManager hotkeyManager,
+        public MainViewModel(IHotkeyManager hotkeyManager,
             IGameModuleFactory gameModuleFactory,
             IProfileService profileService, IStateService stateService, SettingsViewModel settings,
-            HotkeyTabViewModel hotkeyTabViewModel, OverlayServerService overlayServerService,
-            SplitNavigationService splitNavigationService, ExternalIntegrationService externalIntegrationService,
+            HotkeyTabViewModel hotkeyTabViewModel, IOverlayServerService overlayServerService,
+            ISplitNavigationService splitNavigationService, IExternalIntegrationService externalIntegrationService,
             IGameSessionOrchestrator orchestrator,
-            RunStateService runStateService, CustomGameService customGameService)
+            IRunStateService runStateService, ICustomGameService customGameService)
         {
             Settings = settings;
             Hotkeys = hotkeyTabViewModel;
@@ -49,12 +48,12 @@ namespace AutoHitCounter.ViewModels
             _gameModuleFactory = gameModuleFactory;
             _profileService = profileService;
             _overlayServerService = overlayServerService;
-            _externalIntegrationService = externalIntegrationService;
             _overlayServerService.Start();
 
             stateService.Subscribe(State.AppStart, OnAppStart);
 
-            Settings.OnGameSettingChanged += () => _orchestrator.ApplyCurrentSettings();
+            if (Settings != null)
+                Settings.OnGameSettingChanged += () => _orchestrator.ApplyCurrentSettings();
 
             _orchestrator.AttachmentChanged += OnOrchestratorAttachmentChanged;
             _orchestrator.HitReceived += async () =>
@@ -66,7 +65,7 @@ namespace AutoHitCounter.ViewModels
                 _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
 
                 var payload = new HitPayload(_orchestrator.ActiveGame, ActiveProfile, CurrentSplit, TotalHits, TotalPb, InGameTime);
-                await _externalIntegrationService.SendHitAsync(payload);
+                await externalIntegrationService.SendHitAsync(payload);
             };
             _orchestrator.RunStartDetected += HandleRunStart;
             _orchestrator.EventSetDetected += AutoAdvanceSplit;
@@ -769,30 +768,35 @@ namespace AutoHitCounter.ViewModels
 
             ActiveProfileSplitsChanged += vm.RefreshSplits;
 
-            Action onSaved = () =>
-            {
-                var updatedProfiles = _profileService.GetProfiles(_selectedGame.GameName);
-                Profiles.Clear();
-                foreach (var p in updatedProfiles)
-                    Profiles.Add(p);
-
-                ActiveProfile = Profiles.FirstOrDefault(p => p.Name == vm.SelectedProfile?.Name);
-                _orchestrator.UpdateEvents(GetActiveEvents());
-            };
-            vm.OnSaved += onSaved;
+            vm.OnSaved += () => ApplyProfileEditorSaved(vm.SelectedProfile?.Name);
 
             _profileEditorWindow.Closed += (s, e) =>
             {
                 _profileEditorWindow = null;
-
-                if (_activeProfile != null)
-                    _runStateService.Invalidate(_selectedGame.GameName, _activeProfile.Name);
-
-                var validProfileNames = _profileService.GetProfiles(_selectedGame.GameName).Select(p => p.Name);
-                _runStateService.InvalidateStale(_selectedGame.GameName, validProfileNames);
+                ApplyProfileEditorClosed();
             };
 
             _profileEditorWindow.Show();
+        }
+
+        internal void ApplyProfileEditorSaved(string selectedProfileName)
+        {
+            var updatedProfiles = _profileService.GetProfiles(_selectedGame.GameName);
+            Profiles.Clear();
+            foreach (var p in updatedProfiles)
+                Profiles.Add(p);
+
+            ActiveProfile = Profiles.FirstOrDefault(p => p.Name == selectedProfileName);
+            _orchestrator.UpdateEvents(GetActiveEvents());
+        }
+
+        internal void ApplyProfileEditorClosed()
+        {
+            if (_activeProfile != null)
+                _runStateService.Invalidate(_selectedGame.GameName, _activeProfile.Name);
+
+            var validProfileNames = _profileService.GetProfiles(_selectedGame.GameName).Select(p => p.Name);
+            _runStateService.InvalidateStale(_selectedGame.GameName, validProfileNames);
         }
 
         private void UpdateSplits()

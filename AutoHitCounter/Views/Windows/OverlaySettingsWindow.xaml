@@ -3,19 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:controls="clr-namespace:AutoHitCounter.Views.Controls"
+        xmlns:converters="clr-namespace:AutoHitCounter.Converters"
         xmlns:behaviors="clr-namespace:AutoHitCounter.Behaviors"
         Style="{StaticResource DefaultWindowStyle}"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
         Title="Overlay Settings"
-        Width="920" Height="700"
-        MinWidth="920" MinHeight="700"
+        Width="920" Height="720"
+        MinWidth="920" MinHeight="720"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
                        behaviors:WindowResizeBehavior.EnableCustomResize="True">
 
     <Window.Resources>
+
+        <converters:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
 
         <Style x:Key="PanelBorder" TargetType="Border">
             <Setter Property="BorderBrush" Value="{DynamicResource OverlayPanelBorderBrush}" />
@@ -70,7 +73,7 @@
     <Grid Background="{DynamicResource BackgroundBrush}">
         <Grid.Clip>
             <RectangleGeometry RadiusX="5" RadiusY="5"
-                               Rect="0,0,920,700"/>
+                               Rect="0,0,920,720"/>
         </Grid.Clip>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
@@ -122,7 +125,7 @@
         <!-- Main content -->
         <Grid Grid.Row="2" Margin="8,6,8,6">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="232" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="280" />
             </Grid.ColumnDefinitions>
@@ -167,6 +170,34 @@
                             <TextBlock Text="Next Splits" Style="{StaticResource FieldLabel}" Width="80" />
                             <xctk:IntegerUpDown Value="{Binding NextSplits}" Minimum="1" Maximum="50" Width="55" Tag="NextSplits" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
+                        <StackPanel Margin="0,0,0,4">
+                            <TextBlock Text="Group collapse" Style="{StaticResource FieldLabel}" Width="Auto"
+                                       Margin="0,0,0,2" />
+                            <ComboBox ItemsSource="{Binding GroupCollapseModes}"
+                                      SelectedItem="{Binding GroupCollapseMode}"
+                                      FontSize="11" Width="184"
+                                      HorizontalAlignment="Left">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Margin="0,0,0,4">
+                            <TextBlock Text="Group progress" Style="{StaticResource FieldLabel}" Width="Auto"
+                                       Margin="0,0,0,2" />
+                            <ComboBox ItemsSource="{Binding GroupProgressModes}"
+                                      SelectedItem="{Binding GroupProgressMode}"
+                                      FontSize="11" Width="184"
+                                      HorizontalAlignment="Left">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" />
                         <TextBlock Text="DIMENSIONS" Style="{StaticResource SectionLabel}" />
@@ -181,14 +212,14 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock Text="Row Height" Style="{StaticResource FieldLabel}" Width="80" />
-                            <xctk:IntegerUpDown Value="{Binding RowHeight}" Minimum="16" Maximum="60" Width="55" Tag="RowHeight" ContextMenu="{StaticResource ResetContextMenu}"/>
+                            <xctk:IntegerUpDown Value="{Binding RowHeight}" Minimum="16" Maximum="60" Width="55" />
                         </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" />
                         <TextBlock Text="BACKGROUND OPACITY" Style="{StaticResource SectionLabel}" />
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <Slider Value="{Binding BackgroundOpacity, Delay=400}" Minimum="0" Maximum="1"
-                                    Width="110" VerticalAlignment="Center" Tag="BackgroundOpacity" ContextMenu="{StaticResource ResetContextMenu}"/>
+                                    Width="155" VerticalAlignment="Center" Tag="BackgroundOpacity" ContextMenu="{StaticResource ResetContextMenu}"/>
                             <TextBlock Text="{Binding BackgroundOpacity, StringFormat={}{0:F2}}"
                                        Foreground="{DynamicResource OverlayFieldBrush}" FontSize="11" Margin="6,0,0,0"
                                        VerticalAlignment="Center" />
@@ -201,7 +232,8 @@
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBox Text="{Binding CustomCss, UpdateSourceTrigger=PropertyChanged}"
                                      Height="250"
-                                     Width="150"
+                                     Width="185"
+                                     HorizontalAlignment="Left"
                                      AcceptsTab="True"
                                      AcceptsReturn="True"
                                      VerticalScrollBarVisibility="Auto" />
@@ -289,6 +321,45 @@
                                     Fill="{Binding ProgressBarBgColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding ProgressBarBgColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="ProgressBarBgColor" ContextMenu="{StaticResource ResetContextMenu}"/>
+                        </StackPanel>
+
+                        <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
+
+                        <TextBlock Text="GROUP HEADERS" Style="{StaticResource SectionLabel}" />
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Group Name" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding GroupNameColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding GroupNameColor, UpdateSourceTrigger=PropertyChanged}" Width="150" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Hits" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding GroupHeaderHitsColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding GroupHeaderHitsColor, UpdateSourceTrigger=PropertyChanged}"
+                                     Width="150" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Hits (totals &gt; 0)" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding GroupHeaderHitsHighlightColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding GroupHeaderHitsHighlightColor, UpdateSourceTrigger=PropertyChanged}"
+                                     Width="150" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="PB Column" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding GroupHeaderPbColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding GroupHeaderPbColor, UpdateSourceTrigger=PropertyChanged}"
+                                     Width="150" />
                         </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
@@ -559,13 +630,13 @@
 
                         <TextBlock Text="TEXT" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
                         <TextBox Text="{Binding TitleText, UpdateSourceTrigger=PropertyChanged, Delay=400}"
-                                 Margin="0,0,0,8" Width="230" HorizontalAlignment="Left" />
+                                 Margin="0,0,0,8" Width="235" HorizontalAlignment="Left" />
 
                         <TextBlock Text="FONT FAMILY" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding TitleFontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11" Width="230" HorizontalAlignment="Left" Tag="TitleFontFamily" ContextMenu="{StaticResource ResetContextMenu}">
+                                  FontSize="11" Width="235" HorizontalAlignment="Left" Tag="TitleFontFamily" ContextMenu="{StaticResource ResetContextMenu}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -587,7 +658,7 @@
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding HeaderFontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11" Width="230" HorizontalAlignment="Left" Tag="HeaderFontFamily" ContextMenu="{StaticResource ResetContextMenu}">
+                                  FontSize="11" Width="235" HorizontalAlignment="Left" Tag="HeaderFontFamily" ContextMenu="{StaticResource ResetContextMenu}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -603,13 +674,41 @@
 
                         <Separator Style="{StaticResource Separator}" />
 
+                        <TextBlock Text="GROUP HEADER TEXT" Style="{StaticResource PanelHeader}" />
+
+                        <TextBlock Text="FONT FAMILY" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
+                        <ComboBox ItemsSource="{Binding AvailableFonts}"
+                                  SelectedItem="{Binding GroupHeaderFontFamily}"
+                                  Margin="0,0,0,8"
+                                  FontSize="11" Width="235" HorizontalAlignment="Left">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" FontFamily="{Binding}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Text="SIZE" Style="{StaticResource SectionLabel}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                            <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="90" />
+                            <xctk:IntegerUpDown Value="{Binding GroupHeaderFontSize}" Minimum="2" Maximum="64"
+                                                Width="55" />
+                        </StackPanel>
+
+                        <TextBlock Text="TEXT STYLE" Style="{StaticResource SectionLabel}" />
+                        <CheckBox Content="Bold" IsChecked="{Binding GroupHeaderBold}" Margin="0,3,0,3" />
+                        <CheckBox Content="Italic" IsChecked="{Binding GroupHeaderItalic}" Margin="0,3,0,3" />
+                        <CheckBox Content="Underline" IsChecked="{Binding GroupHeaderUnderline}" Margin="0,3,12,3" />
+
+                        <Separator Style="{StaticResource Separator}" />
+
                         <TextBlock Text="SPLITS TEXT" Style="{StaticResource PanelHeader}" />
 
                         <TextBlock Text="FONT FAMILY" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding FontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11" Width="230" HorizontalAlignment="Left" Tag="FontFamily" ContextMenu="{StaticResource ResetContextMenu}">
+                                  FontSize="11" Width="235" HorizontalAlignment="Left" Tag="FontFamily" ContextMenu="{StaticResource ResetContextMenu}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -631,7 +730,7 @@
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding FooterFontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11" Width="230" HorizontalAlignment="Left" Tag="FooterFontFamily" ContextMenu="{StaticResource ResetContextMenu}">
+                                  FontSize="11" Width="235" HorizontalAlignment="Left" Tag="FooterFontFamily" ContextMenu="{StaticResource ResetContextMenu}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -652,7 +751,7 @@
                         <ComboBox ItemsSource="{Binding AvailableFonts}"
                                   SelectedItem="{Binding IgtFontFamily}"
                                   Margin="0,0,0,8"
-                                  FontSize="11" Width="230" HorizontalAlignment="Left" Tag="IgtFontFamily" ContextMenu="{StaticResource ResetContextMenu}">
+                                  FontSize="11" Width="235" HorizontalAlignment="Left" Tag="IgtFontFamily" ContextMenu="{StaticResource ResetContextMenu}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontFamily="{Binding}" />
@@ -670,13 +769,14 @@
 
                         <TextBlock Text="RUN COMPLETION MESSAGE" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
                         <TextBox Text="{Binding RunCompleteText, UpdateSourceTrigger=PropertyChanged, Delay=400}"
-                                 Margin="0,0,0,8" Width="230" HorizontalAlignment="Left" Tag="RunCompleteText" ContextMenu="{StaticResource ResetContextMenu}"/>
+                                 Margin="0,0,0,8" Width="235" HorizontalAlignment="Left" Tag="RunCompleteText" ContextMenu="{StaticResource ResetContextMenu}"/>
 
 
                         <Separator Style="{StaticResource Separator}" />
 
                         <TextBlock Text="STYLE" Style="{StaticResource SectionLabel}" />
-                        <TextBlock Text="Applies to all but title and run completion." FontSize="10" FontStyle="Italic"
+                        <TextBlock Text="Doesn't apply to title, run completion, or group headers." FontSize="10"
+                                   FontStyle="Italic"
                                    Foreground="{DynamicResource OverlayCommentsBrush}" Margin="0,-4,0,4" />
                         <CheckBox Content="Bold" IsChecked="{Binding FontBold}" Margin="0,3,0,3" />
                         <CheckBox Content="Italic" IsChecked="{Binding FontItalic}" Margin="0,3,0,3" />

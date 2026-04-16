@@ -4,11 +4,12 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using AutoHitCounter.Enums;
+using AutoHitCounter.Interfaces;
 using AutoHitCounter.ViewModels;
 
 namespace AutoHitCounter.Services;
 
-public class SplitNavigationService
+public class SplitNavigationService : ISplitNavigationService
 {
     private ObservableCollection<SplitViewModel> _splits;
     

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace AutoHitCounter.Interfaces;
 
-public interface IExternalHitService
+public interface IExternalIntegrationService
 {
     Task SendHitAsync(HitPayload payload);
 }

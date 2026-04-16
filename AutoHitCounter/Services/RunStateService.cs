@@ -11,7 +11,7 @@ using AutoHitCounter.ViewModels;
 
 namespace AutoHitCounter.Services;
 
-public class RunStateService
+public class RunStateService : IRunStateService
 {
     private readonly IProfileService _profileService;
     private readonly Timer _saveDebounce;

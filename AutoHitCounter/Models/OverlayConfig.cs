@@ -1,4 +1,6 @@
-﻿// 
+﻿//
+
+using AutoHitCounter.Enums;
 
 namespace AutoHitCounter.Models;
 
@@ -8,6 +10,7 @@ public class OverlayConfig
     public bool ShowAttempts { get; set; }
     public int PrevSplits { get; set; }
     public int NextSplits { get; set; }
+    public OverlayGroupCollapseMode GroupCollapseMode { get; set; }
     public bool ShowDiff { get; set; }
     public bool ShowPb { get; set; }
     public bool ShowIgt { get; set; }
@@ -15,6 +18,7 @@ public class OverlayConfig
     public int OverlayHeight { get; set; }
     public bool ShowProgress { get; set; }
     public bool ShowFooterTotals { get; set; }
+    public OverlayGroupProgressMode GroupProgressMode { get; set; }
     public bool TableMode { get; set; }
     public double BackgroundOpacity { get; set; }
     public string CustomCss { get; set; }
@@ -34,6 +38,18 @@ public class OverlayConfig
     public string HeaderFontFamily { get; set; }
     public int HeaderFontSize { get; set; }
     public bool ShowHeaderBorder { get; set; }
+
+
+    // Group Header Section //
+
+    public string GroupHeaderFontFamily { get; set; }
+    public int GroupHeaderFontSize { get; set; }
+    public bool GroupHeaderBold { get; set; }
+    public bool GroupHeaderItalic { get; set; }
+    public bool GroupHeaderUnderline { get; set; }
+    public string GroupHeaderHitsColor { get; set; }
+    public string GroupHeaderHitsHighlightColor { get; set; }
+    public string GroupHeaderPbColor { get; set; }
 
 
     // Attempts Counter //
