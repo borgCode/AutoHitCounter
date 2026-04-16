@@ -4,12 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using AutoHitCounter.Interfaces;
 using AutoHitCounter.Models;
 using Fleck;
 
 namespace AutoHitCounter.Services;
 
-public class OverlayServerService : IDisposable
+public class OverlayServerService : IOverlayServerService, IDisposable
 {
     private WebSocketServer _server;
     private readonly List<IWebSocketConnection> _clients = new();

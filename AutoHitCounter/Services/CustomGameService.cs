@@ -8,7 +8,7 @@ using AutoHitCounter.Models;
 
 namespace AutoHitCounter.Services;
 
-public class CustomGameService(ICustomGamesStore store, IProfileService profileService, RunStateService runStateService)
+public class CustomGameService(ICustomGamesStore store, IProfileService profileService, IRunStateService runStateService) : ICustomGameService
 {
     public IReadOnlyList<Game> Load()
     {

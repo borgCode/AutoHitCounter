@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
 using AutoHitCounter.Core;
+using AutoHitCounter.Interfaces;
 using AutoHitCounter.Enums;
 using AutoHitCounter.Models;
 using AutoHitCounter.Services;
@@ -16,7 +17,7 @@ namespace AutoHitCounter.ViewModels;
 
 public class OverlaySettingsViewModel : BaseViewModel
 {
-    private readonly OverlayServerService _overlayServerService;
+    private readonly IOverlayServerService _overlayServerService;
     private readonly OverlayProfileManager _profileManager;
     private readonly Dictionary<string, object> _values = new();
     private static readonly PropertyInfo[] ConfigProps =
@@ -33,7 +34,7 @@ public class OverlaySettingsViewModel : BaseViewModel
     public IReadOnlyList<OverlayGroupProgressMode> GroupProgressModes { get; } =
         EnumExtensions.GetValues<OverlayGroupProgressMode>().ToList();
 
-    public OverlaySettingsViewModel(OverlayServerService overlayServerService, OverlayProfileManager profileManager)
+    public OverlaySettingsViewModel(IOverlayServerService overlayServerService, OverlayProfileManager profileManager)
     {
         _overlayServerService = overlayServerService;
         _profileManager = profileManager;

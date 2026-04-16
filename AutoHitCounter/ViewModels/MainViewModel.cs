@@ -19,26 +19,26 @@ namespace AutoHitCounter.ViewModels
 {
     public class MainViewModel : BaseViewModel, IReorderHandler, IHitRulesProvider
     {
-        private readonly HotkeyManager _hotkeyManager;
+        private readonly IHotkeyManager _hotkeyManager;
         private readonly IGameModuleFactory _gameModuleFactory;
         private readonly IProfileService _profileService;
-        private readonly SplitNavigationService _splitNav;
-        private readonly OverlayServerService _overlayServerService;
-        private readonly CustomGameService _customGameService;
+        private readonly ISplitNavigationService _splitNav;
+        private readonly IOverlayServerService _overlayServerService;
+        private readonly ICustomGameService _customGameService;
         private string _lastIgt;
-        private readonly RunStateService _runStateService;
+        private readonly IRunStateService _runStateService;
         private readonly IGameSessionOrchestrator _orchestrator;
 
         public SettingsViewModel Settings { get; }
         public HotkeyTabViewModel Hotkeys { get; }
 
-        public MainViewModel(HotkeyManager hotkeyManager,
+        public MainViewModel(IHotkeyManager hotkeyManager,
             IGameModuleFactory gameModuleFactory,
             IProfileService profileService, IStateService stateService, SettingsViewModel settings,
-            HotkeyTabViewModel hotkeyTabViewModel, OverlayServerService overlayServerService,
-            SplitNavigationService splitNavigationService, IExternalIntegrationService externalIntegrationService,
+            HotkeyTabViewModel hotkeyTabViewModel, IOverlayServerService overlayServerService,
+            ISplitNavigationService splitNavigationService, IExternalIntegrationService externalIntegrationService,
             IGameSessionOrchestrator orchestrator,
-            RunStateService runStateService, CustomGameService customGameService)
+            IRunStateService runStateService, ICustomGameService customGameService)
         {
             Settings = settings;
             Hotkeys = hotkeyTabViewModel;
@@ -52,7 +52,8 @@ namespace AutoHitCounter.ViewModels
 
             stateService.Subscribe(State.AppStart, OnAppStart);
 
-            Settings.OnGameSettingChanged += () => _orchestrator.ApplyCurrentSettings();
+            if (Settings != null)
+                Settings.OnGameSettingChanged += () => _orchestrator.ApplyCurrentSettings();
 
             _orchestrator.AttachmentChanged += OnOrchestratorAttachmentChanged;
             _orchestrator.HitReceived += async () =>
