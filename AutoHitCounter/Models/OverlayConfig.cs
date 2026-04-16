@@ -65,6 +65,7 @@ public class OverlayConfig
     // Names
 
     public string GroupNameColor { get; set; }
+    public string SplitNameCurrentColor { get; set; }
     public string SplitNameColor { get; set; }
     public string SplitNameOnHitColor { get; set; }
     public string SplitNameOnHitlessColor { get; set; }
