@@ -22,11 +22,14 @@ namespace AutoHitCounter
 
             Loaded += (s, e) =>
             {
-                if (SettingsManager.Default.MainWindowLeft > 0)
-                    Left = SettingsManager.Default.MainWindowLeft;
-
-                if (SettingsManager.Default.MainWindowTop > 0)
-                    Top = SettingsManager.Default.MainWindowTop;
+                var savedLeft = SettingsManager.Default.MainWindowLeft;
+                var savedTop = SettingsManager.Default.MainWindowTop;
+                if ((savedLeft != 0 || savedTop != 0) && IsOnVisibleScreen(savedLeft, savedTop))
+                {
+                    Left = savedLeft;
+                    Top = savedTop;
+                }
+                else WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
                 if (DataContext is MainViewModel vm)
                 {
@@ -277,6 +280,20 @@ namespace AutoHitCounter
         {
             if (DataContext is MainViewModel vm)
                 vm.SaveNotesCommand.Execute(null);
+        }
+        
+        private static bool IsOnVisibleScreen(double left, double top)
+        {
+            const double minVisibleX = 100;
+            const double minVisibleY = 30;
+            var vLeft = SystemParameters.VirtualScreenLeft;
+            var vTop = SystemParameters.VirtualScreenTop;
+            var vRight = vLeft + SystemParameters.VirtualScreenWidth;
+            var vBottom = vTop + SystemParameters.VirtualScreenHeight;
+            return left + minVisibleX > vLeft
+                   && left < vRight - minVisibleX
+                   && top + minVisibleY > vTop
+                   && top < vBottom - minVisibleY;
         }
     }
 }
