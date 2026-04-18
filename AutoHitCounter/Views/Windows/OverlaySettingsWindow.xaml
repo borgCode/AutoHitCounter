@@ -152,6 +152,14 @@
                         <CheckBox Content="PB Color Matches Hit" IsChecked="{Binding PbMatchesHit}" Margin="0,2,0,2" />
 
                         <Separator Style="{StaticResource Separator}" />
+                        <TextBlock Text="HEADER" Style="{StaticResource SectionLabel}" />
+                        
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="Height" Style="{StaticResource FieldLabel}" Width="80" />
+                            <xctk:IntegerUpDown Value="{Binding HeaderBorderHeight}" Minimum="1" Maximum="50" Width="55" Tag="HeaderBorderHeight" ContextMenu="{StaticResource ResetContextMenu}"/>
+                        </StackPanel>
+                        
+                        <Separator Style="{StaticResource Separator}" />
                         <TextBlock Text="PROGRESS BAR" Style="{StaticResource SectionLabel}" />
                         
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
@@ -224,6 +232,14 @@
                                        Foreground="{DynamicResource OverlayFieldBrush}" FontSize="11" Margin="6,0,0,0"
                                        VerticalAlignment="Center" />
                         </StackPanel>
+                        
+                        <Separator Style="{StaticResource Separator}" />
+                        <TextBlock Text="FOOTER" Style="{StaticResource SectionLabel}" />
+                        
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="Height" Style="{StaticResource FieldLabel}" Width="80" />
+                            <xctk:IntegerUpDown Value="{Binding FooterBorderHeight}" Minimum="1" Maximum="50" Width="55" Tag="FooterBorderHeight" ContextMenu="{StaticResource ResetContextMenu}"/>
+                        </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" />
                         <TextBlock Text="CUSTOM CSS" Style="{StaticResource SectionLabel}" />
@@ -294,6 +310,14 @@
                         <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
 
                         <TextBlock Text="HEADER" Style="{StaticResource SectionLabel}" />
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Header Border" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding HeaderBorderColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding HeaderBorderColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="HeaderBorderColor" ContextMenu="{StaticResource ResetContextMenu}" />
+                        </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Header Text" Style="{StaticResource FieldLabel}" />
                             <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
@@ -564,7 +588,15 @@
                         <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
 
                         <TextBlock Text="FOOTER" Style="{StaticResource SectionLabel}" />
-
+                        
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Footer Border" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding FooterBorderColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding FooterBorderColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="FooterBorderColor" ContextMenu="{StaticResource ResetContextMenu}" />
+                        </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Hits (When Zero)" Style="{StaticResource FieldLabel}" />
                             <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">

@@ -216,6 +216,8 @@ public class OverlayProfileManager
             HeaderFontFamily = "Segoe UI",
             HeaderFontSize = 13,
             ShowHeaderBorder = true,
+            HeaderBorderHeight = 1,
+            HeaderBorderColor = "rgba(255,255,255,0.08)",
 
             GroupHeaderFontFamily = "Segoe UI",
             GroupHeaderFontSize = 13,
@@ -269,6 +271,8 @@ public class OverlayProfileManager
             PbMatchesHit = false,
 
             ShowFooterBorder = true,
+            FooterBorderHeight = 1,
+            FooterBorderColor = "rgba(255,255,255,0.08)",
             FooterHitFontColor = "#c8843a",
             FooterHitsCurrentColor = "#888888",
             FooterPbFontColor = "#bbbbbb",

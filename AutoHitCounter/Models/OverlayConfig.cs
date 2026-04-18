@@ -38,6 +38,8 @@ public class OverlayConfig
     public string HeaderFontFamily { get; set; }
     public int HeaderFontSize { get; set; }
     public bool ShowHeaderBorder { get; set; }
+    public int HeaderBorderHeight { get; set; }
+    public string HeaderBorderColor { get; set; }
 
 
     // Group Header Section //
@@ -130,6 +132,8 @@ public class OverlayConfig
     // Footer Section //
 
     public bool ShowFooterBorder { get; set; }
+    public int FooterBorderHeight { get; set; }
+    public string FooterBorderColor { get; set; }
     public string FooterHitFontColor { get; set; }
     public string FooterHitsCurrentColor { get; set; }
     public string FooterPbFontColor { get; set; }
