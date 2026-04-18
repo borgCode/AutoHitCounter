@@ -315,7 +315,11 @@
                 progressBarColor: '#c47fd4',
                 progressBarBgColor: 'rgba(255,255,255,0.08)',
                 showHeaderBorder: true,
+                headerBorderHeight: 1,
+                headerBorderColor: 'rgba(255,255,255,0.08)',
                 showFooterBorder: true,
+                footerBorderHeight: 1,
+                footerBorderColor: 'rgba(255,255,255,0.08)',
                 currentSplitColor: 'rgba(0, 204, 102, 0.06)',
                 currentSplitHitColor: 'rgba(255, 76, 76, 0.06)',
                 currentSplitBorderColor: '#00cc66',
@@ -428,7 +432,7 @@
                 .footer { font-family: ${config.footerFontFamily};
                         font-size: ${config.footerFontSize}px;
                         background: ${config.backgroundOpacity > 0 ? `rgba(0, 0, 0, ${config.backgroundOpacity})` : 'transparent'};
-                        border-top: ${config.showFooterBorder ? '1px solid rgba(255,255,255,0.08)' : 'none'}; 
+                        border-top: ${config.showFooterBorder ? `${config.footerBorderHeight}px solid ${config.footerBorderColor}` : 'none'};
                         }
                 .run-complete { 
                     color: ${config.runCompleteBannerColor}; 
@@ -450,7 +454,7 @@
                 .split-row.hit .col-name { color: ${config.splitNameOnHitColor}; }
                 .split-row.cleared .col-name { color: ${config.splitNameOnHitlessColor}; }
                 .split-row.parent .col-name { color: ${config.groupNameColor}; }
-                .split-row .col-hits { color: ${config.hitsCurrentColor}; }
+                .split-row.current .col-hits { color: ${config.hitsCurrentColor}; }
                 .split-row.cleared .col-hits { color: ${config.hitsClearedColor}; }
                 .split-row.hit .col-hits { color: ${config.hitsActiveColor}; }
                 .split-row.current.hit .col-hits { color: ${config.hitsActiveColor}; }
@@ -482,7 +486,7 @@
                     font-weight: ${config.fontBold ? 'bold' : 'normal'};
                     font-style: ${config.fontItalic ? 'italic' : 'normal'};
                     text-decoration: ${config.fontUnderline ? 'underline' : 'none'};
-                    border-bottom: ${config.showHeaderBorder ? '1px solid rgba(255,255,255,0.08)' : 'none'};
+                    border-bottom: ${config.showHeaderBorder ? `${config.headerBorderHeight}px solid ${config.headerBorderColor}` : 'none'};
                 }
                 #progress { font-size: ${config.headerFontSize + 1}px; }
                 .group-progress { color: ${config.headerTextColor || '#bbbbbb'}; font-size: ${Math.max(10, (config.groupHeaderFontSize || 13) - 1)}px; font-weight: normal; }

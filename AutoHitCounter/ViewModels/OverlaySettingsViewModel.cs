@@ -118,7 +118,9 @@ public class OverlaySettingsViewModel : BaseViewModel
     public bool ShowAttempts      { get => Get<bool>();   set => Set(value); }
     public bool ShowProgressBar   { get => Get<bool>();   set => Set(value); }
     public bool ShowHeaderBorder  { get => Get<bool>();   set => Set(value); }
+    public int HeaderBorderHeight  { get => Get<int>();    set => Set(value); }
     public bool ShowFooterBorder  { get => Get<bool>();   set => Set(value); }
+    public int FooterBorderHeight  { get => Get<int>();    set => Set(value); }
     public int ProgressBarHeight  { get => Get<int>();    set => Set(value); }
     public bool ShowProgress      { get => Get<bool>();   set => Set(value); }
     public bool ShowDiff          { get => Get<bool>();   set => Set(value); }
@@ -158,6 +160,8 @@ public class OverlaySettingsViewModel : BaseViewModel
     #region Colors
 
     public string HeaderTextColor          { get => Get<string>(); set => Set(value); }
+    public string HeaderBorderColor          { get => Get<string>(); set => Set(value); }
+    public string FooterBorderColor          { get => Get<string>(); set => Set(value); }
     public string AttemptsZeroColor        { get => Get<string>(); set => Set(value); }
     public string AttemptsActiveColor      { get => Get<string>(); set => Set(value); }
     public string ProgressBarBgColor      { get => Get<string>(); set => Set(value); }
