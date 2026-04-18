@@ -8,7 +8,7 @@ namespace AutoHitCounter.Utilities;
 
 public static class ProfileMigrator
 {
-    private const int CurrentMigrationVersion = 3;
+    private const int CurrentMigrationVersion = 4;
 
     private static readonly string UserProfilesPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -106,7 +106,8 @@ public static class ProfileMigrator
                 {9303, 11110800},             //Geni Castle
                 {11500200, 9380},            // Mist noble
                 {9313, 11110800},             //Demon of Hatred
-                {11125830, 1296},             // Tomoe Geni
+                {11125830, 11120830},             // Tomoe Geni
+                {1296, 11120830},           // Also Tomoe Geni
                 {9312, 1299},             // Isshin
                 {11125877, 1299}             // Isshin
                 
