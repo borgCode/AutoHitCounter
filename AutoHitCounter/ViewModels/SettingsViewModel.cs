@@ -194,6 +194,20 @@ public class SettingsViewModel : BaseViewModel
             OnGameSettingChanged?.Invoke();
         }
     }
+    
+    private bool _ds3NoOnlineInvasions;
+
+    public bool DS3NoOnlineInvasions
+    {
+        get => _ds3NoOnlineInvasions;
+        set
+        {
+            if (!SetProperty(ref _ds3NoOnlineInvasions, value)) return;
+            SettingsManager.Default.DS3NoOnlineInvasions = value;
+            SettingsManager.Default.Save();
+            OnGameSettingChanged?.Invoke();
+        }
+    }
 
     #endregion
 
@@ -376,7 +390,10 @@ public class SettingsViewModel : BaseViewModel
         OnPropertyChanged(nameof(DS3NoLogo));
 
         _ds3StutterFix = SettingsManager.Default.DS3StutterFix;
-        OnPropertyChanged(nameof(DS3StutterFix));
+        OnPropertyChanged(nameof(DS3StutterFix)); 
+        
+        _ds3NoOnlineInvasions = SettingsManager.Default.DS3NoOnlineInvasions;
+        OnPropertyChanged(nameof(DS3NoOnlineInvasions));
     }
 
     private void ApplySKSettings()

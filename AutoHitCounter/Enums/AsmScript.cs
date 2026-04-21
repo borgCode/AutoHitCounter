@@ -59,6 +59,7 @@ public enum AsmScript
     DS3SetThrowState,
     DS3ClearThrowState,
     DS3RunStart,
+    DS3NoInvasions,
     
     
     SKCheckPlayerDead,

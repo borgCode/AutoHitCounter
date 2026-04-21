@@ -33,6 +33,8 @@ public static class DS3CustomCodeOffsets
     
     public const int RunStartFlag = 0x2000;
     public const int RunStartCode = 0x2010;
+
+    public const int NoInvasions = 0x2100;
     
     public const int EventLogWriteIdx = 0x3000;
     public const int EventLogCode = 0x3020;

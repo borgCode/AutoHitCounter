@@ -62,7 +62,7 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
 
         _hitService = new DS3HitService(_memoryService, _hookManager);
         _eventService = new DS3EventService(_memoryService, _hookManager, _events);
-        _settingsService = new DS3SettingsService(_memoryService);
+        _settingsService = new DS3SettingsService(_memoryService, _hookManager);
         _eventLogReader = new EventLogReader(_memoryService,
             Base + EventLogWriteIdx,
             Base + EventLogBuffer);
@@ -101,6 +101,7 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
         }
 
         _hitService.EnsureHooksInstalled();
+        _settingsService.EnsureHooksInstalled();
 
         if (_hitService.HasHit() && (_lastHit == null || (DateTime.Now - _lastHit.Value).TotalSeconds > 3))
         {
@@ -153,5 +154,8 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
 
         var stutterFix = SettingsManager.Default.DS3StutterFix;
         if (stutterFix || !onlyEnabled) _settingsService.ToggleStutterFix(stutterFix);
+
+        var noInvasions = SettingsManager.Default.DS3NoOnlineInvasions;
+        if (noInvasions || !onlyEnabled) _settingsService.ToggleNoInvasions(noInvasions);
     }
 }

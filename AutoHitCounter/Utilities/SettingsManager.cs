@@ -38,6 +38,7 @@ public class SettingsManager
     public bool IsUnlocked { get; set; }
     public bool DS3NoLogo { get; set; }
     public bool DS3StutterFix { get; set; }
+    public bool DS3NoOnlineInvasions { get; set; }
     public bool ERNoLogo { get; set; }
     public bool ERStutterFix { get; set; }
     public bool ERDisableAchievements { get; set; }

@@ -350,6 +350,26 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to e8 00 00 00 00          call   5 &lt;_main+0x5&gt;
+        ///53                      push   rbx
+        ///48 8b 5c 24 70          mov    rbx,QWORD PTR [rsp+0x70]
+        ///48 85 db                test   rbx,rbx
+        ///74 07                   je     17 &lt;done&gt;
+        ///80 3b 01                cmp    BYTE PTR [rbx],0x1
+        ///75 02                   jne    17 &lt;done&gt;
+        ///30 c0                   xor    al,al
+        ///
+        ///000000000017 &lt;done&gt;:
+        ///5b                      pop    rbx
+        ///e9 00 00 00 00          jmp    1d &lt;done+0x6&gt;.
+        /// </summary>
+        internal static string DS3NoInvasions {
+            get {
+                return ResourceManager.GetString("DS3NoInvasions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 41 b0 01                mov    r8b,0x1
         ///31 d2                   xor    edx,edx
         ///c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # c &lt;_main+0xc&gt;

@@ -89,6 +89,7 @@ public static class DS3Offsets
         public static nint ClearThrowState;
         public static nint SetEvent;
         public static nint StartNewGame;
+        public static nint IsOnlineHook;
     }
 
     public static class Functions
@@ -96,6 +97,7 @@ public static class DS3Offsets
         public static nint HasSpEffectId;
         public static nint OriginalLogoFunc;
         public static nint IsFallDamageDisabled;
+        public static nint IsOnline;
     }
 
     public static class Patches
@@ -387,7 +389,7 @@ public static class DS3Offsets
 
             _ => 0
         };
-        
+
         Hooks.IsFallDmgDisabledHook = moduleBase + Version switch
         {
             // WARNING: No match found for: Version1_3_2_0, Version1_4_1_0, Version1_4_2_0, Version1_4_3_0, Version1_5_0_0, Version1_5_1_0, Version1_6_0_0, Version1_7_0_0, Version1_8_0_0, Version1_9_0_0, Version1_10_0_0, Version1_11_0_0, Version1_12_0_0
@@ -398,7 +400,7 @@ public static class DS3Offsets
             Version1_15_2_0 => 0x9C7E48,
             _ => 0
         };
-        
+
         Hooks.StartNewGame = moduleBase + Version switch
         {
             Version1_3_2_0 => 0xAACC5D,
@@ -421,8 +423,6 @@ public static class DS3Offsets
         };
 
 
-
-
         Hooks.SetEvent = moduleBase + Version switch
         {
             Version1_3_2_0 => 0x4BFB80,
@@ -440,37 +440,6 @@ public static class DS3Offsets
             _ => 0
         };
 
-        Functions.HasSpEffectId = moduleBase + Version switch
-        {
-            Version1_3_2_0 => 0x86FAF0,
-            Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0x86F840,
-            Version1_5_0_0 => 0x86FEA0,
-            Version1_5_1_0 => 0x86FCD0,
-            Version1_6_0_0 => 0x8702A0,
-            Version1_7_0_0 => 0x8711B0,
-            Version1_8_0_0 or Version1_9_0_0 => 0x87ADA0,
-            Version1_10_0_0 => 0x87AD90,
-            Version1_11_0_0 => 0x880FE0,
-            Version1_12_0_0 => 0x8817D0,
-            Version1_13_0_0 => 0x883090,
-            Version1_14_0_0 => 0x883180,
-            Version1_15_0_0 => 0x8831C0,
-            Version1_15_1_0 => 0x88B850,
-            Version1_15_2_0 => 0x88BC00,
-            _ => 0
-        };
-        
-        Functions.IsFallDamageDisabled = moduleBase + Version switch
-        {
-            // WARNING: No match found for: Version1_3_2_0, Version1_4_1_0, Version1_4_2_0, Version1_4_3_0, Version1_5_0_0, Version1_5_1_0, Version1_6_0_0, Version1_7_0_0, Version1_8_0_0, Version1_9_0_0, Version1_10_0_0, Version1_11_0_0, Version1_12_0_0
-            Version1_13_0_0 => 0x9CC420,
-            Version1_14_0_0 => 0x9CC6F0,
-            Version1_15_0_0 => 0x9CC7F0,
-            Version1_15_1_0 => 0x9D68E0,
-            Version1_15_2_0 => 0x9D6A10,
-            _ => 0
-        };
-        
         Hooks.SetThrowState = moduleBase + Version switch
         {
             // WARNING: No match found for: Version1_3_2_0, Version1_4_1_0, Version1_4_2_0, Version1_4_3_0, Version1_5_0_0, Version1_5_1_0, Version1_6_0_0, Version1_7_0_0, Version1_8_0_0, Version1_9_0_0, Version1_10_0_0
@@ -483,7 +452,7 @@ public static class DS3Offsets
             Version1_15_2_0 => 0x4EC31FA,
             _ => 0
         };
-        
+
         Hooks.ClearThrowState = moduleBase + Version switch
         {
             Version1_3_2_0 => 0x9C77D5,
@@ -505,7 +474,73 @@ public static class DS3Offsets
             _ => 0
         };
 
+        Hooks.IsOnlineHook = moduleBase + Version switch
+        {
+            // WARNING: No match found for: Version1_3_2_0, Version1_4_1_0, Version1_4_2_0, Version1_4_3_0, Version1_5_0_0
+            Version1_5_1_0 => 0x830ACE,
+            Version1_6_0_0 => 0x83109E,
+            Version1_7_0_0 => 0x831FAE,
+            Version1_8_0_0 or Version1_9_0_0 or Version1_10_0_0 => 0x83B65E,
+            Version1_11_0_0 => 0x840C3E,
+            Version1_12_0_0 => 0x84142E,
+            Version1_13_0_0 => 0x84169E,
+            Version1_14_0_0 => 0x84178E,
+            Version1_15_0_0 => 0x8417CE,
+            Version1_15_1_0 => 0x849CCE,
+            Version1_15_2_0 => 0x84A07E,
+            _ => 0
+        };
 
+
+        Functions.HasSpEffectId = moduleBase + Version switch
+        {
+            Version1_3_2_0 => 0x86FAF0,
+            Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0x86F840,
+            Version1_5_0_0 => 0x86FEA0,
+            Version1_5_1_0 => 0x86FCD0,
+            Version1_6_0_0 => 0x8702A0,
+            Version1_7_0_0 => 0x8711B0,
+            Version1_8_0_0 or Version1_9_0_0 => 0x87ADA0,
+            Version1_10_0_0 => 0x87AD90,
+            Version1_11_0_0 => 0x880FE0,
+            Version1_12_0_0 => 0x8817D0,
+            Version1_13_0_0 => 0x883090,
+            Version1_14_0_0 => 0x883180,
+            Version1_15_0_0 => 0x8831C0,
+            Version1_15_1_0 => 0x88B850,
+            Version1_15_2_0 => 0x88BC00,
+            _ => 0
+        };
+
+        Functions.IsFallDamageDisabled = moduleBase + Version switch
+        {
+            // WARNING: No match found for: Version1_3_2_0, Version1_4_1_0, Version1_4_2_0, Version1_4_3_0, Version1_5_0_0, Version1_5_1_0, Version1_6_0_0, Version1_7_0_0, Version1_8_0_0, Version1_9_0_0, Version1_10_0_0, Version1_11_0_0, Version1_12_0_0
+            Version1_13_0_0 => 0x9CC420,
+            Version1_14_0_0 => 0x9CC6F0,
+            Version1_15_0_0 => 0x9CC7F0,
+            Version1_15_1_0 => 0x9D68E0,
+            Version1_15_2_0 => 0x9D6A10,
+            _ => 0
+        };
+
+        Functions.IsOnline = moduleBase + Version switch
+        {
+            // WARNING: No match found for: Version1_3_2_0, Version1_4_1_0, Version1_4_2_0, Version1_4_3_0, Version1_5_0_0
+            Version1_5_1_0 => 0x184F240,
+            Version1_6_0_0 => 0x184F810,
+            Version1_7_0_0 => 0x18520B0,
+            Version1_8_0_0 => 0x1934A80,
+            Version1_9_0_0 => 0x1934F00,
+            Version1_10_0_0 => 0x1934F70,
+            Version1_11_0_0 => 0x1948C50,
+            Version1_12_0_0 => 0x1949E90,
+            Version1_13_0_0 => 0x194C170,
+            Version1_14_0_0 => 0x194CD30,
+            Version1_15_0_0 => 0x194CE40,
+            Version1_15_1_0 => 0x195ACE0,
+            Version1_15_2_0 => 0x195AE10,
+            _ => 0
+        };
 
 
         Patches.NoLogo = moduleBase + Version switch
@@ -552,12 +587,14 @@ public static class DS3Offsets
         PrintOffset("ClearThrowState", Hooks.ClearThrowState);
         PrintOffset("SetEvent", Hooks.SetEvent);
         PrintOffset("StartNewGame", Hooks.StartNewGame);
+        PrintOffset("IsOnlineHook", Hooks.IsOnlineHook);
 
 
         Console.WriteLine("\n--- Functions ---");
         PrintOffset("HasSpEffectId", Functions.HasSpEffectId);
         PrintOffset("OriginalLogoFunc", Functions.OriginalLogoFunc);
         PrintOffset("IsFallDamageDisabled", Functions.IsFallDamageDisabled);
+        PrintOffset("IsOnline", Functions.IsOnline);
 
         Console.WriteLine("\n--- Patches ---");
         PrintOffset("NoLogo", Patches.NoLogo);
