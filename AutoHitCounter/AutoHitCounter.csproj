@@ -126,6 +126,7 @@
     <Compile Include="Converters\ParentChildMarginConverter.cs" />
     <Compile Include="Converters\ParentChildMarginMultiConverter.cs" />
     <Compile Include="Converters\ScrollbarVisibleToMarginConverter.cs" />
+    <Compile Include="Converters\SizeToRectConverter.cs" />
     <Compile Include="Converters\StringToBrushConverter.cs" />
     <Compile Include="Converters\StringToColorConverter.cs" />
     <Compile Include="Core\DelegateCommand.cs" />

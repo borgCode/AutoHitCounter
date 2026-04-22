@@ -19,6 +19,7 @@
     <Window.Resources>
 
         <converters:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
+        <converters:SizeToRectConverter x:Key="SizeToRectConverter"/>
 
         <Style x:Key="PanelBorder" TargetType="Border">
             <Setter Property="BorderBrush" Value="{DynamicResource OverlayPanelBorderBrush}" />
@@ -72,8 +73,14 @@
 
     <Grid Background="{DynamicResource BackgroundBrush}">
         <Grid.Clip>
-            <RectangleGeometry RadiusX="5" RadiusY="5"
-                               Rect="0,0,920,720"/>
+           <RectangleGeometry RadiusX="5" RadiusY="5">
+            <RectangleGeometry.Rect>
+                <MultiBinding Converter="{StaticResource SizeToRectConverter}">
+                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=Grid}"/>
+                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType=Grid}"/>
+                </MultiBinding>
+            </RectangleGeometry.Rect>
+        </RectangleGeometry>
         </Grid.Clip>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
