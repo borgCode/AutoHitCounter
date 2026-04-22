@@ -297,6 +297,163 @@ public class MainViewModelTests
 
     #endregion
 
+    #region ActiveEvents derivation
+
+    private Profile SetupProfileWithEventSplits(params (string Name, SplitType Type, uint? EventId)[] splits)
+    {
+        var profile = new Profile { Name = "TestProfile", Splits = new List<SplitEntry>() };
+        foreach (var (name, type, eventId) in splits)
+            profile.Splits.Add(new SplitEntry { Name = name, Type = type, EventId = eventId });
+        _sut.ActiveProfile = profile;
+        return profile;
+    }
+
+    private Dictionary<uint, (string Name, int Required, int Hit)> CaptureLastEventsDict()
+    {
+        Dictionary<uint, (string Name, int Required, int Hit)> captured = null;
+        foreach (var call in _orchestrator.ReceivedCalls())
+        {
+            if (call.GetMethodInfo().Name != nameof(_orchestrator.UpdateEvents)) continue;
+            captured = (Dictionary<uint, (string Name, int Required, int Hit)>)call.GetArguments()[0];
+        }
+        return captured;
+    }
+
+    [Fact]
+    public void GetActiveEvents_FreshLoad_SeedsAllHitsToZero()
+    {
+        SetupProfileWithEventSplits(
+            ("Margit1", SplitType.Child, 10000850u),
+            ("Margit2", SplitType.Child, 10000850u),
+            ("Godrick", SplitType.Child, 10000800u));
+
+        var dict = CaptureLastEventsDict();
+
+        Assert.Equal(2, dict[10000850u].Required);
+        Assert.Equal(0, dict[10000850u].Hit);
+        Assert.Equal(1, dict[10000800u].Required);
+        Assert.Equal(0, dict[10000800u].Hit);
+    }
+
+    [Fact]
+    public void GetActiveEvents_MidRun_SeedsHitFromCompletedSplits()
+    {
+        SetupProfileWithEventSplits(
+            ("Margit1", SplitType.Child, 10000850u),
+            ("Margit2", SplitType.Child, 10000850u),
+            ("Margit3", SplitType.Child, 10000850u),
+            ("Margit4", SplitType.Child, 10000850u));
+
+        _splitNav.CurrentSplit.Returns(_sut.Splits[2]);
+        _splitNav.IsRunComplete.Returns(false);
+        _orchestrator.ClearReceivedCalls();
+
+        _splitNav.StateChanged += Raise.Event<Action>();
+
+        var dict = CaptureLastEventsDict();
+        Assert.Equal(4, dict[10000850u].Required);
+        Assert.Equal(2, dict[10000850u].Hit);
+    }
+
+    [Fact]
+    public void GetActiveEvents_RunComplete_SeedsHitToRequired()
+    {
+        SetupProfileWithEventSplits(
+            ("Margit1", SplitType.Child, 10000850u),
+            ("Margit2", SplitType.Child, 10000850u));
+
+        _splitNav.CurrentSplit.Returns(_sut.Splits[1]);
+        _splitNav.IsRunComplete.Returns(true);
+        _orchestrator.ClearReceivedCalls();
+
+        _splitNav.StateChanged += Raise.Event<Action>();
+
+        var dict = CaptureLastEventsDict();
+        Assert.Equal(2, dict[10000850u].Required);
+        Assert.Equal(2, dict[10000850u].Hit);
+    }
+
+    [Fact]
+    public void GetActiveEvents_OnlyCountsMatchingEventIdBeforeCutoff()
+    {
+        SetupProfileWithEventSplits(
+            ("Margit", SplitType.Child, 10000850u),
+            ("Godrick", SplitType.Child, 10000800u),
+            ("Margit2", SplitType.Child, 10000850u),
+            ("Rennala", SplitType.Child, 10000900u));
+
+        _splitNav.CurrentSplit.Returns(_sut.Splits[3]);
+        _splitNav.IsRunComplete.Returns(false);
+        _orchestrator.ClearReceivedCalls();
+
+        _splitNav.StateChanged += Raise.Event<Action>();
+
+        var dict = CaptureLastEventsDict();
+        Assert.Equal(2, dict[10000850u].Hit);
+        Assert.Equal(1, dict[10000800u].Hit);
+        Assert.Equal(0, dict[10000900u].Hit);
+    }
+
+    [Fact]
+    public void GetActiveEvents_IgnoresSplitsWithoutEventId()
+    {
+        SetupProfileWithEventSplits(
+            ("Manual", SplitType.Child, (uint?)null),
+            ("Margit", SplitType.Child, 10000850u));
+
+        var dict = CaptureLastEventsDict();
+        Assert.Single(dict);
+        Assert.True(dict.ContainsKey(10000850u));
+    }
+
+    #endregion
+
+    #region SplitNav state change propagation
+
+    [Fact]
+    public void OnSplitStateChanged_CallsUpdateEventsOnOrchestrator()
+    {
+        SetupProfileWithEventSplits(("Margit", SplitType.Child, 10000850u));
+        _orchestrator.ClearReceivedCalls();
+
+        _splitNav.StateChanged += Raise.Event<Action>();
+
+        _orchestrator.Received().UpdateEvents(
+            Arg.Any<Dictionary<uint, (string Name, int Required, int Hit)>>());
+    }
+
+    [Fact]
+    public void OnSplitStateChanged_WhenActiveGameDiffersFromSelected_DoesNotUpdateEvents()
+    {
+        SetupProfileWithEventSplits(("Margit", SplitType.Child, 10000850u));
+        _orchestrator.ActiveGame.Returns(new Game { GameName = "Other" });
+        _orchestrator.ClearReceivedCalls();
+
+        _splitNav.StateChanged += Raise.Event<Action>();
+
+        _orchestrator.DidNotReceive().UpdateEvents(
+            Arg.Any<Dictionary<uint, (string Name, int Required, int Hit)>>());
+    }
+
+    [Fact]
+    public void OnSplitStateChanged_AfterJumpingForward_SeedsEventHitFromNewPosition()
+    {
+        SetupProfileWithEventSplits(
+            ("Margit1", SplitType.Child, 10000850u),
+            ("Margit2", SplitType.Child, 10000850u),
+            ("Margit3", SplitType.Child, 10000850u));
+
+        _splitNav.CurrentSplit.Returns(_sut.Splits[2]);
+        _orchestrator.ClearReceivedCalls();
+
+        _splitNav.StateChanged += Raise.Event<Action>();
+
+        var dict = CaptureLastEventsDict();
+        Assert.Equal(2, dict[10000850u].Hit);
+    }
+
+    #endregion
+
     #region SetPb
 
     [Fact]

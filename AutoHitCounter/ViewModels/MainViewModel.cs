@@ -650,6 +650,8 @@ namespace AutoHitCounter.ViewModels
             OnPropertyChanged(nameof(TotalDiff));
             OnPropertyChanged(nameof(TotalPb));
             SaveRunState();
+            if (_orchestrator.ActiveGame == _selectedGame)
+                _orchestrator.UpdateEvents(GetActiveEvents());
             _overlayServerService.BroadcastState(OverlayMapper.MapFrom(this));
         }
 
@@ -945,12 +947,27 @@ namespace AutoHitCounter.ViewModels
         {
             if (ActiveProfile == null) return new();
 
+            int cutoff;
+            if (IsRunComplete)
+                cutoff = ActiveProfile.Splits.Count;
+            else if (CurrentSplit != null)
+            {
+                var idx = Splits.IndexOf(CurrentSplit);
+                cutoff = idx >= 0 ? idx : 0;
+            }
+            else
+                cutoff = 0;
+
             return ActiveProfile.Splits
-                .Where(s => s.EventId.HasValue)
-                .GroupBy(s => s.EventId!.Value)
+                .Select((split, index) => (split, index))
+                .Where(x => x.split.EventId.HasValue)
+                .GroupBy(x => x.split.EventId!.Value)
                 .ToDictionary(
                     g => g.Key,
-                    g => (Name: g.First().Label, Required: g.Count(), Hit: 0));
+                    g => (
+                        Name: g.First().split.Label,
+                        Required: g.Count(),
+                        Hit: g.Count(x => x.index < cutoff)));
         }
 
         private Dictionary<uint, string> GetAllEventsForGame(GameTitle title) =>
