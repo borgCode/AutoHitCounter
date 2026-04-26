@@ -30,7 +30,7 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         InstallCheckStateInfoHook();
         InstallDeflectTearHook();
         InstallKillChrHook();
-        InstallSetThrowStateHook();
+        InstallHandleThrowHook();
         InstallClearThrowStateHook();
     }
 
@@ -79,6 +79,7 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         var throwStateFlag = Base + InThrowFlag;
         var deflectTearCheckFlag = Base + DeflectTearCheckFlag;
         var raptorFlag = Base + HasRaptorFlag;
+        var throwTransitionFlag = Base + CheckThrowTransitionFlag;
         var checkPlayerDeadFunc = Base + CheckPlayerDead;
         var code = Base + HitCode;
 
@@ -86,19 +87,21 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
             (code, stateInfoCheckFlag, 7, 2),
             (code + 0x7, deflectTearCheckFlag, 7, 0x7 + 2),
             (code + 0xE, raptorFlag, 7, 0xE + 2),
-            (code + 0x1A, throwStateFlag, 7, 0x1A + 2),
-            (code + 0x28, checkPlayerDeadFunc, 5, 0x28 + 1),
-            (code + 0x96, WorldChrMan.Base, 7, 0x96 + 3),
-            (code + 0xE2, Functions.ChrInsByHandle, 5, 0xE2 + 1),
-            (code + 0x105, WorldChrMan.Base, 7, 0x105 + 3),
-            (code + 0x11F, Functions.HasSpEffectId, 5, 0x11F + 1),
-            (code + 0x129, raptorFlag, 7, 0x129 + 2),
-            (code + 0x18D, deflectTearCheckFlag, 7, 0x18D + 2),
-            (code + 0x1B3, staggerCheckFlag, 7, 0x1B3 + 2),
-            (code + 0x1C4, stateInfoCheckFlag, 7, 0x1C4 + 2),
-            (code + 0x1DE, GameDataMan.Base, 7, 0x1DE + 3),
-            (code + 0x1FD, hit, 6, 0x1FD + 2),
-            (code + 0x207, Hooks.Hit + 5, 5, 0x207 + 1),
+            (code + 0x15, throwTransitionFlag, 7, 0x15 + 2),
+            (code + 0x21, throwStateFlag, 7, 0x21 + 2),
+            (code + 0x2F, checkPlayerDeadFunc, 5, 0x2F + 1),
+            (code + 0x9D, WorldChrMan.Base, 7, 0x9D + 3),
+            (code + 0xE9, Functions.ChrInsByHandle, 5, 0xE9 + 1),
+            (code + 0x10C, WorldChrMan.Base, 7, 0x10C + 3),
+            (code + 0x126, Functions.HasSpEffectId, 5, 0x126 + 1),
+            (code + 0x130, raptorFlag, 7, 0x130 + 2),
+            (code + 0x198, deflectTearCheckFlag, 7, 0x198 + 2),
+            (code + 0x1BE, staggerCheckFlag, 7, 0x1BE + 2),
+            (code + 0x1CF, stateInfoCheckFlag, 7, 0x1CF + 2),
+            (code + 0x1E2, throwTransitionFlag, 7, 0x1E2 + 2),
+            (code + 0x1F0, GameDataMan.Base, 7, 0x1F0 + 3),
+            (code + 0x20F, hit, 6, 0x20F + 2),
+            (code + 0x219, Hooks.Hit + 5, 5, 0x219 + 1),
         ]);
 
         memoryService.WriteBytes(code, bytes);
@@ -299,24 +302,27 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         InstallHook(code, Hooks.KillChr, [0x40, 0x53, 0x48, 0x83, 0xEC, 0x40]);
     }
 
-    private void InstallSetThrowStateHook()
+    private void InstallHandleThrowHook()
     {
-        var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingSetThrowState);
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingHandleThrow);
         var throwStateFlag = Base + InThrowFlag;
+        var throwTransitionFlag = Base + CheckThrowTransitionFlag;
         var hit = Base + Hit;
         var checkPlayerDeadFunc = Base + CheckPlayerDead;
-        var code = Base + SetThrowState;
+        var code = Base + HandleThrow;
         
         AsmHelper.WriteRelativeOffsets(bytes, [
-            (code + 0x9, checkPlayerDeadFunc, 5, 0x9 + 1),
-            (code + 0x10, WorldChrMan.Base, 7, 0x10 + 3),
-            (code + 0x3D, throwStateFlag, 7, 0x3D + 2),
-            (code + 0x4E, hit, 6, 0x4E + 2),
-            (code + 0x55, Hooks.SetThrowState + 8, 5, 0x55 + 1),
+            (code + 0x6, checkPlayerDeadFunc, 5, 0x6 + 1),
+            (code + 0xD, WorldChrMan.Base, 7, 0xD + 3),
+            (code + 0x44, throwStateFlag, 7, 0x44 + 2),
+            (code + 0x4B, throwTransitionFlag, 7, 0x4B + 2),
+            (code + 0x54, throwTransitionFlag, 7, 0x54 + 2),
+            (code + 0x5B, hit, 6, 0x5B + 2),
+            (code + 0x62, Hooks.HandleThrow + 5, 5, 0x62 + 1),
         ]);
 
         memoryService.WriteBytes(code, bytes);
-        InstallHook(code, Hooks.SetThrowState, [0x41, 0x80, 0x8E, 0x67, 0x02, 0x00, 0x00, 0x10]);
+        InstallHook(code, Hooks.HandleThrow, [0xBF, 0x01, 0x00, 0x00, 0x00]);
     }
 
     private void InstallClearThrowStateHook()

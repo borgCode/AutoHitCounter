@@ -118,152 +118,154 @@
     <value>c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 7 &lt;_main+0x7&gt;
 c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # e &lt;_main+0xe&gt;
 c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 15 &lt;_main+0x15&gt;
+c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 1c &lt;_main+0x1c&gt;
 48 89 5c 24 08          mov    QWORD PTR [rsp+0x8],rbx
-80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # 21 &lt;_main+0x21&gt;
-0f 84 e0 01 00 00       je     207 &lt;skip_all&gt;
+80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # 28 &lt;_main+0x28&gt;
+0f 84 eb 01 00 00       je     219 &lt;skip_all&gt;
 50                      push   rax
-e8 00 00 00 00          call   2d &lt;_main+0x2d&gt;
+e8 00 00 00 00          call   34 &lt;_main+0x34&gt;
 58                      pop    rax
-0f 84 d3 01 00 00       je     207 &lt;skip_all&gt;
+0f 84 de 01 00 00       je     219 &lt;skip_all&gt;
 48 85 d2                test   rdx,rdx
-74 56                   je     8f &lt;null_attacker&gt;
+74 56                   je     96 &lt;null_attacker&gt;
 81 7a 60 00 b4 c4 04    cmp    DWORD PTR [rdx+0x60],0x4c4b400
-0f 84 c1 01 00 00       je     207 &lt;skip_all&gt;
+0f 84 cc 01 00 00       je     219 &lt;skip_all&gt;
 81 7a 60 40 42 0f 00    cmp    DWORD PTR [rdx+0x60],0xf4240
-0f 84 b4 01 00 00       je     207 &lt;skip_all&gt;
+0f 84 bf 01 00 00       je     219 &lt;skip_all&gt;
 83 7a 60 00             cmp    DWORD PTR [rdx+0x60],0x0
-0f 84 aa 01 00 00       je     207 &lt;skip_all&gt;
+0f 84 b5 01 00 00       je     219 &lt;skip_all&gt;
 50                      push   rax
 41 8b 40 40             mov    eax,DWORD PTR [r8+0x40]
 2d 80 38 e3 04          sub    eax,0x4e33880
 3d 88 13 00 00          cmp    eax,0x1388
 58                      pop    rax
-0f 82 94 01 00 00       jb     207 &lt;skip_all&gt;
+0f 82 9f 01 00 00       jb     219 &lt;skip_all&gt;
 41 81 78 40 33 01 00    cmp    DWORD PTR [r8+0x40],0x133
 00 
-0f 84 86 01 00 00       je     207 &lt;skip_all&gt;
+0f 84 91 01 00 00       je     219 &lt;skip_all&gt;
 41 81 78 40 30 01 00    cmp    DWORD PTR [r8+0x40],0x130
 00 
-0f 84 78 01 00 00       je     207 &lt;skip_all&gt;
+0f 84 83 01 00 00       je     219 &lt;skip_all&gt;
 
-00000000008f &lt;null_attacker&gt;:
+000000000096 &lt;null_attacker&gt;:
 50                      push   rax
 57                      push   rdi
 52                      push   rdx
 53                      push   rbx
 48 89 d7                mov    rdi,rdx
-48 8b 15 00 00 00 00    mov    rdx,QWORD PTR [rip+0x0]        # 9d &lt;null_attacker+0xe&gt;
+48 8b 15 00 00 00 00    mov    rdx,QWORD PTR [rip+0x0]        # a4 &lt;null_attacker+0xe&gt;
 48 8b 82 08 e5 01 00    mov    rax,QWORD PTR [rdx+0x1e508]
 48 39 c7                cmp    rdi,rax
-0f 84 56 01 00 00       je     203 &lt;skip_count&gt;
+0f 84 61 01 00 00       je     215 &lt;skip_count&gt;
 48 8b 80 90 01 00 00    mov    rax,QWORD PTR [rax+0x190]
 48 3b 88 98 00 00 00    cmp    rcx,QWORD PTR [rax+0x98]
-74 47                   je     104 &lt;validate_hit&gt;
+74 47                   je     10b &lt;validate_hit&gt;
 48 8b 80 e8 00 00 00    mov    rax,QWORD PTR [rax+0xe8]
 48 8b 40 10             mov    rax,QWORD PTR [rax+0x10]
 83 78 50 00             cmp    DWORD PTR [rax+0x50],0x0
-0f 84 31 01 00 00       je     203 &lt;skip_count&gt;
+0f 84 3c 01 00 00       je     215 &lt;skip_count&gt;
 51                      push   rcx
 41 50                   push   r8
 41 51                   push   r9
 48 89 d1                mov    rcx,rdx
 48 8d 50 18             lea    rdx,[rax+0x18]
 48 83 ec 18             sub    rsp,0x18
-e8 00 00 00 00          call   e7 &lt;null_attacker+0x58&gt;
+e8 00 00 00 00          call   ee &lt;null_attacker+0x58&gt;
 48 83 c4 18             add    rsp,0x18
 41 59                   pop    r9
 41 58                   pop    r8
 59                      pop    rcx
 48 8b 80 90 01 00 00    mov    rax,QWORD PTR [rax+0x190]
 48 3b 88 98 00 00 00    cmp    rcx,QWORD PTR [rax+0x98]
-0f 85 ff 00 00 00       jne    203 &lt;skip_count&gt;
+0f 85 0a 01 00 00       jne    215 &lt;skip_count&gt;
 
-00000104 &lt;validate_hit&gt;:
+0000010b &lt;validate_hit&gt;:
 51                      push   rcx
-48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 10c &lt;validate_hit+0x8&gt;
+48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 113 &lt;validate_hit+0x8&gt;
 48 8b 89 08 e5 01 00    mov    rcx,QWORD PTR [rcx+0x1e508]
 48 8b 89 78 01 00 00    mov    rcx,QWORD PTR [rcx+0x178]
 ba 94 88 01 00          mov    edx,0x18894
-e8 00 00 00 00          call   124 &lt;validate_hit+0x20&gt;
+e8 00 00 00 00          call   12b &lt;validate_hit+0x20&gt;
 59                      pop    rcx
 84 c0                   test   al,al
-74 0c                   je     135 &lt;no_raptor&gt;
-c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 130 &lt;validate_hit+0x2c&gt;
-e9 ce 00 00 00          jmp    203 &lt;skip_count&gt;
+74 0c                   je     13c &lt;no_raptor&gt;
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 137 &lt;validate_hit+0x2c&gt;
+e9 d9 00 00 00          jmp    215 &lt;skip_count&gt;
 
-00000135 &lt;no_raptor&gt;:
+0000013c &lt;no_raptor&gt;:
 45 0f 57 ff             xorps  xmm15,xmm15
 45 0f 2f 38             comiss xmm15,DWORD PTR [r8]
-72 2e                   jb     16d &lt;check_is_phys_only&gt;
+72 2e                   jb     174 &lt;check_is_phys_only&gt;
 45 0f 2f 78 04          comiss xmm15,DWORD PTR [r8+0x4]
-0f 82 b3 00 00 00       jb     1fd &lt;real_hit&gt;
+0f 82 be 00 00 00       jb     20f &lt;real_hit&gt;
 45 0f 2f 78 08          comiss xmm15,DWORD PTR [r8+0x8]
-0f 82 84 00 00 00       jb     1d9 &lt;validate_fire&gt;
+0f 82 8f 00 00 00       jb     1eb &lt;validate_fire&gt;
 45 0f 2f 78 0c          comiss xmm15,DWORD PTR [r8+0xc]
-0f 82 9d 00 00 00       jb     1fd &lt;real_hit&gt;
+0f 82 a8 00 00 00       jb     20f &lt;real_hit&gt;
 45 0f 2f 78 10          comiss xmm15,DWORD PTR [r8+0x10]
-0f 82 92 00 00 00       jb     1fd &lt;real_hit&gt;
-eb 29                   jmp    196 &lt;check_stagger&gt;
+0f 82 9d 00 00 00       jb     20f &lt;real_hit&gt;
+eb 2d                   jmp    1a1 &lt;check_stagger&gt;
 
-0000016d &lt;check_is_phys_only&gt;:
+00000174 &lt;check_is_phys_only&gt;:
 45 0f 2f 78 04          comiss xmm15,DWORD PTR [r8+0x4]
-0f 82 85 00 00 00       jb     1fd &lt;real_hit&gt;
+0f 82 90 00 00 00       jb     20f &lt;real_hit&gt;
 45 0f 2f 78 08          comiss xmm15,DWORD PTR [r8+0x8]
-72 7e                   jb     1fd &lt;real_hit&gt;
+0f 82 85 00 00 00       jb     20f &lt;real_hit&gt;
 45 0f 2f 78 0c          comiss xmm15,DWORD PTR [r8+0xc]
-72 77                   jb     1fd &lt;real_hit&gt;
+72 7e                   jb     20f &lt;real_hit&gt;
 45 0f 2f 78 10          comiss xmm15,DWORD PTR [r8+0x10]
-72 70                   jb     1fd &lt;real_hit&gt;
-c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 194 &lt;check_is_phys_only+0x27&gt;
-eb 6d                   jmp    203 &lt;skip_count&gt;
+72 77                   jb     20f &lt;real_hit&gt;
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 19f &lt;check_is_phys_only+0x2b&gt;
+eb 74                   jmp    215 &lt;skip_count&gt;
 
-00000196 &lt;check_stagger&gt;:
+000001a1 &lt;check_stagger&gt;:
 41 80 b8 d9 00 00 00    cmp    BYTE PTR [r8+0xd9],0x0
 00 
-75 2d                   jne    1cd &lt;check_morgott&gt;
+75 2d                   jne    1d8 &lt;check_throw_trans&gt;
 41 83 78 70 00          cmp    DWORD PTR [r8+0x70],0x0
-7d 56                   jge    1fd &lt;real_hit&gt;
+7d 5d                   jge    20f &lt;real_hit&gt;
 41 0f b6 58 24          movzx  ebx,BYTE PTR [r8+0x24]
 ff cb                   dec    ebx
 83 fb 0a                cmp    ebx,0xa
-77 07                   ja     1ba &lt;check_state_info&gt;
-c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 1ba &lt;check_state_info&gt;
+77 07                   ja     1c5 &lt;check_state_info&gt;
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 1c5 &lt;check_state_info&gt;
 
-000001ba &lt;check_state_info&gt;:
+000001c5 &lt;check_state_info&gt;:
 41 f6 80 67 02 00 00    test   BYTE PTR [r8+0x267],0x8
 08 
-75 3f                   jne    203 &lt;skip_count&gt;
-c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 1cb &lt;check_state_info+0x11&gt;
-eb 36                   jmp    203 &lt;skip_count&gt;
+75 46                   jne    215 &lt;skip_count&gt;
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 1d6 &lt;check_state_info+0x11&gt;
+eb 3d                   jmp    215 &lt;skip_count&gt;
 
-000001cd &lt;check_morgott&gt;:
-41 81 78 40 1a 84 20    cmp    DWORD PTR [r8+0x40],0x20841a
-00 
-74 2c                   je     203 &lt;skip_count&gt;
-eb 24                   jmp    1fd &lt;real_hit&gt;
+000001d8 &lt;check_throw_trans&gt;:
+41 80 b8 d9 00 00 00    cmp    BYTE PTR [r8+0xd9],0x1
+01 
+75 2d                   jne    20f &lt;real_hit&gt;
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 1e9 &lt;check_throw_trans+0x11&gt;
+eb 2a                   jmp    215 &lt;skip_count&gt;
 
-000001d9 &lt;validate_fire&gt;:
+000001eb &lt;validate_fire&gt;:
 48 85 ff                test   rdi,rdi
-75 1f                   jne    1fd &lt;real_hit&gt;
-48 8b 3d 00 00 00 00    mov    rdi,QWORD PTR [rip+0x0]        # 1e5 &lt;validate_fire+0xc&gt;
+75 1f                   jne    20f &lt;real_hit&gt;
+48 8b 3d 00 00 00 00    mov    rdi,QWORD PTR [rip+0x0]        # 1f7 &lt;validate_fire+0xc&gt;
 81 bf cc 00 00 00 86    cmp    DWORD PTR [rdi+0xcc],0x2ceb086
 b0 ce 02 
-74 0c                   je     1fd &lt;real_hit&gt;
+74 0c                   je     20f &lt;real_hit&gt;
 81 bf cc 00 00 00 6e    cmp    DWORD PTR [rdi+0xcc],0x2ceb46e
 b4 ce 02 
-75 06                   jne    203 &lt;skip_count&gt;
+75 06                   jne    215 &lt;skip_count&gt;
 
-000001fd &lt;real_hit&gt;:
-ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 203 &lt;skip_count&gt;
+0000020f &lt;real_hit&gt;:
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 215 &lt;skip_count&gt;
 
-00000203 &lt;skip_count&gt;:
+00000215 &lt;skip_count&gt;:
 5b                      pop    rbx
 5a                      pop    rdx
 5f                      pop    rdi
 58                      pop    rax
 
-00000207 &lt;skip_all&gt;:
-e9 00 00 00 00          jmp    20c &lt;skip_all+0x5&gt;</value>
+00000219 &lt;skip_all&gt;:
+e9 00 00 00 00          jmp    21e &lt;skip_all+0x5&gt;</value>
   </data>
   <data name="EldenRingFallDamage" xml:space="preserve">
     <value>c6 44 24 30 01          mov    BYTE PTR [rsp+0x30],0x1
@@ -2445,32 +2447,34 @@ c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # cd &lt;exit&gt;
 58                      pop    rax
 e9 00 00 00 00          jmp    d4 &lt;exit+0x7&gt;</value>
   </data>
-  <data name="EldenRingSetThrowState" xml:space="preserve">
-    <value>41 80 8e 67 02 00 00    or     BYTE PTR [r14+0x267],0x10
-10 
+  <data name="EldenRingHandleThrow" xml:space="preserve">
+    <value>bf 01 00 00 00          mov    edi,0x1
 50                      push   rax
-e8 00 00 00 00          call   e &lt;_main+0xe&gt;
-74 44                   je     54 &lt;exit&gt;
-48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 17 &lt;_main+0x17&gt;
+e8 00 00 00 00          call   b &lt;_main+0xb&gt;
+74 54                   je     61 &lt;early_exit&gt;
+48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 14 &lt;_main+0x14&gt;
 48 85 c0                test   rax,rax
-74 38                   je     54 &lt;exit&gt;
+74 48                   je     61 &lt;early_exit&gt;
 48 8b 80 08 e5 01 00    mov    rax,QWORD PTR [rax+0x1e508]
 48 85 c0                test   rax,rax
-74 2c                   je     54 &lt;exit&gt;
+74 3c                   je     61 &lt;early_exit&gt;
 48 8b 80 90 01 00 00    mov    rax,QWORD PTR [rax+0x190]
 48 85 c0                test   rax,rax
-74 20                   je     54 &lt;exit&gt;
+74 30                   je     61 &lt;early_exit&gt;
 48 3b a8 98 00 00 00    cmp    rbp,QWORD PTR [rax+0x98]
-75 17                   jne    54 &lt;exit&gt;
-c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 44 &lt;_main+0x44&gt;
-41 81 7e 40 1a 84 20    cmp    DWORD PTR [r14+0x40],0x20841a
-00 
-75 06                   jne    54 &lt;exit&gt;
-ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 54 &lt;exit&gt;
+75 27                   jne    61 &lt;early_exit&gt;
+41 f6 86 67 02 00 00    test   BYTE PTR [r14+0x267],0x10
+10 
+74 1d                   je     61 &lt;early_exit&gt;
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 4b &lt;_main+0x4b&gt;
+80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # 52 &lt;_main+0x52&gt;
+75 0d                   jne    61 &lt;early_exit&gt;
+c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 5b &lt;_main+0x5b&gt;
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 61 &lt;early_exit&gt;
 
-000000000054 &lt;exit&gt;:
+000000000061 &lt;early_exit&gt;:
 58                      pop    rax
-e9 00 00 00 00          jmp    5a &lt;exit+0x6&gt;</value>
+e9 00 00 00 00          jmp    67 &lt;early_exit+0x6&gt;</value>
   </data>
   <data name="EldenRingClearThrowState" xml:space="preserve">
     <value>53                      push   rbx

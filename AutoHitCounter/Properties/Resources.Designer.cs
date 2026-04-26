@@ -802,15 +802,33 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to bf 01 00 00 00          mov    edi,0x1
+        ///50                      push   rax
+        ///e8 00 00 00 00          call   b &lt;_main+0xb&gt;
+        ///74 54                   je     61 &lt;early_exit&gt;
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 14 &lt;_main+0x14&gt;
+        ///48 85 c0                test   rax,rax
+        ///74 48                   je     61 &lt;early_exit&gt;
+        ///48 8b 80 08 e5 01 00    mov    rax,QWORD PTR [rax+0x1e508]
+        ///48 85 c0                test   rax,rax
+        ///74 3c                   je     61 &lt;early_exit&gt;
+        ///48 8b 80 90 01 00 00    m [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string EldenRingHandleThrow {
+            get {
+                return ResourceManager.GetString("EldenRingHandleThrow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 7 &lt;_main+0x7&gt;
         ///c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # e &lt;_main+0xe&gt;
         ///c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 15 &lt;_main+0x15&gt;
+        ///c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 1c &lt;_main+0x1c&gt;
         ///48 89 5c 24 08          mov    QWORD PTR [rsp+0x8],rbx
-        ///80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # 21 &lt;_main+0x21&gt;
-        ///0f 84 e0 01 00 00       je     207 &lt;skip_all&gt;
-        ///50                      push   rax
-        ///e8 00 00 00 00          call   2d &lt;_main+0x2d&gt;
-        ///58        [rest of string was truncated]&quot;;.
+        ///80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # 28 &lt;_main+0x28&gt;
+        ///0f 84 eb 01 00 00       je     219 &lt;skip_all&gt;
+        ///50            [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string EldenRingHit {
             get {
@@ -864,26 +882,6 @@ namespace AutoHitCounter.Properties {
         internal static string EldenRingRunStart {
             get {
                 return ResourceManager.GetString("EldenRingRunStart", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 41 80 8e 67 02 00 00    or     BYTE PTR [r14+0x267],0x10
-        ///10 
-        ///50                      push   rax
-        ///e8 00 00 00 00          call   e &lt;_main+0xe&gt;
-        ///74 44                   je     54 &lt;exit&gt;
-        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 17 &lt;_main+0x17&gt;
-        ///48 85 c0                test   rax,rax
-        ///74 38                   je     54 &lt;exit&gt;
-        ///48 8b 80 08 e5 01 00    mov    rax,QWORD PTR [rax+0x1e508]
-        ///48 85 c0                test   rax,rax
-        ///74 2c                   je     54 &lt;exit&gt;
-        ///48 8b 80 90 01 00 00 [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string EldenRingSetThrowState {
-            get {
-                return ResourceManager.GetString("EldenRingSetThrowState", resourceCulture);
             }
         }
         

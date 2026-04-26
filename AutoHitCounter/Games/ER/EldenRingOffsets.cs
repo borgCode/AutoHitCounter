@@ -110,7 +110,7 @@ public static class EldenRingOffsets
         public static nint CheckStateInfo;
         public static nint CheckDeflectTear;
         public static nint KillChr;
-        public static nint SetThrowState;
+        public static nint HandleThrow;
         public static nint ClearThrowState;
         public static nint SetEvent;
         public static nint StartNewGame;
@@ -430,26 +430,27 @@ public static class EldenRingOffsets
             _ => 0
         };
 
-        Hooks.SetThrowState = moduleBase + Version switch
+        Hooks.HandleThrow = moduleBase + Version switch
         {
-            Version1_2_0 => 0x44037E,
-            Version1_2_1 or Version1_2_2 => 0x4403EE,
-            Version1_2_3 => 0x44050E,
-            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x44116E,
-            Version1_4_0 => 0x44398E,
-            Version1_4_1 => 0x44389E,
-            Version1_5_0 => 0x443CDE,
-            Version1_6_0 => 0x444D3E,
-            Version1_7_0 => 0x444E8E,
-            Version1_8_0 or Version1_8_1 => 0x44681E,
-            Version1_9_0 or Version1_9_1 => 0x44695E,
-            Version2_0_0 or Version2_0_1 => 0x446AFE,
-            Version2_2_0 or Version2_2_3 => 0x4498EE,
-            Version2_3_0 => 0x4499FE,
-            Version2_4_0 or Version2_5_0 => 0x449A3E,
-            Version2_6_0 or Version2_6_1 => 0x449A0E,
+            Version1_2_0 => 0x4403E4,
+            Version1_2_1 or Version1_2_2 => 0x440454,
+            Version1_2_3 => 0x440574,
+            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x4411D4,
+            Version1_4_0 => 0x4439F4,
+            Version1_4_1 => 0x443904,
+            Version1_5_0 => 0x443D44,
+            Version1_6_0 => 0x444DA4,
+            Version1_7_0 => 0x444EF4,
+            Version1_8_0 or Version1_8_1 => 0x446884,
+            Version1_9_0 or Version1_9_1 => 0x4469C4,
+            Version2_0_0 or Version2_0_1 => 0x446B64,
+            Version2_2_0 or Version2_2_3 => 0x449954,
+            Version2_3_0 => 0x449A64,
+            Version2_4_0 or Version2_5_0 => 0x449AA4,
+            Version2_6_0 or Version2_6_1 => 0x449A74,
             _ => 0
         };
+
 
         Hooks.ClearThrowState = moduleBase + Version switch
         {
@@ -495,7 +496,7 @@ public static class EldenRingOffsets
             Version2_6_0 or Version2_6_1 => 0x5F9CD0,
             _ => 0
         };
-        
+
         Hooks.StartNewGame = moduleBase + Version switch
         {
             Version1_2_0 => 0xAAAF7F,
@@ -522,7 +523,7 @@ public static class EldenRingOffsets
             _ => 0
         };
 
-        
+
         Functions.ChrInsByHandle = moduleBase + Version switch
         {
             Version1_2_0 => 0x4F7580,
@@ -589,7 +590,7 @@ public static class EldenRingOffsets
             Version2_6_0 or Version2_6_1 => 0x5F94E0,
             _ => 0
         };
-        
+
         Functions.HasStateInfo = moduleBase + Version switch
         {
             Version1_2_0 => 0x4E9620,
@@ -612,7 +613,7 @@ public static class EldenRingOffsets
             _ => 0
         };
 
-        
+
         Functions.IsNoDeathEnabled = moduleBase + Version switch
         {
             Version1_2_0 => 0x42E580,
@@ -633,7 +634,7 @@ public static class EldenRingOffsets
             Version2_6_0 or Version2_6_1 => 0x437580,
             _ => 0
         };
-        
+
         Functions.IsTorrent = moduleBase + Version switch
         {
             Version1_2_0 => 0x3EC2A0,
@@ -652,7 +653,6 @@ public static class EldenRingOffsets
             Version2_4_0 or Version2_5_0 => 0x3F40E0,
             _ => 0
         };
-
 
 
         Patches.NoLogo = moduleBase + Version switch
@@ -680,7 +680,7 @@ public static class EldenRingOffsets
             Version2_6_1 => 0xB0C44D,
             _ => 0
         };
-        
+
 
 #if DEBUG
         _baseAddr = moduleBase;
@@ -703,7 +703,7 @@ public static class EldenRingOffsets
         PrintOffset("CheckStateInfo", Hooks.CheckStateInfo);
         PrintOffset("CheckDeflectTear", Hooks.CheckDeflectTear);
         PrintOffset("KillChr", Hooks.KillChr);
-        PrintOffset("SetThrowState", Hooks.SetThrowState);
+        PrintOffset("HandleThrow", Hooks.HandleThrow);
         PrintOffset("ClearThrowState", Hooks.ClearThrowState);
         PrintOffset("SetEvent", Hooks.SetEvent);
         PrintOffset("StartNewGame", Hooks.StartNewGame);
