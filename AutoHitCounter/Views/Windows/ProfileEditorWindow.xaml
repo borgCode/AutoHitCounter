@@ -19,6 +19,7 @@
                        behaviors:WindowResizeBehavior.EnableCustomResize="True">
     <Window.Resources>
         <converters:ExpanderArrowConverter x:Key="ExpanderArrowConverter" />
+        <converters:SizeToRectConverter x:Key="SizeToRectConverter"/>
         <converters:ParentChildMarginMultiConverter x:Key="ParentChildMarginMultiConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
         <Style x:Key="Separator" TargetType="Separator">
@@ -29,8 +30,14 @@
 
     <Grid Background="{DynamicResource BackgroundBrush}">
         <Grid.Clip>
-            <RectangleGeometry RadiusX="5" RadiusY="5"
-                               Rect="0,0,850,800"/>
+            <RectangleGeometry RadiusX="5" RadiusY="5">
+            <RectangleGeometry.Rect>
+                <MultiBinding Converter="{StaticResource SizeToRectConverter}">
+                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=Grid}"/>
+                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType=Grid}"/>
+                </MultiBinding>
+            </RectangleGeometry.Rect>
+        </RectangleGeometry>
         </Grid.Clip>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />

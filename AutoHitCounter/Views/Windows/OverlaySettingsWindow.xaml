@@ -19,6 +19,7 @@
     <Window.Resources>
 
         <converters:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
+        <converters:SizeToRectConverter x:Key="SizeToRectConverter"/>
 
         <Style x:Key="PanelBorder" TargetType="Border">
             <Setter Property="BorderBrush" Value="{DynamicResource OverlayPanelBorderBrush}" />
@@ -72,8 +73,14 @@
 
     <Grid Background="{DynamicResource BackgroundBrush}">
         <Grid.Clip>
-            <RectangleGeometry RadiusX="5" RadiusY="5"
-                               Rect="0,0,920,720"/>
+           <RectangleGeometry RadiusX="5" RadiusY="5">
+            <RectangleGeometry.Rect>
+                <MultiBinding Converter="{StaticResource SizeToRectConverter}">
+                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=Grid}"/>
+                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType=Grid}"/>
+                </MultiBinding>
+            </RectangleGeometry.Rect>
+        </RectangleGeometry>
         </Grid.Clip>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
@@ -152,7 +159,7 @@
                         <CheckBox Content="PB Color Matches Hit" IsChecked="{Binding PbMatchesHit}" Margin="0,2,0,2" />
 
                         <Separator Style="{StaticResource Separator}" />
-                        <TextBlock Text="HEADER" Style="{StaticResource SectionLabel}" />
+                        <TextBlock Text="HEADER BORDER" Style="{StaticResource SectionLabel}" />
                         
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock Text="Height" Style="{StaticResource FieldLabel}" Width="80" />
@@ -234,7 +241,7 @@
                         </StackPanel>
                         
                         <Separator Style="{StaticResource Separator}" />
-                        <TextBlock Text="FOOTER" Style="{StaticResource SectionLabel}" />
+                        <TextBlock Text="FOOTER BORDER" Style="{StaticResource SectionLabel}" />
                         
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock Text="Height" Style="{StaticResource FieldLabel}" Width="80" />

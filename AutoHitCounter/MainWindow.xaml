@@ -26,6 +26,7 @@
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
         <converters:LockIconConverter x:Key="LockIconConverter" />
         <converters:LockTooltipConverter x:Key="LockTooltipConverter" />
+        <converters:SizeToRectConverter x:Key="SizeToRectConverter"/>
         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#9D61A8" />
         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White" />
         <converters:AttemptCountColorConverter x:Key="AttemptCountColorConverter" />
@@ -33,8 +34,14 @@
 
     <Grid Background="{DynamicResource BackgroundBrush}">
         <Grid.Clip>
-            <RectangleGeometry RadiusX="5" RadiusY="5"
-                               Rect="0,0,525,800" />
+            <RectangleGeometry RadiusX="5" RadiusY="5">
+            <RectangleGeometry.Rect>
+                <MultiBinding Converter="{StaticResource SizeToRectConverter}">
+                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=Grid}"/>
+                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType=Grid}"/>
+                </MultiBinding>
+            </RectangleGeometry.Rect>
+        </RectangleGeometry>
         </Grid.Clip>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
