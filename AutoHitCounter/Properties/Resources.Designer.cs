@@ -1079,10 +1079,10 @@ namespace AutoHitCounter.Properties {
         ///   Looks up a localized string similar to c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 7 &lt;_main+0x7&gt;
         ///50                      push   rax
         ///e8 00 00 00 00          call   d &lt;_main+0xd&gt;
-        ///0f 84 b6 00 00 00       je     c9 &lt;exit&gt;
+        ///0f 84 c6 00 00 00       je     d9 &lt;exit&gt;
         ///81 7c 24 54 e6 50 f5    cmp    DWORD PTR [rsp+0x54],0x5f550e6
         ///05 
-        ///0f 84 a8 00 00 00       je     c9 &lt;exit&gt;
+        ///0f 84 b8 00 00 00       je     d9 &lt;exit&gt;
         ///53                      push   rbx
         ///48 8b 1d 00 00 00 00    mov    rbx,QWORD PTR [rip+0x0]        # 29 &lt;_main+0x29&gt;
         ///48 8b 9b d0 00 00 00    mov    rbx,QWORD PTR [rbx+0xd0]
@@ -1674,15 +1674,15 @@ namespace AutoHitCounter.Properties {
         ///   Looks up a localized string similar to c6 05 00 00 00 00 00    mov    BYTE PTR ds:0x0,0x0
         ///50                      push   eax
         ///e8 fc ff ff ff          call   9 &lt;_main+0x9&gt;
-        ///0f 84 c7 00 00 00       je     da &lt;exit&gt;
+        ///0f 84 d8 00 00 00       je     eb &lt;exit&gt;
         ///81 bd f4 fd ff ff e6    cmp    DWORD PTR [ebp-0x20c],0x5f550e6
         ///50 f5 05 
-        ///0f 84 b7 00 00 00       je     da &lt;exit&gt;
+        ///0f 84 c8 00 00 00       je     eb &lt;exit&gt;
         ///53                      push   ebx
         ///8b 1d 00 00 00 00       mov    ebx,DWORD PTR ds:0x0
         ///8b 5b 74                mov    ebx,DWORD PTR [ebx+0x74]
         ///3b 59 10                cmp    ebx,DWORD PTR [ecx+0x10]
-        ///0f 85 a3 00 00 0 [rest of string was truncated]&quot;;.
+        ///0f 85 b4 00 00 0 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string VanillaHit {
             get {
