@@ -95,9 +95,9 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
             (code, throwStateFlag, 7,  2),
             (code + 0xE, checkPlayerDeadFunc, 5, 0xE + 1),
             (code + 0x21, WorldChrMan.Base, 7, 0x21 + 3),
-            (code + 0xCC, staggerCheckFlag, 7, 0xCC + 2),
-            (code + 0xD5, hit, 6, 0xD5 + 2),
-            (code + 0xE7, Hooks.Hit + 8, 5, 0xE7 + 1),
+            (code + 0xD6, staggerCheckFlag, 7, 0xD6 + 2),
+            (code + 0xDF, hit, 6, 0xDF + 2),
+            (code + 0xF1, Hooks.Hit + 8, 5, 0xF1 + 1),
         ]);
 
         memoryService.WriteBytes(code, bytes);

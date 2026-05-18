@@ -271,11 +271,11 @@ namespace AutoHitCounter.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # 7 &lt;_main+0x7&gt;
-        ///0f 84 d2 00 00 00       je     df &lt;skip_all&gt;
+        ///0f 84 dc 00 00 00       je     e9 &lt;skip_all&gt;
         ///50                      push   rax
         ///e8 00 00 00 00          call   13 &lt;_main+0x13&gt;
         ///58                      pop    rax
-        ///0f 84 c5 00 00 00       je     df &lt;skip_all&gt;
+        ///0f 84 cf 00 00 00       je     e9 &lt;skip_all&gt;
         ///50                      push   rax
         ///57                      push   rdi
         ///52                      push   rdx
