@@ -890,13 +890,13 @@ namespace AutoHitCounter.Properties {
         ///50                      push   rax
         ///41 50                   push   r8
         ///e8 00 00 00 00          call   9 &lt;_main+0x9&gt;
-        ///0f 84 d8 00 00 00       je     e7 &lt;skip&gt;
+        ///0f 84 ed 00 00 00       je     fc &lt;skip&gt;
         ///48 8b 1d 00 00 00 00    mov    rbx,QWORD PTR [rip+0x0]        # 16 &lt;_main+0x16&gt;
         ///48 85 db                test   rbx,rbx
-        ///0f 84 c8 00 00 00       je     e7 &lt;skip&gt;
+        ///0f 84 dd 00 00 00       je     fc &lt;skip&gt;
         ///48 8b 9b 08 e5 01 00    mov    rbx,QWORD PTR [rbx+0x1e508]
         ///48 85 db                test   rbx,rbx
-        ///0f 84 b8 00 00 00       je     e7 &lt;skip&gt;
+        ///0f 84 cd 00 00 00       je     fc &lt;skip&gt;
         ///48 8b 83 90  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string EldenRingSpEffectTickDamage {
