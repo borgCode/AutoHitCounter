@@ -202,6 +202,11 @@ public class OverlayProfileManager
             ShowFooterTotals = true,
             GroupProgressMode = OverlayGroupProgressMode.Hidden,
             TableMode = false,
+            TableBorderThickness = 1,
+            TableBorderColor = "rgba(255, 255, 255, 0.12)",
+            ShowSplitBorder = false,
+            SplitBorderHeight = 1,
+            SplitBorderColor = "rgba(255, 255, 255, 0.08)",
             BackgroundOpacity = 0,
             ShowProgressBar = false,
 

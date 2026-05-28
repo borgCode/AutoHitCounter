@@ -190,18 +190,7 @@
             font-size: 16px;
             color: #c47fd4;
         }
-
-        /* Table mode - adds borders to make it look like a table */
-        .table-mode .header,
-        .table-mode .split-row,
-        .table-mode .footer {
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            margin-bottom: -1px;
-        }
-
-        .table-mode .split-row {
-            border-left-width: 1px;
-        }
+        
 
         /* Run complete banner */
         .run-complete {
@@ -256,6 +245,8 @@
             rowHeight: 29,
             backgroundOpacity: 0,
             tableMode: false,
+            tableBorderThickness: 1,
+            tableBorderColor: 'rgba(255, 255, 255, 0.12)',
             hitsCurrentColor: '#888888',
             hitsClearedColor: '#00cc66',
             hitsActiveColor: '#c8843a',
@@ -329,6 +320,9 @@
             currentSplitHitColor: 'rgba(255, 76, 76, 0.06)',
             currentSplitBorderColor: '#00cc66',
             currentSplitHitBorderColor: '#ff4c4c',
+            showSplitBorder: false,
+            splitBorderHeight: 1,
+            splitBorderColor: 'rgba(255, 255, 255, 0.08)',
 
         };
 
@@ -428,12 +422,19 @@
                 .diff-zero { color: ${config.diffZeroColor}; }
                 .split-row:nth-child(even) { background: ${config.alternatingRows || 'transparent'}; }
                 .split-row.pb-dpbhighlight { border-left-color: ${config.dpbHighlightColor}; }
-                .table-mode .split-row.current { border-left: 3px solid ${config.currentSplitBorderColor}; }
+                .table-mode .header,
+                .table-mode .split-row,
+                .table-mode .footer { border: ${config.tableBorderThickness}px solid ${config.tableBorderColor}; margin-bottom: -1px; }
+                .table-mode .split-row.current { border-left: ${config.tableBorderThickness}px solid ${config.currentSplitBorderColor}; }
+                .table-mode .split-row.current.hit { border-left: ${config.tableBorderThickness}px solid ${config.currentSplitHitBorderColor}; }
+                .table-mode .split-row { border-left-width: ${config.tableBorderThickness}px; } 
+                .table-mode .split-row.current { animation-name: highlight-green-table; }
+                .table-mode .split-row.current.hit { animation-name: highlight-red-table; }
                 .split-row.current { background: ${config.currentSplitColor}; border-left-color: ${config.currentSplitBorderColor}; }
                 .split-row.hit { background: ${config.rowHitColor}; }
                 .split-row.cleared { background: ${config.rowClearedColor}; }
-                .table-mode .split-row.current.hit { border-left: 3px solid ${config.currentSplitHitBorderColor}; }
                 .split-row.current.hit { background: ${config.currentSplitHitColor}; border-left-color: ${config.currentSplitHitBorderColor}; }
+                .split-row:not(.table-mode *) { border-bottom: ${config.showSplitBorder ? `${config.splitBorderHeight}px solid ${config.splitBorderColor}` : 'none'}; }
                 .split-row { height: ${config.rowHeight}px; font-size: ${config.fontSize}px; }
                 .footer { font-family: ${config.footerFontFamily};
                         font-size: ${config.footerFontSize}px;
@@ -455,6 +456,14 @@
                     from { background: transparent; border-left-color: transparent; }
                     to { background: ${config.currentSplitColor}; border-left-color: ${config.currentSplitBorderColor}; }
                 }
+                @keyframes highlight-red-table {
+                    from { background: transparent; border-left-color: transparent; border-left-width: ${config.tableBorderThickness}px; }
+                    to { background: ${config.currentSplitHitColor}; border-left-color: ${config.currentSplitHitBorderColor}; }
+                        }
+                @keyframes highlight-green-table {
+                    from { background: transparent; border-left-color: transparent; border-left-width: ${config.tableBorderThickness}px; }
+                    to { background: ${config.currentSplitColor}; border-left-color: ${config.currentSplitBorderColor}; }
+                }                
                 .split-row.current .col-name { color: ${config.splitNameCurrentColor}; }
                 .split-row .col-name { color: ${config.splitNameColor}; }
                 .split-row.hit .col-name { color: ${config.splitNameOnHitColor}; }

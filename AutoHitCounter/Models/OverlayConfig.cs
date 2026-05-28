@@ -20,6 +20,8 @@ public class OverlayConfig
     public bool ShowFooterTotals { get; set; }
     public OverlayGroupProgressMode GroupProgressMode { get; set; }
     public bool TableMode { get; set; }
+    public int TableBorderThickness { get; set; }
+    public string TableBorderColor { get; set; }
     public double BackgroundOpacity { get; set; }
     public string CustomCss { get; set; }
 
@@ -77,6 +79,12 @@ public class OverlayConfig
 
     // Splits Section //
 
+    // Split Bottom Borders
+    
+    public bool ShowSplitBorder { get; set; }
+    public int SplitBorderHeight { get; set; }
+    public string SplitBorderColor { get; set; }
+    
     // Split Fonts
     public string FontFamily { get; set; }
     public int FontSize { get; set; }

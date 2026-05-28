@@ -127,6 +127,8 @@ public class OverlaySettingsViewModel : BaseViewModel
     public bool ShowPb            { get => Get<bool>();   set => Set(value); }
     public bool ShowIgt           { get => Get<bool>();   set => Set(value); }
     public bool ShowFooterTotals  { get => Get<bool>();   set => Set(value); }
+    public bool ShowSplitBorder   { get => Get<bool>();   set => Set(value); }
+    public int  SplitBorderHeight        { get => Get<int>();    set => Set(value); }
     public OverlayGroupProgressMode GroupProgressMode { get => Get<OverlayGroupProgressMode>(); set => Set(value); }
     public int  PrevSplits        { get => Get<int>();    set => Set(value); }
     public int  NextSplits        { get => Get<int>();    set => Set(value); }
@@ -135,6 +137,7 @@ public class OverlaySettingsViewModel : BaseViewModel
     public int  OverlayHeight     { get => Get<int>();    set => Set(value); }
     public double BackgroundOpacity { get => Get<double>(); set => Set(value); }
     public bool TableMode         { get => Get<bool>();   set => Set(value); }
+    public int TableBorderThickness         { get => Get<int>();   set => Set(value); }
     public bool ShowRunComplete          { get => Get<bool>(); set => Set(value); }
     public string RunCompleteText          { get => Get<string>(); set => Set(value); }
     public string CustomCss { get => Get<string>(); set => Set(value); }
@@ -159,6 +162,7 @@ public class OverlaySettingsViewModel : BaseViewModel
 
     #region Colors
 
+    public string TableBorderColor          { get => Get<string>(); set => Set(value); }
     public string HeaderTextColor          { get => Get<string>(); set => Set(value); }
     public string ProgressParenthesisColor          { get => Get<string>(); set => Set(value); }
     public string ProgressFirstSplitColor          { get => Get<string>(); set => Set(value); }
@@ -170,6 +174,7 @@ public class OverlaySettingsViewModel : BaseViewModel
     public string AttemptsActiveColor      { get => Get<string>(); set => Set(value); }
     public string ProgressBarBgColor      { get => Get<string>(); set => Set(value); }
     public string ProgressBarColor      { get => Get<string>(); set => Set(value); }
+    public string SplitBorderColor           { get => Get<string>(); set => Set(value); }
     public string SplitNameCurrentColor           { get => Get<string>(); set => Set(value); }
     public string SplitNameColor           { get => Get<string>(); set => Set(value); }
     public string SplitNameOnHitColor           { get => Get<string>(); set => Set(value); }
