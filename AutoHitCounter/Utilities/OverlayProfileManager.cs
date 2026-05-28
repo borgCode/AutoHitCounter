@@ -87,7 +87,8 @@ public class OverlayProfileManager
         }
 
         if (string.IsNullOrEmpty(c.GroupHeaderHitsColor)) c.GroupHeaderHitsColor = d.GroupHeaderHitsColor;
-        if (string.IsNullOrEmpty(c.GroupHeaderHitsHighlightColor)) c.GroupHeaderHitsHighlightColor = d.GroupHeaderHitsHighlightColor;
+        if (string.IsNullOrEmpty(c.GroupHeaderHitsHighlightColor))
+            c.GroupHeaderHitsHighlightColor = d.GroupHeaderHitsHighlightColor;
         if (string.IsNullOrEmpty(c.GroupHeaderPbColor)) c.GroupHeaderPbColor = d.GroupHeaderPbColor;
         if (string.IsNullOrEmpty(c.GroupHeaderFontFamily)) c.GroupHeaderFontFamily = d.GroupHeaderFontFamily;
     }
@@ -203,7 +204,7 @@ public class OverlayProfileManager
             TableMode = false,
             BackgroundOpacity = 0,
             ShowProgressBar = false,
-            
+
             ProgressBarHeight = 5,
 
             ShowTitle = false,
@@ -213,6 +214,10 @@ public class OverlayProfileManager
             TitleFontSize = 20,
 
             HeaderTextColor = "#bbbbbb",
+            ProgressParenthesisColor = "#bbbbbb",
+            ProgressFirstSplitColor = "#bbbbbb",
+            ProgressNotFirstSplitColor = "#e0e0e0",
+            ProgressTotalColor = "#bbbbbb",
             HeaderFontFamily = "Segoe UI",
             HeaderFontSize = 13,
             ShowHeaderBorder = true,
@@ -237,12 +242,12 @@ public class OverlayProfileManager
             FontBold = false,
             FontItalic = false,
             FontUnderline = false,
-            
+
             ProgressBarColor = "#c47fd4",
             ProgressBarBgColor = "rgba(255,255,255,0.08)",
 
             GroupNameColor = "#999999",
-            SplitNameCurrentColor ="#e0e0e0", 
+            SplitNameCurrentColor = "#e0e0e0",
             SplitNameColor = "#e0e0e0",
             SplitNameOnHitColor = "#e0e0e0",
             SplitNameOnHitlessColor = "#e0e0e0",
@@ -251,7 +256,7 @@ public class OverlayProfileManager
             CurrentSplitHitColor = "rgba(255, 76, 76, 0.06)",
             CurrentSplitBorderColor = "#00cc66",
             CurrentSplitHitBorderColor = "#ff4c4c",
-            
+
             ShowDpbHighlight = true,
             DpbHighlightColor = "#ffe766",
 
@@ -262,6 +267,7 @@ public class OverlayProfileManager
             HitsCurrentColor = "#888888",
             HitsActiveColor = "#c8843a",
             HitsClearedColor = "#00cc66",
+            HitsFutureColor = "#888888",
 
             DiffPosColor = "#ff4c4c",
             DiffNegColor = "#00cc66",
@@ -329,7 +335,9 @@ public class OverlayProfileManager
                 object parsed = prop.PropertyType switch
                 {
                     { } t when t == typeof(double) =>
-                        double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var d) ? d : (object)null,
+                        double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var d)
+                            ? d
+                            : (object)null,
                     { } t when t == typeof(int) =>
                         int.TryParse(value, out var i) ? i : (object)null,
                     { } t when t == typeof(bool) =>

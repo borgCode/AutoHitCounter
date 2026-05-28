@@ -333,6 +333,38 @@
                             </Border>
                             <TextBox Text="{Binding HeaderTextColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="HeaderTextColor" ContextMenu="{StaticResource ResetContextMenu}" />
                         </StackPanel>
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Progress (First Split)" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding ProgressFirstSplitColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding ProgressFirstSplitColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="ProgressFirstSplitColor" ContextMenu="{StaticResource ResetContextMenu}" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Progress (Not First Split)" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding ProgressNotFirstSplitColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding ProgressNotFirstSplitColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="ProgressNotFirstSplitColor" ContextMenu="{StaticResource ResetContextMenu}" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Progress (Total Splits)" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding ProgressTotalColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding ProgressTotalColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="ProgressTotalColor" ContextMenu="{StaticResource ResetContextMenu}" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Progress Parenthesis" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding ProgressParenthesisColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding ProgressParenthesisColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="ProgressParenthesisColor" ContextMenu="{StaticResource ResetContextMenu}" />
+                        </StackPanel>
                         
                         <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
 
@@ -489,6 +521,14 @@
                                     Fill="{Binding HitsClearedColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding HitsClearedColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="HitsClearedColor" ContextMenu="{StaticResource ResetContextMenu}"/>
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Hits Column (Future)" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding HitsFutureColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding HitsFutureColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="HitsFutureColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Diff (More than PB)" Style="{StaticResource FieldLabel}" />

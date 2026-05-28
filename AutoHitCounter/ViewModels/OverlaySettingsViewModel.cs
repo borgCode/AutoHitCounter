@@ -160,6 +160,10 @@ public class OverlaySettingsViewModel : BaseViewModel
     #region Colors
 
     public string HeaderTextColor          { get => Get<string>(); set => Set(value); }
+    public string ProgressParenthesisColor          { get => Get<string>(); set => Set(value); }
+    public string ProgressFirstSplitColor          { get => Get<string>(); set => Set(value); }
+    public string ProgressNotFirstSplitColor          { get => Get<string>(); set => Set(value); }
+    public string ProgressTotalColor          { get => Get<string>(); set => Set(value); }
     public string HeaderBorderColor          { get => Get<string>(); set => Set(value); }
     public string FooterBorderColor          { get => Get<string>(); set => Set(value); }
     public string AttemptsZeroColor        { get => Get<string>(); set => Set(value); }
@@ -172,6 +176,7 @@ public class OverlaySettingsViewModel : BaseViewModel
     public string SplitNameOnHitlessColor           { get => Get<string>(); set => Set(value); }
     public string GroupNameColor           { get => Get<string>(); set => Set(value); }
     public string HitsActiveColor          { get => Get<string>(); set => Set(value); }
+    public string HitsFutureColor          { get => Get<string>(); set => Set(value); }
     public string PbColor                  { get => Get<string>(); set => Set(value); }
     public string DiffPosColor             { get => Get<string>(); set => Set(value); }
     public string DiffNegColor             { get => Get<string>(); set => Set(value); }
