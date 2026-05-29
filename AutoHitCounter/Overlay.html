@@ -121,7 +121,7 @@
         /* Parent category row — font size/weight/color come from applyDynamicStyles */
         .split-row.parent {
             letter-spacing: 0.03em;
-            align-items: center; 
+            align-items: center;
             border-left-color: transparent;
             background: transparent;
         }
@@ -190,18 +190,7 @@
             font-size: 16px;
             color: #c47fd4;
         }
-
-        /* Table mode - adds borders to make it look like a table */
-        .table-mode .header,
-        .table-mode .split-row,
-        .table-mode .footer {
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            margin-bottom: -1px;
-        }
-
-        .table-mode .split-row {
-            border-left-width: 1px;
-        }
+        
 
         /* Run complete banner */
         .run-complete {
@@ -242,89 +231,100 @@
         const RECONNECT_INTERVAL = 3000;
 
         const DEFAULTS = {
-                showAttempts: true,
-                prevSplits: 4,
-                nextSplits: 10,
-                showDiff: true,
-                showPb: true,
-                showIgt: true,
-                overlayWidth: 380,
-                overlayHeight: 500,
-                showProgress: true,
-                fontFamily: 'Segoe UI',
-                fontSize: 16,
-                rowHeight: 29,
-                backgroundOpacity: 0,
-                tableMode: false,
-                hitsCurrentColor: '#888888',
-                hitsClearedColor: '#00cc66',
-                hitsActiveColor: '#c8843a',
-                rowHitColor: 'rgba(255, 76, 76, 0.17)',
-                rowClearedColor: 'rgba(0, 204, 102, 0.17)',
-                diffPosColor: '#ff4c4c',
-                diffNegColor: '#00cc66',
-                diffZeroColor: '#bbbbbb',
-                attemptsZeroColor: '#ffffff',
-                attemptsActiveColor: '#9D61A8',
-                headerTextColor: '#bbbbbb',
-                igtColor: '#c47fd4',
-                runCompleteBannerColor: '#00cc66',
-                fontBold: false,
-                fontItalic: false,
-                fontUnderline: false,
-                splitNameCurrentColor: '#e0e0e0',
-                splitNameColor: '#e0e0e0',
-                splitNameOnHitColor: '#e0e0e0',
-                splitNameOnHitlessColor: '#e0e0e0',
-                groupNameColor: '#999999',
-                groupHeaderFontFamily: 'Segoe UI',
-                groupHeaderFontSize: 13,
-                groupHeaderBold: true,
-                groupHeaderItalic: false,
-                groupHeaderUnderline: false,
-                groupHeaderHitsColor: '#888888',
-                groupHeaderHitsHighlightColor: '#c8843a',
-                groupHeaderPbColor: '#bbbbbb',
-                groupCollapseMode: 2,
-                pbColor: '#bbbbbb',
-                showFooterTotals: true,
-                groupProgressMode: 0,
-                igtFontFamily: 'Consolas',
-                igtFontSize: 17,
-                alternatingRows: 'rgba(255, 255, 255, 0.05)',
-                headerFontFamily: 'Segoe UI',
-                headerFontSize: 13,
-                showTitle: false,
-                titleText: '',
-                titleColor: '#e0e0e0',
-                titleFontFamily: 'Segoe UI',
-                titleFontSize: 20,
-                showRunComplete: true,
-                runCompleteText: '✓ Run Complete',
-                pbMatchesHit: false,
-                footerFontSize: 16,
-                footerFontFamily: 'Segoe UI',
-                footerHitFontColor: '#c8843a',
-                footerHitsCurrentColor: '#888888',
-                footerPbFontColor: '#bbbbbb',
-                dpbHighlightColor: '#ffe766',
-                showDpbHighlight: true,
-                customCss: '',
-                showProgressBar: false,
-                progressBarHeight: 5,
-                progressBarColor: '#c47fd4',
-                progressBarBgColor: 'rgba(255,255,255,0.08)',
-                showHeaderBorder: true,
-                headerBorderHeight: 1,
-                headerBorderColor: 'rgba(255,255,255,0.08)',
-                showFooterBorder: true,
-                footerBorderHeight: 1,
-                footerBorderColor: 'rgba(255,255,255,0.08)',
-                currentSplitColor: 'rgba(0, 204, 102, 0.06)',
-                currentSplitHitColor: 'rgba(255, 76, 76, 0.06)',
-                currentSplitBorderColor: '#00cc66',
-                currentSplitHitBorderColor: '#ff4c4c',
-            };
+            showAttempts: true,
+            prevSplits: 4,
+            nextSplits: 10,
+            showDiff: true,
+            showPb: true,
+            showIgt: true,
+            overlayWidth: 380,
+            overlayHeight: 500,
+            showProgress: true,
+            fontFamily: 'Segoe UI',
+            fontSize: 16,
+            rowHeight: 29,
+            backgroundOpacity: 0,
+            tableMode: false,
+            tableBorderThickness: 1,
+            tableBorderColor: 'rgba(255, 255, 255, 0.12)',
+            hitsCurrentColor: '#888888',
+            hitsClearedColor: '#00cc66',
+            hitsActiveColor: '#c8843a',
+            hitsFutureColor: '#888888',
+            rowHitColor: 'rgba(255, 76, 76, 0.17)',
+            rowClearedColor: 'rgba(0, 204, 102, 0.17)',
+            diffPosColor: '#ff4c4c',
+            diffNegColor: '#00cc66',
+            diffZeroColor: '#bbbbbb',
+            attemptsZeroColor: '#ffffff',
+            attemptsActiveColor: '#9D61A8',
+            headerTextColor: '#bbbbbb',
+            progressParenthesisColor: '#bbbbbb',
+            progressFirstSplitColor: '#bbbbbb',
+            progressNotFirstSplitColor: '#e0e0e0',
+            progressTotalColor: '#bbbbbb',
+            igtColor: '#c47fd4',
+            runCompleteBannerColor: '#00cc66',
+            fontBold: false,
+            fontItalic: false,
+            fontUnderline: false,
+            splitNameCurrentColor: '#e0e0e0',
+            splitNameColor: '#e0e0e0',
+            splitNameOnHitColor: '#e0e0e0',
+            splitNameOnHitlessColor: '#e0e0e0',
+            groupNameColor: '#999999',
+            groupHeaderFontFamily: 'Segoe UI',
+            groupHeaderFontSize: 13,
+            groupHeaderBold: true,
+            groupHeaderItalic: false,
+            groupHeaderUnderline: false,
+            groupHeaderHitsColor: '#888888',
+            groupHeaderHitsHighlightColor: '#c8843a',
+            groupHeaderPbColor: '#bbbbbb',
+            groupCollapseMode: 2,
+            pbColor: '#bbbbbb',
+            showFooterTotals: true,
+            groupProgressMode: 0,
+            igtFontFamily: 'Consolas',
+            igtFontSize: 17,
+            alternatingRows: 'rgba(255, 255, 255, 0.05)',
+            headerFontFamily: 'Segoe UI',
+            headerFontSize: 13,
+            showTitle: false,
+            titleText: '',
+            titleColor: '#e0e0e0',
+            titleFontFamily: 'Segoe UI',
+            titleFontSize: 20,
+            showRunComplete: true,
+            runCompleteText: '✓ Run Complete',
+            pbMatchesHit: false,
+            footerFontSize: 16,
+            footerFontFamily: 'Segoe UI',
+            footerHitFontColor: '#c8843a',
+            footerHitsCurrentColor: '#888888',
+            footerPbFontColor: '#bbbbbb',
+            dpbHighlightColor: '#ffe766',
+            showDpbHighlight: true,
+            customCss: '',
+            showProgressBar: false,
+            progressBarHeight: 5,
+            progressBarColor: '#c47fd4',
+            progressBarBgColor: 'rgba(255,255,255,0.08)',
+            showHeaderBorder: true,
+            headerBorderHeight: 1,
+            headerBorderColor: 'rgba(255,255,255,0.08)',
+            showFooterBorder: true,
+            footerBorderHeight: 1,
+            footerBorderColor: 'rgba(255,255,255,0.08)',
+            currentSplitColor: 'rgba(0, 204, 102, 0.06)',
+            currentSplitHitColor: 'rgba(255, 76, 76, 0.06)',
+            currentSplitBorderColor: '#00cc66',
+            currentSplitHitBorderColor: '#ff4c4c',
+            showSplitBorder: false,
+            splitBorderHeight: 1,
+            splitBorderColor: 'rgba(255, 255, 255, 0.08)',
+
+        };
 
         let config = {...DEFAULTS};
 
@@ -422,12 +422,19 @@
                 .diff-zero { color: ${config.diffZeroColor}; }
                 .split-row:nth-child(even) { background: ${config.alternatingRows || 'transparent'}; }
                 .split-row.pb-dpbhighlight { border-left-color: ${config.dpbHighlightColor}; }
-                .table-mode .split-row.current { border-left: 3px solid ${config.currentSplitBorderColor}; }
+                .table-mode .header,
+                .table-mode .split-row,
+                .table-mode .footer { border: ${config.tableBorderThickness}px solid ${config.tableBorderColor}; margin-bottom: -1px; }
+                .table-mode .split-row.current { border-left: ${config.tableBorderThickness}px solid ${config.currentSplitBorderColor}; }
+                .table-mode .split-row.current.hit { border-left: ${config.tableBorderThickness}px solid ${config.currentSplitHitBorderColor}; }
+                .table-mode .split-row { border-left-width: ${config.tableBorderThickness}px; } 
+                .table-mode .split-row.current { animation-name: highlight-green-table; }
+                .table-mode .split-row.current.hit { animation-name: highlight-red-table; }
                 .split-row.current { background: ${config.currentSplitColor}; border-left-color: ${config.currentSplitBorderColor}; }
                 .split-row.hit { background: ${config.rowHitColor}; }
                 .split-row.cleared { background: ${config.rowClearedColor}; }
-                .table-mode .split-row.current.hit { border-left: 3px solid ${config.currentSplitHitBorderColor}; }
                 .split-row.current.hit { background: ${config.currentSplitHitColor}; border-left-color: ${config.currentSplitHitBorderColor}; }
+                .split-row:not(.table-mode *) { border-bottom: ${config.showSplitBorder ? `${config.splitBorderHeight}px solid ${config.splitBorderColor}` : 'none'}; }
                 .split-row { height: ${config.rowHeight}px; font-size: ${config.fontSize}px; }
                 .footer { font-family: ${config.footerFontFamily};
                         font-size: ${config.footerFontSize}px;
@@ -449,6 +456,14 @@
                     from { background: transparent; border-left-color: transparent; }
                     to { background: ${config.currentSplitColor}; border-left-color: ${config.currentSplitBorderColor}; }
                 }
+                @keyframes highlight-red-table {
+                    from { background: transparent; border-left-color: transparent; border-left-width: ${config.tableBorderThickness}px; }
+                    to { background: ${config.currentSplitHitColor}; border-left-color: ${config.currentSplitHitBorderColor}; }
+                        }
+                @keyframes highlight-green-table {
+                    from { background: transparent; border-left-color: transparent; border-left-width: ${config.tableBorderThickness}px; }
+                    to { background: ${config.currentSplitColor}; border-left-color: ${config.currentSplitBorderColor}; }
+                }                
                 .split-row.current .col-name { color: ${config.splitNameCurrentColor}; }
                 .split-row .col-name { color: ${config.splitNameColor}; }
                 .split-row.hit .col-name { color: ${config.splitNameOnHitColor}; }
@@ -458,6 +473,7 @@
                 .split-row.cleared .col-hits { color: ${config.hitsClearedColor}; }
                 .split-row.hit .col-hits { color: ${config.hitsActiveColor}; }
                 .split-row.current.hit .col-hits { color: ${config.hitsActiveColor}; }
+                .split-row:not(.current):not(.cleared):not(.hit):not(.parent) .col-hits { color: ${config.hitsFutureColor}; }
                 .split-row .col-pb { color: ${config.pbColor}; }
                 .split-row.hit .col-pb { color: ${config.pbMatchesHit ? config.hitsActiveColor : config.pbColor}; }
                 .split-row.cleared .col-pb { color: ${config.pbMatchesHit ? config.hitsClearedColor : config.pbColor}; }
@@ -574,7 +590,7 @@
                 const s = allSplits[i];
                 if (s.isParent) continue;
                 const g = groupOf[i];
-                if (!groupTotals[g]) groupTotals[g] = { hits: 0, pb: 0 };
+                if (!groupTotals[g]) groupTotals[g] = {hits: 0, pb: 0};
                 groupTotals[g].hits += s.hits ?? 0;
                 groupTotals[g].pb += s.pb ?? 0;
             }
@@ -584,7 +600,7 @@
                 t.diff = t.hits - t.pb;
             }
 
-            return { groupOf, activeGroup, groupTotals };
+            return {groupOf, activeGroup, groupTotals};
         }
 
         /**
@@ -652,7 +668,7 @@
                 end = Math.min(totalRows, start + maxRows);
             }
 
-            return { start, end };
+            return {start, end};
         }
 
         /** @param mode 0 = all inactive collapsed, 1 = completed collapsed + future expanded */
@@ -729,7 +745,7 @@
                 : null;
 
             if (groupInfo) {
-                const { groupOf, activeGroup, groupTotals } = groupInfo;
+                const {groupOf, activeGroup, groupTotals} = groupInfo;
                 const visibleIndices = buildCollapseVisibleIndices(allSplits, groupOf, activeGroup, collapseMode);
                 if (visibleIndices.length > 0) {
                     let anchorPos = visibleIndices.indexOf(anchor);
@@ -745,7 +761,7 @@
                     const activeHeaderIndex = findActiveGroupHeaderIndex(allSplits, groupOf, activeGroup);
                     const activeHeaderPos = activeHeaderIndex >= 0 ? visibleIndices.indexOf(activeHeaderIndex) : -1;
 
-                    const { start: wStart, end: wEnd } = computeVisibleRowWindow(
+                    const {start: wStart, end: wEnd} = computeVisibleRowWindow(
                         anchorPos,
                         visibleIndices.length,
                         maxRows
@@ -792,7 +808,7 @@
                     }
                 }
             } else {
-                const { start, end } = computeVisibleRowWindow(anchor, total, maxRows);
+                const {start, end} = computeVisibleRowWindow(anchor, total, maxRows);
                 const windowed = allSplits.slice(start, end);
                 for (let i = 0; i < windowed.length; i++) {
                     const idx = start + i;
@@ -821,7 +837,13 @@
                 const children = state.splits.filter(s => !s.isParent);
                 const current = children.findIndex(s => s.isCurrent) + 1;
                 const total = children.length;
-                progressEl.textContent = `(${current}/${total})`;
+                const currentColor = current === 1 ? config.progressFirstSplitColor : config.progressNotFirstSplitColor;
+                progressEl.innerHTML =
+                    `<span style="color:${config.progressParenthesisColor}">(</span>` +
+                    `<span style="color:${currentColor}">${current}</span>` +
+                    `<span style="color:${config.progressParenthesisColor}">/</span>` +
+                    `<span style="color:${config.progressTotalColor}">${total}</span>` +
+                    `<span style="color:${config.progressParenthesisColor}">)</span>`;
             }
 
             const attemptsEl = document.getElementById('attempts');

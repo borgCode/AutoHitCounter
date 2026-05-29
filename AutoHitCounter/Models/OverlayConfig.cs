@@ -20,6 +20,8 @@ public class OverlayConfig
     public bool ShowFooterTotals { get; set; }
     public OverlayGroupProgressMode GroupProgressMode { get; set; }
     public bool TableMode { get; set; }
+    public int TableBorderThickness { get; set; }
+    public string TableBorderColor { get; set; }
     public double BackgroundOpacity { get; set; }
     public string CustomCss { get; set; }
 
@@ -40,6 +42,11 @@ public class OverlayConfig
     public bool ShowHeaderBorder { get; set; }
     public int HeaderBorderHeight { get; set; }
     public string HeaderBorderColor { get; set; }
+    public string ProgressParenthesisColor { get; set; }
+    public string ProgressFirstSplitColor { get; set; }
+    public string ProgressNotFirstSplitColor { get; set; }
+    public string ProgressTotalColor { get; set; }
+    
 
 
     // Group Header Section //
@@ -72,6 +79,12 @@ public class OverlayConfig
 
     // Splits Section //
 
+    // Split Bottom Borders
+    
+    public bool ShowSplitBorder { get; set; }
+    public int SplitBorderHeight { get; set; }
+    public string SplitBorderColor { get; set; }
+    
     // Split Fonts
     public string FontFamily { get; set; }
     public int FontSize { get; set; }
@@ -116,6 +129,7 @@ public class OverlayConfig
     public string HitsCurrentColor { get; set; }
     public string HitsActiveColor { get; set; }
     public string HitsClearedColor { get; set; }
+    public string HitsFutureColor { get; set; }
 
     // Diff Column
 

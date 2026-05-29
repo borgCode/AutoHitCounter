@@ -154,15 +154,26 @@
                         <CheckBox Content="Show Footer Totals" IsChecked="{Binding ShowFooterTotals}" Margin="0,2,0,2" />
                         <CheckBox Content="Show Header Border" IsChecked="{Binding ShowHeaderBorder}" Margin="0,2,0,2" />
                         <CheckBox Content="Show Footer Border" IsChecked="{Binding ShowFooterBorder}" Margin="0,2,0,2" />
+                        <CheckBox Content="Show Splits Border" IsChecked="{Binding ShowSplitBorder}" Margin="0,2,0,2" />
                         <CheckBox Content="Show Run Complete" IsChecked="{Binding ShowRunComplete}" Margin="0,2,0,2" />
                         <CheckBox Content="Table Mode" IsChecked="{Binding TableMode}" Margin="0,2,0,2" />
                         <CheckBox Content="PB Color Matches Hit" IsChecked="{Binding PbMatchesHit}" Margin="0,2,0,2" />
 
                         <Separator Style="{StaticResource Separator}" />
+                        
+                        <TextBlock Text="TABLE MODE" Style="{StaticResource SectionLabel}" />
+                        
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="Border Thickness" Style="{StaticResource FieldLabel}" Width="90" />
+                            <xctk:IntegerUpDown Value="{Binding TableBorderThickness}" Minimum="1" Maximum="50" Width="55" Tag="TableBorderThickness" ContextMenu="{StaticResource ResetContextMenu}"/>
+                        </StackPanel>
+                        
+                        <Separator Style="{StaticResource Separator}" />
+                        
                         <TextBlock Text="HEADER BORDER" Style="{StaticResource SectionLabel}" />
                         
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock Text="Height" Style="{StaticResource FieldLabel}" Width="80" />
+                            <TextBlock Text="Height" Style="{StaticResource FieldLabel}" Width="90" />
                             <xctk:IntegerUpDown Value="{Binding HeaderBorderHeight}" Minimum="1" Maximum="50" Width="55" Tag="HeaderBorderHeight" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         
@@ -170,7 +181,7 @@
                         <TextBlock Text="PROGRESS BAR" Style="{StaticResource SectionLabel}" />
                         
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock Text="Height" Style="{StaticResource FieldLabel}" Width="80" />
+                            <TextBlock Text="Height" Style="{StaticResource FieldLabel}" Width="90" />
                             <xctk:IntegerUpDown Value="{Binding ProgressBarHeight}" Minimum="1" Maximum="50" Width="55" Tag="ProgressBarHeight" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         
@@ -178,11 +189,15 @@
                         <TextBlock Text="SPLITS" Style="{StaticResource SectionLabel}" />
 
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock Text="Prev Splits" Style="{StaticResource FieldLabel}" Width="80" />
+                            <TextBlock Text="Border Height" Style="{StaticResource FieldLabel}" Width="90" />
+                            <xctk:IntegerUpDown Value="{Binding SplitBorderHeight}" Minimum="1" Maximum="50" Width="55" Tag="SplitBorderHeight" ContextMenu="{StaticResource ResetContextMenu}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="Prev Splits" Style="{StaticResource FieldLabel}" Width="90" />
                             <xctk:IntegerUpDown Value="{Binding PrevSplits}" Minimum="1" Maximum="50" Width="55" Tag="PrevSplits" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock Text="Next Splits" Style="{StaticResource FieldLabel}" Width="80" />
+                            <TextBlock Text="Next Splits" Style="{StaticResource FieldLabel}" Width="90" />
                             <xctk:IntegerUpDown Value="{Binding NextSplits}" Minimum="1" Maximum="50" Width="55" Tag="NextSplits" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Margin="0,0,0,4">
@@ -218,15 +233,15 @@
                         <TextBlock Text="DIMENSIONS" Style="{StaticResource SectionLabel}" />
 
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock Text="Width" Style="{StaticResource FieldLabel}" Width="80" />
+                            <TextBlock Text="Width" Style="{StaticResource FieldLabel}" Width="90" />
                             <xctk:IntegerUpDown Value="{Binding OverlayWidth}" Minimum="100" Maximum="5000" Width="55" Tag="OverlayWidth" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock Text="Max Height" Style="{StaticResource FieldLabel}" Width="80" />
+                            <TextBlock Text="Max Height" Style="{StaticResource FieldLabel}" Width="90" />
                             <xctk:IntegerUpDown Value="{Binding OverlayHeight}" Minimum="100" Maximum="5000" Width="55" Tag="OverlayHeight" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock Text="Row Height" Style="{StaticResource FieldLabel}" Width="80" />
+                            <TextBlock Text="Row Height" Style="{StaticResource FieldLabel}" Width="90" />
                             <xctk:IntegerUpDown Value="{Binding RowHeight}" Minimum="16" Maximum="60" Width="55" Tag="RowHeight" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
 
@@ -244,7 +259,7 @@
                         <TextBlock Text="FOOTER BORDER" Style="{StaticResource SectionLabel}" />
                         
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock Text="Height" Style="{StaticResource FieldLabel}" Width="80" />
+                            <TextBlock Text="Height" Style="{StaticResource FieldLabel}" Width="90" />
                             <xctk:IntegerUpDown Value="{Binding FooterBorderHeight}" Minimum="1" Maximum="50" Width="55" Tag="FooterBorderHeight" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
 
@@ -315,6 +330,18 @@
                         </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
+                        
+                        <TextBlock Text="TABLE MODE" Style="{StaticResource SectionLabel}" Margin="0,0,0,4" />
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Border Color" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding TableBorderColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding TableBorderColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="TableBorderColor" ContextMenu="{StaticResource ResetContextMenu}" />
+                        </StackPanel>
+                        
+                        <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
 
                         <TextBlock Text="HEADER" Style="{StaticResource SectionLabel}" />
                         <StackPanel Style="{StaticResource ColorRow}">
@@ -332,6 +359,38 @@
                                     Fill="{Binding HeaderTextColor, Converter={StaticResource StringToBrushConverter}}" />
                             </Border>
                             <TextBox Text="{Binding HeaderTextColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="HeaderTextColor" ContextMenu="{StaticResource ResetContextMenu}" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Progress (First Split)" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding ProgressFirstSplitColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding ProgressFirstSplitColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="ProgressFirstSplitColor" ContextMenu="{StaticResource ResetContextMenu}" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Progress (Not First Split)" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding ProgressNotFirstSplitColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding ProgressNotFirstSplitColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="ProgressNotFirstSplitColor" ContextMenu="{StaticResource ResetContextMenu}" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Progress (Total Splits)" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding ProgressTotalColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding ProgressTotalColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="ProgressTotalColor" ContextMenu="{StaticResource ResetContextMenu}" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Progress Parenthesis" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding ProgressParenthesisColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding ProgressParenthesisColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="ProgressParenthesisColor" ContextMenu="{StaticResource ResetContextMenu}" />
                         </StackPanel>
                         
                         <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
@@ -491,6 +550,14 @@
                             <TextBox Text="{Binding HitsClearedColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="HitsClearedColor" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Hits Column (Future)" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding HitsFutureColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding HitsFutureColor, UpdateSourceTrigger=PropertyChanged}" Width="150" Tag="HitsFutureColor" ContextMenu="{StaticResource ResetContextMenu}"/>
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource ColorRow}">
                             <TextBlock Text="Diff (More than PB)" Style="{StaticResource FieldLabel}" />
                             <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
                                 <Rectangle
@@ -591,6 +658,15 @@
                             <TextBox Text="{Binding AlternatingRows, UpdateSourceTrigger=PropertyChanged}"
                                      Width="150" ContextMenu="{StaticResource ResetContextMenu}" Tag="AlternatingRows"/>
                         </StackPanel>
+                        <StackPanel Style="{StaticResource ColorRow}">
+                            <TextBlock Text="Splits Border Color" Style="{StaticResource FieldLabel}" />
+                            <Border Width="24" Height="22" BorderBrush="#444" BorderThickness="1" Margin="0,0,4,0">
+                                <Rectangle
+                                    Fill="{Binding SplitBorderColor, Converter={StaticResource StringToBrushConverter}}" />
+                            </Border>
+                            <TextBox Text="{Binding SplitBorderColor, UpdateSourceTrigger=PropertyChanged}"
+                                     Width="150" ContextMenu="{StaticResource ResetContextMenu}" Tag="SplitBorderColor"/>
+                        </StackPanel>
 
                         <Separator Style="{StaticResource Separator}" Margin="0,0,10,0" />
 
@@ -685,7 +761,7 @@
 
                         <TextBlock Text="SIZE" Style="{StaticResource SectionLabel}" />
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                            <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="90" />
+                            <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="70" />
                             <xctk:IntegerUpDown Value="{Binding TitleFontSize}" Minimum="2" Maximum="64" Width="55" Tag="TitleFontSize" ContextMenu="{StaticResource ResetContextMenu}" />
                         </StackPanel>
 
@@ -707,7 +783,7 @@
 
                         <TextBlock Text="SIZE" Style="{StaticResource SectionLabel}" />
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                            <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="90" />
+                            <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="70" />
                             <xctk:IntegerUpDown Value="{Binding HeaderFontSize}" Minimum="2" Maximum="64" Width="55" Tag="HeaderFontSize" ContextMenu="{StaticResource ResetContextMenu}" />
                         </StackPanel>
 
@@ -729,7 +805,7 @@
 
                         <TextBlock Text="SIZE" Style="{StaticResource SectionLabel}" />
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                            <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="90" />
+                            <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="70" />
                             <xctk:IntegerUpDown Value="{Binding GroupHeaderFontSize}" Minimum="2" Maximum="64"
                                                 Width="55" Tag="GroupHeaderFontSize" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
@@ -757,7 +833,7 @@
 
                         <TextBlock Text="SIZE" Style="{StaticResource SectionLabel}" />
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                            <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="90" />
+                            <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="70" />
                             <xctk:IntegerUpDown Value="{Binding FontSize}" Minimum="2" Maximum="64" Width="55" Tag="FontSize" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
 
@@ -778,7 +854,7 @@
                         </ComboBox>
                         <TextBlock Text="SIZE" Style="{StaticResource SectionLabel}" />
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                            <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="90" />
+                            <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="70" />
                             <xctk:IntegerUpDown Value="{Binding FooterFontSize}" Minimum="2" Maximum="64" Width="55" Tag="FooterFontSize" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
 
@@ -800,7 +876,7 @@
 
                         <TextBlock Text="SIZE" Style="{StaticResource SectionLabel}" />
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                            <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="90" />
+                            <TextBlock Text="Font Size" Style="{StaticResource FieldLabel}" Width="70" />
                             <xctk:IntegerUpDown Value="{Binding IgtFontSize}" Minimum="2" Maximum="64" Width="55" Tag="IgtFontSize" ContextMenu="{StaticResource ResetContextMenu}"/>
                         </StackPanel>
 
