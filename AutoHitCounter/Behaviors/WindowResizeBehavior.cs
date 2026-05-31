@@ -128,6 +128,9 @@ namespace AutoHitCounter.Behaviors
             var mmi = Marshal.PtrToStructure<Minmaxinfo>(lParam);
             var monitor = MonitorFromWindow(hwnd, MonitorDefaulttonearest);
 
+            int workAreaWidth = 0;
+            int workAreaHeight = 0;
+
             if (monitor != IntPtr.Zero)
             {
                 var monitorInfo = new Monitorinfo();
@@ -136,13 +139,16 @@ namespace AutoHitCounter.Behaviors
                 var workArea = monitorInfo.rcWork;
                 var monitorArea = monitorInfo.rcMonitor;
 
+                workAreaWidth = workArea.Right - workArea.Left;
+                workAreaHeight = workArea.Bottom - workArea.Top;
+
                 // Maximized window position
                 mmi.ptMaxPosition.x = Math.Abs(workArea.Left - monitorArea.Left);
                 mmi.ptMaxPosition.y = Math.Abs(workArea.Top - monitorArea.Top);
 
-                // Maximized window size 
-                mmi.ptMaxSize.x = Math.Abs(workArea.Right - workArea.Left);
-                mmi.ptMaxSize.y = Math.Abs(workArea.Bottom - workArea.Top);
+                // Maximized window size
+                mmi.ptMaxSize.x = Math.Abs(workAreaWidth);
+                mmi.ptMaxSize.y = Math.Abs(workAreaHeight);
             }
 
             var source = HwndSource.FromHwnd(hwnd);
@@ -150,8 +156,14 @@ namespace AutoHitCounter.Behaviors
             {
                 var dpi = VisualTreeHelper.GetDpi(window);
 
-                mmi.ptMinTrackSize.x = (int)(window.MinWidth * dpi.DpiScaleX);
-                mmi.ptMinTrackSize.y = (int)(window.MinHeight * dpi.DpiScaleY);
+                var minWidth = (int)(window.MinWidth * dpi.DpiScaleX);
+                var minHeight = (int)(window.MinHeight * dpi.DpiScaleY);
+
+                // Never force the window larger than the visible work area, or content
+                // anchored to the bottom (e.g. run-complete buttons) gets pushed off-screen
+                // on small / high-DPI displays and the user can't shrink the window to recover it.
+                mmi.ptMinTrackSize.x = workAreaWidth > 0 ? Math.Min(minWidth, workAreaWidth) : minWidth;
+                mmi.ptMinTrackSize.y = workAreaHeight > 0 ? Math.Min(minHeight, workAreaHeight) : minHeight;
             }
 
             Marshal.StructureToPtr(mmi, lParam, true);

@@ -14,7 +14,7 @@
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
-        Title="Auto Hit Counter" MinHeight="800" MinWidth="525"
+        Title="Auto Hit Counter" MinHeight="600" MinWidth="525"
         Height="800" Width="525"
         ResizeMode="CanResize"
         behaviors:WindowResizeBehavior.EnableCustomResize="True">
