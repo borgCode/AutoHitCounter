@@ -202,7 +202,6 @@
     <Compile Include="Interfaces\ITickService.cs" />
     <Compile Include="Interfaces\IVersionedGameModule.cs" />
     <Compile Include="Mappers\OverlayMapper.cs" />
-    <Compile Include="Memory\AobScanner.cs" />
     <Compile Include="Memory\HookManager.cs" />
     <Compile Include="Memory\Kernel32.cs" />
     <Compile Include="Models\EventLogEntry.cs" />
