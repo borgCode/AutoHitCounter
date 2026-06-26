@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using AutoHitCounter.Enums;
 using AutoHitCounter.Models;
 
 namespace AutoHitCounter.Interfaces;
@@ -20,6 +21,7 @@ public interface IGameSessionOrchestrator : IDisposable
 
     Game ActiveGame { get; }
     bool IsAttached { get; }
+    AttachmentStatus AttachmentStatus { get; }
     string AttachedText { get; }
 
     void Track(Game game);

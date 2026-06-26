@@ -83,7 +83,13 @@
                         <Style TargetType="Ellipse">
                             <Setter Property="Fill" Value="#D32F2F" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsAttached}" Value="True">
+                                <DataTrigger Binding="{Binding AttachmentStatus}"
+                                             Value="{x:Static enums:AttachmentStatus.Attaching}">
+                                    <Setter Property="Fill" Value="#F9A825" />
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding AttachmentStatus}"
+                                             Value="{x:Static enums:AttachmentStatus.Attached}">
                                     <Setter Property="Fill" Value="#4CAF50" />
                                 </DataTrigger>
                             </Style.Triggers>

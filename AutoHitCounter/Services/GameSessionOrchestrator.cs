@@ -22,6 +22,7 @@ public class GameSessionOrchestrator : IGameSessionOrchestrator
     private bool _isAttached;
     private string _attachedText;
     private bool _eventLogEnabled;
+    private AttachmentStatus _attachmentStatus;
 
     public GameSessionOrchestrator(
         IMemoryService memoryService,
@@ -35,6 +36,7 @@ public class GameSessionOrchestrator : IGameSessionOrchestrator
 
         stateService.Subscribe(State.Attached, OnAttached);
         stateService.Subscribe(State.NotAttached, OnNotAttached);
+        stateService.Subscribe(State.Attaching, OnAttaching);
     }
 
     public void Initialize(IHitRulesProvider hitRulesProvider,
@@ -45,14 +47,22 @@ public class GameSessionOrchestrator : IGameSessionOrchestrator
     }
 
     public event Action HitReceived;
+
     public event Action RunStartDetected;
+
     public event Action EventSetDetected;
+
     public event Action<List<EventLogEntry>> EventLogEntries;
+
     public event Action<long> TimeChangedMs;
+
     public event Action AttachmentChanged;
 
     public Game ActiveGame => _activeGame;
+
     public bool IsAttached => _isAttached;
+    public AttachmentStatus AttachmentStatus => _attachmentStatus;
+
     public string AttachedText => _attachedText;
 
     public void Track(Game game)
@@ -67,6 +77,7 @@ public class GameSessionOrchestrator : IGameSessionOrchestrator
         _currentModule = null;
         _activeGame = null;
         _isAttached = false;
+        _attachmentStatus = AttachmentStatus.NotAttached;
         _attachedText = "Not attached";
         AttachmentChanged?.Invoke();
     }
@@ -127,6 +138,7 @@ public class GameSessionOrchestrator : IGameSessionOrchestrator
         if (_activeGame.IsManual)
         {
             _isAttached = true;
+            _attachmentStatus = AttachmentStatus.Attached;
             _attachedText = $"Custom Game: {_activeGame.GameName}";
             AttachmentChanged?.Invoke();
         }
@@ -163,6 +175,7 @@ public class GameSessionOrchestrator : IGameSessionOrchestrator
         _isAttached = true;
         if (_activeGame != null)
             _attachedText = $"Attached to {_activeGame.GameName}";
+        _attachmentStatus = AttachmentStatus.Attached;
         AttachmentChanged?.Invoke();
     }
 
@@ -171,6 +184,16 @@ public class GameSessionOrchestrator : IGameSessionOrchestrator
         if (_activeGame?.IsManual == true) return;
         _isAttached = false;
         _attachedText = _activeGame != null ? $"Waiting for {_activeGame.GameName}..." : "Not attached";
+        _attachmentStatus = AttachmentStatus.NotAttached;
+        AttachmentChanged?.Invoke();
+    }
+
+    private void OnAttaching()
+    {
+        if (_activeGame == null) return;
+
+        _attachedText = "Attaching...";
+        _attachmentStatus = AttachmentStatus.Attaching;
         AttachmentChanged?.Invoke();
     }
 }

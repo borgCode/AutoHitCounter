@@ -166,6 +166,14 @@ namespace AutoHitCounter.ViewModels
             get => _isAttached;
             set => SetProperty(ref _isAttached, value);
         }
+        
+        private AttachmentStatus _attachmentStatus;
+
+        public AttachmentStatus AttachmentStatus
+        {
+            get => _attachmentStatus;
+            set => SetProperty(ref _attachmentStatus, value);
+        }
 
         public ObservableCollection<Game> Games { get; } = new();
 
@@ -659,6 +667,7 @@ namespace AutoHitCounter.ViewModels
         {
             IsAttached = _orchestrator.IsAttached;
             AttachedText = _orchestrator.AttachedText;
+            AttachmentStatus = _orchestrator.AttachmentStatus;
             OnPropertyChanged(nameof(TrackingText));
         }
 

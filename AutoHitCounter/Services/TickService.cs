@@ -39,6 +39,7 @@ public class TickService : ITickService
             if (!_attachedTime.HasValue)
             {
                 _attachedTime = DateTime.Now;
+                _stateService.Publish(State.Attaching);
                 return;
             }
 

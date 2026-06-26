@@ -131,6 +131,7 @@
     <Compile Include="Converters\StringToColorConverter.cs" />
     <Compile Include="Core\DelegateCommand.cs" />
     <Compile Include="Enums\AsmScript.cs" />
+    <Compile Include="Enums\AttachmentStatus.cs" />
     <Compile Include="Enums\GameTitle.cs" />
     <Compile Include="Enums\HotkeyActions.cs" />
     <Compile Include="Enums\SplitType.cs" />
