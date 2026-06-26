@@ -26,6 +26,8 @@ namespace AutoHitCounter.ViewModels
         private readonly IOverlayServerService _overlayServerService;
         private readonly ICustomGameService _customGameService;
         private string _lastIgt;
+        private long _rawIgtMs;
+        private long _igtOffsetMs;
         private readonly IRunStateService _runStateService;
         private readonly IGameSessionOrchestrator _orchestrator;
 
@@ -138,6 +140,8 @@ namespace AutoHitCounter.ViewModels
         public DelegateCommand MoveSplitDownCommand { get; set; }
 
         public DelegateCommand SetDistancePbCommand { get; set; }
+
+        public DelegateCommand ResetIgtCommand { get; set; }
 
         #endregion
 
@@ -310,6 +314,8 @@ namespace AutoHitCounter.ViewModels
             get => _inGameTime;
             set => SetProperty(ref _inGameTime, value);
         }
+
+        public bool HasIgtOffset => _igtOffsetMs > 0;
 
         private bool _isPracticeMode;
 
@@ -524,7 +530,7 @@ namespace AutoHitCounter.ViewModels
         }
 
         public void SaveRunState() =>
-            _runStateService.SaveRunState(_activeProfile, Splits, CurrentSplit, IsRunComplete, InGameTime);
+            _runStateService.SaveRunState(_activeProfile, Splits, CurrentSplit, IsRunComplete, InGameTime, _igtOffsetMs);
 
         public void FlushRunState() => _runStateService.FlushRunState(_activeProfile);
 
@@ -559,6 +565,7 @@ namespace AutoHitCounter.ViewModels
             IncrementHitCommand = new DelegateCommand(IncrementHit);
             DecrementHitCommand = new DelegateCommand(DecrementHit);
             ResetCommand = new DelegateCommand(ResetSplits);
+            ResetIgtCommand = new DelegateCommand(ToggleIgtOffset);
             SetPbCommand = new DelegateCommand(SetPb);
             SetDistancePbCommand = new DelegateCommand(SetDistancePb, CanSetDistancePb);
 
@@ -712,7 +719,8 @@ namespace AutoHitCounter.ViewModels
 
         private void UpdateInGameTime(long igt)
         {
-            InGameTime = TimeSpan.FromMilliseconds(igt);
+            _rawIgtMs = igt;
+            InGameTime = TimeSpan.FromMilliseconds(Math.Max(0L, igt - _igtOffsetMs));
             var formatted = $"{(int)InGameTime.TotalHours}:{InGameTime.Minutes:D2}:{InGameTime.Seconds:D2}";
             if (formatted != _lastIgt)
             {
@@ -720,6 +728,14 @@ namespace AutoHitCounter.ViewModels
                 InGameTimeFormatted = formatted;
                 _overlayServerService.BroadcastIgt(formatted);
             }
+        }
+
+        private void ToggleIgtOffset()
+        {
+            _igtOffsetMs = _igtOffsetMs > 0 ? 0L : _rawIgtMs;
+            OnPropertyChanged(nameof(HasIgtOffset));
+            UpdateInGameTime(_rawIgtMs);
+            SaveRunState();
         }
 
         private ProfileEditorWindow _profileEditorWindow;
@@ -1129,6 +1145,8 @@ namespace AutoHitCounter.ViewModels
         {
             var toRestore = _runStateService.RestoreFromSavedRun(Splits, state);
             _splitNav.SetPosition(toRestore, state.IsRunComplete);
+            _igtOffsetMs = state.IgtOffsetMilliseconds;
+            OnPropertyChanged(nameof(HasIgtOffset));
             InGameTime = TimeSpan.FromMilliseconds(state.IgtMilliseconds);
         }
 

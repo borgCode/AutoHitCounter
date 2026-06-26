@@ -8,4 +8,5 @@ public class RunState
     public int[] HitCounts { get; set; }
     public bool IsRunComplete { get; set; }
     public long IgtMilliseconds { get; set; }
+    public long IgtOffsetMilliseconds { get; set; }
 }
