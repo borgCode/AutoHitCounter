@@ -45,6 +45,8 @@ public partial class HelpWindow
             _pages[i].Visibility = i == index ? Visibility.Visible : Visibility.Collapsed;
 
         PageIndicator.Text = $"{index + 1} / {_pages.Length}";
+        PrevButton.IsEnabled = index > 0;
+        NextButton.IsEnabled = index < _pages.Length - 1;
     }
 
     private void Tab_Click(object sender, RoutedEventArgs e)
