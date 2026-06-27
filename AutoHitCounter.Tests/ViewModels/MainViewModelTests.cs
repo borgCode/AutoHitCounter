@@ -610,6 +610,7 @@ public class MainViewModelTests
         _runStateService.RestoreFromSavedRun(Arg.Any<System.Collections.Generic.IList<SplitViewModel>>(), Arg.Any<RunState>())
             .Returns(_sut.Splits[0]);
 
+        _sut.ActiveProfile = null;
         _sut.ActiveProfile = profile;
 
         Assert.True(_sut.HasIgtOffset);
