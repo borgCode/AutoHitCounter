@@ -67,6 +67,7 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
 
         var bytes = AsmLoader.GetAsmBytes(AsmScript.EldenRingCheckPlayerDead);
         AsmHelper.WriteRelativeOffset(bytes, code, WorldChrMan.Base, 7, 3);
+        AsmHelper.WriteImmediateDword(bytes, WorldChrMan.PlayerIns, 0xC + 3);
         memoryService.WriteBytes(code, bytes);
     }
     
@@ -103,6 +104,11 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
             (code + 0x20F, hit, 6, 0x20F + 2),
             (code + 0x219, Hooks.Hit + 5, 5, 0x219 + 1),
         ]);
+        
+        AsmHelper.WriteImmediateDwords(bytes, [
+            (WorldChrMan.PlayerIns, 0xA4 + 3),
+            (WorldChrMan.PlayerIns, 0x113 + 3)
+        ]);
 
         memoryService.WriteBytes(code, bytes);
         InstallHook(code, Hooks.Hit, [0x48, 0x89, 0x5C, 0x24, 0x08]);
@@ -119,7 +125,9 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
             (code + 0x5F, hit, 6, 0x5F + 2),
             (code + 0x67, Hooks.FallDamage + 5, 5, 0x67 + 1),
         ]);
-
+        
+        AsmHelper.WriteImmediateDword(bytes, WorldChrMan.PlayerIns, 0xE + 3);
+        
         memoryService.WriteBytes(code, bytes);
         InstallHook(code, Hooks.FallDamage, [0xC6, 0x44, 0x24, 0x30, 0x01]);
     }
@@ -146,6 +154,8 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
 
         var originalBytes = memoryService.ReadBytes(Hooks.KillBox, 5);
         
+        AsmHelper.WriteImmediateDword(bytes, WorldChrMan.PlayerIns, 0x1F + 3);
+        
         memoryService.WriteBytes(code, bytes);
         InstallHook(code, Hooks.KillBox, originalBytes);
     }
@@ -166,6 +176,11 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
             (code + 0x28, checkAuxFlag, 7, 0x28 + 2),
             (code + 0x31, checkAuxFlag, 7, 0x31 + 2),
             (code + 0x40, Hooks.AuxDamageAttacker + 7, 5, 0x40 + 1)
+        ]);
+        
+        AsmHelper.WriteImmediateDwords(bytes, [
+            (WorldChrMan.PlayerIns, 0x8 + 3),
+            (WorldChrMan.PlayerIns, 0x16 + 3)
         ]);
 
         memoryService.WriteBytes(code, bytes);
@@ -202,6 +217,8 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
             (code + 0x106, Hooks.SpEffectTickDamage + 6, 5, 0x106 + 1),
         ]);
 
+        AsmHelper.WriteImmediateDword(bytes, WorldChrMan.PlayerIns, 0x1F + 3);
+        
         memoryService.WriteBytes(code, bytes);
         InstallHook(code, Hooks.SpEffectTickDamage, [0xF3, 0x0F, 0x11, 0x44, 0x24, 0x20]);
     }
@@ -233,16 +250,21 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
         var code = Base + EnvKilling;
 
         AsmHelper.WriteRelativeOffsets(bytes, [
-            (code + 0x7, checkPlayerDeadFunc, 5, 0x7 + 1),
-            (code + 0xD, Hooks.EnvKilling + 6, 5, 0xD + 2),
-            (code + 0x22, WorldChrMan.Base, 7, 0x22 + 3),
-            (code + 0x5B, Functions.ChrInsByHandle, 5, 0x5B + 1),
-            (code + 0x73, hit, 6, 0x73 + 2),
-            (code + 0x7D, Hooks.EnvKilling + 6, 5, 0x7D + 1),
+            (code + 0x1, checkPlayerDeadFunc, 5, 0x1 + 1),
+            (code + 0x17, WorldChrMan.Base, 7, 0x17 + 3),
+            (code + 0x4D, Functions.IsTorrent, 5, 0x4D + 1),
+            (code + 0x5D, hit, 6, 0x5D + 2),
+            (code + 0x67, Functions.EnvKillingOriginal, 5, 0x67 + 1),
+            (code + 0x6C, Hooks.EnvKilling + 5, 5, 0x6C + 1),
         ]);
-
+        
+        AsmHelper.WriteImmediateDword(bytes, WorldChrMan.PlayerIns, 0x1E + 3);
+        
         memoryService.WriteBytes(code, bytes);
-        InstallHook(code, Hooks.EnvKilling, [0xF3, 0x0F, 0x11, 0x4C, 0x24, 0x28]);
+
+        var originalBytes = AsmHelper.BuildNearCall(Hooks.EnvKilling, Functions.EnvKillingOriginal);
+        
+        InstallHook(code, Hooks.EnvKilling, originalBytes);
     }
 
     private void InstallCheckStateInfoHook()
@@ -295,11 +317,13 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
             (code + 0x1, checkPlayerDeadFunc, 5, 0x1 + 1),
             (code + 0x8, WorldChrMan.Base, 7, 0x8 + 3),
             (code + 0x18, hit, 6, 0x18 + 2),
-            (code + 0x24, Hooks.KillChr + 6, 5, 0x24 + 1),
+            (code + 0x29, Hooks.KillChr + 10, 5, 0x29 + 1),
         ]);
 
+        AsmHelper.WriteImmediateDword(bytes, WorldChrMan.PlayerIns, 0xF + 3);
+        
         memoryService.WriteBytes(code, bytes);
-        InstallHook(code, Hooks.KillChr, [0x40, 0x53, 0x48, 0x83, 0xEC, 0x40]);
+        InstallHook(code, Hooks.KillChr, [0x48, 0x89, 0xCB, 0x48, 0x8B, 0x89, 0x90, 0x01, 0x00, 0x00]);
     }
 
     private void InstallHandleThrowHook()
@@ -320,6 +344,8 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
             (code + 0x5B, hit, 6, 0x5B + 2),
             (code + 0x62, Hooks.HandleThrow + 5, 5, 0x62 + 1),
         ]);
+        
+        AsmHelper.WriteImmediateDword(bytes, WorldChrMan.PlayerIns, 0x19 + 3);
 
         memoryService.WriteBytes(code, bytes);
         InstallHook(code, Hooks.HandleThrow, [0xBF, 0x01, 0x00, 0x00, 0x00]);
@@ -336,6 +362,8 @@ public class EldenRingHitService(IMemoryService memoryService, HookManager hookM
             (code + 0x3C, throwStateFlag, 7, 0x3C + 2),
             (code + 0x44, Hooks.ClearThrowState + 6, 5, 0x44 + 1),
         ]);
+        
+        AsmHelper.WriteImmediateDword(bytes, WorldChrMan.PlayerIns, 0x12 + 3);
 
         memoryService.WriteBytes(code, bytes);
         InstallHook(code, Hooks.ClearThrowState, [0x40, 0x53, 0x48, 0x83, 0xEC, 0x30]);

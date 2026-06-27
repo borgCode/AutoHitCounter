@@ -723,18 +723,18 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to f3 0f 11 4c 24 28       movss  DWORD PTR [rsp+0x28],xmm1
-        ///50                      push   rax
-        ///e8 00 00 00 00          call   c &lt;_main+0xc&gt;
+        ///   Looks up a localized string similar to 50                      push   rax
+        ///e8 00 00 00 00          call   6 &lt;_main+0x6&gt;
         ///58                      pop    rax
-        ///0f 84 00 00 00 00       je     13 &lt;_main+0x13&gt;
+        ///74 5e                   je     67 &lt;skip&gt;
         ///52                      push   rdx
-        ///41 03 95 38 01 00 00    add    edx,DWORD PTR [r13+0x138]
+        ///03 91 38 01 00 00       add    edx,DWORD PTR [rcx+0x138]
         ///85 d2                   test   edx,edx
-        ///7f 5d                   jg     7c &lt;skip&gt;
+        ///7f 52                   jg     66 &lt;skip_lookup&gt;
         ///51                      push   rcx
         ///41 50                   push   r8
-        ///4c 8b 05 00 00 00 00    mov    r8,QWORD P [rest of string was truncated]&quot;;.
+        ///4c 8b 05 00 00 00 00    mov    r8,QWORD PTR [rip+0x0]        # 1e &lt;_main+0x1e&gt;
+        ///49 8b 90 08 e5 01  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string EldenRingEnvKilling {
             get {
@@ -865,8 +865,8 @@ namespace AutoHitCounter.Properties {
         ///
         ///00000000001e &lt;exit&gt;:
         ///58                      pop    rax
-        ///53                      push   rbx
-        ///48 83 ec 40             sub    rsp,0x40        /// [rest of string was truncated]&quot;;.
+        ///48 89 cb                mov    rbx,rcx
+        ///48 8b 89 90 01 00 00    mov    rcx,Q [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string EldenRingKillChr {
             get {

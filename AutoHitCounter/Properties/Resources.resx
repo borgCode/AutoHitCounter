@@ -922,49 +922,49 @@ c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 1a &lt;original&g
 e9 00 00 00 00          jmp    25 &lt;original+0xb&gt;</value>
   </data>
   <data name="EldenRingEnvKilling" xml:space="preserve">
-    <value>f3 0f 11 4c 24 28       movss  DWORD PTR [rsp+0x28],xmm1
-50                      push   rax
-e8 00 00 00 00          call   c &lt;_main+0xc&gt;
+    <value>50                      push   rax
+e8 00 00 00 00          call   6 &lt;_main+0x6&gt;
 58                      pop    rax
-0f 84 00 00 00 00       je     13 &lt;_main+0x13&gt;
+74 5e                   je     67 &lt;skip&gt;
 52                      push   rdx
-41 03 95 38 01 00 00    add    edx,DWORD PTR [r13+0x138]
+03 91 38 01 00 00       add    edx,DWORD PTR [rcx+0x138]
 85 d2                   test   edx,edx
-7f 5d                   jg     7c &lt;skip&gt;
+7f 52                   jg     66 &lt;skip_lookup&gt;
 51                      push   rcx
 41 50                   push   r8
-4c 8b 05 00 00 00 00    mov    r8,QWORD PTR [rip+0x0]        # 29 &lt;_main+0x29&gt;
-49 8b 88 08 e5 01 00    mov    rcx,QWORD PTR [r8+0x1e508]
-48 8b 89 90 01 00 00    mov    rcx,QWORD PTR [rcx+0x190]
-4c 39 29                cmp    QWORD PTR [rcx],r13
-74 37                   je     73 &lt;count_hit&gt;
-48 8b 89 e8 00 00 00    mov    rcx,QWORD PTR [rcx+0xe8]
-48 8b 49 10             mov    rcx,QWORD PTR [rcx+0x10]
-83 79 50 00             cmp    DWORD PTR [rcx+0x50],0x0
-74 2c                   je     79 &lt;skip_count&gt;
+4c 8b 05 00 00 00 00    mov    r8,QWORD PTR [rip+0x0]        # 1e &lt;_main+0x1e&gt;
+49 8b 90 08 e5 01 00    mov    rdx,QWORD PTR [r8+0x1e508]
+48 8b 92 90 01 00 00    mov    rdx,QWORD PTR [rdx+0x190]
+48 39 0a                cmp    QWORD PTR [rdx],rcx
+74 2c                   je     5d &lt;count_hit&gt;
+48 8b 92 e8 00 00 00    mov    rdx,QWORD PTR [rdx+0xe8]
+48 8b 52 10             mov    rdx,QWORD PTR [rdx+0x10]
+83 7a 50 00             cmp    DWORD PTR [rdx+0x50],0x0
+74 21                   je     63 &lt;skip_count&gt;
 41 51                   push   r9
 50                      push   rax
-48 8d 51 18             lea    rdx,[rcx+0x18]
-4c 89 c1                mov    rcx,r8
-48 83 ec 18             sub    rsp,0x18
-e8 00 00 00 00          call   60 &lt;_main+0x60&gt;
-48 83 c4 18             add    rsp,0x18
-41 59                   pop    r9
-48 8b 80 90 01 00 00    mov    rax,QWORD PTR [rax+0x190]
-4c 39 28                cmp    QWORD PTR [rax],r13
+48 83 ec 28             sub    rsp,0x28
+48 8b 49 08             mov    rcx,QWORD PTR [rcx+0x8]
+e8 00 00 00 00          call   52 &lt;_main+0x52&gt;
+48 83 c4 28             add    rsp,0x28
+84 c0                   test   al,al
 58                      pop    rax
-75 06                   jne    79 &lt;skip_count&gt;
+41 59                   pop    r9
+74 06                   je     63 &lt;skip_count&gt;
 
-000000000073 &lt;count_hit&gt;:
-ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 79 &lt;skip_count&gt;
+00000000005d &lt;count_hit&gt;:
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 63 &lt;skip_count&gt;
 
-000000000079 &lt;skip_count&gt;:
+000000000063 &lt;skip_count&gt;:
 41 58                   pop    r8
 59                      pop    rcx
 
-00000000007c &lt;skip&gt;:
+000000000066 &lt;skip_lookup&gt;:
 5a                      pop    rdx
-e9 00 00 00 00          jmp    82 &lt;skip+0x6&gt;</value>
+
+000000000067 &lt;skip&gt;:
+e8 00 00 00 00          call   6c &lt;skip+0x5&gt;
+e9 00 00 00 00          jmp    71 &lt;skip+0xa&gt;</value>
   </data>
   <data name="EldenRingCheckStateInfo" xml:space="preserve">
     <value>80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # 7 &lt;_main+0x7&gt;
@@ -1050,9 +1050,9 @@ ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 1e &lt;exit&gt;
 
 00000000001e &lt;exit&gt;:
 58                      pop    rax
-53                      push   rbx
-48 83 ec 40             sub    rsp,0x40
-e9 00 00 00 00          jmp    29 &lt;exit+0xb&gt;</value>
+48 89 cb                mov    rbx,rcx
+48 8b 89 90 01 00 00    mov    rcx,QWORD PTR [rcx+0x190]
+e9 00 00 00 00          jmp    2e &lt;exit+0x10&gt;</value>
   </data>
   <data name="DS3CheckPlayerDead" xml:space="preserve">
     <value>48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 7 &lt;_main+0x7&gt;

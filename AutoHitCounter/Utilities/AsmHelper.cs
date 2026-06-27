@@ -159,5 +159,13 @@ namespace AutoHitCounter.Utilities
             var valueBytes = BitConverter.GetBytes(value);
             Array.Copy(valueBytes, 0, buffer, writeOffset, 4);
         }
+        
+        public static byte[] BuildNearCall(nint srcAddr, nint target)
+        {
+            var buf = new byte[5];
+            buf[0] = 0xE8;
+            BitConverter.GetBytes((int)(target - (srcAddr + 5))).CopyTo(buf, 1);
+            return buf;
+        }
     }
 }

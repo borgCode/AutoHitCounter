@@ -170,6 +170,7 @@
     <Compile Include="Games\ER\EldenRingHitService.cs" />
     <Compile Include="Games\ER\EldenRingModule.cs" />
     <Compile Include="Games\ER\EldenRingOffsets.cs" />
+    <Compile Include="Games\ER\EldenRingPatterns.cs" />
     <Compile Include="Games\ER\EldenRingRunStartService.cs" />
     <Compile Include="Games\ER\EldenRingSettingsService.cs" />
     <Compile Include="Games\ER\EldenRingVersion.cs" />
@@ -203,8 +204,11 @@
     <Compile Include="Interfaces\ITickService.cs" />
     <Compile Include="Interfaces\IVersionedGameModule.cs" />
     <Compile Include="Mappers\OverlayMapper.cs" />
+    <Compile Include="Memory\AobScanner.cs" />
     <Compile Include="Memory\HookManager.cs" />
     <Compile Include="Memory\Kernel32.cs" />
+    <Compile Include="Memory\Patterns\AddressingMode.cs" />
+    <Compile Include="Memory\Patterns\Pattern.cs" />
     <Compile Include="Models\EventLogEntry.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\HitPayload.cs" />

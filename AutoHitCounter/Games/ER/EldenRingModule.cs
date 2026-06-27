@@ -26,7 +26,7 @@ public class EldenRingModule : IGameModule, IDisposable, IVersionedGameModule
     private EventLogReader _eventLogReader;
     private IRunStartService _runStartService;
     
-    public string GameVersion => EldenRingOffsets.Version.GetDescription();
+    public string GameVersion => IsAobFallback ? "Unknown Patch" : EldenRingOffsets.Version.GetDescription();
 
     private DateTime? _lastHit;
 
@@ -86,8 +86,11 @@ public class EldenRingModule : IGameModule, IDisposable, IVersionedGameModule
         if (_memoryService.TargetProcess == null) return;
         var module = _memoryService.TargetProcess.MainModule;
         var fileVersion = module?.FileVersionInfo.FileVersion;
-        var moduleBase = _memoryService.BaseAddress;
-        EldenRingOffsets.Initialize(fileVersion, moduleBase);
+        EldenRingOffsets.Initialize(fileVersion, _memoryService);
+        
+#if DEBUG
+        Print(_memoryService.BaseAddress);
+#endif
     }
 
     private void Tick()

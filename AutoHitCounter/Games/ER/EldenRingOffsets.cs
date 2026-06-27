@@ -1,6 +1,9 @@
 ﻿// 
 
 using System;
+using System.IO;
+using AutoHitCounter.Interfaces;
+using AutoHitCounter.Memory;
 using AutoHitCounter.Utilities;
 using static AutoHitCounter.Games.ER.EldenRingVersion;
 
@@ -10,11 +13,20 @@ public static class EldenRingOffsets
 {
     private static EldenRingVersion? _version;
 
+    private static readonly string FallbackAddressPath = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+        "AutoHitCounter",
+        "fallback_addresses_eldenring.txt");
+
     public static EldenRingVersion Version => _version
                                               ?? Version2_6_1;
 
-    public static void Initialize(string fileVersion, nint moduleBase)
+    public static bool IsAobFallback { get; private set; }
+
+    public static void Initialize(string fileVersion, IMemoryService memoryService)
     {
+        var moduleBase = memoryService.BaseAddress;
+        IsAobFallback = false;
         _version = fileVersion switch
         {
             var v when v.StartsWith("1.2.0.") => Version1_2_0,
@@ -48,9 +60,8 @@ public static class EldenRingOffsets
 
         if (!_version.HasValue)
         {
-            MsgBox.Show(
-                $@"Unknown patch version: {fileVersion}, please report it on GitHub",
-                "Unknown patch version");
+            IsAobFallback = true;
+            InitializeFallbackAddresses(memoryService);
             return;
         }
 
@@ -125,11 +136,19 @@ public static class EldenRingOffsets
         public static nint HasStateInfo;
         public static nint IsNoDeathEnabled;
         public static nint IsTorrent;
+        public static nint EnvKillingOriginal;
     }
 
     public static class Patches
     {
         public static nint NoLogo;
+    }
+
+    private static void InitializeFallbackAddresses(IMemoryService memoryService)
+    {
+        var scanner = new AobScanner(memoryService);
+        EldenRingPatterns.QueueFallbackPatterns(scanner);
+        scanner.Run(FallbackAddressPath);
     }
 
     private static void InitializeBaseAddresses(nint moduleBase)
@@ -303,7 +322,14 @@ public static class EldenRingOffsets
 
         Hooks.AuxDamageAttacker = moduleBase + Version switch
         {
-            // WARNING: No match found for: Version1_2_0, Version1_2_1, Version1_2_2, Version1_2_3, Version1_3_0, Version1_3_1, Version1_3_2, Version1_4_0, Version1_4_1, Version1_5_0, Version1_6_0, Version1_7_0
+            Version1_2_0 => 0x3F2CEE,
+            Version1_2_1 or Version1_2_2 => 0x3F2D5E,
+            Version1_2_3 => 0x3F2E7E,
+            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x3F380E,
+            Version1_4_0 or Version1_4_1 => 0x3F5CEE,
+            Version1_5_0 => 0x3F60BE,
+            Version1_6_0 => 0x3F6E9E,
+            Version1_7_0 => 0x3F6F1E,
             Version1_8_0 or Version1_8_1 => 0x3F8602,
             Version1_9_0 or Version1_9_1 => 0x3F8732,
             Version2_0_0 or Version2_0_1 => 0x3F8802,
@@ -382,15 +408,26 @@ public static class EldenRingOffsets
 
         Hooks.EnvKilling = moduleBase + Version switch
         {
-            // WARNING: No match found for: Version1_2_0, Version1_2_1, Version1_2_2, Version1_2_3, Version1_3_0, Version1_3_1, Version1_3_2, Version1_4_0, Version1_4_1, Version1_5_0, Version1_6_0, Version1_7_0, Version1_8_0, Version1_8_1, Version1_9_0, Version1_9_1
-            Version2_0_0 or Version2_0_1 => 0x44578E,
-            Version2_2_0 or Version2_2_3 => 0x44851E,
-            Version2_3_0 => 0x44862E,
-            Version2_4_0 or Version2_5_0 => 0x44866E,
-            Version2_6_0 or Version2_6_1 => 0x44863E,
-            Version2_6_2 => 0x44852E,
+            Version1_2_0 => 0x43F33D,
+            Version1_2_1 or Version1_2_2 => 0x43F3AD,
+            Version1_2_3 => 0x43F4CD,
+            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x4400DD,
+            Version1_4_0 => 0x4428FE,
+            Version1_4_1 => 0x44280E,
+            Version1_5_0 => 0x442C4E,
+            Version1_6_0 => 0x443A8C,
+            Version1_7_0 => 0x443BDC,
+            Version1_8_0 or Version1_8_1 => 0x445564,
+            Version1_9_0 or Version1_9_1 => 0x4456A4,
+            Version2_0_0 or Version2_0_1 => 0x44579B,
+            Version2_2_0 or Version2_2_3 => 0x44852B,
+            Version2_3_0 => 0x44863B,
+            Version2_4_0 or Version2_5_0 => 0x44867B,
+            Version2_6_0 or Version2_6_1 => 0x44864B,
+            Version2_6_2 => 0x44853B,
             _ => 0
         };
+
 
         Hooks.CheckStateInfo = moduleBase + Version switch
         {
@@ -416,7 +453,14 @@ public static class EldenRingOffsets
 
         Hooks.CheckDeflectTear = moduleBase + Version switch
         {
-            // WARNING: No match found for: Version1_2_0, Version1_2_1, Version1_2_2, Version1_2_3, Version1_3_0, Version1_3_1, Version1_3_2, Version1_4_0, Version1_4_1, Version1_5_0, Version1_6_0
+            Version1_2_0 => 0x43E948,
+            Version1_2_1 or Version1_2_2 => 0x43E9B8,
+            Version1_2_3 => 0x43EAD8,
+            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x43F6E8,
+            Version1_4_0 => 0x441F00,
+            Version1_4_1 => 0x441E10,
+            Version1_5_0 => 0x442250,
+            Version1_6_0 => 0x443090,
             Version1_7_0 => 0x4431DD,
             Version1_8_0 or Version1_8_1 => 0x444B4D,
             Version1_9_0 or Version1_9_1 => 0x444C8D,
@@ -429,18 +473,27 @@ public static class EldenRingOffsets
             _ => 0
         };
 
+
         Hooks.KillChr = moduleBase + Version switch
         {
-            // WARNING: No match found for: Version1_2_0, Version1_2_1, Version1_2_2, Version1_2_3, Version1_3_0, Version1_3_1, Version1_3_2, Version1_4_0, Version1_4_1, Version1_5_0, Version1_6_0, Version1_7_0
-            Version1_8_0 or Version1_8_1 => 0x3FA160,
-            Version1_9_0 or Version1_9_1 => 0x3FA2A0,
-            Version2_0_0 or Version2_0_1 => 0x3FA370,
-            Version2_2_0 or Version2_2_3 or Version2_6_0 or Version2_6_1 => 0x3FCC60,
-            Version2_3_0 => 0x3FCC70,
-            Version2_4_0 or Version2_5_0 => 0x3FCC90,
-            Version2_6_2 => 0x3FCB60,
+            Version1_2_0 => 0x3F46EE,
+            Version1_2_1 or Version1_2_2 => 0x3F475E,
+            Version1_2_3 => 0x3F487E,
+            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x3F534E,
+            Version1_4_0 or Version1_4_1 => 0x3F782E,
+            Version1_5_0 => 0x3F7BFE,
+            Version1_6_0 => 0x3F89DE,
+            Version1_7_0 => 0x3F8A5E,
+            Version1_8_0 or Version1_8_1 => 0x3FA16E,
+            Version1_9_0 or Version1_9_1 => 0x3FA2AE,
+            Version2_0_0 or Version2_0_1 => 0x3FA37E,
+            Version2_2_0 or Version2_2_3 or Version2_6_0 or Version2_6_1 => 0x3FCC6E,
+            Version2_3_0 => 0x3FCC7E,
+            Version2_4_0 or Version2_5_0 => 0x3FCC9E,
+            Version2_6_2 => 0x3FCB6E,
             _ => 0
         };
+
 
         Hooks.HandleThrow = moduleBase + Version switch
         {
@@ -675,6 +728,29 @@ public static class EldenRingOffsets
             Version2_6_2 => 0x3F3FB0,
             _ => 0
         };
+        
+        Functions.EnvKillingOriginal = moduleBase + Version switch
+        {
+            Version1_2_0 => 0x42D6B0,
+            Version1_2_1 or Version1_2_2 => 0x42D720,
+            Version1_2_3 => 0x42D840,
+            Version1_3_0 or Version1_3_1 or Version1_3_2 => 0x42E450,
+            Version1_4_0 => 0x430AD0,
+            Version1_4_1 => 0x430AE0,
+            Version1_5_0 => 0x430F10,
+            Version1_6_0 => 0x431D50,
+            Version1_7_0 => 0x431DD0,
+            Version1_8_0 or Version1_8_1 => 0x433730,
+            Version1_9_0 or Version1_9_1 => 0x433870,
+            Version2_0_0 or Version2_0_1 => 0x433910,
+            Version2_2_0 or Version2_2_3 => 0x436670,
+            Version2_3_0 => 0x436690,
+            Version2_4_0 or Version2_5_0 => 0x4366D0,
+            Version2_6_0 or Version2_6_1 => 0x4366A0,
+            Version2_6_2 => 0x436590,
+            _ => 0
+        };
+
 
 
         Patches.NoLogo = moduleBase + Version switch
@@ -703,10 +779,13 @@ public static class EldenRingOffsets
             Version2_6_2 => 0xB0C35D,
             _ => 0
         };
+    }
 
+    private static nint _printBaseAddr;
 
-#if DEBUG
-        _baseAddr = moduleBase;
+    public static void Print(nint moduleBase)
+    {
+        _printBaseAddr = moduleBase;
         Console.WriteLine("--- Base Pointers ---");
         PrintOffset("WorldChrMan", WorldChrMan.Base);
         PrintOffset("GameDataMan", GameDataMan.Base);
@@ -746,17 +825,13 @@ public static class EldenRingOffsets
 
 
         Console.WriteLine("\n====================================\n");
-#endif
     }
 
-#if DEBUG
-    private static nint _baseAddr;
     private static void PrintOffset(string name, nint value)
     {
-        var rel = value - _baseAddr;
+        var rel = value - _printBaseAddr;
         Console.WriteLine(rel <= 0
             ? $"  {name,-40} *** NOT SET ***"
             : $"  {name,-40} 0x{(long)value:X}  (0x{(long)rel:X})");
     }
-#endif
 }
