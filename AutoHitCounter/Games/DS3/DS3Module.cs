@@ -9,7 +9,6 @@ using AutoHitCounter.Models;
 using AutoHitCounter.Services;
 using AutoHitCounter.Utilities;
 using static AutoHitCounter.Games.DS3.DS3CustomCodeOffsets;
-using static AutoHitCounter.Games.DS3.DS3Offsets;
 
 namespace AutoHitCounter.Games.DS3;
 
@@ -21,7 +20,7 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
     private readonly ITickService _tickService;
     private readonly Dictionary<uint, (string Name, int Required, int Hit)> _events;
 
-    public string GameVersion => DS3Offsets.Version.GetDescription();
+    public string GameVersion => DS3Offsets.IsAobFallback ? "Unknown Patch" : DS3Offsets.Version.GetDescription();
 
     private DateTime? _lastHit;
     private DS3HitService _hitService;
@@ -86,8 +85,11 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
         if (_memoryService.TargetProcess == null) return;
         var module = _memoryService.TargetProcess.MainModule;
         var fileVersion = module?.FileVersionInfo.FileVersion;
-        var moduleBase = _memoryService.BaseAddress;
-        DS3Offsets.Initialize(fileVersion, moduleBase);
+        DS3Offsets.Initialize(fileVersion, _memoryService);
+        
+#if DEBUG
+        DS3Offsets.Print(_memoryService.BaseAddress);
+#endif
     }
 
     private void Tick()
@@ -116,14 +118,14 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
 
         _eventLogReader.Poll();
 
-        var igtPtr = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
+        var igtPtr = _memoryService.Read<nint>(DS3Offsets.GameDataMan.Base) + DS3Offsets.GameDataMan.Igt;
         OnTimeChanged?.Invoke(_memoryService.Read<uint>(igtPtr));
     }
 
     private bool IsLoaded()
     {
-        var worldChrman = _memoryService.Read<nint>(WorldChrMan.Base);
-        return _memoryService.Read<nint>(worldChrman + WorldChrMan.PlayerIns) != 0;
+        var worldChrman = _memoryService.Read<nint>(DS3Offsets.WorldChrMan.Base);
+        return _memoryService.Read<nint>(worldChrman + DS3Offsets.WorldChrMan.PlayerIns) != 0;
     }
 
     public void Dispose()

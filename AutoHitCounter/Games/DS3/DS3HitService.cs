@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoHitCounter.Enums;
+using AutoHitCounter.Games.ER;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
 using AutoHitCounter.Utilities;
@@ -70,6 +71,8 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
 
         var bytes = AsmLoader.GetAsmBytes(AsmScript.DS3CheckPlayerDead);
         AsmHelper.WriteRelativeOffset(bytes, code, WorldChrMan.Base, 7, 3);
+        AsmHelper.WriteImmediateDword(bytes, WorldChrMan.ChrIns.Modules, 0x18 + 3);
+        
         memoryService.WriteBytes(code, bytes);
     }
 
@@ -100,6 +103,8 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
             (code + 0xF1, Hooks.Hit + 8, 5, 0xF1 + 1),
         ]);
 
+        AsmHelper.WriteImmediateDword(bytes, WorldChrMan.ChrIns.Modules, 0x38 + 3);
+        
         memoryService.WriteBytes(code, bytes);
         InstallHook(code, Hooks.Hit, [0x48, 0x83, 0xEC, 0x50, 0x48, 0x8B, 0x41, 0x08]);
     }
@@ -187,6 +192,8 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
             (code + 0x7A, Hooks.ApplyHealthDelta + 8, 5, 0x7A + 1)
         ]);
 
+        AsmHelper.WriteImmediateDword(bytes, WorldChrMan.ChrIns.Modules, 0x29 + 3);
+        
         memoryService.WriteBytes(code, bytes);
         InstallHook(code, Hooks.ApplyHealthDelta, [0x48, 0x8B, 0x49, 0x08, 0x41, 0x0F, 0xB6, 0xD0]);
     }
@@ -297,7 +304,9 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
             (code + 0x3C, throwStateFlag, 7, 0x3C + 2),
             (code + 0x44, Hooks.SetThrowState + 7, 5, 0x44 + 1),
         ]);
-
+        
+        AsmHelper.WriteImmediateDword(bytes, WorldChrMan.ChrIns.Modules, 0x27 + 3);
+        
         memoryService.WriteBytes(code, bytes);
         InstallHook(code, Hooks.SetThrowState, [0x80, 0x8B, 0x11, 0x02, 0x00, 0x00, 0x20]);
     }

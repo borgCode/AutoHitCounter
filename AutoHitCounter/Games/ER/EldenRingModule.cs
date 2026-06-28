@@ -9,7 +9,6 @@ using AutoHitCounter.Models;
 using AutoHitCounter.Services;
 using AutoHitCounter.Utilities;
 using static AutoHitCounter.Games.ER.EldenRingCustomCodeOffsets;
-using static AutoHitCounter.Games.ER.EldenRingOffsets;
 
 namespace AutoHitCounter.Games.ER;
 
@@ -26,7 +25,7 @@ public class EldenRingModule : IGameModule, IDisposable, IVersionedGameModule
     private EventLogReader _eventLogReader;
     private IRunStartService _runStartService;
     
-    public string GameVersion => IsAobFallback ? "Unknown Patch" : EldenRingOffsets.Version.GetDescription();
+    public string GameVersion => EldenRingOffsets.IsAobFallback ? "Unknown Patch" : EldenRingOffsets.Version.GetDescription();
 
     private DateTime? _lastHit;
 
@@ -89,7 +88,7 @@ public class EldenRingModule : IGameModule, IDisposable, IVersionedGameModule
         EldenRingOffsets.Initialize(fileVersion, _memoryService);
         
 #if DEBUG
-        Print(_memoryService.BaseAddress);
+        EldenRingOffsets.Print(_memoryService.BaseAddress);
 #endif
     }
 
@@ -118,14 +117,14 @@ public class EldenRingModule : IGameModule, IDisposable, IVersionedGameModule
 
         _eventLogReader.Poll();
 
-        var igtPtr  = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
+        var igtPtr  = _memoryService.Read<nint>(EldenRingOffsets.GameDataMan.Base) + EldenRingOffsets.GameDataMan.Igt;
         OnTimeChanged?.Invoke(_memoryService.Read<long>(igtPtr));
     }
 
     private bool IsLoaded()
     {
-        var worldChrMan = _memoryService.Read<nint>(WorldChrMan.Base);
-        return _memoryService.Read<nint>(worldChrMan + WorldChrMan.PlayerIns) != 0;
+        var worldChrMan = _memoryService.Read<nint>(EldenRingOffsets.WorldChrMan.Base);
+        return _memoryService.Read<nint>(worldChrMan + EldenRingOffsets.WorldChrMan.PlayerIns) != 0;
     }
 
     public void Dispose()

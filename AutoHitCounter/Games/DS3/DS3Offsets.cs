@@ -1,7 +1,9 @@
 ﻿// 
 
 using System;
-using AutoHitCounter.Utilities;
+using System.IO;
+using AutoHitCounter.Interfaces;
+using AutoHitCounter.Memory;
 using static AutoHitCounter.Games.DS3.DS3Version;
 
 namespace AutoHitCounter.Games.DS3;
@@ -10,11 +12,21 @@ public static class DS3Offsets
 {
     private static DS3Version? _version;
 
+    private static readonly string FallbackAddressPath = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+        "AutoHitCounter",
+        "fallback_addresses_darksouls3.txt");
+
     public static DS3Version Version => _version
                                         ?? Version1_15_0_0;
 
-    public static void Initialize(string fileVersion, nint moduleBase)
+    public static bool IsAobFallback { get; private set; }
+
+    public static void Initialize(string fileVersion, IMemoryService memoryService)
     {
+        var moduleBase = memoryService.BaseAddress;
+        IsAobFallback = false;
+
         _version = fileVersion switch
         {
             var v when v.StartsWith("1.3.2.") => Version1_3_2_0,
@@ -40,9 +52,8 @@ public static class DS3Offsets
 
         if (!_version.HasValue)
         {
-            MsgBox.Show(
-                $@"Unknown patch version: {fileVersion}, please report it on GitHub",
-                "Unknown patch version");
+            IsAobFallback = true;
+            InitializeFallbackAddresses(memoryService);
             return;
         }
 
@@ -55,6 +66,17 @@ public static class DS3Offsets
         public static nint Base;
 
         public const int PlayerIns = 0x80;
+
+
+        public static class ChrIns
+        {
+            public static int Modules => Version switch
+            {
+                < Version1_12_0_0 => 0x1F80,
+                Version1_12_0_0 => 0x1F88,
+                _ => 0x1F90
+            };
+        }
     }
 
     public static class GameDataMan
@@ -105,6 +127,13 @@ public static class DS3Offsets
         public static nint NoLogo;
     }
 
+    private static void InitializeFallbackAddresses(IMemoryService memoryService)
+    {
+        var scanner = new AobScanner(memoryService);
+        DS3Patterns.QueueFallbackPatterns(scanner);
+        scanner.Run(FallbackAddressPath);
+    }
+
     private static void InitializeBaseAddresses(nint moduleBase)
     {
         WorldChrMan.Base = moduleBase + Version switch
@@ -127,7 +156,12 @@ public static class DS3Offsets
 
         GameDataMan.Base = moduleBase + Version switch
         {
-            // WARNING: No match found for: Version1_3_2_0, Version1_4_1_0, Version1_4_2_0, Version1_4_3_0, Version1_5_0_0, Version1_5_1_0, Version1_6_0_0, Version1_7_0_0
+            Version1_3_2_0 => 0x469BDF8,
+            Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0x469D118,
+            Version1_5_0_0 => 0x46A1218,
+            Version1_5_1_0 => 0x46A0218,
+            Version1_6_0_0 => 0x46A1278,
+            Version1_7_0_0 => 0x46A5AB8,
             Version1_8_0_0 => 0x4704268,
             Version1_9_0_0 or Version1_10_0_0 => 0x47043A8,
             Version1_11_0_0 => 0x4737698,
@@ -392,7 +426,17 @@ public static class DS3Offsets
 
         Hooks.IsFallDmgDisabledHook = moduleBase + Version switch
         {
-            // WARNING: No match found for: Version1_3_2_0, Version1_4_1_0, Version1_4_2_0, Version1_4_3_0, Version1_5_0_0, Version1_5_1_0, Version1_6_0_0, Version1_7_0_0, Version1_8_0_0, Version1_9_0_0, Version1_10_0_0, Version1_11_0_0, Version1_12_0_0
+            Version1_3_2_0 => 0x9A30D8,
+            Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0x9A2FD8,
+            Version1_5_0_0 => 0x9A3AC8,
+            Version1_5_1_0 => 0x9A38F8,
+            Version1_6_0_0 => 0x9A3EC8,
+            Version1_7_0_0 => 0x9A4DD8,
+            Version1_8_0_0 => 0x9B14D8,
+            Version1_9_0_0 => 0x9B1A98,
+            Version1_10_0_0 => 0x9B1B08,
+            Version1_11_0_0 => 0x9BB468,
+            Version1_12_0_0 => 0x9BBEB8,
             Version1_13_0_0 => 0x9BD858,
             Version1_14_0_0 => 0x9BDB28,
             Version1_15_0_0 => 0x9BDC28,
@@ -400,6 +444,7 @@ public static class DS3Offsets
             Version1_15_2_0 => 0x9C7E48,
             _ => 0
         };
+
 
         Hooks.StartNewGame = moduleBase + Version switch
         {
@@ -442,7 +487,17 @@ public static class DS3Offsets
 
         Hooks.SetThrowState = moduleBase + Version switch
         {
-            // WARNING: No match found for: Version1_3_2_0, Version1_4_1_0, Version1_4_2_0, Version1_4_3_0, Version1_5_0_0, Version1_5_1_0, Version1_6_0_0, Version1_7_0_0, Version1_8_0_0, Version1_9_0_0, Version1_10_0_0
+            Version1_3_2_0 => 0x1A9AFE1,
+            Version1_4_1_0 => 0x1A97DFF,
+            Version1_4_2_0 => 0x19709BD,
+            Version1_4_3_0 => 0x196B25F,
+            Version1_5_0_0 => 0x44892E5,
+            Version1_5_1_0 => 0x44884E0,
+            Version1_6_0_0 => 0x448962E,
+            Version1_7_0_0 => 0x448DE1B,
+            Version1_8_0_0 => 0x4BE6250,
+            Version1_9_0_0 => 0x1B5A6BE,
+            Version1_10_0_0 => 0x1B560F6,
             Version1_11_0_0 => 0x3F32D1,
             Version1_12_0_0 => 0x41E741,
             Version1_13_0_0 => 0x427B51,
@@ -452,6 +507,7 @@ public static class DS3Offsets
             Version1_15_2_0 => 0x4EC31FA,
             _ => 0
         };
+
 
         Hooks.ClearThrowState = moduleBase + Version switch
         {
@@ -514,7 +570,17 @@ public static class DS3Offsets
 
         Functions.IsFallDamageDisabled = moduleBase + Version switch
         {
-            // WARNING: No match found for: Version1_3_2_0, Version1_4_1_0, Version1_4_2_0, Version1_4_3_0, Version1_5_0_0, Version1_5_1_0, Version1_6_0_0, Version1_7_0_0, Version1_8_0_0, Version1_9_0_0, Version1_10_0_0, Version1_11_0_0, Version1_12_0_0
+            Version1_3_2_0 => 0x9B1A00,
+            Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0x9B1900,
+            Version1_5_0_0 => 0x9B23F0,
+            Version1_5_1_0 => 0x9B2220,
+            Version1_6_0_0 => 0x9B27F0,
+            Version1_7_0_0 => 0x9B3700,
+            Version1_8_0_0 => 0x9BFE10,
+            Version1_9_0_0 => 0x9C03D0,
+            Version1_10_0_0 => 0x9C0440,
+            Version1_11_0_0 => 0x9CA030,
+            Version1_12_0_0 => 0x9CAA80,
             Version1_13_0_0 => 0x9CC420,
             Version1_14_0_0 => 0x9CC6F0,
             Version1_15_0_0 => 0x9CC7F0,
@@ -522,6 +588,7 @@ public static class DS3Offsets
             Version1_15_2_0 => 0x9D6A10,
             _ => 0
         };
+
 
         Functions.IsOnline = moduleBase + Version switch
         {
@@ -563,14 +630,20 @@ public static class DS3Offsets
             Version1_15_2_0 => 0xBF43EF,
             _ => 0
         };
+    }
 
+    private static nint _printBaseAddr;
 
-#if DEBUG
-        _baseAddr = moduleBase;
+    public static void Print(nint moduleBase)
+    {
+        _printBaseAddr = moduleBase;
         Console.WriteLine("--- Globals ---");
         PrintOffset("WorldChrMan.Base", WorldChrMan.Base);
         PrintOffset("GameDataMan", GameDataMan.Base);
         PrintOffset("UserInputManager", UserInputManager.Base);
+        PrintOffset("Float20", Float20);
+        PrintOffset("Float100", Float100);
+        
 
 
         Console.WriteLine("\n--- Hooks ---");
@@ -601,17 +674,13 @@ public static class DS3Offsets
 
 
         Console.WriteLine("\n====================================\n");
-#endif
     }
 
-#if DEBUG
-    private static nint _baseAddr;
     private static void PrintOffset(string name, nint value)
     {
-        var rel = value - _baseAddr;
+        var rel = value - _printBaseAddr;
         Console.WriteLine(rel <= 0
             ? $"  {name,-40} *** NOT SET ***"
             : $"  {name,-40} 0x{(long)value:X}  (0x{(long)rel:X})");
     }
-#endif
 }
