@@ -9,7 +9,6 @@ using AutoHitCounter.Models;
 using AutoHitCounter.Services;
 using AutoHitCounter.Utilities;
 using static AutoHitCounter.Games.SK.SKCustomCodeOffsets;
-using static AutoHitCounter.Games.SK.SKOffsets;
 
 namespace AutoHitCounter.Games.SK;
 
@@ -22,7 +21,7 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
     private readonly Dictionary<uint, (string Name, int Required, int Hit)> _events;
     private readonly IHitRulesProvider _rules;
 
-    public string GameVersion => SKOffsets.Version.GetDescription();
+    public string GameVersion => SKOffsets.IsAobFallback ? "Unknown Patch" : SKOffsets.Version.GetDescription();
 
     private DateTime? _lastHit;
     private SKHitService _hitService;
@@ -97,8 +96,11 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
         if (_memoryService.TargetProcess == null) return;
         var module = _memoryService.TargetProcess.MainModule;
         var fileVersion = module?.FileVersionInfo.FileVersion;
-        var moduleBase = _memoryService.BaseAddress;
-        SKOffsets.Initialize(fileVersion, moduleBase);
+        SKOffsets.Initialize(fileVersion, _memoryService);
+        
+#if DEBUG
+        SKOffsets.Print(_memoryService.BaseAddress);
+#endif
     }
 
     private void Tick()
@@ -120,14 +122,14 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
 
         _eventLogReader.Poll();
 
-        var igtPtr  = _memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.Igt;
+        var igtPtr  = _memoryService.Read<nint>(SKOffsets.GameDataMan.Base) + SKOffsets.GameDataMan.Igt;
         OnTimeChanged?.Invoke(_memoryService.Read<uint>(igtPtr));
     }
 
     private bool IsLoaded()
     {
-        var worldChrMan = _memoryService.Read<nint>(WorldChrMan.Base);
-        return _memoryService.Read<nint>(worldChrMan + WorldChrMan.PlayerIns) != 0;
+        var worldChrMan = _memoryService.Read<nint>(SKOffsets.WorldChrMan.Base);
+        return _memoryService.Read<nint>(worldChrMan + SKOffsets.WorldChrMan.PlayerIns) != 0;
     }
 
     public void Dispose()

@@ -1,6 +1,9 @@
 ﻿// 
 
 using System;
+using System.IO;
+using AutoHitCounter.Interfaces;
+using AutoHitCounter.Memory;
 using AutoHitCounter.Utilities;
 using static AutoHitCounter.Games.SK.SKVersion;
 
@@ -10,11 +13,21 @@ public static class SKOffsets
 {
     private static SKVersion? _version;
 
+    private static readonly string FallbackAddressPath = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+        "AutoHitCounter",
+        "fallback_addresses_sekiro.txt");
+
     public static SKVersion Version => _version
                                        ?? Version1_6_0;
 
-    public static void Initialize(string fileVersion, nint moduleBase)
+    public static bool IsAobFallback { get; private set; }
+
+    public static void Initialize(string fileVersion, IMemoryService memoryService)
     {
+        var moduleBase = memoryService.BaseAddress;
+        IsAobFallback = false;
+
         _version = fileVersion switch
         {
             var v when v.StartsWith("1.2.0.") => Version1_2_0,
@@ -27,9 +40,8 @@ public static class SKOffsets
 
         if (!_version.HasValue)
         {
-            MsgBox.Show(
-                $@"Unknown patch version: {fileVersion}, please report it on GitHub",
-                "Unknown patch version");
+            IsAobFallback = true;
+            InitializeFallbackAddresses(memoryService);
             return;
         }
 
@@ -90,6 +102,13 @@ public static class SKOffsets
         public static nint ShowTutorialText;
     }
 
+    private static void InitializeFallbackAddresses(IMemoryService memoryService)
+    {
+        var scanner = new AobScanner(memoryService);
+        SKPatterns.QueueFallbackPatterns(scanner);
+        scanner.Run(FallbackAddressPath);
+    }
+
     private static void InitializeBaseAddresses(nint moduleBase)
     {
         WorldChrMan.Base = moduleBase + Version switch
@@ -100,7 +119,7 @@ public static class SKOffsets
             Version1_6_0 => 0x3D7A1E0,
             _ => 0
         };
-        
+
         GameDataMan.Base = moduleBase + Version switch
         {
             Version1_2_0 => 0x3B47CF0,
@@ -193,7 +212,7 @@ public static class SKOffsets
             _ => 0
         };
 
-        
+
         Hooks.HkbFireEvent = moduleBase + Version switch
         {
             Version1_2_0 => 0x13AEC89,
@@ -202,7 +221,7 @@ public static class SKOffsets
             Version1_6_0 => 0x13F9379,
             _ => 0
         };
-        
+
         Hooks.FadeFallHeight = moduleBase + Version switch
         {
             Version1_2_0 => 0xB81165,
@@ -218,7 +237,7 @@ public static class SKOffsets
             Version1_5_0 or Version1_6_0 => 0xB980B3,
             _ => 0
         };
-        
+
         Hooks.ApplySpEffectDamage = moduleBase + Version switch
         {
             Version1_2_0 => 0xB4EE2D,
@@ -226,7 +245,7 @@ public static class SKOffsets
             Version1_5_0 or Version1_6_0 => 0xB65ADD,
             _ => 0
         };
-        
+
         Hooks.SakuraDance = moduleBase + Version switch
         {
             Version1_2_0 => 0xB56BA3,
@@ -234,7 +253,7 @@ public static class SKOffsets
             Version1_5_0 or Version1_6_0 => 0xB6D853,
             _ => 0
         };
-        
+
         Hooks.SetEvent = moduleBase + Version switch
         {
             Version1_2_0 => 0x6C1B90,
@@ -249,7 +268,6 @@ public static class SKOffsets
             Version1_3_0 or Version1_4_0 => 0xD00D15,
             Version1_5_0 or Version1_6_0 => 0xD25ED5,
             _ => 0
-
         };
 
 
@@ -268,7 +286,8 @@ public static class SKOffsets
             Version1_5_0 or Version1_6_0 => 0x6C3E60,
             _ => 0
         };
-        
+
+
         Patches.NoLogo = moduleBase + Version switch
         {
             Version1_2_0 => 0xDEBF2B,
@@ -277,7 +296,7 @@ public static class SKOffsets
             Version1_6_0 => 0xE1B51B,
             _ => 0
         };
-        
+
         Patches.MenuTutorialSkip = moduleBase + Version switch
         {
             Version1_2_0 => 0xD73E22,
@@ -302,10 +321,14 @@ public static class SKOffsets
             Version1_5_0 or Version1_6_0 => 0x909F53,
             _ => 0
         };
+    }
 
+    private static nint _printBaseAddr;
 
-#if DEBUG
-        _baseAddr = moduleBase;
+    public static void Print(nint moduleBase)
+    {
+        _printBaseAddr = moduleBase;
+
         Console.WriteLine("--- Globals ---");
         PrintOffset("WorldChrMan", WorldChrMan.Base);
         PrintOffset("GameDataMan", GameDataMan.Base);
@@ -334,7 +357,7 @@ public static class SKOffsets
         Console.WriteLine("\n--- Functions ---");
         PrintOffset("HasSpEffectId", Functions.HasSpEffectId);
         PrintOffset("GetEvent", Functions.GetEvent);
-        
+
         Console.WriteLine("\n--- Patches ---");
         PrintOffset("NoLogo", Patches.NoLogo);
         PrintOffset("MenuTutorialSkip", Patches.MenuTutorialSkip);
@@ -343,17 +366,13 @@ public static class SKOffsets
 
 
         Console.WriteLine("\n====================================\n");
-#endif
     }
 
-#if DEBUG
-    private static nint _baseAddr;
     private static void PrintOffset(string name, nint value)
     {
-        var rel = value - _baseAddr;
+        var rel = value - _printBaseAddr;
         Console.WriteLine(rel <= 0
             ? $"  {name,-40} *** NOT SET ***"
             : $"  {name,-40} 0x{(long)value:X}  (0x{(long)rel:X})");
     }
-#endif
 }
