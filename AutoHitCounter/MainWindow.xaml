@@ -996,6 +996,23 @@
                                     VerticalAlignment="Bottom"
                                     Orientation="Horizontal"
                                     Margin="0,0,5,5">
+                            <Button Command="{Binding ResetIgtCommand}"
+                                    ToolTip="Toggle IGT offset (non-fresh-start runs)"
+                                    Height="24"
+                                    FontSize="11"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,6,0">
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                        <Setter Property="Content" Value="↺ IGT" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding HasIgtOffset}" Value="True">
+                                                <Setter Property="Content" Value="✕ IGT" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
                             <TextBlock Text="{Binding TimerLabel}"
                                        FontSize="12"
                                        Foreground="#888"

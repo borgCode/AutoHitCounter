@@ -9,7 +9,7 @@ namespace AutoHitCounter.Interfaces;
 
 public interface IRunStateService
 {
-    void SaveRunState(Profile profile, IList<SplitViewModel> splits, SplitViewModel currentSplit, bool isRunComplete, TimeSpan inGameTime);
+    void SaveRunState(Profile profile, IList<SplitViewModel> splits, SplitViewModel currentSplit, bool isRunComplete, TimeSpan inGameTime, long igtOffsetMs = 0);
     void CancelPendingSave();
     void FlushRunState(Profile profile);
     RunSnapshot Capture(IList<SplitViewModel> splits, SplitViewModel currentSplit, bool isRunComplete, TimeSpan inGameTime);

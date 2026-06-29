@@ -530,4 +530,110 @@ public class MainViewModelTests
     }
 
     #endregion
+
+    #region IGT offset
+
+    [Fact]
+    public void InGameTime_WithNoOffset_ReflectsRawIgt()
+    {
+        _orchestrator.TimeChangedMs += Raise.Event<Action<long>>(90000L);
+
+        Assert.Equal(TimeSpan.FromMilliseconds(90000), _sut.InGameTime);
+        Assert.Equal("0:01:30", _sut.InGameTimeFormatted);
+    }
+
+    [Fact]
+    public void InGameTime_AfterSettingOffset_ShowsRelativeTime()
+    {
+        _orchestrator.TimeChangedMs += Raise.Event<Action<long>>(90000L);
+
+        _sut.ResetIgtCommand.Execute(null);
+
+        _orchestrator.TimeChangedMs += Raise.Event<Action<long>>(120000L);
+
+        Assert.Equal(TimeSpan.FromMilliseconds(30000), _sut.InGameTime);
+        Assert.Equal("0:00:30", _sut.InGameTimeFormatted);
+    }
+
+    [Fact]
+    public void InGameTime_AfterClearingOffset_ReturnsToRawIgt()
+    {
+        _orchestrator.TimeChangedMs += Raise.Event<Action<long>>(90000L);
+        _sut.ResetIgtCommand.Execute(null);
+        _orchestrator.TimeChangedMs += Raise.Event<Action<long>>(120000L);
+
+        _sut.ResetIgtCommand.Execute(null);
+
+        Assert.Equal(TimeSpan.FromMilliseconds(120000), _sut.InGameTime);
+        Assert.Equal("0:02:00", _sut.InGameTimeFormatted);
+    }
+
+    [Fact]
+    public void HasIgtOffset_IsFalseByDefault()
+    {
+        Assert.False(_sut.HasIgtOffset);
+    }
+
+    [Fact]
+    public void HasIgtOffset_IsTrueAfterSettingOffset()
+    {
+        _orchestrator.TimeChangedMs += Raise.Event<Action<long>>(90000L);
+
+        _sut.ResetIgtCommand.Execute(null);
+
+        Assert.True(_sut.HasIgtOffset);
+    }
+
+    [Fact]
+    public void HasIgtOffset_IsFalseAfterClearingOffset()
+    {
+        _orchestrator.TimeChangedMs += Raise.Event<Action<long>>(90000L);
+        _sut.ResetIgtCommand.Execute(null);
+
+        _sut.ResetIgtCommand.Execute(null);
+
+        Assert.False(_sut.HasIgtOffset);
+    }
+
+    [Fact]
+    public void RestoreFromSavedRun_RestoresOffset()
+    {
+        var profile = SetupProfileWithSplits(("Boss", SplitType.Child));
+        profile.SavedRun = new RunState
+        {
+            CurrentSplitIndex = 0,
+            HitCounts = new[] { 0 },
+            IsRunComplete = false,
+            IgtMilliseconds = 30000,
+            IgtOffsetMilliseconds = 90000
+        };
+        _runStateService.RestoreFromSavedRun(Arg.Any<System.Collections.Generic.IList<SplitViewModel>>(), Arg.Any<RunState>())
+            .Returns(_sut.Splits[0]);
+
+        _sut.ActiveProfile = null;
+        _sut.ActiveProfile = profile;
+
+        Assert.True(_sut.HasIgtOffset);
+        Assert.Equal(TimeSpan.FromMilliseconds(30000), _sut.InGameTime);
+    }
+
+    [Fact]
+    public void ResetIgtCommand_SavesRunState()
+    {
+        SetupProfileWithSplits(("Boss", SplitType.Child));
+        _orchestrator.TimeChangedMs += Raise.Event<Action<long>>(90000L);
+        _runStateService.ClearReceivedCalls();
+
+        _sut.ResetIgtCommand.Execute(null);
+
+        _runStateService.Received().SaveRunState(
+            Arg.Any<Profile>(),
+            Arg.Any<System.Collections.Generic.IList<SplitViewModel>>(),
+            Arg.Any<SplitViewModel>(),
+            Arg.Any<bool>(),
+            Arg.Any<TimeSpan>(),
+            90000L);
+    }
+
+    #endregion
 }

@@ -28,7 +28,7 @@ public class RunStateService : IRunStateService
         };
     }
 
-    public void SaveRunState(Profile profile, IList<SplitViewModel> splits, SplitViewModel currentSplit, bool isRunComplete, TimeSpan inGameTime)
+    public void SaveRunState(Profile profile, IList<SplitViewModel> splits, SplitViewModel currentSplit, bool isRunComplete, TimeSpan inGameTime, long igtOffsetMs = 0)
     {
         if (profile == null) return;
 
@@ -38,7 +38,8 @@ public class RunStateService : IRunStateService
             CurrentSplitIndex = currentSplit != null ? splits.IndexOf(currentSplit) : -1,
             HitCounts = children.Select(s => s.NumOfHits).ToArray(),
             IsRunComplete = isRunComplete,
-            IgtMilliseconds = (long)inGameTime.TotalMilliseconds
+            IgtMilliseconds = (long)inGameTime.TotalMilliseconds,
+            IgtOffsetMilliseconds = igtOffsetMs
         };
 
         _pendingProfile = profile;
