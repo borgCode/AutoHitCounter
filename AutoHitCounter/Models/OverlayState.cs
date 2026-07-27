@@ -15,6 +15,8 @@ public class OverlayState
     public bool IsRunComplete { get; set; }
     public int AttemptCount { get; set; }
     public int DistancePb { get; set; } = -1;
+    public string GameName { get; set; }
+    public string ProfileName { get; set; }
 }
 
 public class OverlaySplit
