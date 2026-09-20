@@ -87,15 +87,16 @@ public class DSRHitService(IMemoryService memoryService, HookManager hookManager
 
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x17, envDeathFlag, 7, 0x17 + 2),
-            (code + 0x42, WorldChrMan.Base, 7, 0x42 + 3),
-            (code + 0x54, hit, 6, 0x54 + 2),
-            (code + 0x5B, Hooks.ApplyHealthDelta + 5, 5, 0x5B + 1),
+            (code + 0x53, WorldChrMan.Base, 7, 0x53 + 3),
+            (code + 0x65, hit, 6, 0x65 + 2),
+            (code + 0x6C, Hooks.ApplyHealthDelta + 5, 5, 0x6C + 1),
         ]);
 
         AsmHelper.WriteAbsoluteAddresses(bytes, [
             (FallDmgRetAddr, 0x6 + 2),
             (EnvDeathRetAddr, 0x20 + 2),
-            (AuxDeathRetAddr, 0x31 + 2)
+            (AuxDeathRetAddr, 0x31 + 2),
+            (HitEntityDeathRetAddr, 0x42 + 2)
         ]);
 
         memoryService.WriteBytes(code, bytes);

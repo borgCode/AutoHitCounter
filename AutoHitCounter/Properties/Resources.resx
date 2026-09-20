@@ -1786,31 +1786,35 @@ e9 00 00 00 00          jmp    b5 &lt;skip_all+0xa&gt;</value>
 48 b8 00 00 00 00 00    movabs rax,0x0
 00 00 00 
 48 39 44 24 30          cmp    QWORD PTR [rsp+0x30],rax
-74 2b                   je     42 &lt;process&gt;
+74 3c                   je     53 &lt;process&gt;
 80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # 1e &lt;_main+0x1e&gt;
-74 11                   je     31 &lt;next&gt;
+74 11                   je     31 &lt;aux_death&gt;
 48 b8 00 00 00 00 00    movabs rax,0x0
 00 00 00 
 48 39 44 24 30          cmp    QWORD PTR [rsp+0x30],rax
-74 11                   je     42 &lt;process&gt;
+74 22                   je     53 &lt;process&gt;
 
-000000000031 &lt;next&gt;:
+000000000031 &lt;aux_death&gt;:
 48 b8 00 00 00 00 00    movabs rax,0x0
 00 00 00 
 48 39 44 24 30          cmp    QWORD PTR [rsp+0x30],rax
-75 18                   jne    5a &lt;exit&gt;
+74 11                   je     53 &lt;process&gt;
+48 b8 00 00 00 00 00    movabs rax,0x0
+00 00 00 
+48 39 44 24 30          cmp    QWORD PTR [rsp+0x30],rax
+75 18                   jne    6b &lt;exit&gt;
 
-000000000042 &lt;process&gt;:
-48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 49 &lt;process+0x7&gt;
+000000000053 &lt;process&gt;:
+48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 5a &lt;process+0x7&gt;
 48 85 c0                test   rax,rax
-74 0c                   je     5a &lt;exit&gt;
+74 0c                   je     6b &lt;exit&gt;
 48 3b 58 68             cmp    rbx,QWORD PTR [rax+0x68]
-75 06                   jne    5a &lt;exit&gt;
-ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 5a &lt;exit&gt;
+75 06                   jne    6b &lt;exit&gt;
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 6b &lt;exit&gt;
 
-00000000005a &lt;exit&gt;:
+00000000006b &lt;exit&gt;:
 58                      pop    rax
-e9 00 00 00 00          jmp    60 &lt;exit+0x6&gt;</value>
+e9 00 00 00 00          jmp    71 &lt;exit+0x6&gt;</value>
   </data>
   <data name="DSRKillChr" xml:space="preserve">
     <value>48 8d 64 24 f8          lea    rsp,[rsp-0x8]

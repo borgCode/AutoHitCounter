@@ -425,13 +425,13 @@ namespace AutoHitCounter.Properties {
         ///48 b8 00 00 00 00 00    movabs rax,0x0
         ///00 00 00 
         ///48 39 44 24 30          cmp    QWORD PTR [rsp+0x30],rax
-        ///74 2b                   je     42 &lt;process&gt;
+        ///74 3c                   je     53 &lt;process&gt;
         ///80 3d 00 00 00 00 00    cmp    BYTE PTR [rip+0x0],0x0        # 1e &lt;_main+0x1e&gt;
-        ///74 11                   je     31 &lt;next&gt;
+        ///74 11                   je     31 &lt;aux_death&gt;
         ///48 b8 00 00 00 00 00    movabs rax,0x0
         ///00 00 00 
         ///48 39 44 24 30          cmp    QWORD PTR [rsp+0x30],rax
-        ///74 11                   je     42 &lt;p [rest of string was truncated]&quot;;.
+        ///74 22                   je      [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string DSRApplyHealthDelta {
             get {
