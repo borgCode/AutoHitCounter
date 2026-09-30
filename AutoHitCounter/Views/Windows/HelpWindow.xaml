@@ -514,7 +514,7 @@
                                             </Style.Triggers>
                                         </Style>
                                     </Hyperlink.Style>
-                                    This video will try to briefly explain the process to you and how to use event logger.
+                                    This video will try to briefly explain the process to you and how to use event flag logger.
                                 </Hyperlink>
                             </TextBlock>
                         </StackPanel>

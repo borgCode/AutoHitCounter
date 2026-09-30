@@ -292,7 +292,7 @@
                                 </CheckBox.Style>
                             </CheckBox>
                         </StackPanel>
-                        <Button Content="Event Logger"
+                        <Button Content="Event Flag Logger"
                                 Command="{Binding OpenEventLogCommand}"
                                 Height="23" FontSize="11"
                                 Padding="8,0" Margin="0,0,4,0"

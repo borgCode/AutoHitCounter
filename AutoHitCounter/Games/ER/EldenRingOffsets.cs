@@ -56,6 +56,7 @@ public static class EldenRingOffsets
             var v when v.StartsWith("2.6.1.") => Version2_6_1,
             var v when v.StartsWith("2.6.2.") => Version2_6_2,
             var v when v.StartsWith("2.7.0.") => Version2_7_0,
+            var v when v.StartsWith("2.7.1.") => Version2_7_1,
             _ => null
         };
 
@@ -170,7 +171,7 @@ public static class EldenRingOffsets
             Version2_2_0 or Version2_4_0 or Version2_5_0
                 or Version2_6_0 or Version2_6_1 or Version2_6_2 => 0x3D65F88,
             Version2_2_3 or Version2_3_0 => 0x3D65FA8,
-            Version2_7_0 => 0x3D69FF8,
+            Version2_7_0 or Version2_7_1 => 0x3D69FF8,
             _ => 0
         };
 
@@ -191,7 +192,7 @@ public static class EldenRingOffsets
             Version2_2_3 or Version2_3_0 => 0x3D5DF58,
             Version2_4_0 or Version2_5_0 or Version2_6_0
                 or Version2_6_1 or Version2_6_2 => 0x3D5DF38,
-            Version2_7_0 => 0x3D61F98,
+            Version2_7_0 or Version2_7_1 => 0x3D61F98,
             _ => 0
         };
 
@@ -213,7 +214,7 @@ public static class EldenRingOffsets
             Version2_2_3 or Version2_3_0 => 0x485DB88,
             Version2_4_0 or Version2_5_0 or Version2_6_0
                 or Version2_6_1 or Version2_6_2 => 0x485DC18,
-            Version2_7_0 => 0x4861D28,
+            Version2_7_0 or Version2_7_1 => 0x4861D28,
             _ => 0
         };
 
@@ -235,7 +236,7 @@ public static class EldenRingOffsets
             Version2_2_3 or Version2_3_0 => 0x4589498,
             Version2_4_0 or Version2_5_0 or Version2_6_0
                 or Version2_6_1 or Version2_6_2 => 0x4589478,
-            Version2_7_0 => 0x458D4F8,
+            Version2_7_0 or Version2_7_1 => 0x458D4F8,
             _ => 0
         };
 
@@ -256,7 +257,7 @@ public static class EldenRingOffsets
             Version2_2_3 or Version2_3_0 => 0x3D68468,
             Version2_4_0 or Version2_5_0 or Version2_6_0
                 or Version2_6_1 or Version2_6_2 => 0x3D68448,
-            Version2_7_0 => 0x3D6C4B8,
+            Version2_7_0 or Version2_7_1 => 0x3D6C4B8,
             _ => 0
         };
 
@@ -279,7 +280,7 @@ public static class EldenRingOffsets
             Version2_4_0 or Version2_5_0 => 0x449910,
             Version2_6_0 or Version2_6_1 => 0x4498E0,
             Version2_6_2 => 0x4497D0,
-            Version2_7_0 => 0x449D30,
+            Version2_7_0 or Version2_7_1 => 0x449D30,
             _ => 0
         };
 
@@ -302,7 +303,7 @@ public static class EldenRingOffsets
             Version2_4_0 or Version2_5_0 => 0x44E3B6,
             Version2_6_0 or Version2_6_1 => 0x44E386,
             Version2_6_2 => 0x44E276,
-            Version2_7_0 => 0x44E7D6,
+            Version2_7_0 or Version2_7_1 => 0x44E7D6,
             _ => 0
         };
 
@@ -325,7 +326,7 @@ public static class EldenRingOffsets
             Version2_4_0 or Version2_5_0 => 0x45AE01,
             Version2_6_0 or Version2_6_1 => 0x45ADD1,
             Version2_6_2 => 0x45ACC1,
-            Version2_7_0 => 0x45B221,
+            Version2_7_0 or Version2_7_1 => 0x45B221,
             _ => 0
         };
 
@@ -346,7 +347,7 @@ public static class EldenRingOffsets
             Version2_3_0 => 0x3FAFA2,
             Version2_4_0 or Version2_5_0 => 0x3FAFC2,
             Version2_6_2 => 0x3FAE92,
-            Version2_7_0 => 0x3FB0C2,
+            Version2_7_0 or Version2_7_1 => 0x3FB0C2,
             _ => 0
         };
 
@@ -369,7 +370,7 @@ public static class EldenRingOffsets
             Version2_4_0 or Version2_5_0 => 0x43DA44,
             Version2_6_0 or Version2_6_1 => 0x43DA14,
             Version2_6_2 => 0x43D904,
-            Version2_7_0 => 0x43DE64,
+            Version2_7_0 or Version2_7_1 => 0x43DE64,
             _ => 0
         };
 
@@ -392,7 +393,7 @@ public static class EldenRingOffsets
             Version2_4_0 or Version2_5_0 => 0x4410F8,
             Version2_6_0 or Version2_6_1 => 0x4410C8,
             Version2_6_2 => 0x440FB8,
-            Version2_7_0 => 0x441518,
+            Version2_7_0 or Version2_7_1 => 0x441518,
             _ => 0
         };
 
@@ -415,7 +416,7 @@ public static class EldenRingOffsets
             Version2_4_0 or Version2_5_0 => 0x4469A3,
             Version2_6_0 or Version2_6_1 => 0x446973,
             Version2_6_2 => 0x446863,
-            Version2_7_0 => 0x446DC3,
+            Version2_7_0 or Version2_7_1 => 0x446DC3,
             _ => 0
         };
 
@@ -438,7 +439,7 @@ public static class EldenRingOffsets
             Version2_4_0 or Version2_5_0 => 0x44867B,
             Version2_6_0 or Version2_6_1 => 0x44864B,
             Version2_6_2 => 0x44853B,
-            Version2_7_0 => 0x448A9B,
+            Version2_7_0 or Version2_7_1 => 0x448A9B,
             _ => 0
         };
 
@@ -462,7 +463,7 @@ public static class EldenRingOffsets
             Version2_4_0 or Version2_5_0 => 0x448E4C,
             Version2_6_0 or Version2_6_1 => 0x448E1C,
             Version2_6_2 => 0x448D0C,
-            Version2_7_0 => 0x44926C,
+            Version2_7_0 or Version2_7_1 => 0x44926C,
             _ => 0
         };
 
@@ -485,7 +486,7 @@ public static class EldenRingOffsets
             Version2_4_0 or Version2_5_0 => 0x447C3C,
             Version2_6_0 or Version2_6_1 => 0x447C0C,
             Version2_6_2 => 0x447AFC,
-            Version2_7_0 => 0x44805C,
+            Version2_7_0 or Version2_7_1 => 0x44805C,
             _ => 0
         };
 
@@ -507,7 +508,7 @@ public static class EldenRingOffsets
             Version2_3_0 => 0x3FCC7E,
             Version2_4_0 or Version2_5_0 => 0x3FCC9E,
             Version2_6_2 => 0x3FCB6E,
-            Version2_7_0 => 0x3FCD9E,
+            Version2_7_0 or Version2_7_1 => 0x3FCD9E,
             _ => 0
         };
 
@@ -531,7 +532,7 @@ public static class EldenRingOffsets
             Version2_4_0 or Version2_5_0 => 0x449AA4,
             Version2_6_0 or Version2_6_1 => 0x449A74,
             Version2_6_2 => 0x449964,
-            Version2_7_0 => 0x449EC4,
+            Version2_7_0 or Version2_7_1 => 0x449EC4,
             _ => 0
         };
 
@@ -555,7 +556,7 @@ public static class EldenRingOffsets
             Version2_4_0 or Version2_5_0 => 0x4815C0,
             Version2_6_0 or Version2_6_1 => 0x481590,
             Version2_6_2 => 0x481490,
-            Version2_7_0 => 0x4819F0,
+            Version2_7_0 or Version2_7_1 => 0x4819F0,
             _ => 0
         };
 
@@ -581,7 +582,7 @@ public static class EldenRingOffsets
             Version2_4_0 or Version2_5_0 => 0x5F9B50,
             Version2_6_0 or Version2_6_1 => 0x5F9CD0,
             Version2_6_2 => 0x5F9BF0,
-            Version2_7_0 => 0x5FAA40,
+            Version2_7_0 or Version2_7_1 => 0x5FAA40,
             _ => 0
         };
 
@@ -610,6 +611,7 @@ public static class EldenRingOffsets
             Version2_6_1 => 0xB0C67F,
             Version2_6_2 => 0xB0C58F,
             Version2_7_0 => 0xB0DC2F,
+            Version2_7_1 => 0xB0DC9F,
             _ => 0
         };
 
@@ -634,7 +636,7 @@ public static class EldenRingOffsets
             Version2_4_0 or Version2_5_0 => 0x507D80,
             Version2_6_0 or Version2_6_1 => 0x507D50,
             Version2_6_2 => 0x507C80,
-            Version2_7_0 => 0x508A50,
+            Version2_7_0 or Version2_7_1 => 0x508A50,
             _ => 0
         };
 
@@ -658,7 +660,7 @@ public static class EldenRingOffsets
             Version2_4_0 or Version2_5_0 => 0x4F9A40,
             Version2_6_0 or Version2_6_1 => 0x4F9A10,
             Version2_6_2 => 0x4F9940,
-            Version2_7_0 => 0x4FA710,
+            Version2_7_0 or Version2_7_1 => 0x4FA710,
             _ => 0
         };
 
@@ -683,7 +685,7 @@ public static class EldenRingOffsets
             Version2_4_0 or Version2_5_0 => 0x5F9360,
             Version2_6_0 or Version2_6_1 => 0x5F94E0,
             Version2_6_2 => 0x5F9400,
-            Version2_7_0 => 0x5FA250,
+            Version2_7_0 or Version2_7_1 => 0x5FA250,
             _ => 0
         };
 
@@ -707,7 +709,7 @@ public static class EldenRingOffsets
             Version2_4_0 or Version2_5_0 => 0x4F96A0,
             Version2_6_0 or Version2_6_1 => 0x4F9670,
             Version2_6_2 => 0x4F95A0,
-            Version2_7_0 => 0x4FA370,
+            Version2_7_0 or Version2_7_1 => 0x4FA370,
             _ => 0
         };
 
@@ -731,7 +733,7 @@ public static class EldenRingOffsets
             Version2_4_0 or Version2_5_0 => 0x4375B0,
             Version2_6_0 or Version2_6_1 => 0x437580,
             Version2_6_2 => 0x437470,
-            Version2_7_0 => 0x4379D0,
+            Version2_7_0 or Version2_7_1 => 0x4379D0,
             _ => 0
         };
 
@@ -752,7 +754,7 @@ public static class EldenRingOffsets
             Version2_3_0 => 0x3F40C0,
             Version2_4_0 or Version2_5_0 => 0x3F40E0,
             Version2_6_2 => 0x3F3FB0,
-            Version2_7_0 => 0x3F41E0,
+            Version2_7_0 or Version2_7_1 => 0x3F41E0,
             _ => 0
         };
         
@@ -775,7 +777,7 @@ public static class EldenRingOffsets
             Version2_4_0 or Version2_5_0 => 0x4366D0,
             Version2_6_0 or Version2_6_1 => 0x4366A0,
             Version2_6_2 => 0x436590,
-            Version2_7_0 => 0x436AE0,
+            Version2_7_0 or Version2_7_1 => 0x436AE0,
             _ => 0
         };
 
@@ -806,6 +808,7 @@ public static class EldenRingOffsets
             Version2_6_1 => 0xB0C44D,
             Version2_6_2 => 0xB0C35D,
             Version2_7_0 => 0xB0D9FD,
+            Version2_7_1 => 0xB0DA6D,
             _ => 0
         };
     }
@@ -847,6 +850,7 @@ public static class EldenRingOffsets
         PrintOffset("HasStateInfo", Functions.HasStateInfo);
         PrintOffset("IsNoDeathEnabled", Functions.IsNoDeathEnabled);
         PrintOffset("IsTorrent", Functions.IsTorrent);
+        PrintOffset("EnvKillingOriginal", Functions.EnvKillingOriginal);
 
 
         Console.WriteLine("\n--- Patches ---");

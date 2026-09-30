@@ -8,7 +8,7 @@
         Style="{StaticResource DefaultWindowStyle}"
         WindowStyle="None"
         AllowsTransparency="True"
-        Title="Event Log" Height="450" Width="600"
+        Title="Event Flag Logger" Height="450" Width="600"
         MinHeight="450" MinWidth="600"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
@@ -172,7 +172,7 @@
                 <TextBlock Grid.Row="5"
                            Grid.Column="0"
                            Margin="10, 10, 0, 0"
-                           Text="Excluded Event IDs" />
+                           Text="Excluded Event Flag IDs" />
 
                 <ListBox
                     Margin="10"
