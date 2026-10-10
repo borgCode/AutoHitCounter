@@ -18,7 +18,7 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
     private readonly IStateService _stateService;
     private readonly HookManager _hookManager;
     private readonly ITickService _tickService;
-    private readonly Dictionary<uint, (string Name, int Required, int Hit)> _events;
+    private Dictionary<uint, (string Name, int Required, int Hit)> _events;
 
     public string GameVersion => DS3Offsets.IsAobFallback ? "Unknown Patch" : DS3Offsets.Version.GetDescription();
 
@@ -141,6 +141,7 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
 
     public void UpdateEvents(Dictionary<uint, (string Name, int Required, int Hit)> events)
     {
+        _events = events;
         _eventService?.UpdateEvents(events);
     }
 

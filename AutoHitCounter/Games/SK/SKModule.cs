@@ -18,7 +18,7 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
     private readonly IStateService _stateService;
     private readonly HookManager _hookManager;
     private readonly ITickService _tickService;
-    private readonly Dictionary<uint, (string Name, int Required, int Hit)> _events;
+    private Dictionary<uint, (string Name, int Required, int Hit)> _events;
     private readonly IHitRulesProvider _rules;
 
     public string GameVersion => SKOffsets.IsAobFallback ? "Unknown Patch" : SKOffsets.Version.GetDescription();
@@ -145,6 +145,7 @@ public class SKModule : IGameModule, IDisposable, IVersionedGameModule
 
     public void UpdateEvents(Dictionary<uint, (string Name, int Required, int Hit)> events)
     {
+        _events = events;
         _eventService?.UpdateEvents(events);
     }
 
