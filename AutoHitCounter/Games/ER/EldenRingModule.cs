@@ -25,7 +25,9 @@ public class EldenRingModule : IGameModule, IDisposable, IVersionedGameModule
     private EventLogReader _eventLogReader;
     private IRunStartService _runStartService;
     
-    public string GameVersion => EldenRingOffsets.IsAobFallback ? "Unknown Patch" : EldenRingOffsets.Version.GetDescription();
+    public string GameVersion => EldenRingOffsets.IsAobFallback
+        ? EldenRingOffsets.DetectedAppVersion?.ToString() ?? "Unknown Patch"
+        : EldenRingOffsets.Version.GetDescription();
 
     private DateTime? _lastHit;
 

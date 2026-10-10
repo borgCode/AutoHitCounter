@@ -9,6 +9,11 @@ public static class EldenRingPatterns
 {
     public static void QueueFallbackPatterns(AobScanner scanner)
     {
+        scanner.Queue(nameof(AppVersionZeroPatch), AppVersionZeroPatch,
+            addr => EldenRingOffsets.AppVersion.ZeroPatchBase = addr);
+        scanner.Queue(nameof(AppVersionWithPatch), AppVersionWithPatch,
+            addr => EldenRingOffsets.AppVersion.WithPatchBase = addr);
+
         scanner.Queue(nameof(WorldChrMan), WorldChrMan, addr => EldenRingOffsets.WorldChrMan.Base = addr);
         scanner.Queue(nameof(GameDataMan), GameDataMan, addr => EldenRingOffsets.GameDataMan.Base = addr);
         scanner.Queue(nameof(UserInputManager), UserInputManager, addr => EldenRingOffsets.UserInputManager.Base = addr);
@@ -44,6 +49,39 @@ public static class EldenRingPatterns
         scanner.Queue(nameof(NoLogo), NoLogo, addr => EldenRingOffsets.Patches.NoLogo = addr);
         
     }
+
+    public static readonly Pattern AppVersionZeroPatch = new(
+        [
+            0x33, 0xF6, 0x89, 0x74, 0x24, 0x20,
+            0x44, 0x8D, 0x4E, 0x00,
+            0x44, 0x8D, 0x46, 0x00,
+            0x48, 0x8D, 0x15, 0x00, 0x00, 0x00, 0x00,
+            0x49, 0x8D, 0x4B, 0x00,
+            0xE8, 0x00, 0x00, 0x00, 0x00,
+            0x48, 0x8B, 0xD8,
+            0xBA, 0xA8, 0x1F, 0x06, 0x00
+        ],
+        "xxxxxxxxx?xxx?xxx????xxx?x????xxxxxxxx",
+        0,
+        AddressingMode.Absolute
+    );
+
+    public static readonly Pattern AppVersionWithPatch = new(
+        [
+            0x33, 0xF6, 0x89, 0x74, 0x24, 0x00,
+            0xC7, 0x44, 0x24, 0x20, 0x00, 0x00, 0x00, 0x00,
+            0x44, 0x8D, 0x4E, 0x00,
+            0x44, 0x8D, 0x46, 0x00,
+            0x48, 0x8D, 0x15, 0x00, 0x00, 0x00, 0x00,
+            0x49, 0x8D, 0x4B, 0x00,
+            0xE8, 0x00, 0x00, 0x00, 0x00,
+            0x48, 0x8B, 0xD8,
+            0xBA, 0xA8, 0x1F, 0x06, 0x00
+        ],
+        "xxxxx?xxxx????xxx?xxx?xxx????xxx?x????xxxxxxxx",
+        0,
+        AddressingMode.Absolute
+    );
 
     public static readonly Pattern WorldChrMan = new(
         [
@@ -252,8 +290,7 @@ public static class EldenRingPatterns
         0,
         AddressingMode.Relative,
         1,
-        5,
-        anchorOffset: 9
+        5
     );
 
     public static readonly Pattern HasStateInfo = new(
@@ -268,14 +305,10 @@ public static class EldenRingPatterns
     );
     
     public static readonly Pattern IsNoDeathEnabled = new(
-        [
-            0x48, 0x8B, 0x8B, 0x78, 0x01, 0x00, 0x00, 0xBA, 0x8F, 0x00, 0x00, 0x00, 0xE8, 0x00, 0x00, 0x00, 0x00
-        ],
-        "xxxxxxxxxxxxx????",
-        -0x59,
-        AddressingMode.Relative,
-        1,
-        5
+        new byte[] { 0x40, 0x53, 0x48, 0x83, 0xEC, 0x20, 0xF6, 0x81, 0x9B, 0x01, 0x00, 0x00, 0x01, 0x48, 0x8B, 0xD9, 0x74, 0x08, 0xB0, 0x01, 0x48, 0x83, 0xC4, 0x20, 0x5B, 0xC3 },
+        "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+        0,
+        AddressingMode.Absolute
     );
     
     public static readonly Pattern IsTorrent = new(
@@ -305,7 +338,6 @@ public static class EldenRingPatterns
         [0x48, 0x85, 0xD2, 0x74, 0x07, 0xC6, 0x82],
         "xxxxxxx",
         0x18,
-        AddressingMode.Absolute,
-        anchorOffset: 4
+        AddressingMode.Absolute
     );
 }

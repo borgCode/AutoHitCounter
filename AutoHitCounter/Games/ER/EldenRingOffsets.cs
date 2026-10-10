@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
-using AutoHitCounter.Utilities;
+using AutoHitCounter.Memory.Patterns;
 using static AutoHitCounter.Games.ER.EldenRingVersion;
 
 namespace AutoHitCounter.Games.ER;
@@ -23,10 +23,15 @@ public static class EldenRingOffsets
 
     public static bool IsAobFallback { get; private set; }
 
+    public static Version? DetectedAppVersion { get; private set; }
+
     public static void Initialize(string fileVersion, IMemoryService memoryService)
     {
         var moduleBase = memoryService.BaseAddress;
         IsAobFallback = false;
+        DetectedAppVersion = null;
+        AppVersion.ZeroPatchBase = 0;
+        AppVersion.WithPatchBase = 0;
         _version = fileVersion switch
         {
             var v when v.StartsWith("1.2.0.") => Version1_2_0,
@@ -82,6 +87,12 @@ public static class EldenRingOffsets
                 or Version1_4_0 or Version1_4_1 or Version1_5_0 or Version1_6_0 => 0x18468,
             _ => 0x1E508,
         };
+    }
+
+    public static class AppVersion
+    {
+        public static nint ZeroPatchBase;
+        public static nint WithPatchBase;
     }
 
     public static class GameDataMan
@@ -151,6 +162,40 @@ public static class EldenRingOffsets
         var scanner = new AobScanner(memoryService);
         EldenRingPatterns.QueueFallbackPatterns(scanner);
         scanner.Run(FallbackAddressPath);
+        DetectedAppVersion = ReadAppVersion(memoryService);
+    }
+
+    private static Version? ReadAppVersion(IMemoryService memoryService)
+    {
+        var zeroPatch = MatchBytes(memoryService, AppVersion.ZeroPatchBase, EldenRingPatterns.AppVersionZeroPatch);
+        var withPatch = MatchBytes(memoryService, AppVersion.WithPatchBase, EldenRingPatterns.AppVersionWithPatch);
+
+        var isZeroPatch = zeroPatch != null;
+        if (isZeroPatch == (withPatch != null)) return null;
+
+        var bytes = zeroPatch ?? withPatch;
+        var major = (sbyte)bytes[isZeroPatch ? 13 : 21];
+        var minor = (sbyte)bytes[isZeroPatch ? 9 : 17];
+        var patch = isZeroPatch ? 0 : BitConverter.ToInt32(bytes, 10);
+
+        if (major <= 0 || minor < 0 || patch < 0 || major > 99 || minor > 99 || patch > 99) return null;
+
+        return new Version(major, minor, patch);
+    }
+
+    private static byte[]? MatchBytes(IMemoryService memoryService, nint address, Pattern pattern)
+    {
+        var length = pattern.Bytes.Length;
+        var offset = address - memoryService.BaseAddress;
+        if (offset < 0 || offset + length > memoryService.ModuleMemorySize) return null;
+
+        var bytes = memoryService.ReadBytes(address, length);
+        for (var i = 0; i < length; i++)
+        {
+            if (pattern.Mask[i] != '?' && bytes[i] != pattern.Bytes[i]) return null;
+        }
+
+        return bytes;
     }
 
     private static void InitializeBaseAddresses(nint moduleBase)
