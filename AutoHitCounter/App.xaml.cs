@@ -66,7 +66,7 @@ namespace AutoHitCounter
 
             var runStateService = new RunStateService(profileService);
             var customGameService = new CustomGameService(new SettingsCustomGamesStore(), profileService, runStateService);
-            var orchestrator = new GameSessionOrchestrator(memoryService, hotkeyManager, gameModuleFactory, stateService);
+            var orchestrator = new GameSessionOrchestrator(memoryService, hotkeyManager, gameModuleFactory, stateService, tickService);
 
             _mainViewModel = new MainViewModel(hotkeyManager, gameModuleFactory, profileService,
                 stateService,
