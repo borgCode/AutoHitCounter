@@ -20,7 +20,7 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
     private readonly IStateService _stateService;
     private readonly HookManager _hookManager;
     private readonly ITickService _tickService;
-    private readonly Dictionary<uint, (string Name, int Required, int Hit)> _events;
+    private Dictionary<uint, (string Name, int Required, int Hit)> _events;
     private DS2HitService _hitService;
     private DS2EventService _eventService;
     private DS2SettingsService _settingsService;
@@ -156,6 +156,7 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
 
     public void UpdateEvents(Dictionary<uint, (string Name, int Required, int Hit)> events)
     {
+        _events = events;
         _eventService?.UpdateEvents(events);
     }
 
