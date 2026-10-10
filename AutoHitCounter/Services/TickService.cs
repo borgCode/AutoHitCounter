@@ -32,6 +32,13 @@ public class TickService : ITickService
     public void RegisterGameTick(Action tick) => _gameTick = tick;
     public void UnregisterGameTick() => _gameTick = null;
 
+    public void ResetAttachState()
+    {
+        _attachedTime = null;
+        _hasPublishedAttached = false;
+        _stateService.Publish(State.NotAttached);
+    }
+
     private void MainTick(object sender, EventArgs e)
     {
         if (_memoryService.IsAttached)
@@ -57,9 +64,7 @@ public class TickService : ITickService
         }
         else
         {
-            _attachedTime = null;
-            _hasPublishedAttached = false;
-            _stateService.Publish(State.NotAttached);
+            ResetAttachState();
         }
     }
 }
