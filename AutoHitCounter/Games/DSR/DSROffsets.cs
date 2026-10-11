@@ -68,6 +68,7 @@ public static class DSROffsets
         public static nint ClearThrowState;
         public static nint SetEvent;
         public static nint StartNewGame;
+        public static nint CheckHitEntityId;
     }
 
     private static void InitializeBaseAddresses(nint moduleBase)
@@ -117,7 +118,7 @@ public static class DSROffsets
             Version1_0_1_1 => 0x11517F5,
             Version1_0_1_2 => 0x31A89D,
             Version1_0_3_0 => 0x32084D,
-            Version1_0_3_1 => 0x1144085,            //TODO test on 11x patches
+            Version1_0_3_1 => 0x322A9D,        
             _ => 0
         };
 
@@ -207,6 +208,17 @@ public static class DSROffsets
             Version1_0_3_1 => 0x282299,
             _ => 0
         };
+        
+        Hooks.CheckHitEntityId = moduleBase + Version switch
+        {
+            // WARNING: No match found for: Version1_0_1_0, Version1_0_1_1, Version1_0_1_2
+            Version1_0_3_0 => 0x3C7B46,
+            Version1_0_3_1 => 0x3C7156,
+            _ => 0
+        };
+
+
+
 
 
 
@@ -229,6 +241,7 @@ public static class DSROffsets
         PrintOffset("ClearThrowState", Hooks.ClearThrowState);
         PrintOffset("SetEvent", Hooks.SetEvent);
         PrintOffset("StartNewGame", Hooks.StartNewGame);
+        PrintOffset("CheckHitEntityId", Hooks.CheckHitEntityId);
       
 
 

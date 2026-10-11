@@ -26,6 +26,7 @@ public class DSRHitService(IMemoryService memoryService, HookManager hookManager
         InstallAuxProcHook();
         InstallClearThrowStateHook();
         InstallSetThrowStateHook();
+        InstallCheckHitEntityIdHook();
     }
 
     public bool HasHit()
@@ -41,7 +42,7 @@ public class DSRHitService(IMemoryService memoryService, HookManager hookManager
         if (_hooks.Any(h => memoryService.Read<byte>(h) != 0xE9))
             InstallHooks();
     }
-    
+
     public void ResetFlags()
     {
         memoryService.Write(Base + InThrowFlag, false);
@@ -186,5 +187,24 @@ public class DSRHitService(IMemoryService memoryService, HookManager hookManager
         
         memoryService.WriteBytes(code, bytes);
         InstallHook(code, Hooks.SetThrowState, [ 0x81, 0x8B, 0xDC, 0x01, 0x00, 0x00, 0x00, 0x00, 0x20, 0x00]);
+    }
+
+    private void InstallCheckHitEntityIdHook()
+    {
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.DSRCheckHitEntityId);
+        var code = Base + CheckHitEntityId;
+        var envDeathFlag = Base + CheckEnvDeathFlag;
+        
+        
+        AsmHelper.WriteRelativeOffsets(bytes, [
+            (code, WorldChrMan.Base, 7,  3),
+            (code + 0x37, envDeathFlag, 7, 0x37 + 2),
+            (code + 0x44, envDeathFlag, 7, 0x44 + 2),
+            (code + 0x4B, Hooks.CheckHitEntityId + 9, 5, 0x4B + 1),
+            (code + 0x59, Hooks.CheckHitEntityId + 9, 5, 0x59 + 1),
+        ]);
+        
+        memoryService.WriteBytes(code, bytes);
+        InstallHook(code, Hooks.CheckHitEntityId, [ 0x48, 0x89, 0xF9, 0xFF, 0x90, 0x68, 0x04, 0x00, 0x00]);
     }
 }

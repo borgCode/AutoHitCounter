@@ -19,10 +19,10 @@ public class DSRCustomCodeOffsets
     public const int CheckAuxProc = 0x800;
     public const int ClearThrowState = 0xA00;
     public const int SetThrowState = 0xB00;
+    public const int CheckHitEntityId = 0xD00;
     
     public const int RunStartFlag = 0x2000;
     public const int RunStartCode = 0x2010;
-    
     
     public const int EventLogWriteIdx = 0x3000;
     public const int EventLogCode = 0x3020;

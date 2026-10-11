@@ -476,6 +476,25 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 7 &lt;_main+0x7&gt;
+        ///48 85 c9                test   rcx,rcx
+        ///74 44                   je     50 &lt;normal&gt;
+        ///48 8b 49 68             mov    rcx,QWORD PTR [rcx+0x68]
+        ///48 85 c9                test   rcx,rcx
+        ///74 3b                   je     50 &lt;normal&gt;
+        ///83 b9 e8 03 00 00 00    cmp    DWORD PTR [rcx+0x3e8],0x0
+        ///74 32                   je     50 &lt;normal&gt;
+        ///48 39 f9                cmp    rcx,rdi
+        ///75 2d                   jne    50 &lt;normal&gt;
+        ///41 81 78 3c e2 13 00   [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string DSRCheckHitEntityId {
+            get {
+                return ResourceManager.GetString("DSRCheckHitEntityId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 48 8b 8b 48 04 00 00    mov    rcx,QWORD PTR [rbx+0x448]
         ///48 85 c9                test   rcx,rcx
         ///74 21                   je     2d &lt;exit&gt;

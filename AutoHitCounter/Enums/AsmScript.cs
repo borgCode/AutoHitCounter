@@ -13,6 +13,7 @@ public enum AsmScript
     DSRClearThrowState,
     DSRSetThrowState,
     DSRRunStart,
+    DSRCheckHitEntityId,
     
     VanillaCheckPlayerDead,
     VanillaHit,

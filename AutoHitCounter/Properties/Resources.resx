@@ -2773,4 +2773,33 @@ e9 00 00 00 00          jmp    11 &lt;_main+0x11&gt;</value>
 5b                      pop    rbx
 e9 00 00 00 00          jmp    1d &lt;done+0x6&gt;</value>
   </data>
+  <data name="DSRCheckHitEntityId" xml:space="preserve">
+    <value>48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 7 &lt;_main+0x7&gt;
+48 85 c9                test   rcx,rcx
+74 44                   je     50 &lt;normal&gt;
+48 8b 49 68             mov    rcx,QWORD PTR [rcx+0x68]
+48 85 c9                test   rcx,rcx
+74 3b                   je     50 &lt;normal&gt;
+83 b9 e8 03 00 00 00    cmp    DWORD PTR [rcx+0x3e8],0x0
+74 32                   je     50 &lt;normal&gt;
+48 39 f9                cmp    rcx,rdi
+75 2d                   jne    50 &lt;normal&gt;
+41 81 78 3c e2 13 00    cmp    DWORD PTR [r8+0x3c],0x13e2
+00 
+74 0a                   je     37 &lt;set_env_flag&gt;
+41 81 78 3c e3 13 00    cmp    DWORD PTR [r8+0x3c],0x13e3
+00 
+75 19                   jne    50 &lt;normal&gt;
+
+000000000037 &lt;set_env_flag&gt;:
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 3e &lt;set_env_flag+0x7&gt;
+ff 90 68 04 00 00       call   QWORD PTR [rax+0x468]
+c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 4b &lt;set_env_flag+0x14&gt;
+e9 00 00 00 00          jmp    50 &lt;normal&gt;
+
+000000000050 &lt;normal&gt;:
+48 89 f9                mov    rcx,rdi
+ff 90 68 04 00 00       call   QWORD PTR [rax+0x468]
+e9 00 00 00 00          jmp    5e &lt;normal+0xe&gt;</value>
+  </data>
 </root>
