@@ -713,6 +713,8 @@ namespace AutoHitCounter.ViewModels
 
         private void UpdateInGameTime(long igt)
         {
+            if (IsRunComplete) return;
+            
             InGameTime = TimeSpan.FromMilliseconds(igt);
             var formatted = $"{(int)InGameTime.TotalHours}:{InGameTime.Minutes:D2}:{InGameTime.Seconds:D2}";
             if (formatted != _lastIgt)
