@@ -18,6 +18,7 @@ public static class GameFlagRegistry
             ("should_count_roberto", "Count Roberto stagger")
         ],
         [GameTitle.EldenRing] = [],
+        [GameTitle.Nightreign] = [],
     };
 
     public static IReadOnlyList<(string Key, string DisplayName)> GetFlags(GameTitle title)

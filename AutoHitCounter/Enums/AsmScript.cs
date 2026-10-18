@@ -94,4 +94,11 @@ public enum AsmScript
     EldenRingClearThrowState,
     EldenRingEventLog,
     EldenRingRunStart,
+    
+    NRIsPlayerDead,
+    NRProcessHit,
+    NRSetHealth,
+    NRApplySpEffectAndProcessStatus,
+    NRClearThrowState,
+    NRCalcSpEffectMultipliers
 }
