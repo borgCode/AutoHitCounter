@@ -1,6 +1,5 @@
-﻿// 
+﻿//
 
-using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -14,7 +13,7 @@ namespace AutoHitCounter.Services
     {
         public bool IsAttached { get; private set; }
         public Process? TargetProcess { get; private set; }
-        public IntPtr ProcessHandle { get; private set; } = IntPtr.Zero;
+        public nint ProcessHandle { get; private set; }
         public nint BaseAddress { get; private set; }
         public int ModuleMemorySize { get; private set; }
 
@@ -22,6 +21,8 @@ namespace AutoHitCounter.Services
         private const int ProcessVmWrite = 0x0020;
         private const int ProcessVmOperation = 0x0008;
         private const int ProcessQueryInformation = 0x0400;
+        private const int ProcessAccessRights =
+            ProcessVmRead | ProcessVmWrite | ProcessVmOperation | ProcessQueryInformation;
         private const int AttachCheckInterval = 2000;
 
         private const uint CodeCaveSize = 0x5000;
@@ -53,13 +54,15 @@ namespace AutoHitCounter.Services
 
             for (int i = 0; i < offsets.Length - 1; i++)
             {
-                ptr = Read<nint>((IntPtr)ptr + offsets[i]);
+                ptr = Read<nint>(ptr + offsets[i]);
             }
 
-            IntPtr finalAddress = (IntPtr)ptr + offsets[offsets.Length - 1];
+            nint finalAddress = ptr + offsets[offsets.Length - 1];
 
             if (readFinalPtr)
+            {
                 return Read<nint>(finalAddress);
+            }
 
             return finalAddress;
         }
@@ -76,7 +79,9 @@ namespace AutoHitCounter.Services
             nint finalAddress = (nint)ptr + offsets[offsets.Length - 1];
 
             if (readFinalPtr)
+            {
                 return (nint)Read<uint>(finalAddress);
+            }
 
             return finalAddress;
         }
@@ -94,29 +99,31 @@ namespace AutoHitCounter.Services
             Kernel32.WriteProcessMemory(ProcessHandle, addr, val, val.Length, 0);
         }
 
-        public IntPtr AllocCustomCodeMem()
+        public nint AllocCustomCodeMem()
         {
             nint searchRangeStart = BaseAddress - CodeCaveSearchStart;
             nint searchRangeEnd = BaseAddress - CodeCaveSearchEnd;
 
             for (nint addr = searchRangeEnd; addr > searchRangeStart; addr -= CodeCaveSearchStep)
             {
-                var allocatedMemory = Kernel32.VirtualAllocEx(ProcessHandle, addr, CodeCaveSize);
+                nint allocatedMemory = Kernel32.VirtualAllocEx(ProcessHandle, addr, CodeCaveSize);
 
-                if (allocatedMemory != IntPtr.Zero)
+                if (allocatedMemory != 0)
                 {
                     return allocatedMemory;
                 }
             }
 
-            return IntPtr.Zero;
+            return 0;
         }
 
-        public IntPtr GetProcAddress(string moduleName, string procName)
+        public nint GetProcAddress(string moduleName, string procName)
         {
-            IntPtr moduleHandle = Kernel32.GetModuleHandle(moduleName);
-            if (moduleHandle == IntPtr.Zero)
-                return IntPtr.Zero;
+            nint moduleHandle = Kernel32.GetModuleHandle(moduleName);
+            if (moduleHandle == 0)
+            {
+                return 0;
+            }
 
             return Kernel32.GetProcAddress(moduleHandle, procName);
         }
@@ -126,10 +133,10 @@ namespace AutoHitCounter.Services
             StopAutoAttach();
 
             _autoAttachTimer = new Timer(AttachCheckInterval);
-            _autoAttachTimer.Elapsed += (sender, e) => TryAttachToProcess(processName);
+            _autoAttachTimer.Elapsed += (sender, e) => RefreshAttachment(processName);
             _autoAttachTimer.Start();
 
-            TryAttachToProcess(processName);
+            RefreshAttachment(processName);
         }
 
         public void StopAutoAttach()
@@ -140,59 +147,73 @@ namespace AutoHitCounter.Services
 
             lock (_attachLock)
             {
-                if (ProcessHandle != IntPtr.Zero)
+                if (ProcessHandle != 0)
                 {
-                    Kernel32.CloseHandle(ProcessHandle);
-                    ProcessHandle = IntPtr.Zero;
-                    TargetProcess = null;
-                    IsAttached = false;
+                    Detach();
                 }
             }
         }
 
-        private void TryAttachToProcess(string processName)
+        private void RefreshAttachment(string processName)
         {
             lock (_attachLock)
             {
-                if (ProcessHandle != IntPtr.Zero)
+                if (ProcessHandle != 0)
                 {
                     if (TargetProcess == null || TargetProcess.HasExited)
                     {
-                        Kernel32.CloseHandle(ProcessHandle);
-                        ProcessHandle = IntPtr.Zero;
-                        TargetProcess = null;
-                        IsAttached = false;
+                        Detach();
                     }
 
                     return;
                 }
 
                 var processes = Process.GetProcessesByName(processName);
-                if (processes.Length > 0 && !processes[0].HasExited)
+                try
                 {
-                    TargetProcess = processes[0];
-                    ProcessHandle = Kernel32.OpenProcess(
-                        ProcessVmRead | ProcessVmWrite | ProcessVmOperation | ProcessQueryInformation,
-                        false,
-                        TargetProcess.Id);
-
-                    if (ProcessHandle == IntPtr.Zero)
+                    if (processes.Length == 0 || processes[0].HasExited)
                     {
-                        TargetProcess = null;
-                        IsAttached = false;
+                        return;
                     }
-                    else
-                    {
-                        if (TargetProcess.MainModule != null)
-                        {
-                            BaseAddress = TargetProcess.MainModule.BaseAddress;
-                            ModuleMemorySize = TargetProcess.MainModule.ModuleMemorySize;
-                        }
 
-                        IsAttached = true;
+                    var process = processes[0];
+                    nint handle = Kernel32.OpenProcess(ProcessAccessRights, bInheritHandle: false, process.Id);
+                    if (handle == 0)
+                    {
+                        return;
+                    }
+
+                    TargetProcess = process;
+                    ProcessHandle = handle;
+
+                    if (process.MainModule is { } mainModule)
+                    {
+                        BaseAddress = mainModule.BaseAddress;
+                        ModuleMemorySize = mainModule.ModuleMemorySize;
+                    }
+
+                    IsAttached = true;
+                }
+                finally
+                {
+                    foreach (var candidate in processes)
+                    {
+                        if (candidate != TargetProcess)
+                        {
+                            candidate.Dispose();
+                        }
                     }
                 }
             }
+        }
+
+        private void Detach()
+        {
+            Kernel32.CloseHandle(ProcessHandle);
+            ProcessHandle = 0;
+            TargetProcess?.Dispose();
+            TargetProcess = null;
+            IsAttached = false;
         }
     }
 }

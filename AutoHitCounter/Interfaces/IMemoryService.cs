@@ -1,6 +1,5 @@
 ﻿// 
 
-using System;
 using System.Diagnostics;
 
 namespace AutoHitCounter.Interfaces
@@ -20,7 +19,7 @@ namespace AutoHitCounter.Interfaces
         void WriteBytes(nint addr, byte[] val);
         void Write<T>(nint addr, T value) where T : unmanaged;
         
-        IntPtr AllocCustomCodeMem();
+        nint AllocCustomCodeMem();
         
         nint GetProcAddress(string moduleName, string procName);
         
