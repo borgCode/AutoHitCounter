@@ -58,8 +58,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
 
     private void InstallScholarHooks()
     {
-        WriteHelpers();
-        
+        WriteScholarPlayerDeadCheck();
 
         InstallScholarHitHook();
         InstallScholarGeneralDamageHook();
@@ -69,24 +68,11 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         InstallStaggerCheckHook();
     }
 
-    private void WriteHelpers()
-    {
-        WriteScholarPlayerDeadCheck();
-        WriteScholarHasIframesCheck();
-    }
-
     private void WriteScholarPlayerDeadCheck()
     {
         var code = Base + CheckPlayerDead;
         var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarCheckPlayerDead);
         AsmHelper.WriteRelativeOffset(bytes, code, GameManagerImp.Base, 7, 3);
-        memoryService.WriteBytes(code, bytes);
-    }
-
-    private void WriteScholarHasIframesCheck()
-    {
-        var code = Base + HasIframes;
-        var bytes = AsmLoader.GetAsmBytes(AsmScript.ScholarHasIframes);
         memoryService.WriteBytes(code, bytes);
     }
 
@@ -99,7 +85,6 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         var shouldIgnoreShulvaSpikesFlag = Base + ShouldIgnoreShulvaSpikesFlag;
         var wetPoisonFlag = Base + WetPoisonFlag;
         var checkPlayerDeadFunc = Base + CheckPlayerDead;
-        var hasIframesFunc = Base + HasIframes;
 
         var code = Base + HitCode;
 
@@ -107,13 +92,12 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
             (code, auxCheckFlag, 7, 2),
             (code + 0x8, checkPlayerDeadFunc, 5, 0x8 + 1),
             (code + 0x22, GameManagerImp.Base, 7, 0x22 + 3),
-            (code + 0x48, hasIframesFunc, 5, 0x48 + 1),
-            (code + 0x62, MapId, 10, 0x62 + 2),
-            (code + 0x6E, shouldIgnoreShulvaSpikesFlag, 7, 0x6E + 2),
-            (code + 0xA1, wetPoisonFlag, 7, 0xA1 + 2),
-            (code + 0xAA, auxCheckFlag, 7, 0xAA + 2),
-            (code + 0xD2, hit, 6, 0xD2 + 2),
-            (code + 0xDF, Hooks.Hit + 5, 5, 0xDF + 1)
+            (code + 0x44, MapId, 10, 0x44 + 2),
+            (code + 0x50, shouldIgnoreShulvaSpikesFlag, 7, 0x50 + 2),
+            (code + 0x83, wetPoisonFlag, 7, 0x83 + 2),
+            (code + 0x8C, auxCheckFlag, 7, 0x8C + 2),
+            (code + 0xB4, hit, 6, 0xB4 + 2),
+            (code + 0xC1, Hooks.Hit + 5, 5, 0xC1 + 1)
         ]);
 
         memoryService.WriteBytes(code, bytes);
@@ -216,7 +200,6 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
     private void InstallVanillaHooks()
     {
         WriteVanillaPlayerDeadCheck();
-        WriteVanillaHasIframesCheck();
 
         InstallVanillaHitHook();
         InstallVanillaCountAuxHook();
@@ -235,13 +218,6 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         memoryService.WriteBytes(code, bytes);
     }
 
-    private void WriteVanillaHasIframesCheck()
-    {
-        var code = Base + HasIframes;
-        var bytes = AsmLoader.GetAsmBytes(AsmScript.VanillaHasIframes);
-        memoryService.WriteBytes(code, bytes);
-    }
-
     private void InstallVanillaHitHook()
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.VanillaHit);
@@ -251,25 +227,23 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         var wetPoisonFlag = Base + WetPoisonFlag;
         var shouldIgnoreShulvaSpikesFlag = Base + ShouldIgnoreShulvaSpikesFlag;
         var checkPlayerDeadFunc = Base + CheckPlayerDead;
-        var hasIframesFunc = Base + HasIframes;
-        
+
         var code = Base + HitCode;
 
         AsmHelper.WriteImmediateDwords(bytes, [
             ((int)auxCheckFlag, 2),
             ((int)GameManagerImp.Base, 0x24 + 2),
-            ((int)MapId, 0x64 + 2),
-            ((int)shouldIgnoreShulvaSpikesFlag, 0x70 + 2),
-            ((int)wetPoisonFlag, 0xAC + 2),
-            ((int)auxCheckFlag, 0xB5 + 2),
-            ((int)hit, 0xE4 + 2)
+            ((int)MapId, 0x42 + 2),
+            ((int)shouldIgnoreShulvaSpikesFlag, 0x4E + 2),
+            ((int)wetPoisonFlag, 0x8A + 2),
+            ((int)auxCheckFlag, 0x93 + 2),
+            ((int)hit, 0xC2 + 2)
         ]);
 
 
         AsmHelper.WriteRelativeOffsets(bytes, [
             (code + 0x8, checkPlayerDeadFunc, 5, 0x8 + 1),
-            (code + 0x45, hasIframesFunc, 5, 0x45 + 1),
-            (code + 0xF2, Hooks.Hit + 6, 5, 0xF2 + 1)
+            (code + 0xD0, Hooks.Hit + 6, 5, 0xD0 + 1)
         ]);
 
         memoryService.WriteBytes(code, bytes);
