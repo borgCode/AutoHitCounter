@@ -140,6 +140,14 @@
     <Compile Include="Enums\OverlayGroupProgressMode.cs" />
     <Compile Include="Enums\State.cs" />
     <Compile Include="Enums\ThemeMode.cs" />
+    <Compile Include="Games\BB\BBCustomCodeOffsets.cs" />
+    <Compile Include="Games\BB\BBEmevdEventService.cs" />
+    <Compile Include="Games\BB\BBEventService.cs" />
+    <Compile Include="Games\BB\BBHitService.cs" />
+    <Compile Include="Games\BB\BBModule.cs" />
+    <Compile Include="Games\BB\BBOffsets.cs" />
+    <Compile Include="Games\BB\BBRunStartService.cs" />
+    <Compile Include="Games\BB\BBSettingsService.cs" />
     <Compile Include="Games\DS2\DS2EventService.cs" />
     <Compile Include="Games\DS2\DS2HitService.cs" />
     <Compile Include="Games\DS2\DS2IgtService.cs" />

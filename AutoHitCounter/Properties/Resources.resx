@@ -3048,4 +3048,454 @@ c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # d9 &lt;finish&gt;
 0000000000d9 &lt;finish&gt;:
 c3                      ret</value>
   </data>
+  <data name="BBIsPlayerDead" xml:space="preserve">
+    <value>48 a1 00 00 00 00 00    movabs rax,ds:0x0
+00 00 00
+48 85 c0                test   rax,rax
+74 26                   je     35 &lt;dead&gt;
+48 8b 40 60             mov    rax,QWORD PTR [rax+0x60]
+48 85 c0                test   rax,rax
+74 1d                   je     35 &lt;dead&gt;
+48 8b 80 b0 03 00 00    mov    rax,QWORD PTR [rax+0x3b0]
+48 85 c0                test   rax,rax
+74 11                   je     35 &lt;dead&gt;
+48 8b 40 20             mov    rax,QWORD PTR [rax+0x20]
+48 85 c0                test   rax,rax
+74 08                   je     35 &lt;dead&gt;
+83 b8 f8 00 00 00 00    cmp    DWORD PTR [rax+0xf8],0x0
+c3                      ret
+
+0000000000000035 &lt;dead&gt;:
+31 c0                   xor    eax,eax
+c3                      ret</value>
+  </data>
+  <data name="BBReadThrowState" xml:space="preserve">
+    <value>48 8b 80 b0 03 00 00    mov    rax,QWORD PTR [rax+0x3b0]
+48 85 c0                test   rax,rax
+74 1a                   je     26 &lt;none&gt;
+48 8b 80 88 00 00 00    mov    rax,QWORD PTR [rax+0x88]
+48 85 c0                test   rax,rax
+74 0e                   je     26 &lt;none&gt;
+48 8b 40 28             mov    rax,QWORD PTR [rax+0x28]
+48 85 c0                test   rax,rax
+74 05                   je     26 &lt;none&gt;
+0f b6 40 20             movzx  eax,BYTE PTR [rax+0x20]
+c3                      ret
+
+0000000000000026 &lt;none&gt;:
+31 c0                   xor    eax,eax
+c3                      ret</value>
+  </data>
+  <data name="BBHasItem" xml:space="preserve">
+    <value>51                      push   rcx
+52                      push   rdx
+56                      push   rsi
+57                      push   rdi
+41 50                   push   r8
+89 c2                   mov    edx,eax
+48 a1 00 00 00 00 00    movabs rax,ds:0x0
+00 00 00
+48 85 c0                test   rax,rax
+74 2d                   je     44 &lt;none&gt;
+48 8b 40 08             mov    rax,QWORD PTR [rax+0x8]
+48 85 c0                test   rax,rax
+74 24                   je     44 &lt;none&gt;
+48 8d b8 28 03 00 00    lea    rdi,[rax+0x328]
+be 00 00 00 40          mov    esi,0x40000000
+48 b8 00 00 00 00 00    movabs rax,0x0
+00 00 00
+ff d0                   call   rax
+83 f8 ff                cmp    eax,0xffffffff
+74 07                   je     44 &lt;none&gt;
+b8 01 00 00 00          mov    eax,0x1
+eb 02                   jmp    46 &lt;done&gt;
+
+0000000000000044 &lt;none&gt;:
+31 c0                   xor    eax,eax
+
+0000000000000046 &lt;done&gt;:
+41 58                   pop    r8
+5f                      pop    rdi
+5e                      pop    rsi
+5a                      pop    rdx
+59                      pop    rcx
+85 c0                   test   eax,eax
+c3                      ret</value>
+  </data>
+  <data name="BBProcessHit" xml:space="preserve">
+    <value>48 83 ec 10             sub    rsp,0x10
+48 c7 04 24 00 00 00    mov    QWORD PTR [rsp],0x0
+00 
+48 a1 00 00 00 00 00    movabs rax,ds:0x0
+00 00 00 
+48 85 c0                test   rax,rax
+74 78                   je     93 &lt;call_original&gt;
+48 8b 40 60             mov    rax,QWORD PTR [rax+0x60]
+48 85 c0                test   rax,rax
+74 6f                   je     93 &lt;call_original&gt;
+4c 39 f8                cmp    rax,r15
+74 6a                   je     93 &lt;call_original&gt;
+49 3b 46 08             cmp    rax,QWORD PTR [r14+0x8]
+75 64                   jne    93 &lt;call_original&gt;
+e8 00 00 00 00          call   34 &lt;_main+0x34&gt;
+74 5d                   je     93 &lt;call_original&gt;
+8b 43 3c                mov    eax,DWORD PTR [rbx+0x3c]
+3d 88 3d 08 00          cmp    eax,0x83d88
+74 53                   je     93 &lt;call_original&gt;
+3d 7a 17 00 00          cmp    eax,0x177a
+74 4c                   je     93 &lt;call_original&gt;
+3d 84 17 00 00          cmp    eax,0x1784
+74 45                   je     93 &lt;call_original&gt;
+3d de 17 00 00          cmp    eax,0x17de
+74 3e                   je     93 &lt;call_original&gt;
+44 8d 98 f0 e7 ff ff    lea    r11d,[rax-0x1810]
+41 83 fb 07             cmp    r11d,0x7
+76 31                   jbe    93 &lt;call_original&gt;
+89 44 24 04             mov    DWORD PTR [rsp+0x4],eax
+49 8b 46 08             mov    rax,QWORD PTR [r14+0x8]
+e8 00 00 00 00          call   6f &lt;_main+0x6f&gt;
+85 c0                   test   eax,eax
+75 20                   jne    93 &lt;call_original&gt;
+c6 04 24 01             mov    BYTE PTR [rsp],0x1
+83 3b 00                cmp    DWORD PTR [rbx],0x0
+7f 12                   jg     8e &lt;has_damage&gt;
+83 7b 04 00             cmp    DWORD PTR [rbx+0x4],0x0
+7f 0c                   jg     8e &lt;has_damage&gt;
+83 7b 08 00             cmp    DWORD PTR [rbx+0x8],0x0
+7f 06                   jg     8e &lt;has_damage&gt;
+83 7b 0c 00             cmp    DWORD PTR [rbx+0xc],0x0
+7e 05                   jle    93 &lt;call_original&gt;
+
+000000000000008e &lt;has_damage&gt;:
+c6 44 24 01 01          mov    BYTE PTR [rsp+0x1],0x1
+
+0000000000000093 &lt;call_original&gt;:
+4c 89 f7                mov    rdi,r14
+4c 89 fe                mov    rsi,r15
+48 89 da                mov    rdx,rbx
+48 b8 00 00 00 00 00    movabs rax,0x0
+00 00 00 
+ff d0                   call   rax
+80 3c 24 01             cmp    BYTE PTR [rsp],0x1
+75 66                   jne    114 &lt;done&gt;
+49 8b 46 08             mov    rax,QWORD PTR [r14+0x8]
+e8 00 00 00 00          call   b7 &lt;call_original+0x24&gt;
+83 f8 02                cmp    eax,0x2
+75 29                   jne    e5 &lt;check_damage&gt;
+81 7c 24 04 34 d8 07    cmp    DWORD PTR [rsp+0x4],0x7d834
+00 
+75 07                   jne    cd &lt;check_lecture_grab&gt;
+b8 d7 10 00 00          mov    eax,0x10d7
+eb 0f                   jmp    dc &lt;check_item&gt;
+
+00000000000000cd &lt;check_lecture_grab&gt;:
+81 7c 24 04 fc d8 07    cmp    DWORD PTR [rsp+0x4],0x7d8fc
+00 
+75 37                   jne    10e &lt;count&gt;
+b8 d6 10 00 00          mov    eax,0x10d6
+
+00000000000000dc &lt;check_item&gt;:
+e8 00 00 00 00          call   e1 &lt;check_item+0x5&gt;
+75 31                   jne    114 &lt;done&gt;
+eb 29                   jmp    10e &lt;count&gt;
+
+00000000000000e5 &lt;check_damage&gt;:
+80 7c 24 01 01          cmp    BYTE PTR [rsp+0x1],0x1
+74 22                   je     10e &lt;count&gt;
+49 8b 46 08             mov    rax,QWORD PTR [r14+0x8]
+48 8b 80 b0 03 00 00    mov    rax,QWORD PTR [rax+0x3b0]
+48 85 c0                test   rax,rax
+74 18                   je     114 &lt;done&gt;
+48 8b 40 08             mov    rax,QWORD PTR [rax+0x8]
+48 85 c0                test   rax,rax
+74 0f                   je     114 &lt;done&gt;
+83 b8 94 01 00 00 00    cmp    DWORD PTR [rax+0x194],0x0
+74 06                   je     114 &lt;done&gt;
+
+000000000000010e &lt;count&gt;:
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 114 &lt;done&gt;
+
+0000000000000114 &lt;done&gt;:
+48 83 c4 10             add    rsp,0x10
+ff 25 00 00 00 00       jmp    QWORD PTR [rip+0x0]        # 11e &lt;done+0xa&gt;
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al</value>
+  </data>
+  <data name="BBApplySpEffectAndProcessStatus" xml:space="preserve">
+    <value>48 a1 00 00 00 00 00    movabs rax,ds:0x0
+00 00 00 
+48 85 c0                test   rax,rax
+0f 84 b5 00 00 00       je     c8 &lt;original&gt;
+4c 8b 58 60             mov    r11,QWORD PTR [rax+0x60]
+4d 85 db                test   r11,r11
+0f 84 a8 00 00 00       je     c8 &lt;original&gt;
+4c 39 df                cmp    rdi,r11
+0f 85 9f 00 00 00       jne    c8 &lt;original&gt;
+48 85 d2                test   rdx,rdx
+0f 84 96 00 00 00       je     c8 &lt;original&gt;
+e8 00 00 00 00          call   37 &lt;_main+0x37&gt;
+0f 84 8b 00 00 00       je     c8 &lt;original&gt;
+4c 89 d8                mov    rax,r11
+e8 00 00 00 00          call   45 &lt;_main+0x45&gt;
+85 c0                   test   eax,eax
+75 7f                   jne    c8 &lt;original&gt;
+4c 39 da                cmp    rdx,r11
+75 0d                   jne    5b &lt;check_bind&gt;
+8d 86 56 eb ff ff       lea    eax,[rsi-0x14aa]
+83 f8 06                cmp    eax,0x6
+77 6f                   ja     c8 &lt;original&gt;
+eb 13                   jmp    6e &lt;track&gt;
+
+000000000000005b &lt;check_bind&gt;:
+8d 86 48 fe ff ff       lea    eax,[rsi-0x1b8]
+83 f8 05                cmp    eax,0x5
+77 08                   ja     6e &lt;track&gt;
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 6c &lt;check_bind+0x11&gt;
+eb 5a                   jmp    c8 &lt;original&gt;
+
+000000000000006e &lt;track&gt;:
+48 83 ec 18             sub    rsp,0x18
+48 8b 44 24 20          mov    rax,QWORD PTR [rsp+0x20]
+48 89 04 24             mov    QWORD PTR [rsp],rax
+48 89 7c 24 08          mov    QWORD PTR [rsp+0x8],rdi
+e8 43 00 00 00          call   c8 &lt;original&gt;
+48 89 44 24 10          mov    QWORD PTR [rsp+0x10],rax
+48 8b 44 24 08          mov    rax,QWORD PTR [rsp+0x8]
+e8 00 00 00 00          call   94 &lt;track+0x26&gt;
+85 c0                   test   eax,eax
+75 26                   jne    be &lt;done&gt;
+48 8b 44 24 08          mov    rax,QWORD PTR [rsp+0x8]
+48 8b 80 b0 03 00 00    mov    rax,QWORD PTR [rax+0x3b0]
+48 85 c0                test   rax,rax
+74 15                   je     be &lt;done&gt;
+48 8b 40 28             mov    rax,QWORD PTR [rax+0x28]
+48 85 c0                test   rax,rax
+74 0c                   je     be &lt;done&gt;
+83 78 4c 00             cmp    DWORD PTR [rax+0x4c],0x0
+74 06                   je     be &lt;done&gt;
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # be &lt;done&gt;
+
+00000000000000be &lt;done&gt;:
+48 8b 44 24 10          mov    rax,QWORD PTR [rsp+0x10]
+48 83 c4 18             add    rsp,0x18
+c3                      ret
+
+00000000000000c8 &lt;original&gt;:
+55                      push   rbp
+48 89 e5                mov    rbp,rsp
+41 57                   push   r15
+41 56                   push   r14
+41 55                   push   r13
+41 54                   push   r12
+53                      push   rbx
+48 83 ec 48             sub    rsp,0x48
+ff 25 00 00 00 00       jmp    QWORD PTR [rip+0x0]        # df &lt;original+0x17&gt;
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al</value>
+  </data>
+  <data name="BBKillBox" xml:space="preserve">
+    <value>48 a1 00 00 00 00 00    movabs rax,ds:0x0
+00 00 00 
+48 85 c0                test   rax,rax
+74 55                   je     64 &lt;original&gt;
+48 8b 40 60             mov    rax,QWORD PTR [rax+0x60]
+48 39 c7                cmp    rdi,rax
+75 4c                   jne    64 &lt;original&gt;
+e8 00 00 00 00          call   1d &lt;_main+0x1d&gt;
+74 45                   je     64 &lt;original&gt;
+48 85 f6                test   rsi,rsi
+74 40                   je     64 &lt;original&gt;
+48 8b 46 18             mov    rax,QWORD PTR [rsi+0x18]
+48 85 c0                test   rax,rax
+74 37                   je     64 &lt;original&gt;
+48 8b 80 88 00 00 00    mov    rax,QWORD PTR [rax+0x88]
+48 85 c0                test   rax,rax
+74 2b                   je     64 &lt;original&gt;
+4c 8b 5e 20             mov    r11,QWORD PTR [rsi+0x20]
+4d 85 db                test   r11,r11
+74 22                   je     64 &lt;original&gt;
+83 38 03                cmp    DWORD PTR [rax],0x3
+72 09                   jb     50 &lt;old_layout&gt;
+49 8b 83 b8 00 00 00    mov    rax,QWORD PTR [r11+0xb8]
+eb 04                   jmp    54 &lt;check_type&gt;
+
+0000000000000050 &lt;old_layout&gt;:
+49 8b 43 70             mov    rax,QWORD PTR [r11+0x70]
+
+0000000000000054 &lt;check_type&gt;:
+48 85 c0                test   rax,rax
+74 0b                   je     64 &lt;original&gt;
+80 38 0f                cmp    BYTE PTR [rax],0xf
+75 06                   jne    64 &lt;original&gt;
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 64 &lt;original&gt;
+
+0000000000000064 &lt;original&gt;:
+55                      push   rbp
+48 89 e5                mov    rbp,rsp
+41 57                   push   r15
+41 56                   push   r14
+53                      push   rbx
+50                      push   rax
+48 89 fb                mov    rbx,rdi
+48 85 f6                test   rsi,rsi
+ff 25 00 00 00 00       jmp    QWORD PTR [rip+0x0]        # 7a &lt;original+0x16&gt;
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al</value>
+  </data>
+  <data name="BBLandingHpCheck" xml:space="preserve">
+    <value>c5 fa 11 55 b4          vmovss DWORD PTR [rbp-0x4c],xmm2
+89 4d a4                mov    DWORD PTR [rbp-0x5c],ecx
+29 d3                   sub    ebx,edx
+85 db                   test   ebx,ebx
+7f 31                   jg     3f &lt;not_lethal&gt;
+48 a1 00 00 00 00 00    movabs rax,ds:0x0
+00 00 00 
+48 85 c0                test   rax,rax
+74 14                   je     31 &lt;lethal&gt;
+48 8b 40 60             mov    rax,QWORD PTR [rax+0x60]
+48 85 c0                test   rax,rax
+74 0b                   je     31 &lt;lethal&gt;
+48 3b 07                cmp    rax,QWORD PTR [rdi]
+75 06                   jne    31 &lt;lethal&gt;
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 31 &lt;lethal&gt;
+
+0000000000000031 &lt;lethal&gt;:
+ff 25 00 00 00 00       jmp    QWORD PTR [rip+0x0]        # 37 &lt;lethal+0x6&gt;
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+
+000000000000003f &lt;not_lethal&gt;:
+ff 25 00 00 00 00       jmp    QWORD PTR [rip+0x0]        # 45 &lt;not_lethal+0x6&gt;
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al</value>
+  </data>
+  <data name="BBSpEffectHpCheck" xml:space="preserve">
+    <value>44 8b ab f8 00 00 00    mov    r13d,DWORD PTR [rbx+0xf8]
+45 01 f5                add    r13d,r14d
+45 85 ed                test   r13d,r13d
+7f 3f                   jg     4e &lt;not_lethal&gt;
+45 85 f6                test   r14d,r14d
+79 2c                   jns    40 &lt;lethal&gt;
+41 83 7c 24 08 00       cmp    DWORD PTR [r12+0x8],0x0
+7e 24                   jle    40 &lt;lethal&gt;
+48 a1 00 00 00 00 00    movabs rax,ds:0x0
+00 00 00 
+48 85 c0                test   rax,rax
+74 15                   je     40 &lt;lethal&gt;
+48 8b 40 60             mov    rax,QWORD PTR [rax+0x60]
+48 85 c0                test   rax,rax
+74 0c                   je     40 &lt;lethal&gt;
+49 3b 04 24             cmp    rax,QWORD PTR [r12]
+75 06                   jne    40 &lt;lethal&gt;
+ff 05 00 00 00 00       inc    DWORD PTR [rip+0x0]        # 40 &lt;lethal&gt;
+
+0000000000000040 &lt;lethal&gt;:
+ff 25 00 00 00 00       jmp    QWORD PTR [rip+0x0]        # 46 &lt;lethal+0x6&gt;
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+
+000000000000004e &lt;not_lethal&gt;:
+ff 25 00 00 00 00       jmp    QWORD PTR [rip+0x0]        # 54 &lt;not_lethal+0x6&gt;
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al</value>
+  </data>
+  <data name="BBEventLog" xml:space="preserve">
+    <value>8b 05 00 00 00 00       mov    eax,DWORD PTR [rip+0x0]        # 6 &lt;_main+0x6&gt;
+41 89 c2                mov    r10d,eax
+6b c0 05                imul   eax,eax,0x5
+4c 8d 1d 00 00 00 00    lea    r11,[rip+0x0]        # 13 &lt;_main+0x13&gt;
+49 01 c3                add    r11,rax
+41 89 33                mov    DWORD PTR [r11],esi
+85 d2                   test   edx,edx
+41 0f 95 43 04          setne  BYTE PTR [r11+0x4]
+41 ff c2                inc    r10d
+41 81 e2 ff 01 00 00    and    r10d,0x1ff
+44 89 15 00 00 00 00    mov    DWORD PTR [rip+0x0],r10d        # 31 &lt;_main+0x31&gt;
+41 89 d0                mov    r8d,edx
+8b 4f 1c                mov    ecx,DWORD PTR [rdi+0x1c]
+31 d2                   xor    edx,edx
+89 f0                   mov    eax,esi
+f7 f1                   div    ecx
+41 89 c1                mov    r9d,eax
+ff 25 00 00 00 00       jmp    QWORD PTR [rip+0x0]        # 46 &lt;_main+0x46&gt;
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al</value>
+  </data>
+  <data name="BBEvents" xml:space="preserve">
+    <value>BossName,DeathFlag
+Cleric Beast,12411700
+Father Gascoigne,12411800
+Blood-starved Beast,12301800
+Vicar Amelia,12401800
+Witch of Hemwick,12201800
+Darkbeast Paarl,12301700
+Shadow of Yharnam,12701800
+Martyr Logarius,12501800
+"Rom, the Vacuous Spider",13201800
+The One Reborn,12801800
+Celestial Emissary,12421700
+"Ebrietas, Daughter of the Cosmos",12421800
+Amygdala,13301800
+"Micolash, Host of the Nightmare",12601850
+Mergo's Wet Nurse,12601800
+"Gehrman, the First Hunter",12101800
+Moon Presence,12101850
+"Ludwig, the Accursed / the Holy Blade",13401800
+"Laurence, the First Vicar",13401850
+Living Failures,13501850
+Lady Maria of the Astral Clocktower,13501800
+Orphan of Kos,13601800
+Chalice layer 1 boss,12901800
+Chalice layer 2 boss,12901801
+Chalice layer 3 boss,12901802
+Chalice layer 4 boss,12901803</value>
+  </data>
+  <data name="BBEmevdEventLog" xml:space="preserve">
+    <value>47 8d 14 06             lea    r10d,[r14+r8*1]
+8b 05 00 00 00 00       mov    eax,DWORD PTR [rip+0x0]        # a &lt;_main+0xa&gt;
+4c 8d 1c 80             lea    r11,[rax+rax*4]
+48 8d 35 00 00 00 00    lea    rsi,[rip+0x0]        # 15 &lt;_main+0x15&gt;
+49 01 f3                add    r11,rsi
+45 89 13                mov    DWORD PTR [r11],r10d
+41 c6 43 04 01          mov    BYTE PTR [r11+0x4],0x1
+ff c0                   inc    eax
+25 ff 01 00 00          and    eax,0x1ff
+89 05 00 00 00 00       mov    DWORD PTR [rip+0x0],eax        # 2d &lt;_main+0x2d&gt;
+44 89 f0                mov    eax,r14d
+c1 e8 03                shr    eax,0x3
+41 f7 d6                not    r14d
+41 80 e6 07             and    r14b,0x7
+be 01 00 00 00          mov    esi,0x1
+ff 25 00 00 00 00       jmp    QWORD PTR [rip+0x0]        # 45 &lt;_main+0x45&gt;
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al</value>
+  </data>
+  <data name="BBRunStart" xml:space="preserve">
+    <value>c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 7 &lt;_main+0x7&gt;
+c7 43 0c 06 00 00 00    mov    DWORD PTR [rbx+0xc],0x6
+c6 83 c0 01 00 00 01    mov    BYTE PTR [rbx+0x1c0],0x1
+ff 25 00 00 00 00       jmp    QWORD PTR [rip+0x0]        # 1b &lt;_main+0x1b&gt;
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al
+00 00                   add    BYTE PTR [rax],al</value>
+  </data>
 </root>

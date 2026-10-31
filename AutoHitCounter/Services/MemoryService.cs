@@ -1,5 +1,6 @@
 ﻿//
 
+using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -118,6 +119,36 @@ namespace AutoHitCounter.Services
             return 0;
         }
 
+        public nint FindAllocationStartingWith(byte[] signature)
+        {
+            var mbiSize = (uint)Marshal.SizeOf<Kernel32.MemoryBasicInformation>();
+            long address = 0;
+
+            while (Kernel32.VirtualQueryEx(ProcessHandle, (nint)address, out var mbi, mbiSize) != 0)
+            {
+                if (mbi.State == Kernel32.MemCommit && mbi.BaseAddress == mbi.AllocationBase && IsReadable(mbi.Protect)
+                    && ReadBytes(mbi.BaseAddress, signature.Length).AsSpan().SequenceEqual(signature))
+                    return mbi.BaseAddress;
+
+                var next = (long)mbi.BaseAddress + (long)mbi.RegionSize;
+                if (next <= address) break;
+                address = next;
+            }
+
+            return 0;
+        }
+
+        public bool IsExecutable(nint address)
+        {
+            var mbiSize = (uint)Marshal.SizeOf<Kernel32.MemoryBasicInformation>();
+            return Kernel32.VirtualQueryEx(ProcessHandle, address, out var mbi, mbiSize) != 0
+                   && mbi.State == Kernel32.MemCommit
+                   && (mbi.Protect & Kernel32.PageExecuteAny) != 0;
+        }
+
+        private static bool IsReadable(uint protect) =>
+            (protect & Kernel32.PageGuard) == 0 && (protect & 0xFF) is not (0 or Kernel32.PageNoAccess);
+
         public nint GetProcAddress(string moduleName, string procName)
         {
             nint moduleHandle = Kernel32.GetModuleHandle(moduleName);
@@ -129,15 +160,15 @@ namespace AutoHitCounter.Services
             return Kernel32.GetProcAddress(moduleHandle, procName);
         }
 
-        public void StartAutoAttach(string processName)
+        public void StartAutoAttach(string[] processNames)
         {
             StopAutoAttach();
 
             _autoAttachTimer = new Timer(AttachCheckInterval);
-            _autoAttachTimer.Elapsed += (sender, e) => RefreshAttachment(processName);
+            _autoAttachTimer.Elapsed += (sender, e) => RefreshAttachment(processNames);
             _autoAttachTimer.Start();
 
-            RefreshAttachment(processName);
+            RefreshAttachment(processNames);
         }
 
         public void StopAutoAttach()
@@ -155,7 +186,7 @@ namespace AutoHitCounter.Services
             }
         }
 
-        private void RefreshAttachment(string processName)
+        private void RefreshAttachment(string[] processNames)
         {
             lock (_attachLock)
             {
@@ -169,7 +200,7 @@ namespace AutoHitCounter.Services
                     return;
                 }
 
-                var processes = Process.GetProcessesByName(processName);
+                var processes = FindProcesses(processNames);
                 try
                 {
                     if (processes.Length == 0 || processes[0].HasExited)
@@ -207,6 +238,20 @@ namespace AutoHitCounter.Services
                     }
                 }
             }
+        }
+
+        private static Process[] FindProcesses(string[] processNames)
+        {
+            foreach (var processName in processNames)
+            {
+                var processes = Process.GetProcessesByName(processName);
+                if (processes.Length > 0)
+                {
+                    return processes;
+                }
+            }
+
+            return [];
         }
 
         private void Detach()

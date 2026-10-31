@@ -3418,5 +3418,101 @@
         }
       ]
     }
+  ],
+  "Bloodborne": [
+    {
+      "Name": "Any%",
+      "GameName": "Bloodborne",
+      "Splits": [
+        {
+          "EventId": 12411800,
+          "Name": "Father Gascoigne",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Father Gascoigne",
+          "IsAuto": true
+        },
+        {
+          "EventId": 12301800,
+          "Name": "Blood-starved Beast",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Blood-starved Beast",
+          "IsAuto": true
+        },
+        {
+          "EventId": 12401800,
+          "Name": "Vicar Amelia",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Vicar Amelia",
+          "IsAuto": true
+        },
+        {
+          "EventId": 12701800,
+          "Name": "Shadow of Yharnam",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Shadow of Yharnam",
+          "IsAuto": true
+        },
+        {
+          "EventId": 13201800,
+          "Name": "Rom, the Vacuous Spider",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Rom, the Vacuous Spider",
+          "IsAuto": true
+        },
+        {
+          "EventId": 12801800,
+          "Name": "The One Reborn",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "The One Reborn",
+          "IsAuto": true
+        },
+        {
+          "EventId": 12601850,
+          "Name": "Micolash, Host of the Nightmare",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Micolash, Host of the Nightmare",
+          "IsAuto": true
+        },
+        {
+          "EventId": 12601800,
+          "Name": "Mergo's Wet Nurse",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Mergo's Wet Nurse",
+          "IsAuto": true
+        }
+      ]
+    }
   ]
 }

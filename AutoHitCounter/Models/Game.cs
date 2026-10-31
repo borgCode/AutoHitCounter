@@ -8,7 +8,7 @@ namespace AutoHitCounter.Models
     {
         public GameTitle Title { get; set; }
         public string GameName { get; set; }
-        public string ProcessName { get; set; }
+        public string[] ProcessNames { get; set; }
         public bool IsEventLogSupported { get; set; }
         public bool IsManual { get; set; }
     }

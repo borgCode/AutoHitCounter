@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoHitCounter.Enums;
+using AutoHitCounter.Games.BB;
 using AutoHitCounter.Games.DS2;
 using AutoHitCounter.Games.DS3;
 using AutoHitCounter.Games.DSR;
@@ -24,21 +25,22 @@ public class GameModuleFactory(
     HookManager hookManager,
     ITickService tickService) : IGameModuleFactory
 {
-    private class GameRegistration(string processName, string eventResource, bool isEventLogSupported)
+    private class GameRegistration(string[] processNames, string eventResource, bool isEventLogSupported)
     {
-        public string ProcessName { get; } = processName;
+        public string[] ProcessNames { get; } = processNames;
         public string EventResource { get; } = eventResource;
         public bool IsEventLogSupported { get; } = isEventLogSupported;
     }
 
     private static readonly Dictionary<GameTitle, GameRegistration> Registrations = new()
     {
-        [GameTitle.DarkSoulsRemastered] = new("darksoulsremastered", "DSREvents", true),
-        [GameTitle.DarkSouls2]          = new("darksoulsii", "DS2Events", true),
-        [GameTitle.DarkSouls3]          = new("darksoulsiii", "DS3Events", true),
-        [GameTitle.Sekiro]              = new("sekiro", "SKEvents", true),
-        [GameTitle.EldenRing]           = new("eldenring", "EldenRingEvents", true),
-        [GameTitle.Nightreign]           = new("nightreign", "NREvents", true),
+        [GameTitle.DarkSoulsRemastered] = new(["darksoulsremastered"], "DSREvents", true),
+        [GameTitle.DarkSouls2]          = new(["darksoulsii"], "DS2Events", true),
+        [GameTitle.DarkSouls3]          = new(["darksoulsiii"], "DS3Events", true),
+        [GameTitle.Sekiro]              = new(["sekiro"], "SKEvents", true),
+        [GameTitle.EldenRing]           = new(["eldenring"], "EldenRingEvents", true),
+        [GameTitle.Nightreign]          = new(["nightreign"], "NREvents", true),
+        [GameTitle.Bloodborne]          = new(["shadps4", "bb-probe"], "BBEvents", true),
     };
 
     public List<Game> GetRegisteredGames() =>
@@ -46,7 +48,7 @@ public class GameModuleFactory(
         {
             Title = r.Key,
             GameName = r.Key.GetDescription(),
-            ProcessName = r.Value.ProcessName,
+            ProcessNames = r.Value.ProcessNames,
             IsEventLogSupported = r.Value.IsEventLogSupported
         }).ToList();
 
@@ -69,7 +71,8 @@ public class GameModuleFactory(
             GameTitle.Sekiro              => new SKModule(memoryService, stateService, hookManager, tickService, events, rules),
             GameTitle.EldenRing           => new EldenRingModule(memoryService, stateService, hookManager, tickService, events),
             GameTitle.Nightreign           => new NRModule(memoryService, stateService, hookManager, tickService, events),
-            _ => throw new NotSupportedException($"No module for {game.ProcessName}")
+            GameTitle.Bloodborne          => new BBModule(memoryService, stateService, hookManager, tickService, events),
+            _ => throw new NotSupportedException($"No module for {game.Title}")
         };
     }
 }
