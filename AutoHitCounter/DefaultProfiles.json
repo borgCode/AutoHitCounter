@@ -3377,5 +3377,46 @@
       ],
       "GameSettings": {}
     }
+  ],
+  "Nightreign": [
+    {
+      "Name": "Expedition",
+      "GameName": "Nightreign",
+      "Splits": [
+        {
+          "EventId": 7502,
+          "Name": "Day 1",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Day 1",
+          "IsAuto": true
+        },
+        {
+          "EventId": 7507,
+          "Name": "Day 2",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Day 2",
+          "IsAuto": true
+        },
+        {
+          "EventId": 7512,
+          "Name": "Day 3",
+          "DisplayName": null,
+          "PersonalBest": 0,
+          "Type": 1,
+          "GroupId": null,
+          "Notes": null,
+          "Label": "Day 3",
+          "IsAuto": true
+        }
+      ]
+    }
   ]
 }

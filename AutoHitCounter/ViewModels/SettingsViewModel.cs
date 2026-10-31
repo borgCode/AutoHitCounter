@@ -123,7 +123,7 @@ public class SettingsViewModel : BaseViewModel
 
     private bool _erNoLogo;
 
-    public bool ErNoLogo
+    public bool ERNoLogo
     {
         get => _erNoLogo;
         set
@@ -289,6 +289,24 @@ public class SettingsViewModel : BaseViewModel
 
     #endregion
 
+    #region Nightreign
+
+    private bool _nrNoLogo;
+
+    public bool NRNoLogo
+    {
+        get => _nrNoLogo;
+        set
+        {
+            if (!SetProperty(ref _nrNoLogo, value)) return;
+            SettingsManager.Default.NRNoLogo = value;
+            SettingsManager.Default.Save();
+            OnGameSettingChanged?.Invoke();
+        }
+    }
+
+    #endregion
+
     #region External Integration
 
     private bool _isExternalIntegrationEnabled;
@@ -343,6 +361,7 @@ public class SettingsViewModel : BaseViewModel
         ApplyDS3Settings();
         ApplySKSettings();
         ApplyDS2Settings();
+        ApplyNRSettings();
 
         IsAlwaysOnTopEnabled = SettingsManager.Default.AlwaysOnTop;
 
@@ -375,7 +394,7 @@ public class SettingsViewModel : BaseViewModel
     private void ApplyERSettings()
     {
         _erNoLogo = SettingsManager.Default.ERNoLogo;
-        OnPropertyChanged(nameof(ErNoLogo));
+        OnPropertyChanged(nameof(ERNoLogo));
 
         _erStutterFix = SettingsManager.Default.ERStutterFix;
         OnPropertyChanged(nameof(ERStutterFix));
@@ -415,6 +434,12 @@ public class SettingsViewModel : BaseViewModel
 
         _ds2DisableDoubleClick = SettingsManager.Default.DS2DisableDoubleClick;
         OnPropertyChanged(nameof(DS2DisableDoubleClick));
+    }
+    
+    private void ApplyNRSettings()
+    {
+        _nrNoLogo = SettingsManager.Default.NRNoLogo;
+        OnPropertyChanged(nameof(NRNoLogo));
     }
 
     #endregion

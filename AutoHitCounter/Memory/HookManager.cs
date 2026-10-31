@@ -14,24 +14,40 @@ namespace AutoHitCounter.Memory
             public nint OriginAddr { get; set; }
             public nint CaveAddr { get; set; }
             public byte[] OriginalBytes { get; set; }
+            public byte[] HookBytes { get; set; }
         }
 
         public void InstallHook(nint codeLoc, nint origin, byte[] originalBytes)
+            => InstallHook(codeLoc, origin, originalBytes, 0xE9);
+
+        public void InstallCallHook(nint codeLoc, nint origin, byte[] originalBytes)
+            => InstallHook(codeLoc, origin, originalBytes, 0xE8);
+
+        private void InstallHook(nint codeLoc, nint origin, byte[] originalBytes, byte opcode)
         {
-            byte[] hookBytes = GetHookBytes(originalBytes.Length, codeLoc, origin);
+            byte[] hookBytes = GetHookBytes(originalBytes.Length, codeLoc, origin, opcode);
             memoryService.WriteBytes(origin, hookBytes);
             _hookRegistry[codeLoc] = new HookData
             {
                 CaveAddr = codeLoc,
                 OriginAddr = origin,
-                OriginalBytes = originalBytes
+                OriginalBytes = originalBytes,
+                HookBytes = hookBytes
             };
         }
 
-        private byte[] GetHookBytes(int originalBytesLength, nint target, nint origin)
+        public bool IsHookInstalled(nint codeLoc)
+        {
+            if (!_hookRegistry.TryGetValue(codeLoc, out HookData hook)) return false;
+
+            var current = memoryService.ReadBytes(hook.OriginAddr, hook.HookBytes.Length);
+            return current.SequenceEqual(hook.HookBytes);
+        }
+
+        private byte[] GetHookBytes(int originalBytesLength, nint target, nint origin, byte opcode)
         {
             byte[] hookBytes = new byte[originalBytesLength];
-            hookBytes[0] = 0xE9;
+            hookBytes[0] = opcode;
 
             int jumpOffset = (int)(target - (origin + 5));
             byte[] offsetBytes = BitConverter.GetBytes(jumpOffset);

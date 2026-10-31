@@ -175,6 +175,14 @@
     <Compile Include="Games\ER\EldenRingRunStartService.cs" />
     <Compile Include="Games\ER\EldenRingSettingsService.cs" />
     <Compile Include="Games\ER\EldenRingVersion.cs" />
+    <Compile Include="Games\NR\NRCustomCodeOffsets.cs" />
+    <Compile Include="Games\NR\NREventService.cs" />
+    <Compile Include="Games\NR\NRHitService.cs" />
+    <Compile Include="Games\NR\NRModule.cs" />
+    <Compile Include="Games\NR\NROffsets.cs" />
+    <Compile Include="Games\NR\NRPatterns.cs" />
+    <Compile Include="Games\NR\NRSettingsService.cs" />
+    <Compile Include="Games\NR\NRVersion.cs" />
     <Compile Include="Games\SK\SKCustomCodeOffsets.cs" />
     <Compile Include="Games\SK\SKEventService.cs" />
     <Compile Include="Games\SK\SKHitService.cs" />

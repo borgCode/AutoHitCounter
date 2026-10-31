@@ -20,6 +20,9 @@ public enum GameTitle
 
     [Description("Elden Ring")]
     EldenRing,
+    
+    [Description("Nightreign")]
+    Nightreign,
 
     [Description("Manual")]
     Manual,

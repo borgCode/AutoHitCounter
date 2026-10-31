@@ -944,6 +944,131 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 4d 85 c0                test   r8,r8
+        ///0f 84 25 01 00 00       je     12e &lt;bypass&gt;
+        ///e8 00 00 00 00          call   e &lt;_main+0xe&gt;
+        ///0f 84 1a 01 00 00       je     12e &lt;bypass&gt;
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 1b &lt;_main+0x1b&gt;
+        ///48 85 c0                test   rax,rax
+        ///0f 84 0a 01 00 00       je     12e &lt;bypass&gt;
+        ///48 8b 80 00 00 00 00    mov    rax,QWORD PTR [rax+0x0]
+        ///48 85 c0                test   rax,rax
+        ///0f 84 fa 00 00 00       je     12e &lt;bypass&gt;
+        ///48 39 c1                cmp     [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string NRApplySpEffectAndProcessStatus {
+            get {
+                return ResourceManager.GetString("NRApplySpEffectAndProcessStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 48 83 ec 28             sub    rsp,0x28
+        ///48 8b 44 24 50          mov    rax,QWORD PTR [rsp+0x50]
+        ///48 89 44 24 20          mov    QWORD PTR [rsp+0x20],rax
+        ///e8 00 00 00 00          call   13 &lt;_main+0x13&gt;
+        ///48 83 c4 28             add    rsp,0x28
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 1e &lt;_main+0x1e&gt;
+        ///48 85 c0                test   rax,rax
+        ///0f 84 b2 00 00 00       je     d9 &lt;finish&gt;
+        ///48 8b 80 00 00 00 00    mov    rax,QWORD PTR [rax+0x0]
+        ///48 85 c0                test   rax,rax
+        ///0f 84 a [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string NRCalcSpEffectMultipliers {
+            get {
+                return ResourceManager.GetString("NRCalcSpEffectMultipliers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 7 &lt;_main+0x7&gt;
+        ///48 85 c0                test   rax,rax
+        ///74 14                   je     20 &lt;original&gt;
+        ///48 8b 80 00 00 00 00    mov    rax,QWORD PTR [rax+0x0]
+        ///48 3b 41 10             cmp    rax,QWORD PTR [rcx+0x10]
+        ///75 07                   jne    20 &lt;original&gt;
+        ///c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 20 &lt;original&gt;
+        ///
+        ///000000000020 &lt;original&gt;:
+        ///53                      push   rbx
+        ///48 83 ec 30             sub    rsp,0x30
+        ///e9 00 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string NRClearThrowState {
+            get {
+                return ResourceManager.GetString("NRClearThrowState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Day,EventFlag
+        ///Day 1,7502
+        ///Day 2,7507
+        ///Day 3,7512.
+        /// </summary>
+        internal static string NREvents {
+            get {
+                return ResourceManager.GetString("NREvents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 7 &lt;_main+0x7&gt;
+        ///48 85 c0                test   rax,rax
+        ///74 28                   je     34 &lt;dead&gt;
+        ///48 8b 80 00 00 00 00    mov    rax,QWORD PTR [rax+0x0]
+        ///48 85 c0                test   rax,rax
+        ///74 1c                   je     34 &lt;dead&gt;
+        ///48 8b 80 00 00 00 00    mov    rax,QWORD PTR [rax+0x0]
+        ///48 85 c0                test   rax,rax
+        ///74 10                   je     34 &lt;dead&gt;
+        ///48 8b 00                mov    rax,QWORD PTR [rax]
+        ///48 85 c0                [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string NRIsPlayerDead {
+            get {
+                return ResourceManager.GetString("NRIsPlayerDead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 7 &lt;_main+0x7&gt;
+        ///80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # e &lt;_main+0xe&gt;
+        ///0f 84 fe 00 00 00       je     112 &lt;bypass&gt;
+        ///e8 00 00 00 00          call   19 &lt;_main+0x19&gt;
+        ///0f 84 f3 00 00 00       je     112 &lt;bypass&gt;
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 26 &lt;_main+0x26&gt;
+        ///48 8b 80 00 00 00 00    mov    rax,QWORD PTR [rax+0x0]
+        ///48 39 d0                cmp    rax,rdx
+        ///0f 84 dc 00 00 00       je     112 &lt;bypas [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string NRProcessHit {
+            get {
+                return ResourceManager.GetString("NRProcessHit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e8 00 00 00 00          call   5 &lt;_main+0x5&gt;
+        ///74 4c                   je     53 &lt;original&gt;
+        ///85 d2                   test   edx,edx
+        ///7f 48                   jg     53 &lt;original&gt;
+        ///48 8b 41 08             mov    rax,QWORD PTR [rcx+0x8]
+        ///48 85 c0                test   rax,rax
+        ///74 3f                   je     53 &lt;original&gt;
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 1b &lt;_main+0x1b&gt;
+        ///48 85 c0                test   rax,rax
+        ///74 33                   je     53 &lt;original&gt;
+        ///48 8b 80 00 00 00 00    m [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string NRSetHealth {
+            get {
+                return ResourceManager.GetString("NRSetHealth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 50                      push   rax
         ///48 a1 00 00 00 00 00    movabs rax,ds:0x0
         ///00 00 00

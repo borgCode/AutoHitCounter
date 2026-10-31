@@ -97,7 +97,7 @@
                             </Style>
                         </StackPanel.Style>
                         <StackPanel Orientation="Horizontal">
-                            <CheckBox Content="No Logo" IsChecked="{Binding ErNoLogo}" Margin="0, 0, 5, 0" />
+                            <CheckBox Content="No Logo" IsChecked="{Binding ERNoLogo}" Margin="0, 0, 5, 0" />
                             <CheckBox Content="Stutter Fix" IsChecked="{Binding ERStutterFix}" Margin="0, 0, 5, 0" />
                             <CheckBox Content="Disable Achievements" IsChecked="{Binding ERDisableAchievements}"
                                       Margin="0, 0, 5, 0" />
@@ -158,6 +158,23 @@
                             <CheckBox Content="Skip Credits" IsChecked="{Binding DS2SkipCredits}" Margin="0, 0, 5, 0" />
                             <CheckBox Content="Disable Double Click" IsChecked="{Binding DS2DisableDoubleClick}"
                                       Margin="0, 0, 5, 0" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,0,0">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedSettingsGame}"
+                                                 Value="{x:Static enums:GameTitle.Nightreign}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="No Logo" IsChecked="{Binding NRNoLogo}" Margin="0, 0, 5, 0" />
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>

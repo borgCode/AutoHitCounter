@@ -9,6 +9,7 @@ using AutoHitCounter.Games.DS3;
 using AutoHitCounter.Games.DSR;
 using AutoHitCounter.Games.ER;
 using AutoHitCounter.Games.Manual;
+using AutoHitCounter.Games.NR;
 using AutoHitCounter.Games.SK;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
@@ -37,6 +38,7 @@ public class GameModuleFactory(
         [GameTitle.DarkSouls3]          = new("darksoulsiii", "DS3Events", true),
         [GameTitle.Sekiro]              = new("sekiro", "SKEvents", true),
         [GameTitle.EldenRing]           = new("eldenring", "EldenRingEvents", true),
+        [GameTitle.Nightreign]           = new("nightreign", "NREvents", true),
     };
 
     public List<Game> GetRegisteredGames() =>
@@ -66,6 +68,7 @@ public class GameModuleFactory(
             GameTitle.DarkSouls3          => new DS3Module(memoryService, stateService, hookManager, tickService, events),
             GameTitle.Sekiro              => new SKModule(memoryService, stateService, hookManager, tickService, events, rules),
             GameTitle.EldenRing           => new EldenRingModule(memoryService, stateService, hookManager, tickService, events),
+            GameTitle.Nightreign           => new NRModule(memoryService, stateService, hookManager, tickService, events),
             _ => throw new NotSupportedException($"No module for {game.ProcessName}")
         };
     }
