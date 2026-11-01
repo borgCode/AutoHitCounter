@@ -133,7 +133,7 @@ public class DS2HitService(IMemoryService memoryService, HookManager hookManager
         ]);
 
         memoryService.WriteBytes(code, bytes);
-        InstallHook(code, Hooks.KillBox, [0x4C, 0x8B, 0x0, 0x89, 0x54, 0x24, 0x10]);
+        InstallHook(code, Hooks.KillBox, [0x4C, 0x8B, 0x01, 0x89, 0x54, 0x24, 0x10]);
     }
 
     private void InstallScholarCountAuxHook()

@@ -1,6 +1,7 @@
 ﻿// 
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
@@ -22,12 +23,15 @@ public static class DS3Offsets
 
     public static bool IsAobFallback { get; private set; }
 
-    public static void Initialize(string fileVersion, IMemoryService memoryService)
+    public static Version? DetectedAppVersion { get; private set; }
+
+    public static void Initialize(FileVersionInfo versionInfo, IMemoryService memoryService)
     {
         var moduleBase = memoryService.BaseAddress;
         IsAobFallback = false;
+        DetectedAppVersion = null;
 
-        _version = fileVersion switch
+        _version = versionInfo.FileVersion switch
         {
             var v when v.StartsWith("1.3.2.") => Version1_3_2_0,
             var v when v.StartsWith("1.4.1.") => Version1_4_1_0,
@@ -53,6 +57,8 @@ public static class DS3Offsets
         if (!_version.HasValue)
         {
             IsAobFallback = true;
+            DetectedAppVersion = new Version(versionInfo.FileMajorPart, versionInfo.FileMinorPart,
+                versionInfo.FileBuildPart);
             InitializeFallbackAddresses(memoryService);
             return;
         }
@@ -95,6 +101,8 @@ public static class DS3Offsets
 
     public static nint Float20;
     public static nint Float100;
+
+    public static int SetThrowStateFlag => Version < Version1_8_0_0 ? 0x201 : 0x211;
 
     public static class Hooks
     {

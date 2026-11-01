@@ -1,7 +1,10 @@
 ﻿// 
 
 using System;
-using AutoHitCounter.Utilities;
+using System.Diagnostics;
+using System.IO;
+using AutoHitCounter.Interfaces;
+using AutoHitCounter.Memory;
 using static AutoHitCounter.Games.DS2.DS2Version;
 
 namespace AutoHitCounter.Games.DS2;
@@ -10,27 +13,46 @@ public static class DS2Offsets
 {
     private static DS2Version? _version;
 
+    private static readonly string ScholarFallbackAddressPath = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+        "AutoHitCounter",
+        "fallback_addresses_ds2_scholar.txt");
+
+    private static readonly string VanillaFallbackAddressPath = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+        "AutoHitCounter",
+        "fallback_addresses_ds2_vanilla.txt");
+
     public static DS2Version Version => _version
                                         ?? Scholar1_0_3;
 
-    public static bool IsScholar => Version is Scholar1_0_2 or Scholar1_0_3;
+    public static bool IsScholar { get; private set; }
 
-    public static void Initialize(long fileSize, nint moduleBase)
+    public static bool IsAobFallback { get; private set; }
+
+    public static Version? DetectedAppVersion { get; private set; }
+
+    public static void Initialize(FileVersionInfo versionInfo, IMemoryService memoryService)
     {
-        _version = fileSize switch
+        IsScholar = !memoryService.IsWow64;
+        IsAobFallback = false;
+        DetectedAppVersion = null;
+        var moduleBase = memoryService.BaseAddress;
+        _version = (IsScholar, versionInfo.FileVersion) switch
         {
-            32340760 => Vanilla1_0_11,
-            29588960 => Vanilla1_0_12,
-            31605096 => Scholar1_0_2,
-            28200992 => Scholar1_0_3,
+            (false, "1,0,11,0") => Vanilla1_0_11,
+            (false, "1,0,12,0") => Vanilla1_0_12,
+            (true, "1,0,2,0") => Scholar1_0_2,
+            (true, "1,0,3,0") => Scholar1_0_3,
             _ => null
         };
 
         if (!_version.HasValue)
         {
-            MsgBox.Show(
-                $@"Unknown patch version (file size: {fileSize}), please report it on GitHub",
-                "Unknown patch version");
+            IsAobFallback = true;
+            DetectedAppVersion = new Version(versionInfo.FileMajorPart, versionInfo.FileMinorPart,
+                versionInfo.FileBuildPart);
+            InitializeFallbackAddresses(memoryService);
             return;
         }
 
@@ -42,19 +64,9 @@ public static class DS2Offsets
     {
         public static nint Base;
 
-        public static int GameDataManager => Version switch
-        {
-            Vanilla1_0_11 or Vanilla1_0_12 => 0x60,
-            Scholar1_0_2 or Scholar1_0_3 => 0xA8,
-            _ => 0x0
-        };
+        public static int GameDataManager => IsScholar ? 0xA8 : 0x60;
 
-        public static int SaveDataManager => Version switch
-        {
-            Vanilla1_0_11 or Vanilla1_0_12 => 0x6C,
-            Scholar1_0_2 or Scholar1_0_3 => 0xD8,
-            _ => 0x0
-        };
+        public static int SaveDataManager => IsScholar ? 0xD8 : 0x6C;
 
         public static class SaveDataManagerOffsets
         {
@@ -67,12 +79,7 @@ public static class DS2Offsets
             public const int PlayTime = 0x1CC;
         }
 
-        public static int PlayerCtrl => Version switch
-        {
-            Vanilla1_0_11 or Vanilla1_0_12 => 0x74,
-            Scholar1_0_2 or Scholar1_0_3 => 0xD0,
-            _ => 0x0
-        };
+        public static int PlayerCtrl => IsScholar ? 0xD0 : 0x74;
     }
 
     public static nint MapId;
@@ -84,12 +91,7 @@ public static class DS2Offsets
         private static readonly int[] VanillaDoubleClickPtrChain = { 0x3C, 0x0, 0x4, 0x39 };
         private static readonly int[] ScholarDoubleClickPtrChain = { 0x60, 0x0, 0x8, 0x6D };
 
-        public static int[] DoubleClickPtrChain => Version switch
-        {
-            Vanilla1_0_11 or Vanilla1_0_12 => VanillaDoubleClickPtrChain,
-            Scholar1_0_2 or Scholar1_0_3 => ScholarDoubleClickPtrChain,
-            _ => []
-        };
+        public static int[] DoubleClickPtrChain => IsScholar ? ScholarDoubleClickPtrChain : VanillaDoubleClickPtrChain;
     }
 
     public static class Hooks
@@ -106,6 +108,14 @@ public static class DS2Offsets
         public static nint IgtLoadGame;
         public static nint NoBabyJump;
         public static nint CreditSkip;
+    }
+
+    private static void InitializeFallbackAddresses(IMemoryService memoryService)
+    {
+        var scanner = new AobScanner(memoryService);
+        if (IsScholar) DS2Patterns.QueueScholarPatterns(scanner);
+        else DS2Patterns.QueueVanillaPatterns(scanner);
+        scanner.Run(IsScholar ? ScholarFallbackAddressPath : VanillaFallbackAddressPath);
     }
 
     private static void InitializeBaseAddresses(nint moduleBase)
@@ -245,10 +255,13 @@ public static class DS2Offsets
             Scholar1_0_3 => 0x59A64,
             _ => 0
         };
+    }
 
+    private static nint _printBaseAddr;
 
-#if DEBUG
-        _baseAddr = moduleBase;
+    public static void Print(nint moduleBase)
+    {
+        _printBaseAddr = moduleBase;
         Console.WriteLine("--- Base Pointers ---");
         PrintOffset("GameManagerImp.Base", GameManagerImp.Base);
         PrintOffset("MapId", MapId);
@@ -270,17 +283,13 @@ public static class DS2Offsets
 
 
         Console.WriteLine("\n====================================\n");
-#endif
     }
 
-#if DEBUG
-    private static nint _baseAddr;
     private static void PrintOffset(string name, nint value)
     {
-        var rel = value - _baseAddr;
+        var rel = value - _printBaseAddr;
         Console.WriteLine(rel <= 0
             ? $"  {name,-40} *** NOT SET ***"
             : $"  {name,-40} 0x{(long)value:X}  (0x{(long)rel:X})");
     }
-#endif
 }

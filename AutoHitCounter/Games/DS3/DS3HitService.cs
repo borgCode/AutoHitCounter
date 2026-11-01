@@ -306,9 +306,10 @@ public class DS3HitService(IMemoryService memoryService, HookManager hookManager
         ]);
         
         AsmHelper.WriteImmediateDword(bytes, WorldChrMan.ChrIns.Modules, 0x27 + 3);
+        AsmHelper.WriteImmediateDword(bytes, SetThrowStateFlag, 2);
         
         memoryService.WriteBytes(code, bytes);
-        InstallHook(code, Hooks.SetThrowState, [0x80, 0x8B, 0x11, 0x02, 0x00, 0x00, 0x20]);
+        InstallHook(code, Hooks.SetThrowState, bytes.Take(7).ToArray());
     }
 
     private void InstallClearThrowStateHook()

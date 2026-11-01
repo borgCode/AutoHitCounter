@@ -31,7 +31,7 @@ public static class DS3Patterns
         scanner.Queue(nameof(IsOnlineHook), IsOnlineHook, addr => DS3Offsets.Hooks.IsOnlineHook = addr);
         
         scanner.Queue(nameof(HasSpEffectId), HasSpEffectId, addr => DS3Offsets.Functions.HasSpEffectId = addr);
-        scanner.Queue(nameof(IsFallDamageDisabled), HasSpEffectId, addr => DS3Offsets.Functions.IsFallDamageDisabled = addr);
+        scanner.Queue(nameof(IsFallDamageDisabled), IsFallDamageDisabled, addr => DS3Offsets.Functions.IsFallDamageDisabled = addr);
         scanner.Queue(nameof(IsOnline), IsOnline, addr => DS3Offsets.Functions.IsOnline = addr);
         scanner.Queue(nameof(OriginalLogoFunc), OriginalLogoFunc, addr => DS3Offsets.Functions.OriginalLogoFunc = addr);
         

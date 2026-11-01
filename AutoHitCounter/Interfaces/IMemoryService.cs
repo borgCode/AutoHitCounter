@@ -10,6 +10,7 @@ namespace AutoHitCounter.Interfaces
         Process? TargetProcess { get; }
         nint BaseAddress { get; }
         int ModuleMemorySize { get; }
+        bool IsWow64 { get; }
         
         byte[] ReadBytes(nint addr, int size);
         T Read<T>(nint addr) where T : unmanaged;

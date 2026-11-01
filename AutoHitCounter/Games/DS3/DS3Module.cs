@@ -20,7 +20,9 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
     private readonly ITickService _tickService;
     private Dictionary<uint, (string Name, int Required, int Hit)> _events;
 
-    public string GameVersion => DS3Offsets.IsAobFallback ? "Unknown Patch" : DS3Offsets.Version.GetDescription();
+    public string GameVersion => DS3Offsets.IsAobFallback
+        ? DS3Offsets.DetectedAppVersion?.ToString() ?? "Unknown Patch"
+        : DS3Offsets.Version.GetDescription();
 
     private DateTime? _lastHit;
     private DS3HitService _hitService;
@@ -84,8 +86,7 @@ public class DS3Module : IGameModule, IDisposable, IVersionedGameModule
     {
         if (_memoryService.TargetProcess == null) return;
         var module = _memoryService.TargetProcess.MainModule;
-        var fileVersion = module?.FileVersionInfo.FileVersion;
-        DS3Offsets.Initialize(fileVersion, _memoryService);
+        DS3Offsets.Initialize(module?.FileVersionInfo, _memoryService);
         
 #if DEBUG
         DS3Offsets.Print(_memoryService.BaseAddress);

@@ -39,7 +39,7 @@ public class DS2EventService(
         ]);
 
         MemoryService.WriteBytes(code, bytes);
-        HookManager.InstallHook(code, hookLoc, [0xB8, 0x59, 0x17, 0xB7, 0xD]);
+        HookManager.InstallHook(code, hookLoc, [0xB8, 0x59, 0x17, 0xB7, 0xD1]);
     }
 
     private void InstallVanillaHook()

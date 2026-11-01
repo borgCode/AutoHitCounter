@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using AutoHitCounter.Enums;
 using AutoHitCounter.Interfaces;
 using AutoHitCounter.Memory;
@@ -28,7 +27,11 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
     private EventLogReader _eventLogReader;
     private readonly IHitRulesProvider _rules;
 
-    public string GameVersion => DS2Offsets.Version.GetDescription();
+    public string GameVersion => IsAobFallback
+        ? DetectedAppVersion is { } detected
+            ? $"{(IsScholar ? "SOTFS" : "Vanilla")} {detected}"
+            : "Unknown Patch"
+        : DS2Offsets.Version.GetDescription();
 
     private DateTime? _lastHit;
 
@@ -97,10 +100,11 @@ public class DS2Module : IGameModule, IDisposable, IVersionedGameModule
     {
         var module = _memoryService.TargetProcess?.MainModule;
         if (module == null) return;
-        var fileInfo = new FileInfo(module.FileName);
-        var fileSize = fileInfo.Length;
-        var moduleBase = _memoryService.BaseAddress;
-        DS2Offsets.Initialize(fileSize, moduleBase);
+        DS2Offsets.Initialize(module.FileVersionInfo, _memoryService);
+
+#if DEBUG
+        Print(_memoryService.BaseAddress);
+#endif
     }
 
     private void Tick()

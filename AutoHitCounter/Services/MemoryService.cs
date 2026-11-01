@@ -16,6 +16,7 @@ namespace AutoHitCounter.Services
         public nint ProcessHandle { get; private set; }
         public nint BaseAddress { get; private set; }
         public int ModuleMemorySize { get; private set; }
+        public bool IsWow64 { get; private set; }
 
         private const int ProcessVmRead = 0x0010;
         private const int ProcessVmWrite = 0x0020;
@@ -185,6 +186,7 @@ namespace AutoHitCounter.Services
 
                     TargetProcess = process;
                     ProcessHandle = handle;
+                    IsWow64 = Kernel32.IsWow64Process(handle, out var isWow64) && isWow64;
 
                     if (process.MainModule is { } mainModule)
                     {
