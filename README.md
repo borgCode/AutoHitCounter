@@ -3,7 +3,7 @@
   <h1 style="display: inline; vertical-align: middle; margin-left: 10px;">Auto Hit Counter</h1>
 </div>
 
-<p>Auto Hit Counter is a tool that tracks hits in Dark Souls Remastered, Dark Souls 2, Dark Souls 3, Sekiro, Elden Ring, Nightreign, and Bloodborne (patch 1.09, confirmed working on shadPS4 and bb-port). It automatically increments hits and advances splits when an event is triggered, such as defeating a boss. All hits within three seconds count as one, to avoid racking up hits on big attacks when the player is unable to move or when an attack hits multiple times, such as Waterfowl Dance.</p>
+<p>Auto Hit Counter is a tool that tracks hits in Dark Souls Remastered, Dark Souls 2, Dark Souls 3, Sekiro, Elden Ring, Nightreign, and Bloodborne (patch 1.09, confirmed working on shadPS4 and BBport). It automatically increments hits and advances splits when an event is triggered, such as defeating a boss. All hits within three seconds count as one, to avoid racking up hits on big attacks when the player is unable to move or when an attack hits multiple times, such as Waterfowl Dance.</p>
 
 [![Latest Release](https://img.shields.io/github/v/release/borgCode/AutoHitCounter.svg)](https://github.com/borgCode/AutoHitCounter/releases/latest)
 [![All Releases](https://img.shields.io/github/downloads/borgCode/AutoHitCounter/total.svg)](https://github.com/borgCode/AutoHitCounter/releases/latest/download/AutoHitCounter.zip)
