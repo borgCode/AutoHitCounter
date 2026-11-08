@@ -100,5 +100,17 @@ public enum AsmScript
     NRSetHealth,
     NRApplySpEffectAndProcessStatus,
     NRClearThrowState,
-    NRCalcSpEffectMultipliers
+    NRCalcSpEffectMultipliers,
+
+    BBIsPlayerDead,
+    BBReadThrowState,
+    BBHasItem,
+    BBProcessHit,
+    BBApplySpEffectAndProcessStatus,
+    BBKillBox,
+    BBLandingHpCheck,
+    BBSpEffectHpCheck,
+    BBEventLog,
+    BBEmevdEventLog,
+    BBRunStart
 }

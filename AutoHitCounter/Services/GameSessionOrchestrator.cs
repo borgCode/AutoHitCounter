@@ -164,7 +164,7 @@ public class GameSessionOrchestrator : IGameSessionOrchestrator
             }
 
             _tickService.ResetAttachState();
-            _memoryService.StartAutoAttach(_activeGame.ProcessName);
+            _memoryService.StartAutoAttach(_activeGame.ProcessNames);
         }
 
         _currentModule.OnHit += () => HitReceived?.Invoke();

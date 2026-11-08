@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoHitCounter.Interfaces;
+using AutoHitCounter.Utilities;
 
 namespace AutoHitCounter.Memory
 {
     public class HookManager(IMemoryService memoryService)
     {
+        private const int AbsoluteJumpLength = 14;
+
         private readonly Dictionary<nint, HookData> _hookRegistry = new();
 
         private class HookData
@@ -22,10 +25,15 @@ namespace AutoHitCounter.Memory
 
         public void InstallCallHook(nint codeLoc, nint origin, byte[] originalBytes)
             => InstallHook(codeLoc, origin, originalBytes, 0xE8);
+        
+        public void InstallAbsoluteHook(nint codeLoc, nint origin, byte[] originalBytes)
+            => WriteHook(codeLoc, origin, originalBytes, GetAbsoluteHookBytes(originalBytes.Length, codeLoc));
 
         private void InstallHook(nint codeLoc, nint origin, byte[] originalBytes, byte opcode)
+            => WriteHook(codeLoc, origin, originalBytes, GetHookBytes(originalBytes.Length, codeLoc, origin, opcode));
+
+        private void WriteHook(nint codeLoc, nint origin, byte[] originalBytes, byte[] hookBytes)
         {
-            byte[] hookBytes = GetHookBytes(originalBytes.Length, codeLoc, origin, opcode);
             memoryService.WriteBytes(origin, hookBytes);
             _hookRegistry[codeLoc] = new HookData
             {
@@ -54,6 +62,24 @@ namespace AutoHitCounter.Memory
             Array.Copy(offsetBytes, 0, hookBytes, 1, 4);
 
             for (int i = 5; i < hookBytes.Length; i++)
+            {
+                hookBytes[i] = 0x90;
+            }
+
+            return hookBytes;
+        }
+        
+        private byte[] GetAbsoluteHookBytes(int originalBytesLength, nint target)
+        {
+            if (originalBytesLength < AbsoluteJumpLength)
+                throw new ArgumentException($"Absolute hook needs at least {AbsoluteJumpLength} original bytes");
+
+            byte[] hookBytes = new byte[originalBytesLength];
+            hookBytes[0] = 0xFF;
+            hookBytes[1] = 0x25;
+            AsmHelper.WriteAbsoluteAddress(hookBytes, target, 6);
+
+            for (int i = AbsoluteJumpLength; i < hookBytes.Length; i++)
             {
                 hookBytes[i] = 0x90;
             }

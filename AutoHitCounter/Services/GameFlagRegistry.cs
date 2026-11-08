@@ -19,6 +19,7 @@ public static class GameFlagRegistry
         ],
         [GameTitle.EldenRing] = [],
         [GameTitle.Nightreign] = [],
+        [GameTitle.Bloodborne] = [],
     };
 
     public static IReadOnlyList<(string Key, string DisplayName)> GetFlags(GameTitle title)

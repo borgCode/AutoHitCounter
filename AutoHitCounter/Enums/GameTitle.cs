@@ -23,6 +23,9 @@ public enum GameTitle
     
     [Description("Nightreign")]
     Nightreign,
+    
+    [Description("Bloodborne")]
+    Bloodborne,
 
     [Description("Manual")]
     Manual,

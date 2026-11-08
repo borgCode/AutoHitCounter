@@ -69,7 +69,7 @@ public class CustomGameService(ICustomGamesStore store, IProfileService profileS
     {
         Title = GameTitle.Manual,
         GameName = name,
-        ProcessName = null,
+        ProcessNames = null,
         IsManual = true
     };
 }

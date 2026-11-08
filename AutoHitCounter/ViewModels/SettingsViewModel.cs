@@ -307,6 +307,24 @@ public class SettingsViewModel : BaseViewModel
 
     #endregion
 
+    #region Bloodborne
+
+    private bool _bbNoLogo;
+
+    public bool BBNoLogo
+    {
+        get => _bbNoLogo;
+        set
+        {
+            if (!SetProperty(ref _bbNoLogo, value)) return;
+            SettingsManager.Default.BBNoLogo = value;
+            SettingsManager.Default.Save();
+            OnGameSettingChanged?.Invoke();
+        }
+    }
+
+    #endregion
+
     #region External Integration
 
     private bool _isExternalIntegrationEnabled;
@@ -362,6 +380,7 @@ public class SettingsViewModel : BaseViewModel
         ApplySKSettings();
         ApplyDS2Settings();
         ApplyNRSettings();
+        ApplyBBSettings();
 
         IsAlwaysOnTopEnabled = SettingsManager.Default.AlwaysOnTop;
 
@@ -440,6 +459,12 @@ public class SettingsViewModel : BaseViewModel
     {
         _nrNoLogo = SettingsManager.Default.NRNoLogo;
         OnPropertyChanged(nameof(NRNoLogo));
+    }
+
+    private void ApplyBBSettings()
+    {
+        _bbNoLogo = SettingsManager.Default.BBNoLogo;
+        OnPropertyChanged(nameof(BBNoLogo));
     }
 
     #endregion

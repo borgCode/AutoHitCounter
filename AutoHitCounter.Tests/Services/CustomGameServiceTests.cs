@@ -70,7 +70,7 @@ public class CustomGameServiceTests
 
         Assert.Equal(GameTitle.Manual, game.Title);
         Assert.True(game.IsManual);
-        Assert.Null(game.ProcessName);
+        Assert.Null(game.ProcessNames);
     }
 
     [Fact]
@@ -177,7 +177,7 @@ public class CustomGameServiceTests
         Assert.Equal("Bloodborne", game.GameName);
         Assert.Equal(GameTitle.Manual, game.Title);
         Assert.True(game.IsManual);
-        Assert.Null(game.ProcessName);
+        Assert.Null(game.ProcessNames);
     }
 
     [Fact]

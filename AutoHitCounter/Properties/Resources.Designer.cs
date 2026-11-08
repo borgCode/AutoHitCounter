@@ -60,6 +60,251 @@ namespace AutoHitCounter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 48 a1 00 00 00 00 00    movabs rax,ds:0x0
+        ///00 00 00 
+        ///48 85 c0                test   rax,rax
+        ///0f 84 b5 00 00 00       je     c8 &lt;original&gt;
+        ///4c 8b 58 60             mov    r11,QWORD PTR [rax+0x60]
+        ///4d 85 db                test   r11,r11
+        ///0f 84 a8 00 00 00       je     c8 &lt;original&gt;
+        ///4c 39 df                cmp    rdi,r11
+        ///0f 85 9f 00 00 00       jne    c8 &lt;original&gt;
+        ///48 85 d2                test   rdx,rdx
+        ///0f 84 96 00 00 00       je     c8 &lt;original&gt;
+        ///e8 00 00 00 00          call   37 &lt;_main+0x37&gt;
+        ///0f 84 8b  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string BBApplySpEffectAndProcessStatus {
+            get {
+                return ResourceManager.GetString("BBApplySpEffectAndProcessStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 47 8d 14 06             lea    r10d,[r14+r8*1]
+        ///8b 05 00 00 00 00       mov    eax,DWORD PTR [rip+0x0]        # a &lt;_main+0xa&gt;
+        ///4c 8d 1c 80             lea    r11,[rax+rax*4]
+        ///48 8d 35 00 00 00 00    lea    rsi,[rip+0x0]        # 15 &lt;_main+0x15&gt;
+        ///49 01 f3                add    r11,rsi
+        ///45 89 13                mov    DWORD PTR [r11],r10d
+        ///41 c6 43 04 01          mov    BYTE PTR [r11+0x4],0x1
+        ///ff c0                   inc    eax
+        ///25 ff 01 00 00          and    eax,0x1ff
+        ///89 05 00 00 00 00       mov    DWORD PTR [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string BBEmevdEventLog {
+            get {
+                return ResourceManager.GetString("BBEmevdEventLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 8b 05 00 00 00 00       mov    eax,DWORD PTR [rip+0x0]        # 6 &lt;_main+0x6&gt;
+        ///41 89 c2                mov    r10d,eax
+        ///6b c0 05                imul   eax,eax,0x5
+        ///4c 8d 1d 00 00 00 00    lea    r11,[rip+0x0]        # 13 &lt;_main+0x13&gt;
+        ///49 01 c3                add    r11,rax
+        ///41 89 33                mov    DWORD PTR [r11],esi
+        ///85 d2                   test   edx,edx
+        ///41 0f 95 43 04          setne  BYTE PTR [r11+0x4]
+        ///41 ff c2                inc    r10d
+        ///41 81 e2 ff 01 00 00    and    r10d,0x1ff
+        ///44 89 15 00 00 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string BBEventLog {
+            get {
+                return ResourceManager.GetString("BBEventLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BossName,DeathFlag
+        ///Cleric Beast,12411700
+        ///Father Gascoigne,12411800
+        ///Blood-starved Beast,12301800
+        ///Vicar Amelia,12401800
+        ///Witch of Hemwick,12201800
+        ///Darkbeast Paarl,12301700
+        ///Shadow of Yharnam,12701800
+        ///Martyr Logarius,12501800
+        ///&quot;Rom, the Vacuous Spider&quot;,13201800
+        ///The One Reborn,12801800
+        ///Celestial Emissary,12421700
+        ///&quot;Ebrietas, Daughter of the Cosmos&quot;,12421800
+        ///Amygdala,13301800
+        ///&quot;Micolash, Host of the Nightmare&quot;,12601850
+        ///Mergo&apos;s Wet Nurse,12601800
+        ///&quot;Gehrman, the First Hunter&quot;,12101800
+        ///Moon Presence,1210 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string BBEvents {
+            get {
+                return ResourceManager.GetString("BBEvents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 51                      push   rcx
+        ///52                      push   rdx
+        ///56                      push   rsi
+        ///57                      push   rdi
+        ///41 50                   push   r8
+        ///89 c2                   mov    edx,eax
+        ///48 a1 00 00 00 00 00    movabs rax,ds:0x0
+        ///00 00 00
+        ///48 85 c0                test   rax,rax
+        ///74 2d                   je     44 &lt;none&gt;
+        ///48 8b 40 08             mov    rax,QWORD PTR [rax+0x8]
+        ///48 85 c0                test   rax,rax
+        ///74 24                   je     44 &lt;none&gt;
+        ///48 8d b8 28 03 00 00 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string BBHasItem {
+            get {
+                return ResourceManager.GetString("BBHasItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 48 a1 00 00 00 00 00    movabs rax,ds:0x0
+        ///00 00 00
+        ///48 85 c0                test   rax,rax
+        ///74 26                   je     35 &lt;dead&gt;
+        ///48 8b 40 60             mov    rax,QWORD PTR [rax+0x60]
+        ///48 85 c0                test   rax,rax
+        ///74 1d                   je     35 &lt;dead&gt;
+        ///48 8b 80 b0 03 00 00    mov    rax,QWORD PTR [rax+0x3b0]
+        ///48 85 c0                test   rax,rax
+        ///74 11                   je     35 &lt;dead&gt;
+        ///48 8b 40 20             mov    rax,QWORD PTR [rax+0x20]
+        ///48 85 c0                test   rax,rax
+        ///7 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string BBIsPlayerDead {
+            get {
+                return ResourceManager.GetString("BBIsPlayerDead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 48 a1 00 00 00 00 00    movabs rax,ds:0x0
+        ///00 00 00 
+        ///48 85 c0                test   rax,rax
+        ///74 55                   je     64 &lt;original&gt;
+        ///48 8b 40 60             mov    rax,QWORD PTR [rax+0x60]
+        ///48 39 c7                cmp    rdi,rax
+        ///75 4c                   jne    64 &lt;original&gt;
+        ///e8 00 00 00 00          call   1d &lt;_main+0x1d&gt;
+        ///74 45                   je     64 &lt;original&gt;
+        ///48 85 f6                test   rsi,rsi
+        ///74 40                   je     64 &lt;original&gt;
+        ///48 8b 46 18             mov    rax,QWORD PTR [rsi [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string BBKillBox {
+            get {
+                return ResourceManager.GetString("BBKillBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to c5 fa 11 55 b4          vmovss DWORD PTR [rbp-0x4c],xmm2
+        ///89 4d a4                mov    DWORD PTR [rbp-0x5c],ecx
+        ///29 d3                   sub    ebx,edx
+        ///85 db                   test   ebx,ebx
+        ///7f 31                   jg     3f &lt;not_lethal&gt;
+        ///48 a1 00 00 00 00 00    movabs rax,ds:0x0
+        ///00 00 00 
+        ///48 85 c0                test   rax,rax
+        ///74 14                   je     31 &lt;lethal&gt;
+        ///48 8b 40 60             mov    rax,QWORD PTR [rax+0x60]
+        ///48 85 c0                test   rax,rax
+        ///74 0b                   je     31  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string BBLandingHpCheck {
+            get {
+                return ResourceManager.GetString("BBLandingHpCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 48 83 ec 10             sub    rsp,0x10
+        ///48 c7 04 24 00 00 00    mov    QWORD PTR [rsp],0x0
+        ///00 
+        ///48 a1 00 00 00 00 00    movabs rax,ds:0x0
+        ///00 00 00 
+        ///48 85 c0                test   rax,rax
+        ///74 78                   je     93 &lt;call_original&gt;
+        ///48 8b 40 60             mov    rax,QWORD PTR [rax+0x60]
+        ///48 85 c0                test   rax,rax
+        ///74 6f                   je     93 &lt;call_original&gt;
+        ///4c 39 f8                cmp    rax,r15
+        ///74 6a                   je     93 &lt;call_original&gt;
+        ///49 3b 46 08             cmp    [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string BBProcessHit {
+            get {
+                return ResourceManager.GetString("BBProcessHit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 48 8b 80 b0 03 00 00    mov    rax,QWORD PTR [rax+0x3b0]
+        ///48 85 c0                test   rax,rax
+        ///74 1a                   je     26 &lt;none&gt;
+        ///48 8b 80 88 00 00 00    mov    rax,QWORD PTR [rax+0x88]
+        ///48 85 c0                test   rax,rax
+        ///74 0e                   je     26 &lt;none&gt;
+        ///48 8b 40 28             mov    rax,QWORD PTR [rax+0x28]
+        ///48 85 c0                test   rax,rax
+        ///74 05                   je     26 &lt;none&gt;
+        ///0f b6 40 20             movzx  eax,BYTE PTR [rax+0x20]
+        ///c3                      ret
+        ///
+        ///0000000 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string BBReadThrowState {
+            get {
+                return ResourceManager.GetString("BBReadThrowState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 7 &lt;_main+0x7&gt;
+        ///c7 43 0c 06 00 00 00    mov    DWORD PTR [rbx+0xc],0x6
+        ///c6 83 c0 01 00 00 01    mov    BYTE PTR [rbx+0x1c0],0x1
+        ///ff 25 00 00 00 00       jmp    QWORD PTR [rip+0x0]        # 1b &lt;_main+0x1b&gt;
+        ///00 00                   add    BYTE PTR [rax],al
+        ///00 00                   add    BYTE PTR [rax],al
+        ///00 00                   add    BYTE PTR [rax],al
+        ///00 00                   add    BYTE PTR [rax],al.
+        /// </summary>
+        internal static string BBRunStart {
+            get {
+                return ResourceManager.GetString("BBRunStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 44 8b ab f8 00 00 00    mov    r13d,DWORD PTR [rbx+0xf8]
+        ///45 01 f5                add    r13d,r14d
+        ///45 85 ed                test   r13d,r13d
+        ///7f 3f                   jg     4e &lt;not_lethal&gt;
+        ///45 85 f6                test   r14d,r14d
+        ///79 2c                   jns    40 &lt;lethal&gt;
+        ///41 83 7c 24 08 00       cmp    DWORD PTR [r12+0x8],0x0
+        ///7e 24                   jle    40 &lt;lethal&gt;
+        ///48 a1 00 00 00 00 00    movabs rax,ds:0x0
+        ///00 00 00 
+        ///48 85 c0                test   rax,rax
+        ///74 15                   je     40 &lt;lethal&gt; [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string BBSpEffectHpCheck {
+            get {
+                return ResourceManager.GetString("BBSpEffectHpCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BossName,DeathFlag
         ///The Last Giant,100971
         ///The Pursuer,100968

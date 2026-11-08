@@ -8,6 +8,9 @@ namespace AutoHitCounter.Memory
         public const uint MemCommit = 0x1000;
         public const uint MemReserve = 0x2000;
         public const uint PageExecuteReadwrite = 0x40;
+        public const uint PageNoAccess = 0x01;
+        public const uint PageGuard = 0x100;
+        public const uint PageExecuteAny = 0xF0;
 
         [StructLayout(LayoutKind.Sequential)]
         public struct MemoryBasicInformation

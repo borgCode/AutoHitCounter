@@ -20,6 +20,9 @@ public class GameSessionOrchestratorTests
     private readonly ITickService _tickService = Substitute.For<ITickService>();
     private readonly GameSessionOrchestrator _sut;
 
+    private static readonly string[] Ds3 = ["darksoulsiii"];
+    private static readonly string[] Ds2 = ["darksoulsii"];
+
     public GameSessionOrchestratorTests()
     {
         _sut = new GameSessionOrchestrator(_memoryService, _hotkeyManager, _factory, _stateService, _tickService);
@@ -31,7 +34,7 @@ public class GameSessionOrchestratorTests
     [Fact]
     public void Track_CreatesModuleViaFactory()
     {
-        var game = new Game { GameName = "DS3", ProcessName = "darksoulsiii", IsManual = false };
+        var game = new Game { GameName = "DS3", ProcessNames = Ds3, IsManual = false };
         _factory.CreateModule(Arg.Any<Game>(), Arg.Any<Dictionary<uint, (string, int, int)>>(), Arg.Any<IHitRulesProvider>())
             .Returns(Substitute.For<IGameModule>());
 
@@ -46,7 +49,7 @@ public class GameSessionOrchestratorTests
         var module = Substitute.For<IGameModule>();
         _factory.CreateModule(Arg.Any<Game>(), Arg.Any<Dictionary<uint, (string, int, int)>>(), Arg.Any<IHitRulesProvider>())
             .Returns(module);
-        _sut.Track(new Game { GameName = "DS3", ProcessName = "darksoulsiii", IsManual = false });
+        _sut.Track(new Game { GameName = "DS3", ProcessNames = Ds3, IsManual = false });
 
         var fired = false;
         _sut.HitReceived += () => fired = true;
@@ -60,7 +63,7 @@ public class GameSessionOrchestratorTests
     {
         _factory.CreateModule(Arg.Any<Game>(), Arg.Any<Dictionary<uint, (string, int, int)>>(), Arg.Any<IHitRulesProvider>())
             .Returns(Substitute.For<IGameModule>());
-        var game = new Game { GameName = "MyCustomGame", ProcessName = "", IsManual = true };
+        var game = new Game { GameName = "MyCustomGame", ProcessNames = [], IsManual = true };
 
         var attachmentChangedCount = 0;
         _sut.AttachmentChanged += () => attachmentChangedCount++;
@@ -71,7 +74,7 @@ public class GameSessionOrchestratorTests
         Assert.Equal("Custom Game: MyCustomGame", _sut.AttachedText);
         Assert.Equal(1, attachmentChangedCount);
         _hotkeyManager.Received(1).SetManualGameActive(true);
-        _memoryService.DidNotReceive().StartAutoAttach(Arg.Any<string>());
+        _memoryService.DidNotReceive().StartAutoAttach(Arg.Any<string[]>());
     }
 
     [Fact]
@@ -82,8 +85,8 @@ public class GameSessionOrchestratorTests
         _factory.CreateModule(Arg.Any<Game>(), Arg.Any<Dictionary<uint, (string, int, int)>>(), Arg.Any<IHitRulesProvider>())
             .Returns(firstModule, secondModule);
 
-        _sut.Track(new Game { GameName = "DS3", ProcessName = "darksoulsiii", IsManual = false });
-        _sut.Track(new Game { GameName = "DS2", ProcessName = "darksoulsii", IsManual = false });
+        _sut.Track(new Game { GameName = "DS3", ProcessNames = Ds3, IsManual = false });
+        _sut.Track(new Game { GameName = "DS2", ProcessNames = Ds2, IsManual = false });
 
         ((IDisposable)firstModule).Received(1).Dispose();
     }
@@ -93,7 +96,7 @@ public class GameSessionOrchestratorTests
     {
         _factory.CreateModule(Arg.Any<Game>(), Arg.Any<Dictionary<uint, (string, int, int)>>(), Arg.Any<IHitRulesProvider>())
             .Returns(Substitute.For<IGameModule>());
-        _sut.Track(new Game { GameName = "DS3", ProcessName = "darksoulsiii", IsManual = false });
+        _sut.Track(new Game { GameName = "DS3", ProcessNames = Ds3, IsManual = false });
 
         var attachmentChangedCount = 0;
         _sut.AttachmentChanged += () => attachmentChangedCount++;
@@ -110,7 +113,7 @@ public class GameSessionOrchestratorTests
     {
         _factory.CreateModule(Arg.Any<Game>(), Arg.Any<Dictionary<uint, (string, int, int)>>(), Arg.Any<IHitRulesProvider>())
             .Returns(Substitute.For<IGameModule>());
-        _sut.Track(new Game { GameName = "MyCustomGame", ProcessName = "", IsManual = true });
+        _sut.Track(new Game { GameName = "MyCustomGame", ProcessNames = [], IsManual = true });
 
         var attachmentChangedCount = 0;
         _sut.AttachmentChanged += () => attachmentChangedCount++;
@@ -128,12 +131,12 @@ public class GameSessionOrchestratorTests
         _factory.CreateModule(Arg.Any<Game>(), Arg.Any<Dictionary<uint, (string, int, int)>>(), Arg.Any<IHitRulesProvider>())
             .Returns(Substitute.For<IGameModule>());
 
-        _sut.Track(new Game { GameName = "DS3", ProcessName = "darksoulsiii", IsManual = false });
+        _sut.Track(new Game { GameName = "DS3", ProcessNames = Ds3, IsManual = false });
 
         Received.InOrder(() =>
         {
             _tickService.ResetAttachState();
-            _memoryService.StartAutoAttach("darksoulsiii");
+            _memoryService.StartAutoAttach(Ds3);
         });
     }
 
@@ -143,11 +146,11 @@ public class GameSessionOrchestratorTests
         _factory.CreateModule(Arg.Any<Game>(), Arg.Any<Dictionary<uint, (string, int, int)>>(), Arg.Any<IHitRulesProvider>())
             .Returns(Substitute.For<IGameModule>());
 
-        _sut.Track(new Game { GameName = "DS3", ProcessName = "darksoulsiii", IsManual = false });
-        _sut.Track(new Game { GameName = "DS2", ProcessName = "darksoulsii", IsManual = false });
+        _sut.Track(new Game { GameName = "DS3", ProcessNames = Ds3, IsManual = false });
+        _sut.Track(new Game { GameName = "DS2", ProcessNames = Ds2, IsManual = false });
 
         _tickService.Received(2).ResetAttachState();
-        _memoryService.Received(1).StartAutoAttach("darksoulsii");
+        _memoryService.Received(1).StartAutoAttach(Ds2);
     }
 
     [Fact]
@@ -155,14 +158,14 @@ public class GameSessionOrchestratorTests
     {
         _factory.CreateModule(Arg.Any<Game>(), Arg.Any<Dictionary<uint, (string, int, int)>>(), Arg.Any<IHitRulesProvider>())
             .Returns(Substitute.For<IGameModule>());
-        _sut.Track(new Game { GameName = "DS3", ProcessName = "darksoulsiii", IsManual = false });
+        _sut.Track(new Game { GameName = "DS3", ProcessNames = Ds3, IsManual = false });
         _memoryService.ClearReceivedCalls();
         _tickService.ClearReceivedCalls();
 
-        _sut.Track(new Game { GameName = "MyCustomGame", ProcessName = "", IsManual = true });
+        _sut.Track(new Game { GameName = "MyCustomGame", ProcessNames = [], IsManual = true });
 
         _memoryService.Received(1).StopAutoAttach();
-        _memoryService.DidNotReceive().StartAutoAttach(Arg.Any<string>());
+        _memoryService.DidNotReceive().StartAutoAttach(Arg.Any<string[]>());
         _tickService.Received(1).ResetAttachState();
     }
 
@@ -171,7 +174,7 @@ public class GameSessionOrchestratorTests
     {
         _factory.CreateModule(Arg.Any<Game>(), Arg.Any<Dictionary<uint, (string, int, int)>>(), Arg.Any<IHitRulesProvider>())
             .Returns(Substitute.For<IGameModule>());
-        _sut.Track(new Game { GameName = "MyCustomGame", ProcessName = "", IsManual = true });
+        _sut.Track(new Game { GameName = "MyCustomGame", ProcessNames = [], IsManual = true });
 
         var attachmentChangedCount = 0;
         _sut.AttachmentChanged += () => attachmentChangedCount++;
@@ -188,7 +191,7 @@ public class GameSessionOrchestratorTests
     {
         _factory.CreateModule(Arg.Any<Game>(), Arg.Any<Dictionary<uint, (string, int, int)>>(), Arg.Any<IHitRulesProvider>())
             .Returns(Substitute.For<IGameModule>());
-        _sut.Track(new Game { GameName = "MyCustomGame", ProcessName = "", IsManual = true });
+        _sut.Track(new Game { GameName = "MyCustomGame", ProcessNames = [], IsManual = true });
 
         var attachmentChangedCount = 0;
         _sut.AttachmentChanged += () => attachmentChangedCount++;
@@ -205,7 +208,7 @@ public class GameSessionOrchestratorTests
     {
         _factory.CreateModule(Arg.Any<Game>(), Arg.Any<Dictionary<uint, (string, int, int)>>(), Arg.Any<IHitRulesProvider>())
             .Returns(Substitute.For<IGameModule>());
-        _sut.Track(new Game { GameName = "DS3", ProcessName = "darksoulsiii", IsManual = false });
+        _sut.Track(new Game { GameName = "DS3", ProcessNames = Ds3, IsManual = false });
 
         _stateService.Publish(State.Attaching);
 
@@ -218,7 +221,7 @@ public class GameSessionOrchestratorTests
     {
         _factory.CreateModule(Arg.Any<Game>(), Arg.Any<Dictionary<uint, (string, int, int)>>(), Arg.Any<IHitRulesProvider>())
             .Returns(Substitute.For<IGameModule>());
-        _sut.Track(new Game { GameName = "DS3", ProcessName = "darksoulsiii", IsManual = false });
+        _sut.Track(new Game { GameName = "DS3", ProcessNames = Ds3, IsManual = false });
         _tickService.ClearReceivedCalls();
 
         _sut.Stop();
@@ -237,7 +240,7 @@ public class GameSessionOrchestratorTests
             .Returns(module);
 
         _sut.SetEventLogEnabled(true);
-        _sut.Track(new Game { GameName = "DS3", ProcessName = "darksoulsiii", IsManual = false });
+        _sut.Track(new Game { GameName = "DS3", ProcessNames = Ds3, IsManual = false });
 
         module.Received().SetEventLogEnabled(true);
     }

@@ -21,10 +21,13 @@ namespace AutoHitCounter.Interfaces
         void Write<T>(nint addr, T value) where T : unmanaged;
         
         nint AllocCustomCodeMem();
-        
+
+        nint FindAllocationStartingWith(byte[] signature);
+        bool IsExecutable(nint address);
+
         nint GetProcAddress(string moduleName, string procName);
         
-        void StartAutoAttach(string processName);
+        void StartAutoAttach(string[] processNames);
         void StopAutoAttach();
     }
 }
